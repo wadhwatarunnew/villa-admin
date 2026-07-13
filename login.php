@@ -6,14 +6,14 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+   <link rel="stylesheet" href="css/variables.css">
    <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
    <main class="login-shell">
       <section class="brand-panel">
          <div class="brand-center">
-            <img src="images/thevillatent-logo.png" alt="The Villa Tent" class="brand-logo">
-            <div class="brand-copy">THE VILLA TENT</div>
+          
             <div class="brand-text">CURATED LUXURY</div>
             <p class="brand-sub">Luxury glamping solutions for resorts, hotels, events and private villas across India and beyond.</p>
          </div>
@@ -80,12 +80,6 @@
                   Login <i class="fa-solid fa-arrow-right"></i>
                </button>
             </form>
-
-            <div class="secure">
-               <i class="fa-solid fa-shield-halved"></i>
-               <h3>Secure Admin Access</h3>
-               <p>Your connection is protected with 256-bit encryption</p>
-            </div>
          </div>
       </section>
    </main>

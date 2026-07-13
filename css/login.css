@@ -16,23 +16,23 @@
 body {
    margin: 0;
    min-height: 100vh;
-   height: 100dvh;
-   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+   min-height: 100dvh;
+   font-family: var(--font-family-base);
    color: var(--text);
    background: var(--cream);
-   overflow: hidden;
+   overflow-x: hidden;
+   overflow-y: auto;
 }
 
 .login-shell {
    min-height: 100vh;
-   height: 100dvh;
+   min-height: 100dvh;
    display: flex;
    align-items: stretch;
-   overflow: hidden;
 }
 
 .brand-panel {
-   flex: 0 0 46%;
+   flex: 0 0 70%;
    position: relative;
    display: flex;
    flex-direction: column;
@@ -52,7 +52,7 @@ body {
 }
 
 .brand-logo {
-   max-width: 210px;
+   max-width: 130px;
    width: 100%;
    margin: 0 auto 18px;
    display: block;
@@ -120,23 +120,27 @@ body {
 }
 
 .form-panel {
-   flex: 1;
+   flex: 0 0 30%;
    min-width: 0;
+   min-height: 100dvh;
+   height: 100%;
    display: flex;
    align-items: center;
    justify-content: center;
-   padding: clamp(14px, 2vw, 28px);
-   background: var(--cream);
+   padding: 20px;
+   background: #ffffff;
 }
 
 .login-card {
    width: 100%;
+   height: 100%;
    max-width: 520px;
-   border: 1px solid #eceef0;
-   border-radius: 14px;
    background: var(--panel);
-   box-shadow: 0 20px 38px rgba(0, 0, 0, 0.06);
+
    padding: clamp(16px, 2vw, 26px);
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
 }
 
 .card-logo {
@@ -145,7 +149,7 @@ body {
 }
 
 .card-logo img {
-   max-width: 170px;
+   max-width: 70px;
    width: 100%;
 }
 
@@ -262,30 +266,6 @@ body {
    color: var(--gold);
 }
 
-.secure {
-   margin-top: 14px;
-   padding-top: 12px;
-   border-top: 1px solid #ebedf0;
-   text-align: center;
-}
-
-.secure i {
-   color: var(--gold);
-   font-size: 20px;
-}
-
-.secure h3 {
-   margin: 6px 0 3px;
-   font-size: clamp(14px, 1.12vw, 17px);
-   color: #475058;
-}
-
-.secure p {
-   margin: 0;
-   color: #8e959d;
-   font-size: clamp(12px, 0.88vw, 14px);
-}
-
 @media (max-width: 1440px) {
    .brand-copy {
       font-size: 26px;
@@ -315,17 +295,12 @@ body {
    .field label,
    .field-wrap input,
    .row-meta,
-   .forgot,
-   .secure p {
+   .forgot {
       font-size: 15px;
    }
 
    .submit-btn {
       font-size: 20px;
-   }
-
-   .secure h3 {
-      font-size: 18px;
    }
 }
 
@@ -336,13 +311,9 @@ body {
 }
 
 @media (max-width: 768px) {
-   body {
-      overflow: hidden;
-   }
-
    .login-shell {
       display: block;
-      height: 100dvh;
+      min-height: 100dvh;
    }
 
    .brand-panel {
@@ -351,7 +322,7 @@ body {
 
    .form-panel {
       min-height: 100dvh;
-      padding: 14px;
+      padding: 20px;
    }
 
    .login-card {

@@ -4,6 +4,14 @@ body
 {
 margin:0px;
 padding:0px;
+font-family: var(--font-family-base);
+}
+
+input,
+button,
+textarea,
+select {
+font-family: inherit;
 }
 /*--header css--*/
 .pcoded-header {
