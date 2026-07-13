@@ -1,0 +1,267 @@
+include "db.php";
+
+$query41= mysqli_query($con,"select * from add_gallery where title='$title' ");
+											
+while($eee=mysqli_fetch_assoc($query41)){
+	
+	
+	$pic1 = $eee['p1'];
+	
+	$filter1 = preg_replace('/\d/', '', substr(strrchr($pic1, "/"), 1) );
+	
+	$pic2 = $eee['p2'];
+	
+	$filter2 = preg_replace('/\d/', '', substr(strrchr($pic2, "/"), 1) );
+	
+	$pic3 = $eee['p3'];
+	
+	$filter3 = preg_replace('/\d/', '', substr(strrchr($pic3, "/"), 1) );
+	
+	$pic4 = $eee['p4'];
+	
+	$filter4 = preg_replace('/\d/', '', substr(strrchr($pic4, "/"), 1) );
+	
+	$pic5 = $eee['p5'];
+	$filter5 = preg_replace('/\d/', '', substr(strrchr($pic5, "/"), 1) );
+	
+	$pic6 = $eee['p6'];
+	$filter6 = preg_replace('/\d/', '', substr(strrchr($pic6, "/"), 1) );
+	
+	$pic7 = $eee['p7'];
+	$filter7 = preg_replace('/\d/', '', substr(strrchr($pic7, "/"), 1) );
+	
+	
+	$pic8 = $eee['p8'];
+	$filter8 = preg_replace('/\d/', '', substr(strrchr($pic8, "/"), 1) );
+	
+	$pic9 = $eee['p9'];
+	
+	$filter9 = preg_replace('/\d/', '', substr(strrchr($pic9, "/"), 1) );
+	
+	$pic10 = $eee['p10'];
+	
+	$filter10 = preg_replace('/\d/', '', substr(strrchr($pic10, "/"), 1) );
+	
+	
+	if($_FILES['imag']['name'][0] !== $filter1 && $_FILES['imag']['name'][0] !== $filter2 && $_FILES['imag']['name'][0] !== $filter3 && $_FILES['imag']['name'][0] !== $filter4 && $_FILES['imag']['name'][0] !== $filter5 && $_FILES['imag']['name'][0] !== $filter6 && $_FILES['imag']['name'][0] !== $filter7 && $_FILES['imag']['name'][0] !== $filter8 && $_FILES['imag']['name'][0] !== $filter9 && $_FILES['imag']['name'][0] !== $filter10){
+	
+	
+	$a = rand(1111,9999).$_FILES['imag']['name'][0];
+
+
+if($types=='Resort Tents'){
+
+$path="../../villafrontend/villafrontend/uploads/pageimages/addgallery/resort/";
+}
+
+if($types=='Projects'){
+$path="../../villafrontend/villafrontend/uploads/pageimages/addgallery/project/";
+}
+	
+	move_uploaded_file($_FILES['imag']['tmp_name'][0],$path.$a) ;
+	$path1=$path.$a;
+	
+//End	
+
+if(!$_FILES['imag']['name'][1]){
+	
+	$path3 = "";
+	
+}else{
+
+$b = rand(1111,9999).$_FILES['imag']['name'][1];
+
+if($types=='Resort Tents'){
+$path2="../../villafrontend/villafrontend/uploads/pageimages/addgallery/resort/";
+}
+
+if($types=='Projects'){
+$path2="../../villafrontend/villafrontend/uploads/pageimages/addgallery/project/";
+}
+	
+	move_uploaded_file($_FILES['imag']['tmp_name'][1],$path2.$b) ;
+	$path3=$path2.$b;
+	
+	
+}
+
+if(!$_FILES['imag']['name'][2]){
+	
+	$path5 = "";
+	
+}else{
+
+$c = rand(1111,9999).$_FILES['imag']['name'][2];
+if($types=='Resort Tents'){
+$path4="../../villafrontend/villafrontend/uploads/pageimages/addgallery/resort/";
+}
+
+if($types=='Projects'){
+$path4="../../villafrontend/villafrontend/uploads/pageimages/addgallery/project/";
+}
+	
+	move_uploaded_file($_FILES['imag']['tmp_name'][2],$path4.$c) ;
+	$path5=$path4.$c;
+	
+}
+
+
+if(!$_FILES['imag']['name'][3]){
+	
+	$path7 = "";
+	
+}else{
+
+$a1 = rand(1111,9999).$_FILES['imag']['name'][3];
+if($types=='Resort Tents'){
+$path6="../../villafrontend/villafrontend/uploads/pageimages/addgallery/resort/";
+}
+
+if($types=='Projects'){
+$path6="../../villafrontend/villafrontend/uploads/pageimages/addgallery/project/";
+}
+	
+	move_uploaded_file($_FILES['imag']['tmp_name'][3],$path6.$a1) ;
+	$path7=$path6.$a1;
+}
+
+
+if(!$_FILES['imag']['name'][4]){
+	
+	$path9 = "";
+	
+}else{
+$b1 = rand(1111,9999).$_FILES['imag']['name'][4];
+if($types=='Resort Tents'){
+$path8="../../villafrontend/villafrontend/uploads/pageimages/addgallery/resort/";
+}
+
+if($types=='Projects'){
+$path8="../../villafrontend/villafrontend/uploads/pageimages/addgallery/project/";
+}
+	
+	move_uploaded_file($_FILES['imag']['tmp_name'][4],$path8.$b1) ;
+	$path9=$path8.$b1;
+}
+
+if(!$_FILES['imag']['name'][5]){
+	
+	$path11 = "";
+	
+}else{
+
+$c1 = rand(1111,9999).$_FILES['imag']['name'][5];
+if($types=='Resort Tents'){
+$path10="../../villafrontend/villafrontend/uploads/pageimages/addgallery/resort/";
+}
+
+if($types=='Projects'){
+$path10="../../villafrontend/villafrontend/uploads/pageimages/addgallery/project/";
+}
+	
+	move_uploaded_file($_FILES['imag']['tmp_name'][5],$path10.$c1) ;
+	$path11=$path10.$c1;
+}
+
+if(!$_FILES['imag']['name'][6]){
+	
+	$path13 = "";
+	
+}else{
+$a2 = rand(1111,9999).$_FILES['imag']['name'][6];
+if($types=='Resort Tents'){
+$path12="../../villafrontend/villafrontend/uploads/pageimages/addgallery/resort/";
+}
+
+if($types=='Projects'){
+$path12="../../villafrontend/villafrontend/uploads/pageimages/addgallery/project/";
+}
+	
+	move_uploaded_file($_FILES['imag']['tmp_name'][6],$path12.$a2) ;
+	$path13=$path12.$a2;
+}
+
+if(!$_FILES['imag']['name'][7]){
+	
+	$path15 = "";
+	
+}else{
+$b2 = rand(1111,9999).$_FILES['imag']['name'][7];
+if($types=='Resort Tents'){
+$path14="../../villafrontend/villafrontend/uploads/pageimages/addgallery/resort/";
+}
+
+if($types=='Projects'){
+$path14="../../villafrontend/villafrontend/uploads/pageimages/addgallery/project/";
+}
+	
+	move_uploaded_file($_FILES['imag']['tmp_name'][7],$path14.$b2) ;
+	$path15=$path14.$b2;
+}
+
+
+if(!$_FILES['imag']['name'][8]){
+	
+	$path17 = "";
+	
+}else{
+$c2 = rand(1111,9999).$_FILES['imag']['name'][8];
+if($types=='Resort Tents'){
+$path16="../../villafrontend/villafrontend/uploads/pageimages/addgallery/resort/";
+}
+
+if($types=='Projects'){
+$path16="../../villafrontend/villafrontend/uploads/pageimages/addgallery/project/";
+}
+	
+	move_uploaded_file($_FILES['imag']['tmp_name'][8],$path16.$c2) ;
+	$path17=$path16.$c2;
+}
+
+if(!$_FILES['imag']['name'][9]){
+	
+	$path19 = "";
+	
+}else{
+$a3 = rand(1111,9999).$_FILES['imag']['name'][9];
+if($types=='Resort Tents'){
+$path18="../../villafrontend/villafrontend/uploads/pageimages/addgallery/resort/";
+}
+
+if($types=='Projects'){
+$path18="../../villafrontend/villafrontend/uploads/pageimages/addgallery/project/";
+}
+	
+	move_uploaded_file($_FILES['imag']['tmp_name'][9],$path18.$a3) ;
+	$path19=$path18.$a3;
+}
+
+include "db.php";
+
+	mysqli_query($con,"insert into add_gallery (types,title,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,dateTime) values ('$types','$title','$path1','$path3','$path5','$path7','$path9','$path11','$path13','$path15','$path17','$path19',NOW())");
+
+header("location:add-gallery.php");
+	
+		
+} 
+
+//if($_FILES['imag']['name'][0] !== $filter1 && $_FILES['imag']['name'][0] !== $filter2 && $_FILES['imag']['name'][0] !== $filter3 && $_FILES['imag']['name'][0] !== $filter4 && $_FILES['imag']['name'][0] !== $filter5 && $_FILES['imag']['name'][0] !== $filter6 && $_FILES['imag']['name'][0] !== $filter7 && $_FILES['imag']['name'][0] !== $filter8 && $_FILES['imag']['name'][0] !== $filter9 && $_FILES['imag']['name'][0] !== $filter10){
+
+
+
+
+	
+
+	
+
+
+}	
+
+
+
+
+
+//}
+	
+	
+	
