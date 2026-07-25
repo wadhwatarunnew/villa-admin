@@ -73,26 +73,50 @@
         	<div class="main-body">
            		<div class="page-wrapper">
               		<div class="page-body">
+						<?php
+						$SubHeaderTitle = 'Navigation';
+						$SubHeaderBackUrl = 'nav-listing.php';
+						$SubHeaderBackLabel = 'Back to List';
+						include_once('common/subheader.php');
+						?>
 			  			<form action ="" enctype="multipart/form-data" method="post">
 			   				<div class="row">
 							 	<div class="col-sm-12">
 							 		<?PHP include "alert-insert.php"; ?>
-                                   	<div class="commonSection"> 
-									 	Name : <input class="form-control" type="text" name="name" id="name"  placeholder=""><br>
-                                     	Link : <input class="form-control" type="text" name="link" id="link"  placeholder=""><br>
-                                   </div>
-                                </div>
+		                                   	<div class="card mb-30">
+								<div class="card-header">Navigation Details</div>
+									<div class="card-body">
+										<div class="row">
+											<div class="col-sm-12">
+		                                           		<div class="commonSection"> 
+						 							<label>Name</label>
+						 							<input class="form-control" type="text" name="name" id="name" placeholder="Enter page name">
+						 						</div>
+											</div>
 
-							 	<div class="col-sm-12">
-							 		Position: 
-							 		<select class="form-control" name="position">
-							 			<option value="">--Select--</option>
-							 			<option value="header">Header</option>
-							 			<option value="footer">Footer</option>
-							 		</select>
-							 	</div>
+											<div class="col-sm-12">
+		                                           		<div class="commonSection"> 
+						 							<label>Link</label>
+						 							<input class="form-control" type="text" name="link" id="link" placeholder="Enter page link">
+						 						</div>
+											</div>
+
+											<div class="col-sm-12">
+		                                           		<div class="commonSection"> 
+						 							<label>Position</label>
+					 							<select class="form-control" name="position">
+					 								<option value="">--Select--</option>
+					 								<option value="header">Header</option>
+					 								<option value="footer">Footer</option>
+					 							</select>
+						 						</div>
+					 					</div>
+										</div>
+									</div>
+								</div>
+		                               </div>
 							</div>
-							<br><br>
+						
 
                  			<div class="row">
 		                        <div class="col-sm-12">
@@ -159,8 +183,10 @@
 			                                    <div class="col-sm-12">
 			                                       	<div class="commonSection">
 			                                          	<label>Image Type</label>
-			                                          	<input id="id_radio1" type="radio" name="img" onclick="show1();"  checked="">Image URL
-			                                          	<input id="id_radio2" type="radio" name="img" onclick="show2();"  >Select New Image
+										<div class="radio-inline-group">
+											<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();" checked="">Image URL</label>
+											<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();">Select New Image</label>
+										</div>
 			                                       	</div>
 			                                    </div>
 
@@ -170,18 +196,16 @@
 			                                          	<input class="form-control" type="text" name="image" id="image" placeholder="Enter url">
 			                                       	</div>
 			                                    </div>
+
+									<div class="col-sm-12" id="select_image" style="display: none;">
+										<div class="commonSection">
+											<label>Select Image</label>
+											files: <input type="file" name="myFile" id="myFile" class="form-control"><br>
+											<button type="button" class="btn btn-sm btn-danger" onclick="rese();">Reset Image</button><br>
+										</div>
+									</div>
                              				</div>
                           				</div>
-
-						  				<div class="col-sm-12" id="select_image" style="display: none;">
-                                   			<div class="commonSection">
-                                      			<label>Select Image</label>
-                                      			<!--<form action="/action_page.php">-->
-                                        		files: <input type="file" name="myFile" id="myFile" class="form-control"><br>
-										 		<button type="button" class="btn btn-sm btn-danger" onclick="rese();">Reset Image</button><br>
-                                      			<!--</form>-->
-                                   			</div>
-                                		</div>
 								
 									 	<script>
 											function rese()

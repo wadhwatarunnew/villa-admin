@@ -103,7 +103,7 @@ if (isset($_POST['sub1'])){
                      <div class="row">
                         <div class="col-sm-12">
                             <?php include "alert-update.php";  ?>
-                           <div class="card mb-30">
+                           <div class="card mb-30 app-card">
                               <div class="card-header">
                                 Upload Logo
                               </div>
@@ -144,7 +144,7 @@ if (isset($_POST['sub1'])){
 					 
 					 <div class="row">
                         <div class="col-sm-12">
-                           <div class="card mb-30">
+                           <div class="card mb-30 app-card">
                               <div class="card-header">
                                 Upload Favicon
                               </div>
@@ -194,7 +194,7 @@ if (isset($_POST['sub1'])){
 					 
 					 <div class="row">
                         <div class="col-sm-12">
-                           <div class="card mb-30">
+                           <div class="card mb-30 app-card">
                               <div class="card-header">
                                 Header Navigation
                               </div>

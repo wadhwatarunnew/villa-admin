@@ -69,6 +69,12 @@ if (isset($_POST['sub'])){
 		<div class="main-body">
 			<div class="page-wrapper">
 				<div class="page-body">
+					<?php
+					$SubHeaderTitle = 'Resorts';
+					$SubHeaderBackUrl = 'project-listing.php';
+					$SubHeaderBackLabel = 'Back to List';
+					include_once('common/subheader.php');
+					?>
 					
 					
 					<form action ="" enctype="multipart/form-data" method="post">
@@ -77,7 +83,7 @@ if (isset($_POST['sub'])){
 							<div class="col-sm-12">
 								<?php include "alert-insert.php";  ?>
 								<div class="card mb-30">
-									<div class="card-header">Seo Meta Tags &nbsp;<a href="project-listing.php" class="btn btn-sm btn-primary">Back</a></div>
+									<div class="card-header">Seo Meta Tags</div>
 									<div class="card-body">
 										
 										<div class="row">
@@ -206,8 +212,10 @@ if (isset($_POST['sub'])){
 											<div class="col-sm-12">
 												<div class="commonSection">
 													<label>Image Type</label>
-													<input id="id_radio1" type="radio" name="img" onclick="show1();"  checked="">Image URL
-													<input id="id_radio2" type="radio" name="img" onclick="show2();"  >Select New Image
+													<div class="radio-inline-group">
+														<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();" checked="">Image URL</label>
+														<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();">Select New Image</label>
+													</div>
 												</div>
 											</div>
 											<div class="col-sm-12" id="image_url" >
@@ -216,21 +224,18 @@ if (isset($_POST['sub'])){
 													<input class="form-control" type="text" name="image" id="image" placeholder="Enter url">
 												</div>
 											</div>
+											<div class="col-sm-12" id="select_image" style="display: none;">
+												<div class="commonSection">
+													<label>Select Image</label>
+													Select files: <input type="file" name="myFile" id="myFile" class="form-control"><br>
+													<button type="button" class="btn btn-sm btn-danger" onclick="rese();">Reset Image</button><br>
+												</div>
+											</div>
 										</div>
 										
 										
 										
 									</div>
-									<div class="col-sm-12" id="select_image" style="display: none;">
-										<div class="commonSection">
-											<label>Select Image</label>
-											<!--<form action="/action_page.php">-->
-												Select files: <input type="file" name="myFile" id="myFile" class="form-control"><br>
-												
-												<button type="button" class="btn btn-sm btn-danger" onclick="rese();">Reset Image</button><br>
-												<!--</form>-->
-											</div>
-										</div>
 										
 										<script>
 											

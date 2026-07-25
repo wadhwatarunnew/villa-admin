@@ -11,7 +11,7 @@
                            <div class="card-header">Manage project Category List Page
                             <div class="addNew">
                              <a href="add-project-category.php">
-                                     <button class="btn btn-success btn-sm" type="button"><i class="feather icon-plus"></i></button>
+                                    <button class="btn btn-success btn-sm" type="button"><i class="feather icon-plus"></i> Add</button>
                              </a> 
                              </div>
                            </div>

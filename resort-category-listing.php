@@ -11,7 +11,7 @@
                         <div class="card-header">Manage Resort Category List Page
                           <div class="addNew">
                             <a href="add-resort-category.php">
-                             <button class="btn btn-success btn-sm" type="button"><i class="feather icon-plus"></i></button>
+                            <button class="btn btn-success btn-sm" type="button"><i class="feather icon-plus"></i> Add</button>
                           </a> 
                        </div>
                     </div>
@@ -73,10 +73,10 @@
                               <td>
                                    <div class="actions">
                                  <a href="edit-resort-category.php?id=<?php echo $b['id']; ?>">
-                                    <button class="btn btn-success btn-sm" type="button"><i class="feather icon-edit"></i></button>
+                                      <button class="btn btn-success btn-sm" type="button"><i class="feather icon-edit"></i></button>
                                  </a> 
                                  <a href="delete-resort-category.php?id=<?php echo $b['id']; ?>">
-                                    <button class="btn btn-danger btn-sm" type="button"><i class="feather icon-trash-2"></i></button>
+                                      <button class="btn btn-danger btn-sm" type="button"><i class="feather icon-trash-2"></i></button>
                                  </a>
                                  </div>
                               </td>

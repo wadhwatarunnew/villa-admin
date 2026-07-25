@@ -1,10 +1,25 @@
 @charset "utf-8";
 /* CSS Document */
+
+/* =========================
+    1) Global Base
+========================= */
+html,
+body {
+height:100%;
+}
+
 body
 {
 margin:0px;
 padding:0px;
 font-family: var(--font-family-base);
+height:100vh;
+background:#f5f5f5;
+overflow:hidden;
+display:flex;
+flex-wrap:wrap;
+align-content:flex-start;
 }
 
 input,
@@ -13,142 +28,107 @@ textarea,
 select {
 font-family: inherit;
 }
-/*--header css--*/
+
+/* =========================
+    2) Header (Flex Layout)
+========================= */
 .pcoded-header {
-    position: fixed;
     z-index: 1028;
 	    background: #fff;
     color: #404e67;
 	    width: 100%;
+    flex: 0 0 100%;
     -webkit-box-shadow: 0 0 11px rgba(0,0,0,.13);
     box-shadow: 0 0 11px rgba(0,0,0,.13);
-	top:0px;
 }
 .header-navbar {
     min-height: 56px;
     padding: 0;
 }
-.navbar-wrapper {
-    display: flex;
+.header-flex {
+    min-height: 56px;
     width: 100%;
-}
-.card-body .row form {
-    width: 100% !important;
-}
-.header-navbar .navbar-wrapper .navbar-logo {
-    position: relative;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    height: 56px;
-    text-align: center;
-    text-transform: uppercase;
-    width: 240px;
-    padding: 10px;
-	max-width: 240px;
-    min-width: 240px;
-}
-.pcoded-header .navbar-logo{
-    background-color: #404e67;
-}
-.pcoded-header .navbar-logo a {
-    color: #fff;
-}
-.header-navbar .navbar-wrapper .navbar-logo .mobile-menu {
-    position: absolute;
-    right: 5px;
-    top: calc(50% - 20px);
-    border-radius: 50%;
-    padding: 5px 9px;
-    font-size: 20px;
-}
-.header-navbar .navbar-wrapper .navbar-container .nav-left {
-    margin: 0px;
-    list-style: none;
-    padding:0px;
-}
-.header-navbar .navbar-wrapper .navbar-container .nav-left li {
-    color: #000;
-    text-transform: uppercase;
-    font-size: 18px;
-    letter-spacing: 1px;
-}
-.header-navbar .navbar-wrapper .navbar-container .nav-right {
-	float: right;
-    margin: 0;
-    list-style: none;
-}
-.header-navbar .navbar-wrapper .navbar-container .nav-right li {
-    padding: 8px 20px;
-    line-height: 1.5;
-    position: relative;
-    color: #000;
-}
-.header-navbar .navbar-wrapper .navbar-container .nav-right .user-profile img {
-    margin-right: 10px;
-    width: 30px;
-}
-.header-navbar .navbar-wrapper .navbar-container .nav-right li .dropdown-primary .dropdown-toggle::after{
-display:none;
-}
-/*.header-navbar .navbar-wrapper .navbar-container .nav-right .user-profile i {*/
-/*    font-size: 10px;*/
-/*    margin-left: 10px;*/
-/*    display:none;*/
-/*}*/
-.header-navbar .navbar-wrapper .navbar-container .header-notification .profile-notification {
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
     background: #fff;
-    -webkit-box-shadow: 0 2px 30px 6px rgba(0,0,0,.1);
-    box-shadow: 0 2px 30px 6px rgba(0,0,0,.1);
-    position: absolute;
-    -webkit-transition: all .3s ease-in-out;
-    transition: all .3s ease-in-out;
-    width:15rem;
-    right: -15px;
-    top: 51px;
-    left: auto;
-    overflow: visible;
-    border: none;
 }
-.header-navbar .navbar-wrapper .navbar-container .header-notification .profile-notification li {
-    padding: .7em 20px;
-}
-.header-navbar .navbar-wrapper .navbar-container .header-notification .profile-notification a {
-    font-size: 15px;
-    vertical-align: top;
-    padding-left: 0;
-    color: #000;
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     text-decoration: none;
+    color: #1f2937;
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .5px;
 }
-.header-navbar .navbar-wrapper .navbar-container .header-notification .profile-notification i {
-    font-size: 17px;
-    margin-left: 4px;
-    margin-right: 15px;
+.header-brand img {
+    width: 38px;
+    height: auto;
+    display: block;
 }
-.header-navbar .navbar-wrapper .navbar-container .header-notification .profile-notification:after {
-    content: "";
-    position: absolute;
-    top: -10px;
-    right: 30px;
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
-    border: 10px solid #fff;
-    border-right-color: transparent;
-    border-bottom-color: transparent;
-    -webkit-box-shadow: -10px -9px 23px 1px rgba(0,0,0,.1);
-    box-shadow: -10px -9px 23px 1px rgba(0,0,0,.1);
+.header-user-toggle {
+    border: 0;
+    background: transparent;
+    color: #000;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
-/*--sidebar css--*/
+.header-user-toggle:focus,
+.header-user-toggle:active {
+    box-shadow: none !important;
+    border: 0;
+}
+.header-user .profile-notification {
+    top: 100%;
+    right: 0;
+    left: auto;
+    margin-top: 8px;
+}
+
+/* =========================
+   3) Common Subheader
+========================= */
+.app-subheader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.app-subheader-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.app-subheader-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+
+/* =========================
+   4) Sidebar Navigation
+========================= */
 .sidebarDiv {
-position: fixed;
+    flex: 0 0 240px;
     width: 240px;
-    height: 100%;
+    height: calc(100vh - 56px);
     background-color: #404e67;
-    top: 56px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sidebarDiv + .sidebarDiv {
+display:none;
 }
 .sidebarDiv ul {
   margin:0px;
@@ -199,18 +179,25 @@ text-decoration:none;
 .sidebarDiv ul li a i {
     padding-right: 12px;
 }
-/*----*/
+
+/* =========================
+   5) Content Layout + Cards
+========================= */
 .mb-30
 {
 margin-bottom:30px;
 }
- .pcoded-content {
-    margin-left: 240px;
+.pcoded-content {
+    flex: 1 1 calc(100% - 240px);
+    width: calc(100% - 240px);
     position: relative;
     display: block;
-    margin-top: 56px;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .pcoded-inner-content {
+    min-height: 100%;
     padding: 10px;
     background-color: #f5f5f5;
 }
@@ -233,11 +220,33 @@ width: 100%;
     width: 100%;
     display: block;
 }
-.card-header {
+.card,
+.app-card {
+    border: 1px solid #e2e3f4;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+    background: #fff;
+}
+
+.card-header,
+.app-card .card-header {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 14px 18px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #1f2937;
+    background: #fff;
+    border-bottom: 1px solid #e2e3f4;
+}
+
+.card-body,
+.app-card .card-body {
+    padding: 18px;
+    background: #fff;
 }
 .addNew {
     position: absolute;
@@ -245,6 +254,103 @@ width: 100%;
     top: 50%;
     transform: translateY(-50%);
 }
+
+/* =========================
+   6) Common Form Blocks
+========================= */
+.form-control,
+input.form-control,
+textarea.form-control,
+select.form-control {
+    border: 1px solid #d7e1ec;
+    border-radius: 10px;
+    min-height: 42px;
+    padding: 9px 12px;
+    font-size: 14px;
+    color: #1f2937;
+    background-color: #fff;
+    transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+}
+
+textarea.form-control {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.form-control::placeholder {
+    color: #9aa5b1;
+    opacity: 1;
+}
+
+.form-control:focus {
+    border-color: #0f4f3b;
+    box-shadow: 0 0 0 0.2rem rgba(15, 79, 59, 0.14);
+    background-color: #fff;
+}
+
+input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #0f4f3b;
+    cursor: pointer;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+.radio-inline-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+.radio-inline-group label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 15px;
+    color: #334155;
+    cursor: pointer;
+}
+
+.btn {
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.2;
+    padding: 9px 18px;
+    transition: all .2s ease;
+}
+
+.btn:focus,
+.btn:active:focus {
+    box-shadow: 0 0 0 0.2rem rgba(15, 79, 59, 0.2);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #0f4f3b, #0b3f30);
+    border-color: #0f4f3b;
+}
+
+.btn-success:hover,
+.btn-success:focus {
+    background: linear-gradient(135deg, #0d4433, #093526);
+    border-color: #0d4433;
+    transform: translateY(-1px);
+}
+
+.btn-lg {
+    padding: 10px 22px;
+    font-size: 15px;
+}
+
+.commonSection label,
+.profileInfo label {
+    margin-bottom: 7px;
+    color: #334155;
+}
+
 .commonSection1 img {
     max-width: 100%;
     margin: 0 0 15px 0;
@@ -259,6 +365,10 @@ margin:0px;
     border: 1px solid #ddd;
     padding: 15px;
 }
+
+/* =========================
+   7) Profile Components
+========================= */
 .profileImage {
 text-align: center;
     border-radius: 10px;
@@ -351,120 +461,10 @@ text-align: center;
 .thumbImage {
     text-align: center;
 }
-/*-- login css --*/
-body.loginBanner {
-    background-image:url(../images/food-tents-manufacturers.jpg);
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-	position:relative;
-}
-body.loginBanner:before {
-    background: rgba(0,0,0,0.5);
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-}
-.login {
-    position: relative;
-}
-.login:before {
-    content: "";
-    background-color: #fafafa;
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 40%;
-}
-.login .loginDesc {
-    height: 100vh;
-    display: table;
-}
-.login .loginDesc .loginDescInner {
-    display: table-cell;
-    vertical-align: middle;
-    height: 100%;
-}
-.login .loginDesc .loginDescInner label {
-    font-size: 25px;
-    line-height: normal;
-    color: #f5f6fa;
-    display: block;
-    margin: 0;
-}
-.login .loginDesc .loginDescInner h1 {
-    font-size:40px;
-    line-height: normal;
-    color: #fff;
-    text-transform: uppercase;
-    margin: 0 0 14px 0;
-}
-.login .loginDesc .loginDescInner p {
-    font-size: 18px;
-    line-height: 28px;;
-    color: #fff;
-}
-.login .loginForm {
-    height: 100vh;
-    display: table;
-    width: 100%;
-    background-color: #fafafa;
-    text-align: center;
-    position: relative;
-}
-.login .loginFormInner {
-    display: table-cell;
-    vertical-align: middle;
-    height: 100%;
-    padding: 0 0 0 113px;
-    text-align: center;
-}
-.login .loginFormInner .loginLogo {
-    width: auto;
-    margin: 0 auto;
-}
-.login .loginFormInner .loginLogo img {
-    max-width: 100%;
-}
-.login .loginFormInner h2 {
-    font-size: 40px;
-    line-height: 51px;
-    color: #121529;
-    text-transform: uppercase;
-    padding: 15px 0;
-}
-.login .loginFormInner .logForm {
-    margin: 0 0 15px 0;
-    text-align: left;
-}
-.login .loginFormInner .logForm h3 {
-    font-size: 18px;
-    text-align: left;
-    line-height: 38px;
-}
-.login .loginFormInner .logForm h3 i {
-    padding: 0 7px 0 0;
-}
-.login .loginFormInner .logForm input {
-    border: 1px solid #d6d6d6;
-    height: 48px;
-    border-radius: 0px;
-}
-.login .loginFormInner .remember {
-    margin: 0 0 15px 0;
-}
-.login .loginFormInner .remember input {
-    height: auto;
-    margin: 0px 5px 0 0;
-    position: relative;
-    top: 2px;
-}
-/*----*/
+
+/* =========================
+   9) Gallery / Pagination / Utilities
+========================= */
 .galleryImage {
      width: 100%;
     margin: 0 0 30px 0;
@@ -552,6 +552,33 @@ color: #fff;
 	border: #bccfd8 0px solid;
 	color: #000;
 }
+
+/* =========================
+   10) Cards + Dashboard Helpers
+========================= */
+.app-card .form-control {
+    border: 1px solid #d9e2ec;
+    border-radius: 8px;
+    min-height: 42px;
+}
+
+.app-card .form-control:focus {
+    border-color: #0f4f3b;
+    box-shadow: 0 0 0 0.2rem rgba(15, 79, 59, 0.14);
+}
+
+.app-card .btn {
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.app-card .profileImage {
+    border: 1px solid #dbe4ef;
+    background: #f8fafc;
+}
+
 .actions {
     display: flex;
     align-items: center;
@@ -567,4 +594,15 @@ color: #fff;
 .heading-wrapper {
     font-size: 1.5rem;
     text-transform: uppercase;
+}
+
+.grid-scroll {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.grid-scroll .table {
+    min-width: 980px;
+    margin-bottom: 0;
 }

@@ -9,16 +9,16 @@
                <div class="row">
                   <div class="col-sm-12">
                      <div class="card">
-                        <div class="card-header">Manage Added Navigation List
+                        <div class="card-header">Navigation List
                            <div class="addNew">
                               <a href="add-nav-page.php">
-                                 <button class="btn btn-success btn-sm" type="button"><i class="feather icon-plus"></i></button>
+                                 <button class="btn btn-success btn-sm" type="button"><i class="feather icon-plus"></i> Add</button>
                               </a> 
                            </div>
                         </div>
 
                         <div class="card-body">
-                           <div class="table-responsive">
+                           <div class="table-responsive grid-scroll">
                               <table class="table table-bordered">
                                  <thead>
                                     <tr>

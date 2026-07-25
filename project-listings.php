@@ -84,10 +84,10 @@ while($b=mysqli_fetch_assoc($query4)){
                                              <td>
                                                  <div class="actions">
                                                 <a href="edit-project-types.php?id=<?php echo $b['id']; ?>">
-                                                <button class="btn btn-success btn-sm" type="button"><i class="feather icon-edit"></i></button>
+                                                  <button class="btn btn-success btn-sm" type="button"><i class="feather icon-edit"></i></button>
                                                 </a> 
                                                 <a href="delete-project-types.php?id=<?php echo $b['id']; ?>">
-                                                <button class="btn btn-danger btn-sm" type="button"><i class="feather icon-trash-2"></i></button>
+                                                  <button class="btn btn-danger btn-sm" type="button"><i class="feather icon-trash-2"></i></button>
                                                 </a>
                                                 </div>
                                              </td>
