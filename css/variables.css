@@ -1,13 +1,109 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-
 :root {
-   --font-family-base: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-   --forest: #0f4f3b;
-   --forest-dark: #0a3b2b;
-   --gold: #bf9a5a;
-   --cream: #f4f3f1;
-   --panel: #ffffff;
-   --text: #2b2f33;
-   --muted: #7a8086;
-   --line: #e5e7ea;
+    /* =========================
+       1) Font Families
+    ========================= */
+    --font-family-base: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-family-heading: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* =========================
+       2) Font Size Scale
+    ========================= */
+    /* Base scale (requested) */
+    --font-size-xs: 0.75rem;
+    /* 12px */
+    --font-size-sm: 0.875rem;
+    /* 14px */
+    --font-size-base: 1rem;
+    /* 16px */
+    --font-size-lg: 1.125rem;
+    /* 18px */
+    --font-size-xl: 1.25rem;
+    /* 20px */
+    --font-size-2xl: 1.5rem;
+    /* 24px */
+    --font-size-3xl: 1.875rem;
+    /* 30px */
+    --font-size-4xl: 2.25rem;
+    /* 36px */
+    /* UI-specific sizes */
+    --font-size-ui-xs: 0.8125rem;
+    /* 13px */
+    --font-size-ui-md: 0.9375rem;
+    /* 15px */
+    --font-size-heading-page: 1.75rem;
+    /* 28px */
+    --font-size-subheader-title: 1.375rem;
+    /* 22px */
+    --font-size-card-title: 1.0625rem;
+    /* 17px */
+    /* =========================
+       3) Core Colors
+    ========================= */
+    --color-primary: #003d1a;
+    /* villa green */
+    --color-secondary: #b8863b;
+    /* villa brown */
+    --color-white: #ffffff;
+    --color-black: #000000;
+    --color-border: #e2e3f4;
+    /* =========================
+       4) Background / Surfaces
+    ========================= */
+    --color-bg-app: #f5f5f5;
+    --color-bg-panel: #ffffff;
+    --color-bg-soft: #f8fafc;
+    --color-bg-cream: #f4f3f1;
+    /* =========================
+       5) Text Colors
+    ========================= */
+    --color-text-primary: #1f2937;
+    --color-text-secondary: #334155;
+    --color-text-muted: #6b7280;
+    --color-text-subtle: #9ca3af;
+    --color-text-ink: #111827;
+    --color-text-body: #2b2f33;
+    --color-text-dim: #7a8086;
+    /* =========================
+       6) Border / Divider Colors
+    ========================= */
+    --color-divider: #e5e7ea;
+    --color-table-border: #ebeff5;
+    --color-table-row-border: #eef2f7;
+    --color-input-border: #d7e1ec;
+    /* =========================
+       7) State / Feedback Colors
+    ========================= */
+    --color-input-placeholder: #9aa5b1;
+    --color-focus: #0f4f3b;
+    --color-focus-dark: #0a3b2b;
+    --color-shadow-focus: rgba(15, 79, 59, 0.14);
+    --color-shadow-focus-strong: rgba(15, 79, 59, 0.2);
+    --color-overlay: rgba(0, 0, 0, 0.6);
+    --color-danger: #dc2626;
+    /* =========================
+       8) Status Badge Colors
+    ========================= */
+    --color-status-published-text: #166534;
+    --color-status-published-bg: #dcfce7;
+    --color-status-draft-text: #92400e;
+    --color-status-draft-bg: #ffedd5;
+    --color-status-active-text: #166534;
+    --color-status-active-bg: #dcfce7;
+    /* =========================
+       9) Banner Module Colors
+    ========================= */
+    --color-banner-preview-bg: #111827;
+    --color-banner-preview-desc: #e5e7eb;
+    --color-banner-label: #374151;
+    /* =========================
+       10) Legacy Aliases
+    ========================= */
+    --forest: var(--color-focus);
+    --forest-dark: var(--color-focus-dark);
+    --gold: var(--color-secondary);
+    --cream: var(--color-bg-cream);
+    --panel: var(--color-bg-panel);
+    --text: var(--color-text-body);
+    --muted: var(--color-text-dim);
+    --line: var(--color-divider);
 }

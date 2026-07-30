@@ -5,27 +5,30 @@
             <div class="main-body">
                <div class="page-wrapper">
                   <div class="page-body">
+                     <div class="listing-page-head">
+                        <div class="listing-title-wrap">
+                           <h1>Blog Listings</h1>
+                           <div class="listing-breadcrumb">
+                              <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Blog Listings</span>
+                           </div>
+                        </div>
+                        <div class="listing-cta">
+                           <a href="blog-inner-page.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Blog</a>
+                        </div>
+                     </div>
                      <div class="row">
                         <div class="col-sm-12">
-                           <div class="card">
-                              <div class="card-header">Manage Blog List Page
-                               <div class="addNew">
-                                <a href="blog-inner-page.php">
-                                        <button class="btn btn-success btn-sm" type="button"><i class="feather icon-plus"></i></button>
-                                </a> 
-                                </div>
-                              </div>
-                              <div class="card-body">
+                           
                                  <div class="table-responsive">
-                                    <table class="table table-bordered">
+                                    <table class="table table-bordered listing-table">
                                        <thead>
                                           <tr>
                                              <th>Sr. No.</th>
                                              <th>Title</th>
                                              <th>Date</th>
                                              <th>Image</th>
-                                             
-                                             <th>Action</th>
+                                             <th>Status</th>
+                                             <th>Actions</th>
                                           </tr>
                                        </thead>
                                        <tbody>
@@ -93,14 +96,23 @@ while($b=mysqli_fetch_assoc($query4)){
                                                 <img src="<?php echo $b['image']; ?>" class="img-thumbnail" height="64" width="64">
                                              </td>
 											 
-											 <?php  }  ?>
+													  <?php  }  ?>
+                                             <?php
+                                             $hasTitle = trim((string)$b['title']) !== '';
+                                             $hasImage = trim((string)$b['image']) !== '' || trim((string)$b['local_path']) !== '';
+                                             $statusLabel = ($hasTitle && $hasImage) ? 'Published' : 'Draft';
+                                             $statusClass = ($statusLabel === 'Published') ? 'status-published' : 'status-draft';
+                                             ?>
+                                             <td><span class="status-badge <?php echo $statusClass; ?>"><?php echo $statusLabel; ?></span></td>
                                              <td>
+                                                <div class="table-actions">
                                                 <a href="edit-single-blog.php?id=<?php echo $b['id']; ?>">
-                                                <button class="btn btn-success btn-sm" type="button"><i class="feather icon-edit"></i></button>
+                                                <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
                                                 </a> 
                                                 <a href="delete-single-blog.php?id=<?php echo $b['id']; ?>">
-                                                <button class="btn btn-danger btn-sm" type="button"><i class="feather icon-trash-2"></i></button>
+                                                <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
                                                 </a>
+                                                </div>
                                              </td>
                                           </tr>
 										  
@@ -114,8 +126,7 @@ while($b=mysqli_fetch_assoc($query4)){
                                         <div id="pagination"><?php print_r($perpageresult); ?> </div>
                                     <?php } ?>
                                  </div>
-                              </div>
-                           </div>
+                         
                         </div>
                      </div>
                   </div>

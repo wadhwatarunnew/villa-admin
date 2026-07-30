@@ -5,27 +5,30 @@
       <div class="main-body">
          <div class="page-wrapper">
             <div class="page-body">
+               <div class="listing-page-head">
+                  <div class="listing-title-wrap">
+                     <h1>Social Medias Listing</h1>
+                     <div class="listing-breadcrumb">
+                        <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Social Medias Listing</span>
+                     </div>
+                  </div>
+                  <div class="listing-cta">
+                     <a href="socialmedialist-inner.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Social Media</a>
+                  </div>
+               </div>
                <div class="row">
                   <div class="col-sm-12">
 
-                     <div class="card">
-                        <div class="card-header">Manage Social Medias List 
-                          <div class="addNew">
-                              <a href="socialmedialist-inner.php">
-                                 <button class="btn btn-success btn-sm" type="button"><i class="feather icon-plus"></i></button>
-                              </a> 
-                           </div>
-                        </div>
-
-                        <div class="card-body">
+                   
                            <div class="table-responsive">
-                              <table class="table table-bordered">
+                              <table class="table table-bordered listing-table">
                                  <thead>
                                        <tr>
                                         <th>Sr. No.</th>
                                         <th>Name</th>
                                         <th>Link</th>
-                                        <th>Action</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
                                  </thead>
                                  
@@ -44,9 +47,16 @@
                                           <td><?php echo $i; ?></td>
                                           <td><?php echo $q2['name']; ?></td>
                                           <td><?php echo $q2['link']; ?></td>
-                                          <td><a href="edit-footer-social.php?id=<?php echo $q2['id']; ?>"><button class="btn btn-success btn-sm" type="button"><i class="feather icon-edit"></i></button>
+                                          <?php
+                                          $hasName = trim((string)$q2['name']) !== '';
+                                          $hasLink = trim((string)$q2['link']) !== '';
+                                          $statusLabel = ($hasName && $hasLink) ? 'Published' : 'Draft';
+                                          $statusClass = ($statusLabel === 'Published') ? 'status-published' : 'status-draft';
+                                          ?>
+                                          <td><span class="status-badge <?php echo $statusClass; ?>"><?php echo $statusLabel; ?></span></td>
+                                          <td><div class="table-actions"><a href="edit-footer-social.php?id=<?php echo $q2['id']; ?>"><button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
                                           </a> 
-                                          <a  href="delete-footer-social.php?id=<?php echo $q2['id']; ?>"><button class="btn btn-danger btn-sm" type="button"><i class="feather icon-trash-2"></i></button></a>
+                                          <a  href="delete-footer-social.php?id=<?php echo $q2['id']; ?>"><button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button></a></div>
                                        </td>
                                     </tr>
 
@@ -58,8 +68,7 @@
                                  </tbody>
                               </table>
                            </div>
-                        </div>
-                     </div>
+                   
                   </div>
                </div>
             </div>

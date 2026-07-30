@@ -5,55 +5,34 @@
       <div class="main-body">
          <div class="page-wrapper">
             <div class="page-body">
+               <div class="listing-page-head">
+                  <div class="listing-title-wrap">
+                     <h1>Tents Listings</h1>
+                     <div class="listing-breadcrumb">
+                        <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Tents Listings</span>
+                     </div>
+                  </div>
+                  <div class="listing-cta">
+                     <a href="project-internal.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Resort</a>
+                  </div>
+               </div>
                <div class="row">
                   <div class="col-sm-12">
-                     <div class="card">
-                        <div class="card-header">Manage Resort Listing
-                           <div class="addNew">
-                              <a href="project-internal.php">
-                                 <button class="btn btn-success btn-sm" type="button"><i class="feather icon-plus"></i> Add Internal page </button>
-                              </a> 
-                           </div>
-                        </div><br>
-
-                        <div class="commonSection">
-                           <div class="row">
-                              <div class="col-md-2"></div>
-                              <div class="col-md-6">
-                                 <select class="form-control" name="cat" id="mySelector">
-                                  <option value="" >--Select Category--</option>
-                                  <option value="All">All</option>
-                                  <?php
-
-                                  include "db.php";
-
-                                  $queryl= mysqli_query($con,"select * from resort_types group by category");
-
-                                  while($l=mysqli_fetch_assoc($queryl)){
-                                     ?>
-
-                                     <option value="<?php echo $l['category']; ?>"><?php echo $l['category']; ?></option>
-
-                                  <?php  }  ?>
-
-                                 </select>
-                              </div>
-                           </div>
-                        </div>
-
-                        <div class="card-body">
+                    
+                    
                            <div class="table-responsive">
-                              <table class="table table-bordered table-fixed" id='myTable'>
+                              <table class="table table-bordered table-fixed listing-table" id='myTable'>
                                  <thead>
                                    <tr>
                                      <th>Sr.No</th>
-                                     <th>Resort Category</th>
+                                     <th>Category</th>
                                      <th>Meta Title</th>
                                      <th>Meta Keyword</th>
                                      <th>Meta Descripton</th>
 
                                      <th>Tent Name</th>
-                                     <th>Action</th>
+                                     <th>Status</th>
+                                     <th>Actions</th>
                                   </tr>
                                  </thead>
                                  <tbody>
@@ -75,13 +54,25 @@
                                        <td><?php echo $b['title']; ?></td>
 
                                        <td>
+                                          <?php
+                                          $hasTitle = trim((string)$b['title']) !== '';
+                                          $hasCategory = trim((string)$b['category']) !== '';
+                                          $statusLabel = ($hasTitle && $hasCategory) ? 'Published' : 'Draft';
+                                          $statusClass = ($statusLabel === 'Published') ? 'status-published' : 'status-draft';
+                                          ?>
+                                          <span class="status-badge <?php echo $statusClass; ?>"><?php echo $statusLabel; ?></span>
+                                       </td>
+
+                                       <td>
                                             <div class="actions">
+                                          <div class="table-actions">
                                           <a href="edit-tent-types.php?id=<?php echo $b['id']; ?>">
-                                             <button class="btn btn-success btn-sm" type="button"><i class="feather icon-edit"></i></button>
+                                             <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
                                           </a> 
                                           <a href="delete-tent-types.php?id=<?php echo $b['id']; ?>">
-                                             <button class="btn btn-danger btn-sm" type="button"><i class="feather icon-trash-2"></i></button>
+                                             <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
                                           </a>
+                                          </div>
                                           </div>
                                        </td>
                                     </tr>
@@ -91,8 +82,8 @@
                                  </tbody>
                               </table>
                            </div>
-                        </div>
-                     </div>
+                        
+                     
                   </div>
                </div>
             </div>
@@ -101,45 +92,4 @@
    </div>
 </div>
 
-<script>
-   $(function() {
-      //$('table').hide();
-      $('#mySelector').change( function(){
-         //$('table').show();
-         var selection = $(this).val();
-
-         if(selection=='All')
-         {
-            document.location="project-listing.php";
-         }
-         else
-         {
-            console.log(selection);
-            var dataset = $('#myTable').find('tr');
-            var thead = $('#myTable thead').find('tr');
-
-            dataset.each(function(index) {
-               item = $(this);
-               item.hide();
-
-               var firstTd = item.find('td:nth-child(2)');
-               var text = firstTd.text();
-               var ids = text.split(',');
-
-               for (var i = 0; i < ids.length; i++)
-               {
-                  if (ids[i] == selection)
-                  {
-                     item.show();
-                  }
-               }
-            });
-
-            thead.show();
-
-         }
-      });
-  });
-
-</script>
 <?php include_once('common/footer.php'); ?>

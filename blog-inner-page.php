@@ -85,13 +85,28 @@ if (isset($_POST['sub'])){
          <div class="pcoded-inner-content">
             <div class="main-body">
                <div class="page-wrapper">
+                  <form action ="" enctype="multipart/form-data" method="post">
                   <div class="page-body">
-				  
-				  <form action ="" enctype="multipart/form-data" method="post">
+                     <div class="row">
+                        <div class="col-sm-12">
+                           <?php include "alert-insert.php" ?>
+                           <div class="listing-page-head">
+                              <div class="listing-title-wrap">
+                                 <h1>Add Blog</h1>
+                                 <div class="listing-breadcrumb">
+                                    <span>Home</span><span class="crumb-sep">&gt;</span><span>Blogs</span><span class="crumb-sep">&gt;</span><span>Add Blog</span>
+                                 </div>
+                              </div>
+                              <div class="listing-cta">
+                                 <a href="blog-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back to Blogs</a>
+                                 <input type="submit" class="btn btn-success btn-sm" id="btnn" name="sub" value="Save Blog">
+                              </div>
+                           </div>
+                        </div>
+                     </div>
 				  
                      <div class="row">
                         <div class="col-sm-12">
-						<?php include "alert-insert.php" ?>
                            <div class="card mb-30">
                               <div class="card-header">Seo Meta Tags</div>
                               <div class="card-body">
@@ -162,8 +177,10 @@ if (isset($_POST['sub'])){
                                     <div class="col-sm-12">
                                        <div class="commonSection">
                                           <label>Image Type</label>
-                                          <input id="id_radio1" type="radio" name="img" onclick="show1();"  checked="">Image URL
-                                          <input id="id_radio2" type="radio" name="img" onclick="show2();"  >Select New Image
+                                          <div class="radio-inline-group">
+    <label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();"  checked="">Image URL</label>
+    <label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();"  >Select New Image</label>
+</div>
                                        </div>
                                     </div>
                                     <div class="col-sm-12" id="image_url" >
@@ -181,7 +198,7 @@ if (isset($_POST['sub'])){
                                        <div class="commonSection">
                                           <label>Select Image</label>
                                           <!--<form action="/action_page.php">-->
-                                             Select files: <input type="file" name="myFile" id="myFile" class="form-control"><br>
+                                             <input type="file" name="myFile" id="myFile" class="form-control"><br>
 											 
 											 <button type="button" class="btn btn-sm btn-danger" onclick="rese();">Reset Image</button><br>
                                           <!--</form>-->
@@ -215,21 +232,13 @@ if (isset($_POST['sub'])){
                         </div>
                      </div>
  
-                     <div class="row">
-                        <div class="col-sm-2">
-                           <div class="commonSection">
-                              <input type="submit" class="btn btn-success btn-lg" id="btnn" name="sub" value="Submit">
-                           </div>
-                        </div>
-                     </div>
                   </div>
-				  
-				  <script>
-				  
-				    document.getElementById("btnn").disabled = true;
-					
-					$(document).ready(function() {
-						
+                  
+                  <script>
+                  
+                     $(document).ready(function() {
+
+                        document.getElementById("btnn").disabled = true;
 						
 					 $('#image').keyup(function() {
 						var dInput = this.value;
@@ -237,11 +246,7 @@ if (isset($_POST['sub'])){
 						
 						var x = document.getElementById("myFile").value;
 						
-						//var y = document.getElementById("image").value;
-						
 						console.log("x",x);
-						
-						//console.log("dInput",dInput);
 						
 						if(dInput && x){
 							
@@ -255,7 +260,6 @@ if (isset($_POST['sub'])){
 							
 							document.getElementById("btnn").disabled = false;
 							
-							
 						}
 						
 					});
@@ -266,31 +270,21 @@ if (isset($_POST['sub'])){
 							var pInput = this.value;
 						console.log("L1",pInput); 
 						
-						var y = document.getElementById("image").value;
+							var y = document.getElementById("image").value;
 						
-						//var y = document.getElementById("image").value;
+							console.log("y",y);
 						
-						console.log("y",y);
-						
-						//console.log("dInput",dInput);
-						
-						if(pInput && y){
-							
-							document.getElementById("btnn").disabled = true;
-							
-						}else if(!pInput && !x){
-							
-							document.getElementById("btnn").disabled = true;
-							
-						}else{
-							
-							document.getElementById("btnn").disabled = false;
-							
-							
-						}
-						
-							
-					
+							if(pInput && y){
+								
+								document.getElementById("btnn").disabled = true;
+								
+							}else if(!pInput && !x){
+								
+								document.getElementById("btnn").disabled = true;
+								
+							}else{
+								
+								document.getElementById("btnn").disabled = false;
 						};		
 					
 					

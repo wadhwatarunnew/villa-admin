@@ -56,12 +56,26 @@ if (isset($_POST['sub'])){
             <div class="page-body">
 
                <div class="row">
-
-
                   <div class="col-sm-12">
-                     <?php include "alert-insert.php";  ?>
+                     <?php include "alert-insert.php"; ?>
+                     <div class="listing-page-head">
+                        <div class="listing-title-wrap">
+                           <h1>Add Review</h1>
+                           <div class="listing-breadcrumb">
+                              <span>Home</span><span class="crumb-sep">&gt;</span><span>Reviews</span><span class="crumb-sep">&gt;</span><span>Add Review</span>
+                           </div>
+                        </div>
+                        <div class="listing-cta">
+                           <a href="review-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back to Reviews</a>
+                           <input type="submit" class="btn btn-success btn-sm" name="sub" value="Save Review">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="row">
+                  <div class="col-sm-12">
                      <div class="card">
-                        <div class="card-header">Manage Reviews &nbsp;<a href="review-list-page.php" class="btn btn-sm btn-primary">Back</a></div>
                         <div class="card-body">
                            <div class="row">
                               <div class="col-sm-4">
@@ -110,7 +124,7 @@ if (isset($_POST['sub'])){
                                     </div> -->
                                     <div class="col-sm-8">
                                        <div class="commonSection">
-                                          <label>Select Review Image</label>
+                                          <label>Select Image</label>
                                           <input type="file" class="form-control" name="myFile" id="myFile">
                                        </div>
                                     </div>
@@ -120,13 +134,6 @@ if (isset($_POST['sub'])){
                         </div>
 
 
-                     </div>
-                     <div class="row">
-                        <div class="col-sm-2">
-                           <div class="commonSection">
-                              <input type="submit" class="btn btn-success btn-lg" name="sub" value="Submit">
-                           </div>
-                        </div>
                      </div>
                   </div>
                </form>

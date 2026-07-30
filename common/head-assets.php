@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="css/style.css"/>
 <link rel="stylesheet" href="css/feather.css"/>
 <link rel="stylesheet" href="css/font-awesome.min.css"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <script src="js/jquery.min.js"></script>
 <script src="js/common.js"></script>
 <script src="ckeditor/ckeditor.js?ver=1"></script>

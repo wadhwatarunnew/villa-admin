@@ -5,26 +5,29 @@
       <div class="main-body">
          <div class="page-wrapper">
             <div class="page-body">
+               <div class="listing-page-head">
+                  <div class="listing-title-wrap">
+                     <h1>Home Sliders</h1>
+                     <div class="listing-breadcrumb">
+                        <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Home Sliders</span>
+                     </div>
+                  </div>
+                  <div class="listing-cta">
+                     <a href="home-new-slider.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add New Slider</a>
+                  </div>
+               </div>
                <div class="row">
                   <div class="col-sm-12">
-                     <div class="card">
-                        <div class="card-header">Manage Home Slider
-                          <div class="addNew">
-                             <a href="home-new-slider.php">
-                               <button class="btn btn-success btn-sm" type="button"><i class="feather icon-plus"></i></button>
-                            </a> 
-                         </div>
-                      </div>
-                      <div class="card-body">
                         <div class="table-responsive">
-                           <table class="table table-bordered">
+                           <table class="table table-bordered listing-table">
                               <thead>
                                  <tr>
-                                    <th>Sr. No</th>
-                                    <th>Image Title</th>
-                                    <th>Image</th>
-                                    <th>Slider Order</th>
-                                    <th>Action</th>
+                                    <th>ID</th>
+                                    <th>Banner Preview</th>
+                                    <th>Title</th>
+                                    <th>Sort Order</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
                                  </tr>
                               </thead>
                               <tbody>
@@ -39,7 +42,6 @@
                                     ?>
                                     <tr role="row">
                                        <td><?php echo $i;?></td>
-                                       <td><?php echo $b['title']; ?></td>
 
                                        <?php
 
@@ -64,13 +66,25 @@
 
                                     <?php  }  ?>
 
+                                    <td><?php echo $b['title']; ?></td>
                                     <td><?php echo $b['order_number']; ?></td>
+
+                                    <?php
+                                    $hasTitle = trim((string)$b['title']) !== '';
+                                    $hasImage = trim((string)$b['image']) !== '' || trim((string)$b['local_path']) !== '';
+                                    $statusLabel = ($hasTitle && $hasImage) ? 'Published' : 'Draft';
+                                    $statusClass = ($statusLabel === 'Published') ? 'status-published' : 'status-draft';
+                                    ?>
+
+                                    <td><span class="status-badge <?php echo $statusClass; ?>"><?php echo $statusLabel; ?></span></td>
                                     <td>
+                                       <div class="table-actions">
                                      <a href="edit-home-slider.php?id=<?php echo $b['id']; ?>">
-                                        <button class="btn btn-success btn-sm" type="button"><i class="feather icon-edit"></i></button></a> 
+                                        <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button></a> 
                                         <a href="delete-home-slider.php?id=<?php echo $b['id']; ?>">
-                                           <button class="btn btn-danger btn-sm" type="button"><i class="feather icon-trash-2"></i></button>
+                                           <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
                                         </a>
+                                       </div>
                                      </td>
                                   </tr>
 
@@ -79,8 +93,8 @@
                             </table>
                          </div>
                       </div>
-                   </div>
-                </div>
+                   
+               
              </div>
           </div>
        </div>

@@ -265,13 +265,17 @@ if (isset($_POST['update1'])){
 
 																?>
 
-																<input id="id_radio1" type="radio" name="img" onclick="show1();"  checked="">Image URL
-																<input id="id_radio2" type="radio" name="img" onclick="show2();" >Select New Image
+																<div class="radio-inline-group">
+    <label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();"  checked="">Image URL</label>
+    <label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();" >Select New Image</label>
+</div>
 
 															<?php  }else{  ?>
 
-																<input id="id_radio1" type="radio" name="img" onclick="show3();"  >Image URL
-																<input id="id_radio2" type="radio" name="img" onclick="show4();"  checked="">Select New Image
+																<div class="radio-inline-group">
+    <label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show3();"  >Image URL</label>
+    <label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show4();"  checked="">Select New Image</label>
+</div>
 
 															<?php  }  ?>
 
@@ -298,7 +302,7 @@ if (isset($_POST['update1'])){
 
 												</div>
 
-												<div id="select_image1">
+												<div class="row" id="select_image1">
 													<div class="col-sm-6">
 														<div class="commonSection"> 
 															<label>Image</label>
@@ -309,7 +313,7 @@ if (isset($_POST['update1'])){
 														<div class="commonSection">
 															<label>Select Image</label>
 															<!--<form action="/action_page.php">-->
-																Select files: <input type="file" name="myFile" id="myFile" class="form-control"><br>
+																<input type="file" name="myFile" id="myFile" class="form-control"><br>
 																<button type="button" class="btn btn-sm btn-danger" onclick="res();">Reset Image</button>
 																<!--</form>-->
 
@@ -358,7 +362,7 @@ if (isset($_POST['update1'])){
 														</div>
 													</div>
 
-													<div id="select_image">
+													<div class="row" id="select_image">
 														<div class="col-sm-6">
 															<div class="commonSection"> 
 																<label>Image</label>
@@ -369,7 +373,7 @@ if (isset($_POST['update1'])){
 															<div class="commonSection">
 																<label>Select Image</label>
 																<!--<form action="/action_page.php">-->
-																	Select files: <input type="file" name="myFile1" id="myFile1" class="form-control"><br>
+																	<input type="file" name="myFile1" id="myFile1" class="form-control"><br>
 																	<button type="button" class="btn btn-sm btn-danger" onclick="res1();">Reset Image</button>
 																	<!--</form>-->
 																</div>

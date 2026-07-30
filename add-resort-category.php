@@ -142,8 +142,10 @@ if (isset($_POST['sub'])){
 											<div class="col-sm-12">
 												<div class="commonSection">
 													<label>Image Type</label>
-													<input id="id_radio1" type="radio" name="img" onclick="show1();"  checked="">Image URL
-													<input id="id_radio2" type="radio" name="img" onclick="show2();"  >Select New Image
+													<div class="radio-inline-group">
+    <label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();"  checked="">Image URL</label>
+    <label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();"  >Select New Image</label>
+</div>
 												</div>
 											</div>
 											<div class="col-sm-12" id="image_url" >
@@ -158,7 +160,7 @@ if (isset($_POST['sub'])){
 										    <div class="commonSection">
     											<label>Select Image</label>
     											<!--<form action="/action_page.php">-->
-												Select files: <input type="file" name="myFile" id="myFile" class="form-control"><br>
+												<input type="file" name="myFile" id="myFile" class="form-control"><br>
 												
 												<button type="button" class="btn btn-sm btn-danger" onclick="rese();">Reset Image</button><br>
 												<!--</form>-->

@@ -84,7 +84,7 @@ if(!$d['p1']){
                               <div class="demo-gallery-poster" style="display:none;"> <img src="images/zoom.png" alt="zoom"> </div>
                            </a>
                         </li><br>
-						Select file: <input type="file" name="myFile1" id="myFile" class="form-control"><br>
+						<input type="file" name="myFile1" id="myFile" class="form-control"><br>
 						
 						</div>
 <?php  }  ?>
@@ -106,7 +106,7 @@ if(!$d['p2']){
                               <div class="demo-gallery-poster" style="display:none;"> <img src="images/zoom.png" alt="zoom"> </div>
                            </a>
                         </li><br>
-						Select file: <input type="file" name="myFile2" id="myFile" class="form-control"><br>
+						<input type="file" name="myFile2" id="myFile" class="form-control"><br>
 						</div>
 <?php  }  ?>
 
@@ -128,7 +128,7 @@ if(!$d['p3']){
                               <div class="demo-gallery-poster" style="display:none;"> <img src="images/zoom.png" alt="zoom"> </div>
                            </a>
                         </li><br>
-						Select file: <input type="file" name="myFile3" id="myFile" class="form-control"><br>
+						<input type="file" name="myFile3" id="myFile" class="form-control"><br>
 						</div>
 <?php  }  ?>
 
@@ -149,7 +149,7 @@ if(!$d['p4']){
                               <div class="demo-gallery-poster" style="display:none;"> <img src="images/zoom.png" alt="zoom"> </div>
                            </a>
                         </li><br>
-						Select file: <input type="file" name="myFile4" id="myFile" class="form-control"><br>
+						<input type="file" name="myFile4" id="myFile" class="form-control"><br>
 						</div>
 <?php  }  ?>
 
@@ -170,7 +170,7 @@ if(!$d['p5']){
                               <div class="demo-gallery-poster" style="display:none;"> <img src="images/zoom.png" alt="zoom"> </div>
                            </a>
                         </li><br>
-						Select file: <input type="file" name="myFile5" id="myFile" class="form-control"><br>
+						<input type="file" name="myFile5" id="myFile" class="form-control"><br>
 						</div>
 <?php  }  ?>
 
@@ -193,7 +193,7 @@ if(!$d['p6']){
                               <div class="demo-gallery-poster" style="display:none;"> <img src="images/zoom.png" alt="zoom"> </div>
                            </a>
                         </li><br>
-						Select file: <input type="file" name="myFile6" id="myFile" class="form-control"><br>
+						<input type="file" name="myFile6" id="myFile" class="form-control"><br>
 						</div>
 <?php  }  ?>
 						
@@ -214,7 +214,7 @@ if(!$d['p7']){
                               <div class="demo-gallery-poster" style="display:none;"> <img src="images/zoom.png" alt="zoom"> </div>
                            </a>
                         </li><br>
-						Select file: <input type="file" name="myFile7" id="myFile" class="form-control"><br>
+						<input type="file" name="myFile7" id="myFile" class="form-control"><br>
 						</div>
 <?php  }  ?>
 
@@ -235,7 +235,7 @@ if(!$d['p8']){
                               <div class="demo-gallery-poster" style="display:none;"> <img src="images/zoom.png" alt="zoom"> </div>
                            </a>
                         </li><br>
-						Select file: <input type="file" name="myFile8" id="myFile" class="form-control"><br>
+						<input type="file" name="myFile8" id="myFile" class="form-control"><br>
 						</div>
 <?php  }  ?>
 
@@ -257,7 +257,7 @@ if(!$d['p9']){
                               <div class="demo-gallery-poster" style="display:none;"> <img src="images/zoom.png" alt="zoom"> </div>
                            </a>
                         </li><br>
-						Select file: <input type="file" name="myFile9" id="myFile" class="form-control"><br>
+						<input type="file" name="myFile9" id="myFile" class="form-control"><br>
 						</div>
 <?php  }  ?>
 
@@ -278,7 +278,7 @@ if(!$d['p10']){
                               <div class="demo-gallery-poster" style="display:none;"> <img src="images/zoom.png" alt="zoom"> </div>
                            </a>
                         </li><br>
-						Select file: <input type="file" name="myFile10" id="myFile" class="form-control"><br>
+						<input type="file" name="myFile10" id="myFile" class="form-control"><br>
 						</div>
 <?php  }  ?>
 

@@ -241,6 +241,13 @@ if (isset($_POST['update1'])){
 
 											<?php  }else{ ?>
 
+											
+												<div class="col-sm-12">
+													<div class="commonSection">
+														<label>Sub Title</label>
+														<input class="form-control" type="text" name="subtitle" id="subtitle" required value="<?php echo $e['subtitle']; ?>" placeholder="Enter Sub Title">
+													</div>
+												</div>
 												<div class="col-sm-12">
 													<div class="commonSection">
 														<label>Title</label>
@@ -275,13 +282,17 @@ if (isset($_POST['update1'])){
 
 															?>
 
-															<input id="id_radio1" type="radio" name="img" onclick="show1();"  checked="">Image URL
-															<input id="id_radio2" type="radio" name="img" onclick="show2();" >Select New Image
+<div class="radio-inline-group radio-inline-group-left">
+    <label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();"  checked="">Image URL</label>
+    <label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();" >Select Image</label>
+</div>
 
-														<?php  }else{  ?>
+												<?php  }else{  ?>
 
-															<input id="id_radio1" type="radio" name="img" onclick="show3();"  >Image URL
-															<input id="id_radio2" type="radio" name="img" onclick="show4();"  checked="">Select New Image
+													<div class="radio-inline-group radio-inline-group-left">
+    <label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show3();"  >Image URL</label>
+    <label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show4();"  checked="">Select Image</label>
+</div>
 
 														<?php  }  ?>
 
@@ -296,125 +307,126 @@ if (isset($_POST['update1'])){
 
 													?>
 													<div class="col-sm-12" id="image_url">
+												<div class="row">
+													<div class="col-sm-6">
 														<div class="commonSection">
 															<label>Image URL</label>
 															<input class="form-control" type="text" name="image" id="image" value="<?php echo $e['image']; ?>" placeholder="Enter url">
 														</div>
 													</div>
-
-												</div>
-
-
-
-										
-
-											<div id="select_image1">
-												<div class="col-sm-6">
-													<div class="commonSection"> 
-														<label>Image</label>
-														<img src="<?php echo $e['local_path']; ?>" class="img-thumbnail" id="imgPreview" >
-													</div>
-												</div>
-												<div class="col-sm-6">
-													<div class="commonSection">
-														<label>Select Image</label>
-														<!--<form action="/action_page.php">-->
-															Select files: <input type="file" name="myFile" id="myFile" class="form-control"><br>
-															<button type="button" class="btn btn-sm btn-danger" onclick="res();">Reset Image</button>
-															<!--</form>-->
-
+													<div class="col-sm-6">
+														<div class="commonSection">
+															<label>Preview</label>
+															<img src="<?php echo $e['image']; ?>" class="img-thumbnail" id="urlPreview" alt="Image URL Preview" onerror="this.src='images/default-profile.png';">
 														</div>
-
-
 													</div>
-
-													<script>
-
-														function res(){
-															console.log("lhariom");
-															document.getElementById('myFile').value= "";
-
-
-															var p = document.getElementById("image").value;
-
-															if(p){
-
-																document.getElementById("btnn").disabled = false;
-
-															}else{
-
-																document.getElementById("btnn").disabled = true;
-
-															}
-
-
-														}
-
-													</script>
-
 												</div>
+											</div>
 
-												<?php	
-
-											}else{
-
-												?>
+										</div>
 
 
-												<div class="col-sm-12" id="image_url1">
+
+									
+
+									<div class="row" id="select_image1">
+										<div class="col-sm-6">
+											<div class="commonSection">
+												<label>Select Image</label>
+												<input type="file" name="myFile" id="myFile" class="form-control" accept="image/*"><br>
+												<button type="button" class="btn btn-sm btn-danger" onclick="res();">Reset Image</button>
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="commonSection">
+												<label>Preview</label>
+												<img src="images/default-profile.png" class="img-thumbnail" id="filePreview" alt="Selected Image Preview">
+											</div>
+										</div>
+
+										<script>
+											function res(){
+												console.log("lhariom");
+												document.getElementById('myFile').value= "";
+$('#filePreview').attr('src', 'images/default-profile.png');
+
+												var p = document.getElementById("image").value;
+
+												if(p){
+
+													document.getElementById("btnn").disabled = false;
+
+												}else{
+
+													document.getElementById("btnn").disabled = true;
+
+												}
+
+
+											}
+										</script>
+
+									</div>
+
+									<?php }else{ ?>
+
+
+										<div class="col-sm-12" id="image_url1">
+											<div class="row">
+												<div class="col-sm-6">
 													<div class="commonSection">
 														<label>Image URL</label>
 														<input class="form-control" type="text" name="image1" id="image1" value="<?php echo $e['image']; ?>" placeholder="Enter url">
 													</div>
 												</div>
-
-												<div id="select_image">
-													<div class="col-sm-6">
-														<div class="commonSection"> 
-															<label>Image</label>
-															<img src="<?php echo $e['local_path']; ?>" class="img-thumbnail" id="imgPreview" >
-														</div>
+												<div class="col-sm-6">
+													<div class="commonSection">
+														<label>Preview</label>
+														<img src="<?php echo $e['image']; ?>" class="img-thumbnail" id="urlPreview1" alt="Image URL Preview" onerror="this.src='images/default-profile.png';">
 													</div>
-													<div class="col-sm-6">
-														<div class="commonSection">
-															<label>Select Image</label>
-															<!--<form action="/action_page.php">-->
-																Select files: <input type="file" name="myFile1" id="myFile1" class="form-control"><br>
-																<button type="button" class="btn btn-sm btn-danger" onclick="res1();">Reset Image</button>
-																<!--</form>-->
-															</div>
-														</div>
+												</div>
+											</div>
+										</div>
 
-														<script>
+										<div class="row" id="select_image">
+											<div class="col-sm-6">
+												<div class="commonSection">
+													<label>Select Image</label>
+													<input type="file" name="myFile1" id="myFile1" class="form-control" accept="image/*"><br>
+													<button type="button" class="btn btn-sm btn-danger" onclick="res1();">Reset Image</button>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="commonSection">
+													<label>Preview</label>
+													<img src="<?php echo $e['local_path']; ?>" class="img-thumbnail" id="filePreview1" alt="Selected Image Preview" onerror="this.src='images/default-profile.png';">
+												</div>
+											</div>
+										</div>
 
-															function res1(){
-																console.log("lhariom");
-																document.getElementById('myFile1').value= "";
+										<script>
+											function res1(){
+												console.log("lhariom");
+												document.getElementById('myFile1').value= "";
+												$('#filePreview1').attr('src', 'images/default-profile.png');
+
+												var p1 = document.getElementById("image1").value;
+
+												if(p1){
+
+													document.getElementById("btnn1").disabled = false;
+
+												}else{
+
+													document.getElementById("btnn1").disabled = true;
+
+												}
 
 
-																var p1 = document.getElementById("image1").value;
+											}
+										</script>
 
-																if(p1){
-
-																	document.getElementById("btnn1").disabled = false;
-
-																}else{
-
-																	document.getElementById("btnn1").disabled = true;
-
-																}
-
-
-															}
-
-														</script>
-
-
-													</div>
-
-												<?php  }  ?>
-
-
+									<?php  }  ?>
 
 
 											</div>
@@ -490,17 +502,14 @@ if (isset($_POST['update1'])){
 										}
 
 
-										$('#image').keyup(function() {
+										$('#image').on('input', function() {
 											var dInput = this.value;
-											console.log("L",dInput); 
+											console.log("L",dInput);
+$('#urlPreview').attr('src', dInput || 'images/default-profile.png');
 
 											var x = document.getElementById("myFile").value;
 
-
-
 											console.log("x",x);
-
-
 
 											if(dInput && x){
 
@@ -522,15 +531,19 @@ if (isset($_POST['update1'])){
 										document.getElementById('myFile').onchange = function () {
 
 											var pInput = this.value;
-											console.log("L1",pInput); 
+											console.log("L1",pInput);
+
+											if (this.files && this.files[0]) {
+												var reader = new FileReader();
+												reader.onload = function(e) {
+													$('#filePreview').attr('src', e.target.result);
+												};
+												reader.readAsDataURL(this.files[0]);
+											}
 
 											var y = document.getElementById("image").value;
 
-
-
 											console.log("y",y);
-
-
 
 											if(pInput && y){
 
@@ -603,9 +616,10 @@ if (isset($_POST['update1'])){
 
 
 
-										$('#image1').keyup(function() {
+										$('#image1').on('input', function() {
 											var dInput1 = this.value;
-											console.log("L",dInput1); 
+											console.log("L",dInput1);
+$('#urlPreview1').attr('src', dInput1 || 'images/default-profile.png');
 
 											var x2 = document.getElementById("myFile1").value;
 
@@ -635,7 +649,15 @@ if (isset($_POST['update1'])){
 										document.getElementById('myFile1').onchange = function () {
 
 											var pInput1 = this.value;
-											console.log("L1",pInput1); 
+											console.log("L1",pInput1);
+
+											if (this.files && this.files[0]) {
+												var reader1 = new FileReader();
+												reader1.onload = function(e) {
+													$('#filePreview1').attr('src', e.target.result);
+												};
+												reader1.readAsDataURL(this.files[0]);
+											}
 
 											var y1 = document.getElementById("image1").value;
 

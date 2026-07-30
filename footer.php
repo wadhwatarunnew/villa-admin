@@ -106,8 +106,20 @@ $j=mysqli_fetch_assoc($queryj);
 		<div class="main-body">
 			<div class="page-wrapper">
 				<div class="page-body">
-					<div class="row">
-						<div class="col-sm-12">
+					<div class="row">						<div class="col-sm-12">
+							<?php include "alert-update.php"; ?>
+							<div class="listing-page-head">
+								<div class="listing-title-wrap">
+									<h1>Footer Settings</h1>
+									<div class="listing-breadcrumb">
+										<span>Home</span><span class="crumb-sep">&gt;</span><span>Footer</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">						<div class="col-sm-6">
 							<?php
 							
 							include "db.php";
@@ -154,9 +166,8 @@ $j=mysqli_fetch_assoc($queryj);
 							</form>
 							
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-12">
+					
+						<div class="col-sm-6">
 							<?php
 							
 							include "db.php";
@@ -279,9 +290,8 @@ $j=mysqli_fetch_assoc($queryj);
 							</script>
 
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-12">
+				
+						<div class="col-sm-6">
 							<?php
 							
 							include "db.php";
@@ -399,9 +409,8 @@ $j=mysqli_fetch_assoc($queryj);
 							</script>
 							
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-12">
+					
+						<div class="col-sm-6">
 							<?php
 							
 							include "db.php";
@@ -445,13 +454,7 @@ $j=mysqli_fetch_assoc($queryj);
 									</form>
 								</div>
 							</div>
-                     <!--<div class="row">
-                        <div class="col-sm-2">
-                           <div class="commonSection">
-                              <input type="submit" class="btn btn-success btn-lg" name="update-submit" value="Submit">
-                           </div>
-                        </div>
-                     </div>-->
+   
                   </div>
                </div>
             </div>

@@ -156,7 +156,7 @@ if (isset($_POST['update_seo'])){
                <div class="row">
                   <div class="col-sm-12">
                      <div class="card mb-30">
-                        <div class="card-header">Home Top Section</div>
+                        <div class="card-header">About Section</div>
                         <div class="card-body">
                            <div class="row">
                               <form action ="" method="post">
@@ -192,7 +192,9 @@ if (isset($_POST['update_seo'])){
                      </div>
                   </div>
                </div>
-               <div class="row">
+
+
+               <!-- <div class="row">
                   <div class="col-sm-12">
                      <div class="card mb-30">
                         <div class="card-header">Home Middle Section</div>
@@ -241,9 +243,9 @@ if (isset($_POST['update_seo'])){
                                  <div class="col-sm-6">
                                     <div class="commonSection">
                                        <label>Select Image</label>
-                                       <!--<form action="/action_page.php">-->
-                                          Select files: <input type="file" name="myFile" class="form-control"><br><br>
-                                          <!--</form>-->
+                                       <form action="/action_page.php">
+                                          <input type="file" name="myFile" class="form-control"><br><br>
+                                          </form>
                                        </div>
                                     </div>
                                       <div class="col-sm-12">
@@ -253,10 +255,12 @@ if (isset($_POST['update_seo'])){
                               </div>
 
                            </div>
+
                         </div>
                      </div>
                   </div>
-                  <div class="row">
+               </div> -->
+                  <!-- <div class="row">
                      <div class="col-sm-12">
                         <div class="card mb-30">
                            <div class="card-header">Home Bottom Section</div>
@@ -293,7 +297,7 @@ if (isset($_POST['update_seo'])){
                            </div>
                         </div>
                      </div>
-                  </div>
+                  </div> -->
                <!-- <div class="row">
                   <div class="col-sm-2">
                      <div class="commonSection">

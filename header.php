@@ -102,161 +102,183 @@ if (isset($_POST['sub1'])){
                   <div class="page-body">
                      <div class="row">
                         <div class="col-sm-12">
-                            <?php include "alert-update.php";  ?>
-                           <div class="card mb-30 app-card">
-                              <div class="card-header">
-                                Upload Logo
-                              </div>
-							  <form action ="" enctype="multipart/form-data" method="post">
-                              <div class="card-body">
-                                 <div class="row">
-                                    <div class="col-sm-4">
-                                       <div class="profileImage">
-                                          <img src="<?php echo $b['path']; ?>" alt="image" title="profileImage">   
-                                       </div>
-                                    </div>
-                                    <div class="col-sm-7 ms-auto">
-                                       <div class="row">
-                                          <div class="col-sm-6">
-                                           <div class="profileInfo">
-                                         <label>Upload Logo</label>
-                                          <div id="mybutton">
-                                             <input type="file" id="myFile" name="myFile" class="form-control">
-                         
-                                          </div>
-                                       </div>
-                                             
-                                          </div>
-                                          
-                                       </div>
-                                    </div>
-									 
+                           <?php include "alert-update.php";  ?>
+                           <div class="listing-page-head">
+                              <div class="listing-title-wrap">
+                                 <h1>Header Settings</h1>
+                                 <div class="listing-breadcrumb">
+                                    <span>Home</span><span class="crumb-sep">&gt;</span><span>Header</span>
                                  </div>
-								 <input type="submit" class="btn btn-success btn-lg" name="sub" value="Save">
                               </div>
-							  
-							  </form>
-							  
                            </div>
                         </div>
                      </div>
-					 
-					 
-					 <div class="row">
-                        <div class="col-sm-12">
-                           <div class="card mb-30 app-card">
-                              <div class="card-header">
-                                Upload Favicon
-                              </div>
-							  <form action ="" enctype="multipart/form-data" method="post">
-                              <div class="card-body">
-                                 <div class="row">
-                                    <div class="col-sm-4">
-                                       <div class="profileImage">
-                                          <img src="<?php echo $b['favicon']; ?>" alt="image" title="profileImage">   
-                                       </div>
-                                    </div>
-                                    <div class="col-sm-7 ms-auto">
-                                       <div class="row">
-                                          <div class="col-sm-6">
-                                           <div class="profileInfo">
-                                         <label>Upload Logo</label>
-                                          <div id="mybutton">
-                                             <input type="file" id="myFiless" name="myFiless" class="form-control">
-                         
+
+                     <div class="row">
+                        <div class="col-sm-6">
+                           <form action="" enctype="multipart/form-data" method="post">
+                              <div class="card mb-20">
+                                 <div class="card-header">Upload Logo</div>
+                                 <div class="card-body">
+                                    <div class="row align-items-center">
+                                       <div class="col-sm-8">
+                                          <div class="form-group mb-0">
+                                             <div class="banner-image-upload" style="min-height:180px;">
+                                                <img src="<?php echo $b['path']; ?>" class="banner-image-preview" id="logo_banner_preview" alt="Logo" style="height:180px;object-fit:contain;" onerror="this.src='images/default-profile.png';">
+                                                <div class="banner-recommended-size">Recommended size: 200x60px</div>
+                                                <input type="file" name="myFile" id="myFile" style="display: none;" accept="image/*">
+                                                <div class="banner-upload-actions">
+                                                   <button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('myFile').click();">
+                                                      <i class="feather icon-upload"></i> Change Image
+                                                   </button>
+                                                   <button type="button" class="btn btn-sm btn-danger" onclick="resetLogo();">Reset Image</button>
+                                                </div>
+                                             </div>
                                           </div>
                                        </div>
-                                             
+                                       <div class="col-sm-4">
+                                          <div class="form-group mb-0">
+                                             <label class="banner-form-label">Logo Preview</label>
+                                             <img src="<?php echo $b['path']; ?>" alt="Logo Preview" id="logo_preview" class="img-thumbnail" style="width:100%;max-height:220px;object-fit:contain;border-radius:6px;background:var(--color-bg-soft);" onerror="this.src='images/default-profile.png';">
                                           </div>
-                                          
+                                       </div>
+                                       <div class="col-sm-12 mt-3">
+                                          <input type="submit" class="btn btn-success btn-lg" name="sub" value="Save Logo">
                                        </div>
                                     </div>
-									 
                                  </div>
-								 <input type="submit" class="btn btn-success btn-lg" name="subfav" value="Save">
                               </div>
-							  
-							  </form>
-							  
-                           </div>
+                           </form>
                         </div>
-                     </div>
-					 
-					 <?php
-						
-						include "db.php";
-						
-						$query18= mysqli_query($con,"select * from header_nav");
-											
-						$b18=mysqli_fetch_assoc($query18);
-						
-						?>
-					 
-					 <div class="row">
-                        <div class="col-sm-12">
-                           <div class="card mb-30 app-card">
-                              <div class="card-header">
-                                Header Navigation
-                              </div>
-							  <form action ="" method="post">
-                              <div class="card-body">
-                                 <div class="row">
-                                    
-                                    <div class="col-sm-12">
-                                       <div class="commonSection">
-                                         <label>Name & Links </label> 
-										 Name : <input class="form-control" type="text" name="name" id="name" value="<?php echo $b18['name_one']; ?>" placeholder="Enter Quick Links"><br>
-                                         Link : <input class="form-control" type="text" name="link" id="link" value="<?php echo $b18['link_one']; ?>" placeholder="Enter Quick Links"><br>
-										 
-										 Name : <input class="form-control" type="text" name="name1" id="name1" value="<?php echo $b18['name_two']; ?>" placeholder="Enter Quick Links"><br>
-                                         link : <input class="form-control" type="text" name="link1" id="link1" value="<?php echo $b18['link_two']; ?>" placeholder="Enter Quick Links"><br>
-										 
-										 Name : <input class="form-control" type="text" name="name2" id="name2" value="<?php echo $b18['name_three']; ?>" placeholder="Enter Quick Links"><br>
-                                         Link : <input class="form-control" type="text" name="link2" id="link2" value="<?php echo $b18['link_three']; ?>" placeholder="Enter Quick Links"><br>
-										 
-										 Name : <input class="form-control" type="text" name="name3" id="name3" value="<?php echo $b18['name_four']; ?>" placeholder="Enter Quick Links"><br>
-                                         Link : <input class="form-control" type="text" name="link3" id="link3" value="<?php echo $b18['link_four']; ?>" placeholder="Enter Quick Links"><br>
-										 
-										 Name : <input class="form-control" type="text" name="name4" id="name4" value="<?php echo $b18['name_five']; ?>" placeholder="Enter Quick Links"><br>
-                                         Link : <input class="form-control" type="text" name="link4" id="link4" value="<?php echo $b18['link_five']; ?>" placeholder="Enter Quick Links"><br>
-										 
-										 Name : <input class="form-control" type="text" name="name5" id="name5" value="<?php echo $b18['name_six']; ?>" placeholder="Enter Quick Links"><br>
-                                         Link : <input class="form-control" type="text" name="link5" id="link5" value="<?php echo $b18['link_six']; ?>" placeholder="Enter Quick Links"><br>
-										 
-										 Name : <input class="form-control" type="text" name="name6" id="name6" value="<?php echo $b18['name_seven']; ?>" placeholder="Enter Quick Links"><br>
-                                         Link : <input class="form-control" type="text" name="link6" id="link6" value="<?php echo $b18['link_seven']; ?>" placeholder="Enter Quick Links"><br>
-										 
+                        <div class="col-sm-6">
+                           <form action="" enctype="multipart/form-data" method="post">
+                              <div class="card mb-20">
+                                 <div class="card-header">Upload Favicon</div>
+                                 <div class="card-body">
+                                    <div class="row align-items-center">
+                                       
+                                       <div class="col-sm-8">
+                                          <div class="form-group mb-0">
+                                             <div class="banner-image-upload" style="min-height:180px;">
+                                                <img src="<?php echo $b['favicon']; ?>" class="banner-image-preview" id="favicon_banner_preview" alt="Favicon" style="height:180px;object-fit:contain;" onerror="this.src='images/default-profile.png';">
+                                                <div class="banner-recommended-size">Recommended size: 64x64px</div>
+                                                <input type="file" name="myFiless" id="myFiless" style="display: none;" accept="image/*">
+                                                <div class="banner-upload-actions">
+                                                   <button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('myFiless').click();">
+                                                      <i class="feather icon-upload"></i> Change Image
+                                                   </button>
+                                                   <button type="button" class="btn btn-sm btn-danger" onclick="resetFavicon();">Reset Image</button>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-4">
+                                          <div class="form-group mb-0">
+                                             <img src="<?php echo $b['favicon']; ?>" alt="Favicon Preview" id="favicon_preview" class="img-thumbnail" style="width:64px;height:64px;object-fit:contain;border-radius:6px;background:var(--color-bg-soft);" onerror="this.src='images/default-profile.png';">
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-12 mt-3">
+                                          <input type="submit" class="btn btn-success btn-lg" name="subfav" value="Save Favicon">
                                        </div>
                                     </div>
-								
                                  </div>
-								 <input type="submit" class="btn btn-success btn-lg" name="sub1" value="Save">
                               </div>
-							  
-							  </form>
-							  
-                           </div>
+                           </form>
                         </div>
                      </div>
-					 
-                     
-                  </div>
-               </div>
-            </div>
-         </div>
+
+                     <div class="row">
+                        <div class="col-sm-6">
+                           <form action="" enctype="multipart/form-data" method="post">
+                              <div class="card mb-20">
+                                 <div class="card-header">Download Brochure</div>
+                                 <div class="card-body">
+                                    <div class="row align-items-center">
+                                       <div class="col-sm-8">
+                                          <div class="form-group mb-0">
+                                             <div class="banner-image-upload" style="min-height:180px;">
+                                                <div class="text-center text-muted" style="padding:24px 0;">
+                                                   <i class="feather icon-upload-cloud" style="font-size:40px;display:block;margin-bottom:10px;"></i>
+                                                   <span>Drag & drop PDF here, or</span>
+                                                </div>
+                                                <div class="banner-recommended-size">Accepted format: PDF</div>
+                                                <input type="file" name="brochure" id="brochure" style="display: none;" accept=".pdf">
+                                                <div class="banner-upload-actions">
+                                                   <button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('brochure').click();">
+                                                      <i class="feather icon-upload"></i> Choose File
+                                                   </button>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-4">
+                                          <div class="form-group mb-0">
+                                             <label>Current Brochure</label>
+                                             <div class="text-center p-3 border rounded" style="background:#f8f9fa;">
+                                                <i class="feather icon-file-text text-danger" style="font-size:48px;"></i>
+                                                <div class="small font-weight-bold mt-2" style="word-break:break-all;">The-Villa-Tent-Profile-2026.pdf</div>
+                                                <small class="text-muted">2.45 MB</small>
+                                                <a href="#" class="btn btn-outline-secondary btn-sm btn-block mt-2" title="Download"><i class="feather icon-download"></i> Download</a>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-12 mt-3">
+                                          <input type="submit" class="btn btn-success btn-lg" name="save_brochure" value="Save Brochure">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+
       </div>
       <!---->
-      <script src="js/jquery.min.js"></script>
-      <script src="js/popper.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
       <script type="text/javascript">
          $(document).ready(function(){
-         $(".br-menu-link11").click(function(){
-         alert('sss');
-         $(".br-menu-sub").toggleClass('show')
+            $(".br-menu-link11").click(function(){
+               alert('sss');
+               $(".br-menu-sub").toggleClass('show')
+            });
+
+            $('#myFile').on('change', function(){
+               var input = this;
+               if(input.files && input.files[0]){
+                  var reader = new FileReader();
+                  reader.onload = function(e){
+                     $('#logo_preview').attr('src', e.target.result);
+                     $('#logo_banner_preview').attr('src', e.target.result);
+                  }
+                  reader.readAsDataURL(input.files[0]);
+               }
+            });
+
+            $('#myFiless').on('change', function(){
+               var input = this;
+               if(input.files && input.files[0]){
+                  var reader = new FileReader();
+                  reader.onload = function(e){
+                     $('#favicon_preview').attr('src', e.target.result);
+                     $('#favicon_banner_preview').attr('src', e.target.result);
+                  }
+                  reader.readAsDataURL(input.files[0]);
+               }
+            });
          });
-         });
-         
+
+         function resetLogo(){
+            document.getElementById('myFile').value = "";
+            var defaultSrc = "images/default-profile.png";
+            document.getElementById('logo_preview').src = defaultSrc;
+            document.getElementById('logo_banner_preview').src = defaultSrc;
+         }
+
+         function resetFavicon(){
+            document.getElementById('myFiless').value = "";
+            var defaultSrc = "images/default-profile.png";
+            document.getElementById('favicon_preview').src = defaultSrc;
+            document.getElementById('favicon_banner_preview').src = defaultSrc;
+         }
       </script> 
       <!---->
    </body>

@@ -38,9 +38,25 @@ if (isset($_POST['sub'])){
 
                   <div class="row">
                      <div class="col-sm-12">
-                        <?php include "alert-insert.php";  ?>
+                        <?php include "alert-insert.php"; ?>
+                        <div class="listing-page-head">
+                           <div class="listing-title-wrap">
+                              <h1>Add Social Media</h1>
+                              <div class="listing-breadcrumb">
+                                 <span>Home</span><span class="crumb-sep">&gt;</span><span>Social Medias</span><span class="crumb-sep">&gt;</span><span>Add Social Media</span>
+                              </div>
+                           </div>
+                           <div class="listing-cta">
+                              <a href="socialmedialist.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back to Social Medias</a>
+                              <input type="submit" class="btn btn-success btn-sm" name="sub" value="Save Social Media">
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="row">
+                     <div class="col-sm-12">
                         <div class="card mb-30">
-                           <div class="card-header">Add Social Medias &nbsp;<a href="socialmedialist.php" class="btn btn-sm btn-primary">Back</a></div>
                            <div class="card-body">
                               <div class="row">
                                  <div class="col-sm-6">
@@ -81,20 +97,12 @@ if (isset($_POST['sub'])){
                                  </div>
                                  
                               </div>
-                              
                            </div>
                         </div>
                      </div>
                   </div>
-                  <div class="row">
-                    <div class="col-sm-2">
-                     <div class="commonSection">
-                        <input type="submit" class="btn btn-success btn-lg" name="sub" value="Submit">
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </form>
+
+            </form>
       </div>
    </div>
 </div>

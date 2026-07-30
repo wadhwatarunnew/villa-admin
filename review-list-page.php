@@ -5,19 +5,22 @@
       <div class="main-body">
          <div class="page-wrapper">
             <div class="page-body">
+               <div class="listing-page-head">
+                  <div class="listing-title-wrap">
+                     <h1>Review Listings</h1>
+                     <div class="listing-breadcrumb">
+                        <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Review Listings</span>
+                     </div>
+                  </div>
+                  <div class="listing-cta">
+                     <a href="review-inner-page.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Review</a>
+                  </div>
+               </div>
                <div class="row">
                   <div class="col-sm-12">
-                     <div class="card">
-                        <div class="card-header">Manage Review List Page
-                          <div class="addNew">
-                            <a href="review-inner-page.php">
-                             <button class="btn btn-success btn-sm" type="button"><i class="feather icon-plus"></i></button>
-                          </a> 
-                       </div>
-                    </div>
-                    <div class="card-body">
+                
                      <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered listing-table">
                            <thead>
                               <tr>
                                <th>Sr. No</th>
@@ -25,7 +28,8 @@
                                <th>Auther Designation</th>
                                <th>Auther Descripton</th>
                                <th>Auther Image</th>
-                               <th>Action</th>
+                               <th>Status</th>
+                               <th>Actions</th>
                             </tr>
                          </thead>
                          <tbody>
@@ -46,9 +50,16 @@
                                  <td><?php echo $q2['designation']; ?></td>
                                  <td><p><?php echo $q2['discription']; ?></p></td>
                                  <td><img src="<?php echo $q2['image']; ?>" class="img-thumbnail" height="64" width="64"></td>
-                                 <td><a href="edit-review.php?id=<?php echo $q2['id']; ?>"><button class="btn btn-success btn-sm" type="button"><i class="feather icon-edit"></i></button>
+                                 <?php
+                                 $hasName = trim((string)$q2['name']) !== '';
+                                 $hasImage = trim((string)$q2['image']) !== '';
+                                 $statusLabel = ($hasName && $hasImage) ? 'Published' : 'Draft';
+                                 $statusClass = ($statusLabel === 'Published') ? 'status-published' : 'status-draft';
+                                 ?>
+                                 <td><span class="status-badge <?php echo $statusClass; ?>"><?php echo $statusLabel; ?></span></td>
+                                 <td><div class="table-actions"><a href="edit-review.php?id=<?php echo $q2['id']; ?>"><button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
                                  </a> 
-                                 <a  href="delete-review.php?id=<?php echo $q2['id']; ?>"><button class="btn btn-danger btn-sm" onclick="myFunction(<?php echo $q2['id']; ?>)" type="button"><i class="feather icon-trash-2"></i></button></a>
+                                 <a  href="delete-review.php?id=<?php echo $q2['id']; ?>"><button class="btn btn-outline-danger btn-sm table-action-btn" onclick="myFunction(<?php echo $q2['id']; ?>)" type="button"><i class="feather icon-trash-2"></i></button></a></div>
                               </td>
                            </tr>
                            
@@ -63,8 +74,7 @@
                   </table>
                </div>
             </div>
-         </div>
-      </div>
+       
    </div>
 </div>
 </div>

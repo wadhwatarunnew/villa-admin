@@ -227,7 +227,7 @@ if (isset($_POST['sub'])){
 											<div class="col-sm-12" id="select_image" style="display: none;">
 												<div class="commonSection">
 													<label>Select Image</label>
-													Select files: <input type="file" name="myFile" id="myFile" class="form-control"><br>
+													<input type="file" name="myFile" id="myFile" class="form-control"><br>
 													<button type="button" class="btn btn-sm btn-danger" onclick="rese();">Reset Image</button><br>
 												</div>
 											</div>
