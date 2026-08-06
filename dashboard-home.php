@@ -1,5 +1,34 @@
-<?php $PageTitle = "Villatent: Dashboard Home"; ?>
-<?php include_once('common/header.php'); ?>
+<?php
+   include_once('db.php');
+   include_once('common/header.php');
+   $PageTitle = "Villatent: Dashboard Home";
+
+   $TotalTents = $TotalProjects = $TotalBlogs = $TotalLeads = 0;
+
+   $Result = mysqli_query($con, "SELECT COUNT(*) AS TotalTents FROM resort_types");
+   $TotalTents = mysqli_fetch_object($Result)->TotalTents;
+
+   $Result = mysqli_query($con, "SELECT COUNT(*) AS TotalProjects FROM project_types");
+   $TotalProjects = mysqli_fetch_object($Result)->TotalProjects;
+
+   $Result = mysqli_query($con, "SELECT COUNT(*) AS TotalBlogs FROM blog_inner_content");
+   $TotalBlogs = mysqli_fetch_object($Result)->TotalBlogs;
+
+   $Result = mysqli_query($con, "SELECT COUNT(*) AS TotalLeads FROM contact_query");
+   $TotalLeads = mysqli_fetch_object($Result)->TotalLeads;
+
+   $ChartLabels = $LabelSeries = $CallSeries = array();
+   $LeadsResult = mysqli_query($con, "SELECT DATE(date) AS label_date, COUNT(*) AS TotalCount FROM contact_query GROUP BY DATE(date) ORDER BY DATE(date) DESC LIMIT 7");
+   while ($LeadRow = mysqli_fetch_assoc($LeadsResult))
+   {
+      $ChartLabels[] = date('M d', strtotime($LeadRow['label_date']));
+      $LabelSeries[] = $LeadRow['TotalCount'];
+   }
+
+   $ChartLabels = array_reverse($ChartLabels);
+   $LabelSeries = array_reverse($LabelSeries);
+?>
+
 <div class="pcoded-content">
    <div class="pcoded-inner-content">
       <div class="main-body">
@@ -21,7 +50,7 @@
                               <span class="material-icons rounded-circle bg-success text-white p-2 me-2">home_work</span>
                               <div>
                                  <div class="text-muted">Total Tents</div>
-                                 <h3 class="mb-0">26</h3>
+                                 <h3 class="mb-0"><?php echo $TotalTents; ?></h3>
                               </div>
                            </div>
                            <a href="project-listing.php" class="text-muted">View all tents <i class="feather icon-arrow-right"></i></a>
@@ -36,7 +65,7 @@
                               <span class="material-icons rounded-circle bg-warning text-white p-2 me-2">apartment</span>
                               <div>
                                  <div class="text-muted">Total Projects</div>
-                                 <h3 class="mb-0">48</h3>
+                                 <h3 class="mb-0"><?php echo $TotalProjects; ?></h3>
                               </div>
                            </div>
                            <a href="project-listings.php" class="text-muted">View all projects <i class="feather icon-arrow-right"></i></a>
@@ -51,7 +80,7 @@
                               <span class="material-icons rounded-circle bg-success text-white p-2 me-2">article</span>
                               <div>
                                  <div class="text-muted">Total Blogs</div>
-                                 <h3 class="mb-0">32</h3>
+                                 <h3 class="mb-0"><?php echo $TotalBlogs; ?></h3>
                               </div>
                            </div>
                            <a href="blog-list-page.php" class="text-muted">View all blogs <i class="feather icon-arrow-right"></i></a>
@@ -66,7 +95,7 @@
                               <span class="material-icons rounded-circle bg-warning text-white p-2 me-2">call</span>
                               <div>
                                  <div class="text-muted">New Leads</div>
-                                 <h3 class="mb-0">14</h3>
+                                 <h3 class="mb-0"><?php echo $TotalLeads; ?></h3>
                               </div>
                            </div>
                            <a href="contact-us-list.php" class="text-muted">View all leads <i class="feather icon-arrow-right"></i></a>
@@ -76,7 +105,7 @@
                </div>
 
                <div class="row">
-                  <div class="col-lg-5 col-md-12 mb-20">
+                  <div class="col-lg-4 col-md-12 mb-20">
                      <div class="card h-100">
                         <div class="card-header d-flex justify-content-between align-items-center">
                            <span>Leads Overview</span>
@@ -87,7 +116,7 @@
                         <div class="card-body">
                            <div class="d-flex gap-3 mb-2 text-muted">
                               <span><i class="feather icon-minus" style="color:#198754;"></i> Contact Leads</span>
-                              <span><i class="feather icon-minus" style="color:#f59f00;"></i> Website Calls</span>
+                              <!-- <span><i class="feather icon-minus" style="color:#f59f00;"></i> Website Calls</span> -->
                            </div>
                            <canvas id="leadsOverviewChart" class="w-100" height="250"></canvas>
                         </div>
@@ -105,41 +134,23 @@
                               <thead>
                                  <tr>
                                     <th>Name</th>
+                                    <th>Email</th>
                                     <th>Country</th>
-                                    <th>Source</th>
                                     <th>Date</th>
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr>
-                                    <td>John Smith</td>
-                                    <td>USA</td>
-                                    <td>/luxury-tents</td>
-                                    <td>15 May, 2025</td>
-                                 </tr>
-                                 <tr>
-                                    <td>David Anderson</td>
-                                    <td>UAE</td>
-                                    <td>/contact-us</td>
-                                    <td>15 May, 2025</td>
-                                 </tr>
-                                 <tr>
-                                    <td>Amit Sharma</td>
-                                    <td>India</td>
-                                    <td>/the-taj-resort-tent</td>
-                                    <td>14 May, 2025</td>
-                                 </tr>
-                                 <tr>
-                                    <td>Sarah Williams</td>
-                                    <td>UK</td>
-                                    <td>/projects</td>
-                                    <td>14 May, 2025</td>
-                                 </tr>
-                                 <tr>
-                                    <td>Michael Brown</td>
-                                    <td>Australia</td>
-                                    <td>/projects</td>
-                                    <td>13 May, 2025</td>
+                                 <?php   
+                                    $LeadsResult = mysqli_query($con, "SELECT * FROM contact_query ORDER BY date DESC LIMIT 5");
+                                    while($Lead = mysqli_fetch_assoc($LeadsResult))
+                                    {
+                                       ?>
+                                       <tr>
+                                          <td><?php echo $Lead['name']; ?></td>
+                                          <td><?php echo $Lead['email']; ?></td>
+                                          <td><?php echo $Lead['l_country']; ?></td>
+                                          <td><?php echo date("d M, Y", strtotime($Lead['date'])); ?></td>
+                                    <?php  }  ?>
                                  </tr>
                               </tbody>
                            </table>
@@ -147,15 +158,15 @@
                      </div>
                   </div>
 
-                  <div class="col-lg-3 col-md-12 mb-20">
+                  <div class="col-lg-2 col-md-12 mb-20">
                      <div class="card h-100">
                         <div class="card-header">Quick Actions</div>
                         <div class="card-body">
                            <div class="list-group">
-                              <a href="add-project.php" class="list-group-item list-group-item-action d-flex align-items-center">
+                              <a href="project-internal.php" class="list-group-item list-group-item-action d-flex align-items-center">
                                  <span class="material-icons me-2 text-success">add_circle</span> Add New Tent
                               </a>
-                              <a href="add-projects.php" class="list-group-item list-group-item-action d-flex align-items-center">
+                              <a href="project-internals.php" class="list-group-item list-group-item-action d-flex align-items-center">
                                  <span class="material-icons me-2 text-warning">apartment</span> Add New Project
                               </a>
                               <a href="blog-inner-page.php" class="list-group-item list-group-item-action d-flex align-items-center">
@@ -173,7 +184,7 @@
                   </div>
                </div>
 
-               <div class="row">
+               <!-- <div class="row">
                   <div class="col-lg-6 col-md-12 mb-20">
                      <div class="card h-100">
                         <div class="card-header d-flex justify-content-between align-items-center">
@@ -243,8 +254,7 @@
                         </div>
                      </div>
                   </div>
-
-               </div>
+               </div> -->
             </div>
          </div>
       </div>
@@ -252,7 +262,11 @@
 </div>
 
 <script>
+var labels = <?php echo json_encode($ChartLabels); ?>;
+var leadSeries = <?php echo json_encode($LabelSeries); ?>;
+
 (function () {
+
    function drawLeadsOverviewChart() {
       var canvas = document.getElementById('leadsOverviewChart');
       if (!canvas) {
@@ -266,11 +280,9 @@
 
       canvas.width = parentWidth;
       canvas.height = 250;
-
+      
       var ctx = canvas.getContext('2d');
-      var labels = ['Apr 16', 'Apr 21', 'Apr 26', 'May 01', 'May 06', 'May 11', 'May 15'];
-      var leadSeries = [12, 20, 30, 24, 30, 34, 44];
-      var callSeries = [2, 5, 12, 9, 15, 13, 27];
+      // var callSeries = [2, 5, 12, 9, 15, 13, 27];
 
       var padding = { top: 18, right: 16, bottom: 28, left: 30 };
       var chartW = canvas.width - padding.left - padding.right;
@@ -323,7 +335,7 @@
       }
 
       drawSeries(leadSeries, '#198754');
-      drawSeries(callSeries, '#f59f00');
+      // drawSeries(callSeries, '#f59f00');
    }
 
    window.addEventListener('resize', drawLeadsOverviewChart);

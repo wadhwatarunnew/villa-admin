@@ -1,5 +1,22 @@
-<?php $PageTitle = "Villatent: Navigation Bar"; ?>
-<?php include_once('common/header.php'); ?>
+<?php
+   include "db.php";
+   include_once('common/header.php');
+   $PageTitle = "Villatent: Navigation Bar";
+
+   if(isset($_GET["id"]) && $_GET["id"] != '')
+   {
+      $id = $_GET["id"];
+      $link_path = $_GET['link'];
+      mysqli_query($con, "DELETE FROM add_nav WHERE id='$id'");
+      unlink("../$link_path");
+
+      $_SESSION['BannerColor'] = "background-color:#FF0000;";
+      $_SESSION['Message'] = "Deleted successfully!";
+      echo "<script>window.location.href='nav-listing.php';</script>";
+      exit;
+   }
+?>
+
 <!---->
 <div class="pcoded-content">
    <div class="pcoded-inner-content">
@@ -13,15 +30,24 @@
                         <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Navigation Listing</span>
                      </div>
                   </div>
+
                   <div class="listing-cta">
                      <a href="add-nav-page.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add</a>
                   </div>
                </div>
+
+               <?php if (!empty($_SESSION['Message'])) {
+                  echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+                           . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+                           . "</div>";
+
+                  unset($_SESSION['Message']);
+                  unset($_SESSION['BannerColor']);
+               } ?>
                <div class="row">
                   <div class="col-sm-12">
                      <div class="card">
                         <div class="card-header">Navigation Listing</div>
-
                         <div class="card-body">
                            <div class="table-responsive grid-scroll">
                               <table class="table table-bordered listing-table">
@@ -55,40 +81,34 @@
                                           <td><?php echo $b['metatitle']; ?></td>
                                           <td><?php echo $b['keyword']; ?></td>
                                           <td><?php echo $b['discription']; ?></td>
+                                          <?php if(!$b['image']) { ?>
+											            <td>
+                                                <img src="<?php echo $b['local_path']; ?>" class="img-thumbnail" height="64" width="64">
+                                             </td>
+								                  <?php	} else { ?>
+                                             <td>
+                                                <img src="<?php echo $b['image']; ?>" class="img-thumbnail" height="64" width="64">
+                                             </td>
+								                  <?php } ?>
+
                                           <?php
-									                  if(!$b['image'])
-                                             {
-										            ?>
-												            <td>
-                                                   <img src="<?php echo $b['local_path']; ?>" class="img-thumbnail" height="64" width="64">
-                                                </td>
-									                  <?php	 
-										               }
-                                             else
-                                             {
-                                             ?>
-                                                <td>
-                                                   <img src="<?php echo $b['image']; ?>" class="img-thumbnail" height="64" width="64">
-                                                </td>
-									 
-									               <?php  }  ?>
-                                                         <?php
-                                                         $hasName = trim((string)$b['name']) !== '';
-                                                         $hasImage = trim((string)$b['image']) !== '' || trim((string)$b['local_path']) !== '';
-                                                         $statusLabel = ($hasName && $hasImage) ? 'Published' : 'Draft';
-                                                         $statusClass = ($statusLabel === 'Published') ? 'status-published' : 'status-draft';
-                                                         ?>
-                                                         <td><span class="status-badge <?php echo $statusClass; ?>"><?php echo $statusLabel; ?></span></td>
+                                             $hasName = trim((string)$b['name']) !== '';
+                                             $hasImage = trim((string)$b['image']) !== '' || trim((string)$b['local_path']) !== '';
+                                             $statusLabel = ($hasName && $hasImage) ? 'Published' : 'Draft';
+                                             $statusClass = ($statusLabel === 'Published') ? 'status-published' : 'status-draft';
+                                          ?>
+                                          <td><span class="status-badge <?php echo $statusClass; ?>"><?php echo $statusLabel; ?></span></td>
                                           <td>
-                                              <div class="actions">
-                                                            <div class="table-actions">
-                                             <a href="edit-nav.php?id=<?php echo $b['id']; ?>">
-                                                               <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
-                                             </a>
-                                             <a href="delete-nav.php?id=<?php echo $b['id']; ?>&link=<?php echo $b['link']; ?>">
-                                                               <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
-                                             </a>
-                                                            </div>
+                                             <div class="actions">
+                                                <div class="table-actions">
+                                                   <a href="edit-nav.php?id=<?php echo $b['id']; ?>">
+                                                      <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
+                                                   </a>
+
+                                                   <a href="nav-listing.php?id=<?php echo $b['id']; ?>&link=<?php echo $b['link']; ?>" onclick="return confirm('Are you sure you want to delete this nav?');">
+                                                      <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
+                                                   </a>
+                                                </div>
                                              </div>
                                           </td>
                                        </tr>  

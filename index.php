@@ -41,13 +41,14 @@
       <div class="main-body">
          <div class="page-wrapper">
             <div class="page-body">
-                <div class="row">
-                     <div class="col-sm-12 col-xs-12 mb-4">
-                         <div class="heading-wrapper">
-                             Resort Tents
-                         </div>
-                     </div> 
-                </div>
+               <div class="row">
+                  <div class="col-sm-12 col-xs-12 mb-4">
+                     <div class="heading-wrapper">
+                        Resort Tents
+                     </div>
+                  </div> 
+               </div>
+
                <div class="row">
                   <?php 
                      $ResortTentsCategory = mysqli_query($con, "SELECT title, color FROM resort_category GROUP BY title ORDER BY order_no");
@@ -70,13 +71,14 @@
                   ?>
                </div>
 
-                <div class="row">
-                     <div class="col-sm-12 col-xs-12 mb-4">
-                         <div class="heading-wrapper">
-                             Projects
-                         </div>
-                     </div> 
-                </div>
+               <div class="row">
+                  <div class="col-sm-12 col-xs-12 mb-4">
+                     <div class="heading-wrapper">
+                        Projects
+                     </div>
+                  </div> 
+               </div>
+
                <div class="row">
                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-4">
                      <div class="card card-raised widget-flat text-muted">
@@ -107,16 +109,18 @@
                      }
                   ?>
                </div>
-                 <div class="row">
-                     <div class="col-sm-12 col-xs-12 mb-4">
-                         <div class="heading-wrapper">
-                             Others
-                         </div>
-                     </div> 
-                </div>
+
+               <div class="row">
+                  <div class="col-sm-12 col-xs-12 mb-4">
+                      <div class="heading-wrapper">
+                          Others
+                      </div>
+                  </div> 
+               </div>
+
                <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 blogs">
-                    <div class="card card-raised widget-flat text-info">
+                     <div class="card card-raised widget-flat text-info">
                         <div class="card-body">
                           <h5 class="text-muted fw-normal mt-0" title="Blogs">Blogs</h5>
                           <h3 class="mt-3 mb-3" id="BlogsCount"><?php echo $BlogsCount; ?></h3>
@@ -142,41 +146,45 @@
 <?php include_once('common/footer.php'); ?>
 <script type="text/javascript">
    $(document).ready(function(){
-     $(".br-menu-link11").click(function(){
-        alert('sss');
-        $(".br-menu-sub").toggleClass('show')
-     });
+      $(".br-menu-link11").click(function(){
+         alert('sss');
+         $(".br-menu-sub").toggleClass('show')
+      });
 
-     $('#myfile').change(function(){
-        var file_data = $('#myfile').prop('files')[0];   
-        var form_data = new FormData();                  
-        form_data.append('file', file_data);
-        $.ajax({
-          url: "index.php",
-          type: "POST",
-          data: form_data,
-          contentType: false,
-          cache: false,
-          processData:false,
-          success: function(data){
-            var result = JSON.parse(data);
-            var $messageDiv = $('#message')
-            $messageDiv.hide().html(result.message);
-            if(result.status) {
-              $("#profileImage").attr("src",result.image);
-              $messageDiv.show();
-              $messageDiv.addClass('alert alert-success').fadeIn(1500);
-           } else {
-              $messageDiv.show();
-              $messageDiv.addClass('alert alert-danger').fadeIn(1500);
-           }
-           setTimeout(function(){
-              $messageDiv.fadeOut(1500);
-           }, 3000);
-        }
+      $('#myfile').change(function(){
+         var file_data = $('#myfile').prop('files')[0];   
+         var form_data = new FormData();                  
+         form_data.append('file', file_data);
+         $.ajax({
+            url: "index.php",
+            type: "POST",
+            data: form_data,
+            contentType: false,
+            cache: false,
+            processData:false,
+            success: function(data) {
+               var result = JSON.parse(data);
+               var $messageDiv = $('#message')
+               $messageDiv.hide().html(result.message);
+               if(result.status)
+               {
+                  $("#profileImage").attr("src",result.image);
+                  $messageDiv.show();
+                  $messageDiv.addClass('alert alert-success').fadeIn(1500);
+               }
+               else
+               {
+                  $messageDiv.show();
+                  $messageDiv.addClass('alert alert-danger').fadeIn(1500);
+               }
+
+               setTimeout(function(){
+                  $messageDiv.fadeOut(1500);
+               }, 3000);
+            }
+         });
      });
-     });
-  });
+   });
 
    function fetchData() {
       $.ajax({

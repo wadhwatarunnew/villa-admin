@@ -1,5 +1,19 @@
-<?php $PageTitle = "Villatent: Our Values"; ?>
-<?php include_once('common/header.php'); ?>
+<?php 
+   include_once('db.php');
+   $PageTitle = "Villatent: Our Values";
+   include_once('common/header.php');
+
+   if(isset($_GET["id"]) && $_GET["id"] != '')
+   {
+      $id = $_GET["id"];
+      mysqli_query($con, "DELETE FROM company_values WHERE id='$id'");
+      $_SESSION['BannerColor'] = "background-color:#FF0000;";
+      $_SESSION['Message'] = "Deleted successfully!";
+      echo "<script>window.location.href='values-list-page.php';</script>";
+      exit;
+   }
+?>
+
 <div class="pcoded-content">
    <div class="pcoded-inner-content">
       <div class="main-body">
@@ -17,6 +31,15 @@
                      <a href="add-value.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Feature</a>
                   </div>
                </div>
+
+               <?php if (!empty($_SESSION['Message'])) {
+                  echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+                           . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+                           . "</div>";
+
+                  unset($_SESSION['Message']);
+                  unset($_SESSION['BannerColor']);
+               } ?>
                <div class="row">
                   <div class="col-sm-12">
                      <div class="table-responsive">
@@ -33,118 +56,32 @@
                               </tr>
                            </thead>
                            <tbody>
-                              <tr role="row">
-                                 <td>1</td>
-                                 <td><span class="material-icons" style="font-size:40px;">verified</span></td>
-                                 <td>Quality First</td>
-                                 <td>We use premium fabrics and materials to ensure unmatched durability.</td>
-                                 <td>1</td>
-                                 <td><span class="status-badge status-active">Active</span></td>
-                                 <td>
-                                    <div class="table-actions">
-                                       <a href="edit-value.php?id=1">
-                                          <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
-                                       </a>
-                                       <a href="delete-value.php?id=1">
-                                          <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
-                                       </a>
-                                    </div>
-                                 </td>
-                              </tr>
-                              <tr role="row">
-                                 <td>2</td>
-                                 <td><span class="material-icons" style="font-size:40px;">brush</span></td>
-                                 <td>Custom Design</td>
-                                 <td>Every project is tailored to suit your property, requirements and vision.</td>
-                                 <td>2</td>
-                                 <td><span class="status-badge status-active">Active</span></td>
-                                 <td>
-                                    <div class="table-actions">
-                                       <a href="edit-value.php?id=2">
-                                          <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
-                                       </a>
-                                       <a href="delete-value.php?id=2">
-                                          <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
-                                       </a>
-                                    </div>
-                                 </td>
-                              </tr>
-                              <tr role="row">
-                                 <td>3</td>
-                                 <td><span class="material-icons" style="font-size:40px;">eco</span></td>
-                                 <td>Sustainable</td>
-                                 <td>Eco-friendly materials and responsible practices for a better tomorrow.</td>
-                                 <td>3</td>
-                                 <td><span class="status-badge status-active">Active</span></td>
-                                 <td>
-                                    <div class="table-actions">
-                                       <a href="edit-value.php?id=3">
-                                          <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
-                                       </a>
-                                       <a href="delete-value.php?id=3">
-                                          <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
-                                       </a>
-                                    </div>
-                                 </td>
-                              </tr>
-                              <tr role="row">
-                                 <td>4</td>
-                                 <td><span class="material-icons" style="font-size:40px;">diversity_3</span></td>
-                                 <td>Client Focused</td>
-                                 <td>We deliver solutions that are centered on your needs, experience and comfort.</td>
-                                 <td>4</td>
-                                 <td><span class="status-badge status-active">Active</span></td>
-                                 <td>
-                                    <div class="table-actions">
-                                       <a href="edit-value.php?id=4">
-                                          <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
-                                       </a>
-                                       <a href="delete-value.php?id=4">
-                                          <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
-                                       </a>
-                                    </div>
-                                 </td>
-                              </tr>
-                              <tr role="row">
-                                 <td>5</td>
-                                 <td><span class="material-icons" style="font-size:40px;">access_time_filled</span></td>
-                                 <td>Timely Delivery</td>
-                                 <td>We deliver and support projects on time without compromising on quality.</td>
-                                 <td>5</td>
-                                 <td><span class="status-badge status-active">Active</span></td>
-                                 <td>
-                                    <div class="table-actions">
-                                       <a href="edit-value.php?id=5">
-                                          <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
-                                       </a>
-                                       <a href="delete-value.php?id=5">
-                                          <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
-                                       </a>
-                                    </div>
-                                 </td>
-                              </tr>
-                              <tr role="row">
-                                 <td>6</td>
-                                 <td><span class="material-icons" style="font-size:40px;">support_agent</span></td>
-                                 <td>Support 24/7</td>
-                                 <td>Our dedicated team is always available to assist you, anytime, anywhere.</td>
-                                 <td>6</td>
-                                 <td><span class="status-badge status-active">Active</span></td>
-                                 <td>
-                                    <div class="table-actions">
-                                       <a href="edit-value.php?id=6">
-                                          <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
-                                       </a>
-                                       <a href="delete-value.php?id=6">
-                                          <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
-                                       </a>
-                                    </div>
-                                 </td>
-                              </tr>
+                           <?php
+                              $Result = mysqli_query($con, "SELECT * FROM company_values");
+                              $i=1;
+                              while($Row = mysqli_fetch_assoc($Result)) { ?>
+                                 <tr role="row">
+                                    <td><?php echo $i; ?></td>
+                                    <td><span class="material-icons" style="font-size:40px;"><?php echo $Row['icon']; ?></span></td>
+                                    <td><?php echo $Row['title']; ?></td>
+                                    <td><?php echo $Row['description']; ?></td>
+                                    <td><?php echo $Row['display_order']; ?></td>
+                                    <td><span class="status-badge status-active"><?php echo $Row['status']; ?></span></td>
+                                    <td>
+                                       <div class="table-actions">
+                                          <a href="edit-value.php?id=<?php echo $Row['id']; ?>">
+                                             <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
+                                          </a>
+                                          <a href="values-list-page.php?id=<?php echo $Row['id']; ?>" onclick="return confirm('Are you sure you want to delete this?');">
+                                             <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
+                                          </a>
+                                       </div>
+                                    </td>
+                                 </tr>
+                           <?php $i++; } ?>
                            </tbody>
                         </table>
                      </div>
-                     <div class="listing-info-text">Showing 1 to 6 of 6 features</div>
                   </div>
                </div>
             </div>

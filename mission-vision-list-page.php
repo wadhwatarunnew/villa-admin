@@ -1,5 +1,9 @@
-<?php $PageTitle = "Villatent: Mission & Vision"; ?>
-<?php include_once('common/header.php'); ?>
+<?php 
+   include_once('db.php');
+   include_once('common/header.php');
+   $PageTitle = "Villatent: Mission & Vision";
+?>
+
 <div class="pcoded-content">
    <div class="pcoded-inner-content">
       <div class="main-body">
@@ -13,10 +17,11 @@
                         <span>Home</span><span class="crumb-sep">&gt;</span><span>Mission & Vision</span>
                      </div>
                   </div>
-                  <div class="listing-cta">
+                  <!-- <div class="listing-cta">
                      <a href="edit-mission-vision.php?id=1" class="btn btn-success btn-sm"><i class="feather icon-edit"></i> Edit Section</a>
-                  </div>
+                  </div> -->
                </div>
+
                <div class="row">
                   <div class="col-sm-12">
                      <div class="table-responsive">
@@ -33,29 +38,33 @@
                               </tr>
                            </thead>
                            <tbody>
-                              <tr role="row">
-                                 <td>1</td>
-                                 <td><img src="images/default-profile.png" alt="Mission Vision" class="mission-vision-thumb img-thumbnail" width="200" height="50"></td>
-                                 <td>
-                                    <strong>OUR MISSION</strong><br>
-                                    To Create Extraordinary Stays That Leave Lasting Memories<br><br>
-                                    We are committed to designing and manufacturing luxury tents that blend elegance, comfort and nature to create unforgettable experiences.
-                                 </td>
-                                 <td>
-                                    <strong>OUR VISION</strong><br>
-                                    To Be The World's Most Trusted Glamping Partner<br><br>
-                                    We envision a world where luxury and nature exist in perfect harmony, and we strive to be at the forefront of this movement.
-                                 </td>
-                                 <td><span class="status-badge status-active">Active</span></td>
-                                 <td>25 May 2025<br>10:30 AM</td>
-                                 <td>
-                                    <div class="table-actions">
-                                       <a href="edit-mission-vision.php?id=1">
-                                          <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
-                                       </a>
-                                    </div>
-                                 </td>
-                              </tr>
+                           <?php
+                              $MissionResult = mysqli_query($con, "SELECT * FROM mission_vision");
+                              while($MissionRow = mysqli_fetch_assoc($MissionResult)) { ?>
+                                 <tr role="row">
+                                    <td>1</td>
+                                    <td><img src="<?php echo $MissionRow['image']; ?>" alt="Mission Vision" class="mission-vision-thumb img-thumbnail" width="200" height="50"></td>
+                                    <td>
+                                       <strong><?php echo $MissionRow['mission_title']; ?></strong><br>
+                                       <?php echo $MissionRow['mission_heading']; ?><br><br>
+                                       <?php echo $MissionRow['mission_desc']; ?>
+                                    </td>
+                                    <td>
+                                       <strong><?php echo $MissionRow['vision_title']; ?></strong><br>
+                                       <?php echo $MissionRow['vision_heading']; ?><br><br>
+                                       <?php echo $MissionRow['vision_desc']; ?>
+                                    </td>
+                                    <td><span class="status-badge status-active"><?php echo $MissionRow['status']; ?></span></td>
+                                    <td><?php echo Date('d M Y' , strtotime($MissionRow['updated_at'])); ?><br><?php echo Date('g:i A' , strtotime($MissionRow['updated_at'])); ?></td>
+                                    <td>
+                                       <div class="table-actions">
+                                          <a href="edit-mission-vision.php?id=<?php echo $MissionRow['id'];?>">
+                                             <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
+                                          </a>
+                                       </div>
+                                    </td>
+                                 </tr>
+                           <?php } ?>
                            </tbody>
                         </table>
                      </div>

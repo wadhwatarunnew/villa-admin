@@ -2,6 +2,10 @@
    $PageTitle = "Villatent: Add Brand";
    include_once('common/header.php');
 
+   $id = $_GET["id"];
+   $Brands = mysqli_query($con, "SELECT * FROM brands WHERE id=$id");
+   $Row = mysqli_fetch_assoc($Brands);
+
    if (isset($_POST['saveBrand']))
    {
       $BrandName   = $_POST['alt_text'];
@@ -13,23 +17,30 @@
       $path          = "uploads/pageimages/logo/";
       $path_original = "uploads/pageimages/logo/";
       
-      $CheckDuplicate = mysqli_query($con, "SELECT * FROM brands WHERE link='$BrandLink'");
+      $CheckDuplicate = mysqli_query($con, "SELECT * FROM brands WHERE link='$BrandLink' AND id != '$id'");
       if(mysqli_num_rows($CheckDuplicate) > 0)
       {
          $_SESSION['BannerColor'] = "background-color:#FF0000;";
          $_SESSION['Message'] = "Brand already exists!";
-         echo "<script>window.location.href='add-brand.php';</script>";
+         echo "<script>window.location.href='edit-brand.php?id=$id';</script>";
          exit;
       }
 
-      move_uploaded_file($_FILES['logo']['tmp_name'],$path.$myFile) ;
-      $path = $path_original.$myFile;
+      if (isset($_FILES['logo']) && $_FILES['logo']['error'] == UPLOAD_ERR_OK)
+      {
+         move_uploaded_file($_FILES['logo']['tmp_name'],$path.$myFile) ;
+         $path = $path_original.$myFile;
 
-      mysqli_query($con, "INSERT INTO brands (name, link, logo, display_order, status) values ('$BrandName', '$BrandLink', '$path', '$Order', '$Status') ");
+         mysqli_query($con, "UPDATE brands SET name='$BrandName', link='$BrandLink', logo='$path', display_order='$Order', status='$Status' WHERE id=$id");
+      }
+      else
+      {
+         mysqli_query($con, "UPDATE brands SET name='$BrandName', link='$BrandLink', display_order='$Order', status='$Status' WHERE id=$id");
+      }
           
       $_SESSION['BannerColor'] = "background-color:#4BB543;";
-      $_SESSION['Message'] = "Added Successfully!";
-      echo "<script>window.location.href='add-brand.php';</script>";
+      $_SESSION['Message'] = "Updated Successfully!";
+      echo "<script>window.location.href='edit-brand.php?id=$id';</script>";
       exit;
    }
 ?>
@@ -42,10 +53,10 @@
                <div class="page-body">
                   <div class="listing-page-head">
                      <div class="listing-title-wrap">
-                        <h1>Add Brand</h1>
+                        <h1>Edit Brand</h1>
                         <p class="listing-subtitle">Upload brand logo and details to be displayed on the homepage.</p>
                         <div class="listing-breadcrumb">
-                           <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Brands</span><span class="crumb-sep">&gt;</span><span>Add Brand</span>
+                           <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Brands</span><span class="crumb-sep">&gt;</span><span>Edit Brand</span>
                         </div>
                      </div>
                      <div class="listing-cta">
@@ -69,7 +80,7 @@
                               <div class="form-group mb-0">
                                  <label class="banner-form-label">Logo <span class="required">*</span></label>
                                  <div class="brand-logo-upload" id="brand_logo_upload">
-                                    <input type="file" name="logo" id="brand_logo_input" accept="image/*" style="display: none;" required>
+                                    <input type="file" name="logo" id="brand_logo_input" accept="image/*" style="display: none;">
                                     <div class="brand-logo-placeholder" id="brand_logo_placeholder">
                                        <span class="material-icons">cloud_upload</span>
                                        <div class="brand-upload-text"><strong>Click to upload</strong> or drag and drop</div>
@@ -93,14 +104,14 @@
                                  <div class="card-body">
                                     <div class="form-group mb-20">
                                        <label class="banner-form-label">Alt Text <span class="required">*</span></label>
-                                       <input type="text" class="form-control banner-form-control" name="alt_text" id="alt_text" maxlength="100" placeholder="e.g. Taj Hotels" required>
+                                       <input type="text" class="form-control banner-form-control" name="alt_text" value="<?php echo $Row['name']; ?>" id="alt_text" maxlength="100" placeholder="e.g. Taj Hotels" required>
                                        <div class="counter-help-text">This text will be used for accessibility and SEO</div>
                                        <div class="counter-char-counter"><span id="alt_char_count">0</span>/100</div>
                                     </div>
 
                                     <div class="form-group mb-0">
                                        <label class="banner-form-label">Link (URL)</label>
-                                       <input type="url" class="form-control banner-form-control" name="link_url" id="link_url" maxlength="255" placeholder="https://www.example.com">
+                                       <input type="url" class="form-control banner-form-control" name="link_url" id="link_url" value="<?php echo $Row['link']; ?>" maxlength="255" placeholder="https://www.example.com">
                                        <div class="counter-help-text">Add brand website link (optional)</div>
                                        <div class="counter-char-counter"><span id="link_char_count">0</span>/255</div>
                                     </div>
@@ -113,15 +124,15 @@
                                  <div class="card-body">
                                     <div class="form-group mb-20">
                                        <label class="banner-form-label">Display Order <span class="required">*</span></label>
-                                       <input type="number" class="form-control banner-form-control" name="display_order" id="display_order" value="1" min="0" required>
+                                       <input type="number" class="form-control banner-form-control" name="display_order" id="display_order" value="<?php echo $Row['display_order']; ?>" value="1" min="0" required>
                                        <div class="counter-help-text">Lower numbers will display first</div>
                                     </div>
 
                                     <div class="form-group mb-0">
                                        <label class="banner-form-label">Status <span class="required">*</span></label>
                                        <select class="form-control banner-form-control" name="status" id="status" required>
-                                          <option value="Active" selected>Active</option>
-                                          <option value="Inactive">Inactive</option>
+                                          <option value="Active"  <?php echo ($Row["status"] == 'Active') ? 'selected' : ''; ?>>Active</option>
+                                          <option value="Inactive" <?php echo ($Row["status"] == 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
                                        </select>
                                        <div class="counter-help-text">Show or hide this brand on the website</div>
                                     </div>

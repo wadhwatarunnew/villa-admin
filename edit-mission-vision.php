@@ -1,9 +1,75 @@
-<?php $PageTitle = "Villatent: Edit Mission & Vision"; ?>
-<?php include_once('common/header.php'); ?>
+<?php 
+   include_once('db.php');
+   include_once('common/header.php');
+   $PageTitle = "Villatent: Edit Mission & Vision";
+
+   $id = $_GET['id'];
+   $MissionResult = mysqli_query($con, "SELECT * FROM mission_vision WHERE id='$id'");
+   $MissionRow = mysqli_fetch_assoc($MissionResult);
+
+   if (isset($_POST['update_mission_vision']))
+   {
+      $MissionTitle     = mysqli_real_escape_string($con, $_POST['mission_sub_heading']);
+      $MissionHeading   = mysqli_real_escape_string($con, $_POST['mission_heading']);  
+      $MissionDesc      = mysqli_real_escape_string($con, $_POST['mission_description']);
+      $VisionTitle      = mysqli_real_escape_string($con, $_POST['vision_sub_heading']);
+      $VisionHeading    = mysqli_real_escape_string($con, $_POST['vision_heading']);
+      $VisionDesc       = mysqli_real_escape_string($con, $_POST['vision_description']);
+      $DisplayOrder     = $_POST['display_order'];
+      $Status           = $_POST['status'];
+      $ImageFile        = $_FILES['background_image']['name'];
+      $CurrentDateTime  = Date("Y-m-d H:i:s");
+
+      $path = "uploads/pageimages/";
+      $path_original = "uploads/pageimages/";
+
+      if($ImageFile != '')
+      {
+         if((file_exists("uploads/pageimages/".$ImageFile) || file_exists("uploads/pageimages/addgallery/".$ImageFile) || file_exists("uploads/pageimages/addgallery/project/".$ImageFile) || file_exists("uploads/pageimages/addgallery/resort/".$ImageFile) || file_exists("uploads/pageimages/blogs/".$ImageFile) || file_exists("uploads/pageimages/blogs/single/".$ImageFile)  || file_exists("uploads/pageimages/contact/".$ImageFile) || file_exists("uploads/pageimages/nav/".$ImageFile) || file_exists("uploads/pageimages/nav/category/".$ImageFile) || file_exists("uploads/pageimages/nav/types/".$ImageFile) || file_exists("uploads/pageimages/project/".$ImageFile) || file_exists("uploads/pageimages/project/category/".$ImageFile) || file_exists("uploads/pageimages/project/types/".$ImageFile) || file_exists("uploads/pageimages/resort/".$ImageFile) || file_exists("uploads/pageimages/resort/category/".$ImageFile) || file_exists("uploads/pageimages/resort/types/".$ImageFile) || file_exists("uploads/pageimages/slider/".$ImageFile) || file_exists("uploads/pageimages/youtube/".$ImageFile)))
+         {
+            $FileExists = true;
+            $_SESSION['BannerColor'] = "background-color:#FF0000;";
+            $_SESSION['Message'] = "Selected image already exists!";
+            echo "<script>window.location.href='edit-mission-vision.php?id=$id';</script>";
+            exit;
+         }
+         else
+         {
+            move_uploaded_file($_FILES['background_image']['tmp_name'],$path.$ImageFile) ;
+            $path = $path_original.$ImageFile;
+            
+            mysqli_query($con, "UPDATE mission_vision SET mission_title='$MissionTitle', mission_heading='$MissionHeading', mission_desc='$MissionDesc', vision_title='$VisionTitle', vision_heading='$VisionHeading', vision_desc='$VisionDesc', image='$path', display_order='$DisplayOrder', status='$Status', updated_at='$CurrentDateTime' WHERE id='$id'");
+
+            $_SESSION['BannerColor'] = "background-color:#4BB543;";
+            $_SESSION['Message'] = "Updated Successfully!";
+            echo "<script>window.location.href='edit-mission-vision.php?id=$id';</script>";
+            exit;
+         }
+      }
+      else
+      {
+         mysqli_query($con, "UPDATE mission_vision SET mission_title='$MissionTitle', mission_heading='$MissionHeading', mission_desc='$MissionDesc', vision_title='$VisionTitle', vision_heading='$VisionHeading', vision_desc='$VisionDesc', display_order='$DisplayOrder', status='$Status', updated_at='$CurrentDateTime' WHERE id='$id'");
+
+         $_SESSION['BannerColor'] = "background-color:#4BB543;";
+         $_SESSION['Message'] = "Updated Successfully!";
+         echo "<script>window.location.href='edit-mission-vision.php?id=$id';</script>";
+         exit;
+      }
+   }
+?>
+
 <div class="pcoded-content">
    <div class="pcoded-inner-content">
       <div class="main-body">
          <div class="page-wrapper">
+            <?php if (!empty($_SESSION['Message'])) {
+               echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+                        . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+                        . "</div>";
+
+               unset($_SESSION['Message']);
+               unset($_SESSION['BannerColor']);
+            } ?>
             <form action="" enctype="multipart/form-data" method="post">
                <div class="page-body">
                   <div class="listing-page-head">
@@ -16,7 +82,7 @@
                      </div>
                      <div class="listing-cta">
                         <a href="mission-vision-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back to List</a>
-                        <input type="submit" class="btn btn-success btn-sm" name="update_mission_vision" value="Save Changes">
+                        <button type="submit" class="btn btn-success btn-sm" name="update_mission_vision"><i class="feather icon-save"></i> Save Changes</button>
                      </div>
                   </div>
 
@@ -28,7 +94,7 @@
                               <div class="form-group mb-0">
                                  <label class="banner-form-label">Background Image <span class="required">*</span></label>
                                  <div class="mission-vision-image-box">
-                                    <img src="images/default-profile.png" alt="Mission Vision Background" id="mission_vision_image_preview" class="mission-vision-preview-img">
+                                    <img src="<?php echo $MissionRow['image']; ?>" alt="Mission Vision Background" id="mission_vision_image_preview" class="mission-vision-preview-img">
                                     <input type="file" name="background_image" id="background_image" accept="image/*" style="display: none;">
                                     <div class="mission-vision-image-actions">
                                        <button type="button" class="btn btn-outline-success btn-sm" onclick="document.getElementById('background_image').click();">
@@ -49,19 +115,19 @@
                            <div class="card-body">
                               <div class="form-group mb-20">
                                  <label class="banner-form-label">Sub Heading <span class="required">*</span></label>
-                                 <input type="text" class="form-control banner-form-control" name="mission_sub_heading" id="mission_sub_heading" maxlength="50" value="OUR MISSION" placeholder="Enter sub heading" required>
+                                 <input type="text" class="form-control banner-form-control" name="mission_sub_heading" id="mission_sub_heading" maxlength="50" value="<?php echo $MissionRow['mission_title']; ?>" placeholder="Enter sub heading" required>
                                  <div class="counter-char-counter"><span id="mission_sub_char_count">11</span>/50</div>
                               </div>
 
                               <div class="form-group mb-20">
                                  <label class="banner-form-label">Heading <span class="required">*</span></label>
-                                 <input type="text" class="form-control banner-form-control" name="mission_heading" id="mission_heading" maxlength="100" value="To Create Extraordinary Stays That Leave Lasting Memories" placeholder="Enter heading" required>
+                                 <input type="text" class="form-control banner-form-control" name="mission_heading" id="mission_heading" maxlength="100" value="<?php echo mysqli_real_escape_string($con, $MissionRow['mission_heading']); ?>" placeholder="Enter heading" required>
                                  <div class="counter-char-counter"><span id="mission_heading_char_count">57</span>/100</div>
                               </div>
 
                               <div class="form-group mb-0">
                                  <label class="banner-form-label">Description <span class="required">*</span></label>
-                                 <textarea name="mission_description" id="mission_description" class="form-control banner-form-control" rows="6" maxlength="300" placeholder="Enter description..." required>We are committed to designing and manufacturing luxury tents that blend elegance, comfort and nature to create unforgettable experiences.</textarea>
+                                 <textarea name="mission_description" id="mission_description" class="form-control banner-form-control" rows="6" maxlength="300" placeholder="Enter description..." required><?php echo mysqli_real_escape_string($con, $MissionRow['mission_desc']); ?></textarea>
                                  <div class="counter-char-counter"><span id="mission_desc_char_count">116</span>/300</div>
                               </div>
                            </div>
@@ -74,19 +140,19 @@
                            <div class="card-body">
                               <div class="form-group mb-20">
                                  <label class="banner-form-label">Sub Heading <span class="required">*</span></label>
-                                 <input type="text" class="form-control banner-form-control" name="vision_sub_heading" id="vision_sub_heading" maxlength="50" value="OUR VISION" placeholder="Enter sub heading" required>
+                                 <input type="text" class="form-control banner-form-control" name="vision_sub_heading" id="vision_sub_heading" maxlength="50" value="<?php echo mysqli_real_escape_string($con, $MissionRow['vision_title']); ?>" placeholder="Enter sub heading" required>
                                  <div class="counter-char-counter"><span id="vision_sub_char_count">10</span>/50</div>
                               </div>
 
                               <div class="form-group mb-20">
                                  <label class="banner-form-label">Heading <span class="required">*</span></label>
-                                 <input type="text" class="form-control banner-form-control" name="vision_heading" id="vision_heading" maxlength="100" value="To Be The World's Most Trusted Glamping Partner" placeholder="Enter heading" required>
+                                 <input type="text" class="form-control banner-form-control" name="vision_heading" id="vision_heading" maxlength="100" value="<?php echo mysqli_real_escape_string($con, $MissionRow['vision_heading']); ?>" placeholder="Enter heading" required>
                                  <div class="counter-char-counter"><span id="vision_heading_char_count">45</span>/100</div>
                               </div>
 
                               <div class="form-group mb-0">
                                  <label class="banner-form-label">Description <span class="required">*</span></label>
-                                 <textarea name="vision_description" id="vision_description" class="form-control banner-form-control" rows="6" maxlength="300" placeholder="Enter description..." required>We envision a world where luxury and nature exist in perfect harmony, and we strive to be at the forefront of this movement.</textarea>
+                                 <textarea name="vision_description" id="vision_description" class="form-control banner-form-control" rows="6" maxlength="300" placeholder="Enter description..." required><?php echo mysqli_real_escape_string($con, $MissionRow['vision_desc']); ?></textarea>
                                  <div class="counter-char-counter"><span id="vision_desc_char_count">101</span>/300</div>
                               </div>
                            </div>
@@ -101,14 +167,15 @@
                               <div class="form-group mb-0">
                                  <label class="banner-form-label">Status <span class="required">*</span></label>
                                  <select class="form-control banner-form-control" name="status" id="status" required>
-                                    <option value="active" selected>Active</option>
-                                    <option value="inactive">Inactive</option>
+                                    <option value="Active" <?php echo ($MissionRow['status'] == 'Active') ? 'selected' : ''; ?>>Active</option>
+                                    <option value="Inactive" <?php echo ($MissionRow['status'] == 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
                                  </select>
                                  <div class="counter-help-text">Show or hide this section on the website</div>
                               </div>
                            </div>
                         </div>
                      </div>
+
                      <div class="col-lg-6 col-md-6 mb-20">
                         <div class="card">
                            <div class="card-body">
@@ -121,7 +188,6 @@
                         </div>
                      </div>
                   </div>
-
                </div>
             </form>
          </div>
@@ -130,13 +196,14 @@
 </div>
 
 <script>
-   function resetMissionVisionImage(){
+   function resetMissionVisionImage()
+   {
       document.getElementById('background_image').value = "";
       document.getElementById('mission_vision_image_preview').src = "images/default-profile.png";
    }
 
    $(document).ready(function(){
-      $('#background_image').on('change', function(){
+      $('#background_image').on('change', function() {
          var input = this;
          if(input.files && input.files[0]){
             var reader = new FileReader();
@@ -147,27 +214,27 @@
          }
       });
 
-      $('#mission_sub_heading').on('input', function(){
+      $('#mission_sub_heading').on('input', function() {
          $('#mission_sub_char_count').text($(this).val().length);
       });
 
-      $('#mission_heading').on('input', function(){
+      $('#mission_heading').on('input', function() {
          $('#mission_heading_char_count').text($(this).val().length);
       });
 
-      $('#mission_description').on('input', function(){
+      $('#mission_description').on('input', function() {
          $('#mission_desc_char_count').text($(this).val().length);
       });
 
-      $('#vision_sub_heading').on('input', function(){
+      $('#vision_sub_heading').on('input', function() {
          $('#vision_sub_char_count').text($(this).val().length);
       });
 
-      $('#vision_heading').on('input', function(){
+      $('#vision_heading').on('input', function() {
          $('#vision_heading_char_count').text($(this).val().length);
       });
 
-      $('#vision_description').on('input', function(){
+      $('#vision_description').on('input', function() {
          $('#vision_desc_char_count').text($(this).val().length);
       });
    });

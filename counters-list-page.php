@@ -1,5 +1,19 @@
-<?php $PageTitle = "Villatent: Counters"; ?>
-<?php include_once('common/header.php'); ?>
+<?php
+   include "db.php";
+   include_once('common/header.php');
+   $PageTitle = "Villatent: Counters";
+
+   if(isset($_GET["id"]) && $_GET["id"] != '')
+   {
+      $id = $_GET["id"];
+      mysqli_query($con, "DELETE FROM counters WHERE id='$id'");
+      $_SESSION['BannerColor'] = "background-color:#FF0000;";
+      $_SESSION['Message'] = "Deleted successfully!";
+      echo "<script>window.location.href='counters-list-page.php';</script>";
+      exit;
+   }
+?>
+
 <div class="pcoded-content">
    <div class="pcoded-inner-content">
       <div class="main-body">
@@ -17,6 +31,15 @@
                      <a href="counters-inner-page.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Counter</a>
                   </div>
                </div>
+
+               <?php if (!empty($_SESSION['Message'])) {
+                  echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+                           . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+                           . "</div>";
+
+                  unset($_SESSION['Message']);
+                  unset($_SESSION['BannerColor']);
+               } ?>
                <div class="row">
                   <div class="col-sm-12">
                      <div class="table-responsive">
@@ -27,89 +50,37 @@
                                  <th>Icon</th>
                                  <th>Title</th>
                                  <th>Number</th>
-                                 <th>Suffix</th>
                                  <th>Status</th>
                                  <th>Display Order</th>
                                  <th>Actions</th>
                               </tr>
                            </thead>
                            <tbody>
-                              <tr role="row">
-                                 <td>1</td>
-                                 <td><span class="material-icons" style="font-size:40px;">emoji_events</span></td>
-                                 <td>Years of Experience</td>
-                                 <td>30+</td>
-                                 <td>+</td>
-                                 <td><span class="status-badge status-active">Active</span></td>
-                                 <td>1</td>
-                                 <td>
-                                    <div class="table-actions">
-                                       <a href="edit-counter.php?id=1">
-                                          <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
-                                       </a>
-                                       <a href="delete-counter.php?id=1">
-                                          <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
-                                       </a>
-                                    </div>
-                                 </td>
-                              </tr>
-                              <tr role="row">
-                                 <td>2</td>
-                                 <td><span class="material-icons" style="font-size:40px;">work</span></td>
-                                 <td>Projects Completed</td>
-                                 <td>500+</td>
-                                 <td>+</td>
-                                 <td><span class="status-badge status-active">Active</span></td>
-                                 <td>2</td>
-                                 <td>
-                                    <div class="table-actions">
-                                       <a href="edit-counter.php?id=2">
-                                          <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
-                                       </a>
-                                       <a href="delete-counter.php?id=2">
-                                          <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
-                                       </a>
-                                    </div>
-                                 </td>
-                              </tr>
-                              <tr role="row">
-                                 <td>3</td>
-                                 <td><span class="material-icons" style="font-size:40px;">public</span></td>
-                                 <td>Countries Served</td>
-                                 <td>40+</td>
-                                 <td>+</td>
-                                 <td><span class="status-badge status-active">Active</span></td>
-                                 <td>3</td>
-                                 <td>
-                                    <div class="table-actions">
-                                       <a href="edit-counter.php?id=3">
-                                          <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
-                                       </a>
-                                       <a href="delete-counter.php?id=3">
-                                          <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
-                                       </a>
-                                    </div>
-                                 </td>
-                              </tr>
-                              <tr role="row">
-                                 <td>4</td>
-                                 <td><span class="material-icons" style="font-size:40px;">thumb_up</span></td>
-                                 <td>Client Satisfaction</td>
-                                 <td>100%</td>
-                                 <td>%</td>
-                                 <td><span class="status-badge status-active">Active</span></td>
-                                 <td>4</td>
-                                 <td>
-                                    <div class="table-actions">
-                                       <a href="edit-counter.php?id=4">
-                                          <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
-                                       </a>
-                                       <a href="delete-counter.php?id=4">
-                                          <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
-                                       </a>
-                                    </div>
-                                 </td>
-                              </tr>
+                              <?php
+                              $i = 1;   
+                              $Result = mysqli_query($con, "SELECT * FROM counters");
+                              while($CounterRow = mysqli_fetch_assoc($Result))
+                              {
+                                 ?>
+                                 <tr role="row">
+                                    <td><?php echo $i; ?></td>
+                                    <td><span class="material-icons" style="font-size:40px;"><?php echo $CounterRow['icon']; ?></span></td>
+                                    <td><?php echo $CounterRow['title']; ?></td>
+                                    <td><?php echo $CounterRow['number']."".$CounterRow['suffix']; ?></td>
+                                    <td><span class="status-badge status-active"><?php echo $CounterRow['status']; ?></span></td>
+                                    <td><?php echo $CounterRow['display_order']; ?></td>
+                                    <td>
+                                       <div class="table-actions">
+                                          <a href="edit-counter.php?id=<?php echo $CounterRow['id']; ?>">
+                                             <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
+                                          </a>
+                                          <a href="counters-list-page.php?id=<?php echo $CounterRow['id']; ?>" onclick="return confirm('Are you sure you want to delete this counter?');">
+                                             <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
+                                          </a>
+                                       </div>
+                                    </td>
+                                 </tr>
+                              <?php $i++; }  ?>
                            </tbody>
                         </table>
                      </div>

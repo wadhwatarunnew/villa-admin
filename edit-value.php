@@ -1,5 +1,28 @@
-<?php $PageTitle = "Villatent: Edit Feature"; ?>
-<?php include_once('common/header.php'); ?>
+<?php
+   include_once('db.php');
+   include_once('common/header.php');
+   $PageTitle = "Villatent: Edit Feature";
+
+   $id = $_GET['id'];
+   $Result = mysqli_query($con, "SELECT * FROM company_values WHERE id='$id'");
+   $Row = mysqli_fetch_assoc($Result);
+
+   if (isset($_POST['update_feature']))
+   {
+      $Title         = $_POST['title'];
+      $Description   = mysqli_real_escape_string($con, $_POST['description']);
+      $Icon          = $_POST['value_icon'];
+      $DisplayOrder  = $_POST['display_order'];
+      $Status        = $_POST['status'];
+      
+      mysqli_query($con, "UPDATE company_values SET title='$Title', description='$Description', icon='$Icon', display_order='$DisplayOrder', status='$Status' WHERE id=$id");
+
+      $_SESSION['BannerColor'] = "background-color:#4BB543;";
+      $_SESSION['Message'] = "Updated Successfully!";
+      echo "<script>window.location.href='edit-value.php?id=$id';</script>";
+      exit;
+   }
+?>
 <div class="pcoded-content">
    <div class="pcoded-inner-content">
       <div class="main-body">
@@ -20,6 +43,14 @@
                      </div>
                   </div>
 
+                  <?php if (!empty($_SESSION['Message'])) {
+                     echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+                              . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+                              . "</div>";
+
+                     unset($_SESSION['Message']);
+                     unset($_SESSION['BannerColor']);
+                  } ?>
                   <div class="row">
                      <div class="col-sm-12">
                         <div class="card">
@@ -31,9 +62,9 @@
                                        <label class="banner-form-label">Icon <span class="required">*</span></label>
                                        <div class="counter-icon-box">
                                           <div class="counter-icon-preview">
-                                             <span class="material-icons" id="value_icon_preview">verified</span>
+                                             <span class="material-icons" id="value_icon_preview"><?php echo $Row['icon']; ?></span>
                                           </div>
-                                          <input type="hidden" name="value_icon" id="value_icon_input" value="verified" required>
+                                          <input type="hidden" name="value_icon" id="value_icon_input" value="<?php echo $Row['icon']; ?>" required>
                                           <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#iconPickerModal"><i class="feather icon-edit"></i> Change Icon</button>
                                           <div class="counter-icon-help" id="selected_icon_name">Selected: verified</div>
                                        </div>
@@ -42,14 +73,14 @@
                                  <div class="col-lg-3 col-md-6">
                                     <div class="form-group">
                                        <label class="banner-form-label">Title <span class="required">*</span></label>
-                                       <input type="text" class="form-control banner-form-control" name="title" id="title" maxlength="50" value="Quality First" placeholder="Enter feature title" required>
+                                       <input type="text" class="form-control banner-form-control" name="title" id="title" maxlength="50" value="<?php echo $Row['title']; ?>" placeholder="Enter feature title" required>
                                        <div class="counter-char-counter"><span id="title_char_count">13</span>/50</div>
                                     </div>
                                  </div>
                                  <div class="col-lg-6 col-md-12">
                                     <div class="form-group">
                                        <label class="banner-form-label">Description <span class="required">*</span></label>
-                                       <textarea name="description" id="description" class="form-control banner-form-control" rows="3" maxlength="150" placeholder="Enter description..." required>We use premium fabrics and materials to ensure unmatched durability.</textarea>
+                                       <textarea name="description" id="description" class="form-control banner-form-control" rows="3" maxlength="150" placeholder="Enter description..." required><?php echo $Row['description']; ?></textarea>
                                        <div class="counter-char-counter"><span id="desc_char_count">72</span>/150</div>
                                     </div>
                                  </div>
@@ -65,7 +96,7 @@
                            <div class="card-body">
                               <div class="form-group mb-0">
                                  <label class="banner-form-label">Display Order <span class="required">*</span></label>
-                                 <input type="number" class="form-control banner-form-control" name="display_order" id="display_order" value="1" min="0" required>
+                                 <input type="number" class="form-control banner-form-control" name="display_order" id="display_order" value="<?php echo $Row['display_order']; ?>" min="0" required>
                                  <div class="counter-help-text">Lower numbers will display first</div>
                               </div>
                            </div>
@@ -77,8 +108,8 @@
                               <div class="form-group mb-0">
                                  <label class="banner-form-label">Status <span class="required">*</span></label>
                                  <select class="form-control banner-form-control" name="status" id="status" required>
-                                    <option value="active" selected>Active</option>
-                                    <option value="inactive">Inactive</option>
+                                    <option value="Active" <?php echo ($Row['status'] == 'Active') ? 'selected' : ''; ?>>Active</option>
+                                    <option value="Inactive" <?php echo ($Row['status'] == 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
                                  </select>
                                  <div class="counter-help-text">Show or hide this feature on the website</div>
                               </div>

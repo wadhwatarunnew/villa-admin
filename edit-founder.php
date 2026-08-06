@@ -1,5 +1,59 @@
-<?php $PageTitle = "Villatent: Edit Member"; ?>
-<?php include_once('common/header.php'); ?>
+<?php 
+   include_once('db.php');
+   include_once('common/header.php');
+   $PageTitle = "Villatent: Edit Member";
+
+   $id = $_GET['id'];
+   $Result = mysqli_query($con, "SELECT * FROM founders WHERE id='$id'");
+   $Row = mysqli_fetch_assoc($Result);
+
+   if (isset($_POST['update_member']))
+   {
+      $Name          = mysqli_real_escape_string($con, $_POST['name']);
+      $Designation   = mysqli_real_escape_string($con, $_POST['designation']);
+      $Bio           = mysqli_real_escape_string($con, $_POST['short_description']);
+      $DisplayOrder  = $_POST['display_order'];
+      $Status        = $_POST['status'];
+      $ImageFile     = $_FILES['photo']['name'];
+
+      $path = "uploads/pageimages/founders/";
+      $path_original = "uploads/pageimages/founders/";
+
+      if($ImageFile != '')
+      {
+         if((file_exists("uploads/pageimages/".$ImageFile) || file_exists("uploads/pageimages/addgallery/".$ImageFile) || file_exists("uploads/pageimages/addgallery/project/".$ImageFile) || file_exists("uploads/pageimages/addgallery/resort/".$ImageFile) || file_exists("uploads/pageimages/blogs/".$ImageFile) || file_exists("uploads/pageimages/blogs/single/".$ImageFile)  || file_exists("uploads/pageimages/contact/".$ImageFile) || file_exists("uploads/pageimages/nav/".$ImageFile) || file_exists("uploads/pageimages/nav/category/".$ImageFile) || file_exists("uploads/pageimages/nav/types/".$ImageFile) || file_exists("uploads/pageimages/project/".$ImageFile) || file_exists("uploads/pageimages/project/category/".$ImageFile) || file_exists("uploads/pageimages/project/types/".$ImageFile) || file_exists("uploads/pageimages/resort/".$ImageFile) || file_exists("uploads/pageimages/resort/category/".$ImageFile) || file_exists("uploads/pageimages/resort/types/".$ImageFile) || file_exists("uploads/pageimages/slider/".$ImageFile) || file_exists("uploads/pageimages/youtube/".$ImageFile)))
+         {
+            $FileExists = true;
+            $_SESSION['BannerColor'] = "background-color:#FF0000;";
+            $_SESSION['Message'] = "Selected image already exists!";
+            echo "<script>window.location.href='edit-founder.php?id=$id';</script>";
+            exit;
+         }
+         else
+         {
+            move_uploaded_file($_FILES['background_image']['tmp_name'],$path.$ImageFile) ;
+            $path = $path_original.$ImageFile;
+            
+            mysqli_query($con, "UPDATE founders SET name='$Name', designation='$Designation', bio='$Bio', image='$path', display_order='$DisplayOrder', status='$Status' WHERE id='$id'");
+
+            $_SESSION['BannerColor'] = "background-color:#4BB543;";
+            $_SESSION['Message'] = "Updated Successfully!";
+            echo "<script>window.location.href='edit-founder.php?id=$id';</script>";
+            exit;
+         }
+      }
+      else
+      {
+         mysqli_query($con, "UPDATE founders SET name='$Name', designation='$Designation', bio='$Bio', display_order='$DisplayOrder', status='$Status' WHERE id='$id'");
+
+         $_SESSION['BannerColor'] = "background-color:#4BB543;";
+         $_SESSION['Message'] = "Updated Successfully!";
+         echo "<script>window.location.href='edit-founder.php?id=$id';</script>";
+         exit;
+      }
+   }
+?>
+
 <div class="pcoded-content">
    <div class="pcoded-inner-content">
       <div class="main-body">
@@ -20,6 +74,14 @@
                      </div>
                   </div>
 
+                  <?php if (!empty($_SESSION['Message'])) {
+                     echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+                              . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+                              . "</div>";
+
+                     unset($_SESSION['Message']);
+                     unset($_SESSION['BannerColor']);
+                  } ?>
                   <div class="row">
                      <div class="col-lg-4 col-md-5 mb-20">
                         <div class="card">
@@ -35,7 +97,7 @@
                                        <button type="button" class="btn btn-outline-secondary btn-sm mt-2" onclick="document.getElementById('founder_photo_input').click();">Choose File</button>
                                     </div>
                                     <div class="founder-photo-preview" id="founder_photo_preview">
-                                       <img src="images/default-profile.png" alt="Founder Photo Preview" id="founder_photo_img">
+                                       <img src="<?php echo ($Row['image'] != '') ? $Row['image'] : 'images/default-profile.png'; ?>" alt="Founder Photo Preview" id="founder_photo_img">
                                        <button type="button" class="btn btn-sm btn-danger" onclick="resetFounderPhoto();">Remove</button>
                                     </div>
                                  </div>
@@ -52,13 +114,13 @@
                                  <div class="card-body">
                                     <div class="form-group mb-20">
                                        <label class="banner-form-label">Name <span class="required">*</span></label>
-                                       <input type="text" class="form-control banner-form-control" name="name" id="name" maxlength="100" value="Ajay Garg" placeholder="e.g. Ajay Garg" required>
+                                       <input type="text" class="form-control banner-form-control" name="name" id="name" maxlength="100" value="<?php echo $Row['name']; ?>" placeholder="e.g. Ajay Garg" required>
                                        <div class="counter-char-counter text-end"><span id="name_char_count">9</span>/100</div>
                                     </div>
 
                                     <div class="form-group mb-0">
                                        <label class="banner-form-label">Designation <span class="required">*</span></label>
-                                       <input type="text" class="form-control banner-form-control" name="designation" id="designation" maxlength="100" value="Founder & CEO" placeholder="e.g. Founder & CEO" required>
+                                       <input type="text" class="form-control banner-form-control" name="designation" id="designation" maxlength="100" value="<?php echo $Row['designation']; ?>" placeholder="e.g. Founder & CEO" required>
                                        <div class="counter-char-counter text-end"><span id="designation_char_count">13</span>/100</div>
                                     </div>
                                  </div>
@@ -70,7 +132,7 @@
                                  <div class="card-body">
                                     <div class="form-group mb-20">
                                        <label class="banner-form-label">Short Description <span class="required">*</span></label>
-                                       <textarea name="short_description" id="short_description" class="form-control banner-form-control" rows="6" maxlength="300" placeholder="Write short description..." required>Our journey started with a simple belief that outdoor hospitality could be as luxurious and comfortable as any five star experience.</textarea>
+                                       <textarea name="short_description" id="short_description" class="form-control banner-form-control" rows="6" maxlength="300" placeholder="Write short description..." required><?php echo $Row['bio']; ?></textarea>
                                        <div class="counter-char-counter text-end"><span id="desc_char_count">137</span>/300</div>
                                     </div>
                                  </div>
@@ -82,7 +144,7 @@
                                  <div class="card-body">
                                     <div class="form-group mb-0">
                                        <label class="banner-form-label">Display Order <span class="required">*</span></label>
-                                       <input type="number" class="form-control banner-form-control" name="display_order" id="display_order" value="1" min="0" required>
+                                       <input type="number" class="form-control banner-form-control" name="display_order" id="display_order" value="<?php echo $Row['display_order']; ?>" min="0" required>
                                        <div class="counter-help-text">Lower numbers will display first</div>
                                     </div>
                                  </div>
@@ -95,8 +157,8 @@
                                     <div class="form-group mb-0">
                                        <label class="banner-form-label">Status <span class="required">*</span></label>
                                        <select class="form-control banner-form-control" name="status" id="status" required>
-                                          <option value="active" selected>Active</option>
-                                          <option value="inactive">Inactive</option>
+                                          <option value="Active" <?php echo ($Row['status'] == 'Active') ? 'selected' : ''; ?>>Active</option>
+                                          <option value="Inactive" <?php echo ($Row['status'] == 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
                                        </select>
                                        <div class="counter-help-text">Show or hide this member on the website</div>
                                     </div>

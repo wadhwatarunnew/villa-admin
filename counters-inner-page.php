@@ -1,5 +1,35 @@
-<?php $PageTitle = "Villatent: Add Counter"; ?>
-<?php include_once('common/header.php'); ?>
+<?php
+   include "db.php";
+   include_once('common/header.php');
+   $PageTitle = "Villatent: Add Counter";
+
+   if (isset($_POST['save']))
+   {
+      $Title   = $_POST['counter_title'];
+      $Suffix  = $_POST['counter_suffix'];
+      $Number  = $_POST['counter_number'];
+      $Icon    = $_POST['counter_icon'];
+      $Order   = $_POST['display_order'];
+      $Status  = $_POST['counter_status'];
+      
+      $CheckDuplicate = mysqli_query($con, "SELECT * FROM counters WHERE title='$Title'");
+      if(mysqli_num_rows($CheckDuplicate) > 0)
+      {
+         $_SESSION['BannerColor'] = "background-color:#FF0000;";
+         $_SESSION['Message'] = "Counter already exists!";
+         echo "<script>window.location.href='counters-inner-page.php';</script>";
+         exit;
+      }
+
+      mysqli_query($con, "INSERT INTO counters (title, suffix, number, icon, display_order, status) values ('$Title', '$Suffix', '$Number', '$Icon', '$Order', '$Status') ");
+          
+      $_SESSION['BannerColor'] = "background-color:#4BB543;";
+      $_SESSION['Message'] = "Added Successfully!";
+      echo "<script>window.location.href='counters-inner-page.php';</script>";
+      exit;
+   }
+?>
+
 <div class="pcoded-content">
    <div class="pcoded-inner-content">
       <div class="main-body">
@@ -14,12 +44,21 @@
                            <span>Home</span><span class="crumb-sep">&gt;</span><span>Counters</span><span class="crumb-sep">&gt;</span><span>Add Counter</span>
                         </div>
                      </div>
+
                      <div class="listing-cta">
                         <a href="counters-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back to Counters</a>
-                        <input type="submit" class="btn btn-success btn-sm" name="save_counter" value="Save Counter">
+                        <button type="submit" class="btn btn-success btn-sm" name="save"><i class="feather icon-save"></i> Save Counter</button>
                      </div>
                   </div>
 
+                  <?php if (!empty($_SESSION['Message'])) {
+                     echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+                              . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+                              . "</div>";
+
+                     unset($_SESSION['Message']);
+                     unset($_SESSION['BannerColor']);
+                  } ?>
                   <div class="row">
                      <div class="col-sm-12">
                         <div class="card">
@@ -39,6 +78,7 @@
                                        </div>
                                     </div>
                                  </div>
+
                                  <div class="col-lg-3 col-md-6">
                                     <div class="form-group">
                                        <label class="banner-form-label">Title <span class="required">*</span></label>
@@ -46,6 +86,7 @@
                                        <div class="counter-char-counter"><span id="title_char_count">0</span>/100</div>
                                     </div>
                                  </div>
+
                                  <div class="col-lg-3 col-md-6">
                                     <div class="form-group">
                                        <label class="banner-form-label">Number <span class="required">*</span></label>
@@ -53,6 +94,7 @@
                                        <div class="counter-char-counter"><span id="number_char_count">0</span>/10</div>
                                     </div>
                                  </div>
+
                                  <div class="col-lg-3 col-md-6">
                                     <div class="form-group">
                                        <label class="banner-form-label">Suffix</label>
@@ -78,14 +120,15 @@
                            </div>
                         </div>
                      </div>
+
                      <div class="col-lg-6 col-md-6">
                         <div class="card">
                            <div class="card-body">
                               <div class="form-group mb-0">
                                  <label class="banner-form-label">Status <span class="required">*</span></label>
                                  <select class="form-control banner-form-control" name="counter_status" id="counter_status" required>
-                                    <option value="active" selected>Active</option>
-                                    <option value="inactive">Inactive</option>
+                                    <option value="Active" selected>Active</option>
+                                    <option value="Inactive">Inactive</option>
                                  </select>
                                  <div class="counter-help-text">Show or hide this counter on the website</div>
                               </div>
@@ -93,7 +136,6 @@
                         </div>
                      </div>
                   </div>
-
                </div>
             </form>
          </div>

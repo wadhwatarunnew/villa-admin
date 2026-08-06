@@ -1,4 +1,3 @@
 <?php
-//$con=mysqli_connect("localhost","villatentdb","villa@12345","villatentdb");
-$con=mysqli_connect("localhost","root","","villadb");
+	$con=mysqli_connect("localhost","root","","thevillatent", "3307");
 ?>

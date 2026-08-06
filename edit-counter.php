@@ -1,21 +1,35 @@
 <?php
-   include_once('db.php');
+   include "db.php";
    include_once('common/header.php');
-   $PageTitle = "Villatent: Add Feature";
+   $PageTitle = "Villatent: Edit Counter";
 
-   if (isset($_POST['save_feature']))
+   $id = $_GET["id"];
+   $Result = mysqli_query($con, "SELECT * FROM counters WHERE id=$id");
+   $Counter = mysqli_fetch_assoc($Result);
+
+   if (isset($_POST['save']))
    {
-      $Title         = $_POST['title'];
-      $Description   = mysqli_real_escape_string($con, $_POST['description']);
-      $Icon          = $_POST['value_icon'];
-      $DisplayOrder  = $_POST['display_order'];
-      $Status        = $_POST['status'];
+      $Title   = $_POST['counter_title'];
+      $Suffix  = $_POST['counter_suffix'];
+      $Number  = $_POST['counter_number'];
+      $Icon    = $_POST['counter_icon'];
+      $Order   = $_POST['display_order'];
+      $Status  = $_POST['counter_status'];
       
-      mysqli_query($con, "INSERT INTO company_values (title, description, icon, display_order, status) VALUES ('$Title', '$Description', '$Icon', '$DisplayOrder', '$Status')");
+      $CheckDuplicate = mysqli_query($con, "SELECT * FROM counters WHERE title='$Title' AND id!='$id'");
+      if(mysqli_num_rows($CheckDuplicate) > 0)
+      {
+         $_SESSION['BannerColor'] = "background-color:#FF0000;";
+         $_SESSION['Message'] = "Counter already exists!";
+         echo "<script>window.location.href='edit-counter.php?id=$id';</script>";
+         exit;
+      }
 
+      mysqli_query($con, "UPDATE counters SET title='$Title', suffix='$Suffix', number='$Number', icon='$Icon', display_order='$Order', status='$Status' WHERE id=$id");
+          
       $_SESSION['BannerColor'] = "background-color:#4BB543;";
-      $_SESSION['Message'] = "Added Successfully!";
-      echo "<script>window.location.href='add-value.php';</script>";
+      $_SESSION['Message'] = "Updated Successfully!";
+      echo "<script>window.location.href='edit-counter.php?id=$id';</script>";
       exit;
    }
 ?>
@@ -28,15 +42,15 @@
                <div class="page-body">
                   <div class="listing-page-head">
                      <div class="listing-title-wrap">
-                        <h1>Add Feature</h1>
-                        <p class="listing-subtitle">Add a new feature to be displayed in the Why Choose Us section.</p>
+                        <h1>Edit Counter</h1>
                         <div class="listing-breadcrumb">
-                           <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Our Values</span><span class="crumb-sep">&gt;</span><span>Add Feature</span>
+                           <span>Home</span><span class="crumb-sep">&gt;</span><span>Counters</span><span class="crumb-sep">&gt;</span><span>Edit Counter</span>
                         </div>
                      </div>
+
                      <div class="listing-cta">
-                        <a href="values-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back to List</a>
-                        <input type="submit" class="btn btn-success btn-sm" name="save_feature" value="Save Feature">
+                        <a href="counters-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back to Counters</a>
+                        <button type="submit" class="btn btn-success btn-sm" name="save"><i class="feather icon-save"></i> Save Counter</button>
                      </div>
                   </div>
 
@@ -51,34 +65,44 @@
                   <div class="row">
                      <div class="col-sm-12">
                         <div class="card">
-                           <div class="card-header">Feature Information</div>
+                           <div class="card-header">Counter Information</div>
                            <div class="card-body">
-                              <div class="row align-items-start">
+                              <div class="row align-items-center">
                                  <div class="col-lg-3 col-md-6">
                                     <div class="form-group">
                                        <label class="banner-form-label">Icon <span class="required">*</span></label>
                                        <div class="counter-icon-box">
                                           <div class="counter-icon-preview">
-                                             <span class="material-icons" id="value_icon_preview">verified</span>
+                                             <span class="material-icons" id="counter_icon_preview"><?php echo $Counter['icon']; ?></span>
                                           </div>
-                                          <input type="hidden" name="value_icon" id="value_icon_input" value="verified" required>
+                                          <input type="hidden" name="counter_icon" id="counter_icon_input" required>
                                           <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#iconPickerModal"><i class="feather icon-edit"></i> Change Icon</button>
-                                          <div class="counter-icon-help" id="selected_icon_name">Selected: verified</div>
+                                          <div class="counter-icon-help" id="selected_icon_name">Selected: home</div>
                                        </div>
                                     </div>
                                  </div>
+
                                  <div class="col-lg-3 col-md-6">
                                     <div class="form-group">
                                        <label class="banner-form-label">Title <span class="required">*</span></label>
-                                       <input type="text" class="form-control banner-form-control" name="title" id="title" maxlength="50" placeholder="Enter feature title" required>
-                                       <div class="counter-char-counter"><span id="title_char_count">0</span>/50</div>
+                                       <input type="text" class="form-control banner-form-control" name="counter_title" id="counter_title" maxlength="100" placeholder="Enter counter title" value="<?php echo $Counter['title']; ?>" required>
+                                       <div class="counter-char-counter"><span id="title_char_count">0</span>/100</div>
                                     </div>
                                  </div>
-                                 <div class="col-lg-6 col-md-12">
+
+                                 <div class="col-lg-3 col-md-6">
                                     <div class="form-group">
-                                       <label class="banner-form-label">Description <span class="required">*</span></label>
-                                       <textarea name="description" id="description" class="form-control banner-form-control" rows="3" maxlength="150" placeholder="Enter description..." required></textarea>
-                                       <div class="counter-char-counter"><span id="desc_char_count">0</span>/150</div>
+                                       <label class="banner-form-label">Number <span class="required">*</span></label>
+                                       <input type="number" class="form-control banner-form-control" name="counter_number" id="counter_number" placeholder="Enter numeric value only" value="<?php echo $Counter['number']; ?>" required>
+                                       <div class="counter-char-counter"><span id="number_char_count">0</span>/10</div>
+                                    </div>
+                                 </div>
+
+                                 <div class="col-lg-3 col-md-6">
+                                    <div class="form-group">
+                                       <label class="banner-form-label">Suffix</label>
+                                       <input type="text" class="form-control banner-form-control" name="counter_suffix" id="counter_suffix" maxlength="10" placeholder="e.g. +, Years, Projects" value="<?php echo $Counter['suffix']; ?>">
+                                       <div class="counter-char-counter"><span id="suffix_char_count">0</span>/10</div>
                                     </div>
                                  </div>
                               </div>
@@ -93,22 +117,23 @@
                            <div class="card-body">
                               <div class="form-group mb-0">
                                  <label class="banner-form-label">Display Order <span class="required">*</span></label>
-                                 <input type="number" class="form-control banner-form-control" name="display_order" id="display_order" value="1" min="0" required>
+                                 <input type="number" class="form-control banner-form-control" name="display_order" id="display_order" min="0" required value="<?php echo $Counter['display_order']; ?>">
                                  <div class="counter-help-text">Lower numbers will display first</div>
                               </div>
                            </div>
                         </div>
                      </div>
+
                      <div class="col-lg-6 col-md-6">
                         <div class="card">
                            <div class="card-body">
                               <div class="form-group mb-0">
                                  <label class="banner-form-label">Status <span class="required">*</span></label>
-                                 <select class="form-control banner-form-control" name="status" id="status" required>
-                                    <option value="Active" selected>Active</option>
-                                    <option value="Inactive">Inactive</option>
+                                 <select class="form-control banner-form-control" name="counter_status" id="counter_status" required>
+                                    <option value="Active" <?php echo ($Counter["status"] == 'Active') ? 'selected' : ''; ?>>Active</option>
+                                    <option value="Inactive" <?php echo ($Counter["status"] == 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
                                  </select>
-                                 <div class="counter-help-text">Show or hide this feature on the website</div>
+                                 <div class="counter-help-text">Show or hide this counter on the website</div>
                               </div>
                            </div>
                         </div>
@@ -122,22 +147,26 @@
 </div>
 
 <script>
-   $(document).ready(function(){
-      $('#title').on('input', function(){
+   $(document).ready(function() {
+      $('#counter_title').on('input', function() {
          $('#title_char_count').text($(this).val().length);
       });
-
-      $('#description').on('input', function(){
-         $('#desc_char_count').text($(this).val().length);
+      $('#counter_number').on('input', function() {
+         $('#number_char_count').text($(this).val().length);
+      });
+      $('#counter_suffix').on('input', function() {
+         $('#suffix_char_count').text($(this).val().length);
       });
 
       var iconList = [
-         'verified', 'gpp_good', 'check_circle', 'shield', 'workspace_premium',
-         'brush', 'design_services', 'palette', 'format_paint', 'architecture',
-         'eco', 'energy_savings_leaf', 'recycling', 'spa', 'nature',
-         'diversity_3', 'groups', 'people', 'support_agent', 'handshake',
-         'access_time_filled', 'schedule', 'timer', 'event_available', 'alarm',
-         'support', 'headset_mic', 'live_help', 'person_pin', 'call'
+         'home', 'apartment', 'cottage', 'house', 'hotel',
+         'groups', 'people', 'person', 'person_outline', 'face',
+         'verified', 'badge', 'workspace_premium', 'emoji_events', 'star',
+         'public', 'language', 'location_on', 'map', 'place',
+         'construction', 'foundation', 'build', 'architecture', 'engineering',
+         'trending_up', 'show_chart', 'timeline', 'insights', 'analytics',
+         'favorite', 'thumb_up', 'mood', 'support_agent', 'handshake',
+         'calendar_today', 'schedule', 'access_time', 'history', 'event'
       ];
 
       var $grid = $('#icon_grid');
@@ -152,8 +181,8 @@
 
       $(document).on('click', '.icon-picker-item', function() {
          var iconName = $(this).data('icon');
-         $('#value_icon_input').val(iconName);
-         $('#value_icon_preview').text(iconName);
+         $('#counter_icon_input').val(iconName);
+         $('#counter_icon_preview').text(iconName);
          $('#selected_icon_name').text('Selected: ' + iconName);
          var modalEl = document.getElementById('iconPickerModal');
          var modal = bootstrap.Modal.getOrCreateInstance(modalEl);

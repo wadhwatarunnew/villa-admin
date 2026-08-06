@@ -1,5 +1,54 @@
-<?php $PageTitle = "Villatent: Add Member"; ?>
-<?php include_once('common/header.php'); ?>
+<?php
+   include_once('db.php');
+   include_once('common/header.php');
+   $PageTitle = "Villatent: Add Member";
+
+   if (isset($_POST['save_member']))
+   {
+      $Name          = mysqli_real_escape_string($con, $_POST['name']);
+      $Designation   = mysqli_real_escape_string($con, $_POST['designation']);
+      $Bio           = mysqli_real_escape_string($con, $_POST['short_description']);
+      $DisplayOrder  = $_POST['display_order'];
+      $Status        = $_POST['status'];
+      $ImageFile     = $_FILES['photo']['name'];
+
+      $path = "uploads/pageimages/founders/";
+      $path_original = "uploads/pageimages/founders/";
+
+      if($ImageFile != '')
+      {
+         if((file_exists("uploads/pageimages/".$ImageFile) || file_exists("uploads/pageimages/addgallery/".$ImageFile) || file_exists("uploads/pageimages/addgallery/project/".$ImageFile) || file_exists("uploads/pageimages/addgallery/resort/".$ImageFile) || file_exists("uploads/pageimages/blogs/".$ImageFile) || file_exists("uploads/pageimages/blogs/single/".$ImageFile)  || file_exists("uploads/pageimages/contact/".$ImageFile) || file_exists("uploads/pageimages/nav/".$ImageFile) || file_exists("uploads/pageimages/nav/category/".$ImageFile) || file_exists("uploads/pageimages/nav/types/".$ImageFile) || file_exists("uploads/pageimages/project/".$ImageFile) || file_exists("uploads/pageimages/project/category/".$ImageFile) || file_exists("uploads/pageimages/project/types/".$ImageFile) || file_exists("uploads/pageimages/resort/".$ImageFile) || file_exists("uploads/pageimages/resort/category/".$ImageFile) || file_exists("uploads/pageimages/resort/types/".$ImageFile) || file_exists("uploads/pageimages/slider/".$ImageFile) || file_exists("uploads/pageimages/youtube/".$ImageFile)))
+         {
+            $FileExists = true;
+            $_SESSION['BannerColor'] = "background-color:#FF0000;";
+            $_SESSION['Message'] = "Selected image already exists!";
+            echo "<script>window.location.href='add-founder.php';</script>";
+            exit;
+         }
+         else
+         {
+            move_uploaded_file($_FILES['photo']['tmp_name'],$path.$ImageFile) ;
+            $path = $path_original.$ImageFile;
+            
+            mysqli_query($con, "INSERT INTO founders (name, designation, bio, image, display_order, status) VALUES ('$Name', '$Designation', '$Bio', '$path', '$DisplayOrder', '$Status')");
+
+            $_SESSION['BannerColor'] = "background-color:#4BB543;";
+            $_SESSION['Message'] = "Added Successfully!";
+            echo "<script>window.location.href='add-founder.php';</script>";
+            exit;
+         }
+      }
+      else
+      {
+         mysqli_query($con, "INSERT INTO founders (name, designation, bio, display_order, status) VALUES ('$Name', '$Designation', '$Bio', '$DisplayOrder', '$Status')");
+
+         $_SESSION['BannerColor'] = "background-color:#4BB543;";
+         $_SESSION['Message'] = "Added Successfully!";
+         echo "<script>window.location.href='add-founder.php';</script>";
+         exit;
+      }
+   }
+?>
 <div class="pcoded-content">
    <div class="pcoded-inner-content">
       <div class="main-body">
@@ -20,6 +69,14 @@
                      </div>
                   </div>
 
+                  <?php if (!empty($_SESSION['Message'])) {
+                     echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+                              . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+                              . "</div>";
+
+                     unset($_SESSION['Message']);
+                     unset($_SESSION['BannerColor']);
+                  } ?>
                   <div class="row">
                      <div class="col-lg-4 col-md-5 mb-20">
                         <div class="card">
@@ -95,8 +152,8 @@
                                     <div class="form-group mb-0">
                                        <label class="banner-form-label">Status <span class="required">*</span></label>
                                        <select class="form-control banner-form-control" name="status" id="status" required>
-                                          <option value="active" selected>Active</option>
-                                          <option value="inactive">Inactive</option>
+                                          <option value="Active" selected>Active</option>
+                                          <option value="Inactive">Inactive</option>
                                        </select>
                                        <div class="counter-help-text">Show or hide this member on the website</div>
                                     </div>
@@ -106,7 +163,6 @@
                         </div>
                      </div>
                   </div>
-
                </div>
             </form>
          </div>
