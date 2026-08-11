@@ -1,4 +1,4 @@
-<?php $PageTitle = "Villatent: Contact List Page"; ?>
+<?php $PageTitle = "Villatent: Leads"; ?>
 <?php include_once('common/header.php'); ?>
 <body id="pagination-result">
    <div class="pcoded-content">
@@ -6,17 +6,18 @@
          <div class="main-body">
             <div class="page-wrapper">
                <div class="page-body">
+                  <div class="listing-page-head">
+                     <div class="listing-title-wrap">
+                        <h1>Leads</h1>
+                        <div class="listing-breadcrumb">
+                           <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Pages</span><span class="crumb-sep">&gt;</span><span>Leads</span>
+                        </div>
+                     </div>
+                  </div>
                   <div class="row">
                      <div class="col-sm-12">
-                        <div class="card">
-                           <div class="card-header">All Queries
-                             <div class="addNew">
-                               
-                             </div>
-                          </div>
-                          <div class="card-body">
                            <div class="table-responsive">
-                              <table class="table table-bordered">
+                              <table class="table table-bordered listing-table">
                                  <thead>
                                     <tr>
                                      <th>Sr. No</th>
@@ -32,7 +33,7 @@
                                      <th>IP Country</th>
                                      <th>IP Lat/Long</th>
 
-                                     <th>Action</th>
+                                     <th>Actions</th>
                                   </tr>
                                </thead>
                                <tbody>
@@ -44,7 +45,7 @@
                                  $perPage = new PerPage();
 
                                  $sql = "select * from contact_query ORDER BY id DESC";
-                                 $paginationlink = "contact-us-list.php?page=";    
+                                 $paginationlink = "leads-list.php?page=";    
                                  $pagination_setting = "all-links";
                                  
                                  $page = 1;
@@ -94,10 +95,12 @@
 
                                     <td><?php echo $b['latitude']; ?>/<?php echo $b['longitude']; ?></td>
                                     
-                                    <td>   
-                                       <a href="delete-query.php?id=<?php echo $b['id']; ?>">
-                                          <button class="btn btn-danger btn-sm" type="button"><i class="feather icon-trash-2"></i></button>
-                                       </a>
+                                    <td>
+                                       <div class="table-actions">
+                                          <a href="delete-query.php?id=<?php echo $b['id']; ?>">
+                                             <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
+                                          </a>
+                                       </div>
                                     </td>
                                  </tr>
                                  
@@ -112,9 +115,6 @@
                            <?php if(!empty($perpageresult) && $_GET["rowcount"] > 10) { ?>
                              <div id="pagination"><?php print_r($perpageresult); ?> </div>
                           <?php } ?>
-                       </div>
-                    </div>
-                 </div>
               </div>
            </div>
         </div>

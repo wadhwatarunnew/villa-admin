@@ -17,8 +17,15 @@
                       <li><a href="mission-vision-list-page.php"><i class="feather icon-chevron-right"></i> Mission & Vision</a></li>
                    </ul>
                 </li>
-                <li><a href="contact-page.php"><i class="feather icon-chevron-right"></i> Contact Us</a></li>
-				 <li><a href="contact-us-list.php"><i class="feather icon-chevron-right"></i>Queries</a></li>
+            <li class="menu-link">
+               <a href="#" class="br-menu-link"><i class="feather icon-chevron-right"></i> Contact Us</a>
+               <ul class="br-menu-sub">
+                  <li><a href="contact-page.php"><i class="feather icon-chevron-right"></i> Contact Page</a></li>
+                  <li><a href="contact-cards-page.php"><i class="feather icon-chevron-right"></i> Contact Cards</a></li>
+               </ul>
+            </li>
+   				<li><a href="get-quote-page.php"><i class="feather icon-chevron-right"></i> Get Quote</a></li>
+   				 <li><a href="leads-list.php"><i class="feather icon-chevron-right"></i>Leads</a></li>
                 </ul>
              </li>
                <li class="menu-link"><a href="#" class="br-menu-link"><i class="feather icon-map"></i>Tents</a>

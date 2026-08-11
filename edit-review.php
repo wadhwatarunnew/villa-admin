@@ -63,8 +63,20 @@ if (isset($_POST['submi'])){
    <div class="pcoded-inner-content">
       <div class="main-body">
          <div class="page-wrapper">
-           <form action ="" method="post">
+           <form action ="" method="post" id="editReviewForm">
             <div class="page-body">
+            <div class="listing-page-head">
+              <div class="listing-title-wrap">
+                <h1>Edit Review</h1>
+                <div class="listing-breadcrumb">
+                  <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Reviews</span><span class="crumb-sep">&gt;</span><span>Edit</span>
+                </div>
+              </div>
+              <div class="listing-cta">
+                <a href="review-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+                <input type="submit" class="btn btn-success btn-sm" name="subm" value="Save" form="editReviewForm">
+              </div>
+            </div>
 
                <div class="row">
                   
@@ -72,7 +84,7 @@ if (isset($_POST['submi'])){
                   <div class="col-sm-12">
                      <?php include "alert-update.php";  ?>
                      <div class="card">
-                        <div class="card-header">Manage Reviews &nbsp;<a href="review-list-page.php" class="btn btn-sm btn-primary">Back</a></div>
+                        <div class="card-header">Manage Reviews</div>
                         
                         <div class="card-body">
                            <div class="row">
@@ -122,13 +134,7 @@ if (isset($_POST['submi'])){
                   
                   
                </div>
-               <div class="row">
-                  <div class="col-sm-2">
-                     <div class="commonSection">
-                        <input type="submit" class="btn btn-success btn-lg" name="subm" value="Save">
-                     </div>
-                  </div>
-               </div>
+               
             </div>
          </form>
          

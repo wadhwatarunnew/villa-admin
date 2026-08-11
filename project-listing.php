@@ -13,7 +13,7 @@
                      </div>
                   </div>
                   <div class="listing-cta">
-                     <a href="project-internal.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Resort</a>
+                     <a href="project-internal.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Tent</a>
                   </div>
                </div>
                <div class="row">
