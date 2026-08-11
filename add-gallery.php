@@ -1069,110 +1069,80 @@ else
 	<div class="pcoded-inner-content">
 		<div class="main-body">
 			<div class="page-wrapper">
-				
 				<form action="" method="post" enctype="multipart/form-data">
-					<div>
-						<div class="page-body">
-							<div class="row">
-								<div class="col-sm-12">
-									<?PHP include "alert-insert.php"; ?>
-									<div class="card mb-30">
-										<div class="card-header">Add Gallery</div>
-										<div class="card-body">
-											<div class="row mb-30">
-												<div class="col-sm-6">
-													<div class="galleryDrop">
-														<select name="state" class="form-control country input" required>
-															<option value="">--Select--</option>
-															
-															
-															<option value="Resort Tents">Resort Tents</option>
-															<option value="Projects">Projects</option>
-															
-															
-															
-															
-														</select>
-														<br>
-														
-														<div id="categories">
-														</div>
-														<br><br>
-														
-														<div id="response">
-														</div>
-														
-														<script>
+					<div class="page-body">
+						<div class="listing-page-head">
+							<div class="listing-title-wrap">
+								<h1>Add Gallery</h1>
+								<div class="listing-breadcrumb">
+									<span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Gallery</span><span class="crumb-sep">&gt;</span><span>Add</span>
+								</div>
+							</div>
+							<div class="listing-cta">
+								<a href="update-gallery.php" class="btn btn-outline-secondary btn-sm"><i class="feather icon-edit"></i> Update</a>
+								<a href="delete-gallery.php" class="btn btn-outline-danger btn-sm"><i class="feather icon-trash-2"></i> Delete</a>
+								<input type="submit" class="btn btn-success btn-sm" name="sub" value="Add Gallery">
+							</div>
+						</div>
 
-															$(document).ready(function(){
-																$("select.country").change(function(){
-																	var selectedCountry = $(".country option:selected").val();
-																	
-																	console.log(selectedCountry);
-																	$.ajax({
-																		type: "POST",
-																		url: "getSelectedCategory.php",
-																		data: { country : selectedCountry }  
-																	}).done(function(data){
-																		$("#categories").html(data);
-																	});
-																});
-															});
-															
-														</script>
-														
-														
-													</div>
-												</div>
-											</div>
-											<hr>
-											<div class="row">
-												<!---->
-												<div class="col-sm-2">
-													<div class="">
-														<input name="imag[]" id="image" type="file"  multiple="multiple"  required>
-													</div>
-												</div>
-												
-											</div>
-											
-											<script>
-												
-												$("#image").on("change", function() {
-													if ($("#image")[0].files.length > 10) {
-														alert("You can select only 10 images");
-														
-														document.getElementById('image').value= "";
-													} 
-												});
-												
-											</script>
-											<!---->
+						<?php include "alert-insert.php"; ?>
+
+						<div class="card mb-30">
+							<div class="card-header">Gallery Details</div>
+							<div class="card-body">
+								<div class="row">
+									<div class="col-lg-6 col-md-12">
+										<div class="commonSection">
+											<label>Gallery Type <span class="required">*</span></label>
+											<select name="state" class="form-control country input" required>
+												<option value="">--Select--</option>
+												<option value="Resort Tents">Resort Tents</option>
+												<option value="Projects">Projects</option>
+											</select>
+										</div>
+
+										<div id="categories" class="mb-20"></div>
+										<div id="response"></div>
+									</div>
+
+									<div class="col-lg-6 col-md-12">
+										<div class="commonSection">
+											<label>Gallery Images <span class="required">*</span></label>
+											<input class="form-control" name="imag[]" id="image" type="file" multiple="multiple" required>
+											<div class="counter-help-text" style="margin-top:6px;">You can upload up to 10 images.</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						
-						<div class="row">
-							<div class="col-sm-2">
-								<div class="commonSection">
-									<input type="submit" class="btn btn-success btn-lg" name="sub" value="Add">
-								</div>
-							</div>
-						</div>
-						
 					</div>
-					
 				</form>
-				
 			</div>
 		</div>
 	</div>
 </div>
-</div>
 <!---->
 <script>
+	$(document).ready(function(){
+		$("select.country").change(function(){
+			var selectedCountry = $(".country option:selected").val();
+			$.ajax({
+				type: "POST",
+				url: "getSelectedCategory.php",
+				data: { country : selectedCountry }
+			}).done(function(data){
+				$("#categories").html(data);
+			});
+		});
+	});
+
+	$("#image").on("change", function() {
+		if ($("#image")[0].files.length > 10) {
+			alert("You can select only 10 images");
+			document.getElementById('image').value= "";
+		}
+	});
+
 	
 	$(document).ready(function() {
 		$('#mydiv').delay(3000).hide(0); 

@@ -58,6 +58,7 @@
               <li class="menu-link"><a href="#" class="br-menu-link"><i class="feather icon-image"></i> Gallery</a>
 
                 <ul class="br-menu-sub">
+                           <li><a href="manage-gallery.php"><i class="feather icon-chevron-right"></i>Gallery Listing</a></li>
                   <li><a href="add-gallery.php"><i class="feather icon-chevron-right"></i>Add</a></li>
 				          <li><a href="update-gallery.php"><i class="feather icon-chevron-right"></i>Update</a></li>
                   <li><a href="delete-gallery.php"><i class="feather icon-chevron-right"></i>Delete</a></li>
