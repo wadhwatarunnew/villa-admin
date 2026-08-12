@@ -72,6 +72,22 @@
 	               	unset($_SESSION['BannerColor']);
 	            } ?>
 		        <form action ="" enctype="multipart/form-data" method="post">
+		        	<div class="listing-page-head">
+						<div class="listing-title-wrap">
+							<h1>Youtube Page</h1>
+							<div class="listing-breadcrumb">
+								<span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Youtube</span><span class="crumb-sep">&gt;</span><span>Edit Content</span>
+							</div>
+						</div>
+						<div class="listing-cta">
+							<a href="youtube-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+							<?php if(!$e['local_path']) { ?>
+								<input type="submit" class="btn btn-success btn-sm" id="btnn" name="update" value="Save">
+							<?php } else { ?>
+								<input type="submit" class="btn btn-success btn-sm" id="btnn1" name="update1" value="Save">
+							<?php } ?>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="card mb-30">
@@ -222,24 +238,6 @@
 									</div>
 								</div>
 							</div>
-							
-							<?php if(!$e['local_path']) { ?>
-								<div class="row">
-									<div class="col-sm-2">
-										<div class="commonSection">
-											<input type="submit" class="btn btn-success btn-lg" id="btnn" name="update" value="Save">
-										</div>
-									</div>
-								</div>
-							<?php } else { ?>
-								<div class="row">
-									<div class="col-sm-2">
-										<div class="commonSection">
-											<input type="submit" class="btn btn-success btn-lg" id="btnn1" name="update1" value="Save">
-										</div>
-									</div>
-								</div>
-							<?php } ?>
 						</div>
 					</div>
 				</form>

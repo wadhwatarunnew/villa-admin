@@ -37,68 +37,65 @@
    <div class="pcoded-inner-content">
       <div class="main-body">
          <div class="page-wrapper">
-            <div class="page-body">
-               <?php if (!empty($_SESSION['Message'])) {
-                     echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
-                           . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
-                           . "</div>";
+            <div class="page-body"> 
+               <form action="" method="post" id="homeAboutForm">
+                  <div class="listing-page-head">
+                     <div class="listing-title-wrap">
+                        <h1>Home Edit Page</h1>
+                        <div class="listing-breadcrumb">
+                           <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Pages</span><span class="crumb-sep">&gt;</span><span>Home Edit</span>
+                        </div>
+                     </div>
 
-                     unset($_SESSION['Message']);
-                     unset($_SESSION['BannerColor']);
-               } ?>
-               <form action ="" method="post">
+                     <div class="listing-cta">
+                        <a href="dashboard.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+                        <input type="submit" class="btn btn-success btn-sm" name="update-submit" value="Save" form="homeAboutForm">
+                     </div>
+                  </div>
+
+                  <?php if (!empty($_SESSION['Message'])) {
+                        echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+                              . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+                              . "</div>";
+
+                        unset($_SESSION['Message']);
+                        unset($_SESSION['BannerColor']);
+                  } ?>
                   <div class="row">
-                     <div class="col-sm-12">
+                     <div class="col-lg-4 col-md-12">
                         <div class="card mb-30">
                            <div class="card-header">Seo Meta Data</div>
                            <div class="card-body">
-                              <div class="row">
-                                 <div class="col-sm-4">
-                                    <div class="commonSection">
-                                       <label>Meta Title</label>
-                                       <textarea name="metaTitle" id="metaTitle" class="form-control" required placeholder="Enter Meta Title"><?php echo $d['title']; ?></textarea>
-                                    </div>
-                                 </div>
+                              <div class="commonSection">
+                                 <label>Meta Title</label>
+                                 <textarea name="metaTitle" id="metaTitle" class="form-control" required placeholder="Enter Meta Title"><?php echo $d['title']; ?></textarea>
+                              </div>
 
-                                 <div class="col-sm-4">
-                                    <div class="commonSection">
-                                       <label>Meta Keyword</label>
-                                       <textarea name="keyword" id="metaTitle" class="form-control" required placeholder="Enter Keyword"><?php echo $d['keyword']; ?></textarea>
-                                    </div>
-                                 </div>
+                              <div class="commonSection">
+                                 <label>Meta Keyword</label>
+                                 <textarea name="keyword" id="metaKeyword" class="form-control" required placeholder="Enter Keyword"><?php echo $d['keyword']; ?></textarea>
+                              </div>
 
-                                 <div class="col-sm-4">
-                                    <div class="commonSection">
-                                       <label>Meta Description</label>
-                                       <textarea name="disc" id="metaTitle" class="form-control" required placeholder="Enter Description"><?php echo $d['discription']; ?></textarea>
-                                    </div>
-                                 </div>
+                              <div class="commonSection">
+                                 <label>Meta Description</label>
+                                 <textarea name="disc" id="metaDescription" class="form-control" required placeholder="Enter Description"><?php echo $d['discription']; ?></textarea>
                               </div>
                            </div>
                         </div>
                      </div>
-                  </div>
 
-                  <div class="row">
-                     <div class="col-sm-12">
+                     <div class="col-lg-8 col-md-12">
                         <div class="card mb-30">
-                           <div class="card-header">About Section</div>
+                           <div class="card-header">About Page</div>
                            <div class="card-body">
-                              <div class="row">
-                                 <div class="col-sm-12">
-                                    <div class="commonSection">
-                                       <label>Title</label>
-                                       <input class="form-control" type="text" name="toptitle" id="toptitle" value="<?php echo $b['title']; ?>" placeholder="Enter Heading">
-                                    </div>
-                                 </div>
+                              <div class="commonSection">
+                                 <label>Title</label>
+                                 <input class="form-control" type="text" name="toptitle" id="toptitle" value="<?php echo $b['title']; ?>" placeholder="Enter Heading">
+                              </div>
 
-                                 <div class="col-sm-12">
-                                    <div class="commonSection">
-                                       <label>Content</label>
-                                       <textarea name="editor1" id="editor1" rows="10" cols="80"><?php echo $b['content']; ?></textarea>
-                                    </div>
-                                    <input type="submit" class="btn btn-success btn-lg" name="update-submit" value="Save">
-                                 </div>
+                              <div class="commonSection">
+                                 <label>Content</label>
+                                 <textarea name="editor1" id="editor1" rows="10" cols="80"><?php echo $b['content']; ?></textarea>
                               </div>
                            </div>
                         </div>

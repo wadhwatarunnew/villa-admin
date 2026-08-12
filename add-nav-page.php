@@ -113,39 +113,38 @@
 									</div>
 		                  </div>
 							</div>
-					
+						</div>
 
-	         			<div class="row">
-	                        <div class="col-sm-12">
-	                           	<div class="card mb-30">
-	                          		<div class="card-header">Seo Meta Tags</div>
-	                          		<div class="card-body">
-	                             		<div class="row">
-		                                    <div class="col-sm-4">
-		                                       	<div class="commonSection">
-		                     					 	<label>Meta Title</label>
-		                                          	<textarea name="metaTitle" id="metaTitle" class="form-control" required  placeholder="Enter Meta Title"></textarea>
-		                                       	</div>
-		                                    </div>
+         			<div class="row">
+                     <div class="col-sm-12">
+                     	<div class="card mb-30">
+	                    		<div class="card-header">Seo Meta Tags</div>
+	                    		<div class="card-body">
+	                       		<div class="row">
+                                 <div class="col-sm-4">
+                                    <div class="commonSection">
+                  					 		<label>Meta Title</label>
+                                    	<textarea name="metaTitle" id="metaTitle" class="form-control" required  placeholder="Enter Meta Title"></textarea>
+                                    </div>
+                                 </div>
 
-		                                    <div class="col-sm-4">
-		                                       <div class="commonSection">
-		                                          	<label>Meta Keyword</label>
-		                                          	<textarea name="keyword" id="metaTitle" class="form-control" required placeholder="Enter Keyword"></textarea>
-		                                       	</div>
-		                                    </div>
+                                 <div class="col-sm-4">
+                                    <div class="commonSection">
+                                    	<label>Meta Keyword</label>
+                                    	<textarea name="keyword" id="metaTitle" class="form-control" required placeholder="Enter Keyword"></textarea>
+                                 	</div>
+                                 </div>
 
-		                                    <div class="col-sm-4">
-		                                       <div class="commonSection">
-		                                          	<label>Meta Description</label>
-		                                           	<textarea name="disc" id="metaTitle" class="form-control" required placeholder="Enter Description"></textarea>
-		                                       </div>
-		                                    </div>
-											<!--<input type="submit" class="btn btn-success btn-lg" name="update_seo" value="Save">-->
-	                             		</div>
-	                          		</div>
+                                 <div class="col-sm-4">
+                                    <div class="commonSection">
+                                    	<label>Meta Description</label>
+                                     	<textarea name="disc" id="metaTitle" class="form-control" required placeholder="Enter Description"></textarea>
+                                    </div>
+                                 </div>
 	                       		</div>
-	                    	</div>
+                       		</div>
+                    		</div>
+                    	</div>
 	     				</div>
 
          			<div class="row">
@@ -155,10 +154,10 @@
                				<div class="card-body">
                   				<div class="row">
                                  <div class="col-sm-12">
-                                    	<div class="commonSection">
-                                       	<label>Title</label>
-                                       	<input class="form-control" type="text" required name="title" id="title" placeholder="Enter Heading">
-                                    	</div>
+                                 	<div class="commonSection">
+                                    	<label>Title</label>
+                                    	<input class="form-control" type="text" required name="title" id="title" placeholder="Enter Heading">
+                                 	</div>
                                  </div>
                                     
                                  <div class="col-sm-12">

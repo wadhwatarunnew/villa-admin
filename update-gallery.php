@@ -20,7 +20,7 @@
       $p9    = $_POST['p9'];
       $p10   = $_POST['p10'];
 
-      $query48 = mysqli_query($con,"SELECT * FROM add_gallery WHERE title='$title' ");
+      $query48 = mysqli_query($con, "SELECT * FROM add_gallery WHERE title='$title' ");
       $count = 1;
       $countRow = mysqli_num_rows($query48);
       while($eef=mysqli_fetch_assoc($query48))
@@ -606,72 +606,71 @@
 ?>
 
 <div class="pcoded-content">
-    <div class="pcoded-inner-content">
-        <div class="main-body">
-            <div class="page-wrapper">
-                <div>
-                    <div class="page-body">
-                        <?php if (!empty($_SESSION['Message'])) {
-                            echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
-                                      . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
-                                      . "</div>";
+   <div class="pcoded-inner-content">
+      <div class="main-body">
+         <div class="page-wrapper">
+            <div class="page-body">
+               <div class="listing-page-head">
+                  <div class="listing-title-wrap">
+                     <h1>Update Gallery</h1>
+                     <div class="listing-breadcrumb">
+                        <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Gallery</span><span class="crumb-sep">&gt;</span><span>Update</span>
+                     </div>
+                  </div>
 
-                            unset($_SESSION['Message']);
-                            unset($_SESSION['BannerColor']);
-                        } ?>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="card mb-30">
-                                    <div class="card-header">Update Gallery</div>
-                                    <div class="card-body">
-                                        <div class="row mb-30">
-                                            <div class="col-sm-6">
-                                                <div class="galleryDrop">
-                                                    <select name="state" class="form-control country input" required>
-                                                        <option value="">--Select--</option>
-                                                        <option value="Resort Tents">Resort Tents</option>
-                                                        <option value="Projects">Projects</option>
-                                                    </select><br>
-                                                    
-                                                    <div id="categories">
-                                                    </div>
-                                                    <br><br>
-                                                    
-                                                    <div id="response">
-                                                    </div>
-                                                    <br><br>
-                                                </div>
-                                            </div>
+                  <div class="listing-cta">
+                     <a href="add-gallery.php" class="btn btn-outline-primary btn-sm"><i class="feather icon-plus"></i> Add</a>
+                     <a href="delete-gallery.php" class="btn btn-outline-danger btn-sm"><i class="feather icon-trash-2"></i> Delete</a>
+                  </div>
+               </div>
 
-                                            <div class="col-sm-6"></div>
-                                        </div>
-                                        <hr>
-                                        <!---->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div id="response1">
-                        </div>
-                    </div>
-                </div>
+               <?php if (!empty($_SESSION['Message'])) {
+                  echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+                           . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+                           . "</div>";
+
+                  unset($_SESSION['Message']);
+                  unset($_SESSION['BannerColor']);
+               } ?>
+               <div class="card mb-30">
+                  <div class="card-header">Select Gallery To Update</div>
+                  <div class="card-body">
+                     <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                           <div class="commonSection">
+                              <label>Gallery Type <span class="required">*</span></label>
+                              <select name="state" class="form-control country input" required>
+                                 <option value="">--Select--</option>
+                                 <option value="Resort Tents">Resort Tents</option>
+                                 <option value="Projects">Projects</option>
+                              </select>
+                           </div>
+                           <div id="categories" class="mb-20"></div>
+                           <div id="response"></div>
+                       </div>
+                     </div>
+                  </div>
+              
+                  <div id="response1">
+                  </div>
+               </div>
             </div>
-        </div>
-    </div>
+         </div>
+      </div>
+   </div>
 </div>
+
 <?php include_once('common/footer.php'); ?>
 
 <script>
     $(document).ready(function(){
         $("select.country").change(function(){
             var selectedCountry = $(".country option:selected").val();
-            
-            console.log(selectedCountry);
+
             $.ajax({
                 type: "POST",
                 url: "getSelectedCategory.php",
-                data: { country : selectedCountry } 
+                data: { country : selectedCountry }
             }).done(function(data){
                 $("#categories").html(data);
             });

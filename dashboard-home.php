@@ -3,30 +3,169 @@
    include_once('common/header.php');
    $PageTitle = "Villatent: Dashboard Home";
 
-   $TotalTents = $TotalProjects = $TotalBlogs = $TotalLeads = 0;
-
-   $Result = mysqli_query($con, "SELECT COUNT(*) AS TotalTents FROM resort_types");
-   $TotalTents = mysqli_fetch_object($Result)->TotalTents;
-
-   $Result = mysqli_query($con, "SELECT COUNT(*) AS TotalProjects FROM project_types");
-   $TotalProjects = mysqli_fetch_object($Result)->TotalProjects;
-
-   $Result = mysqli_query($con, "SELECT COUNT(*) AS TotalBlogs FROM blog_inner_content");
-   $TotalBlogs = mysqli_fetch_object($Result)->TotalBlogs;
-
-   $Result = mysqli_query($con, "SELECT COUNT(*) AS TotalLeads FROM contact_query");
-   $TotalLeads = mysqli_fetch_object($Result)->TotalLeads;
-
-   $ChartLabels = $LabelSeries = $CallSeries = array();
-   $LeadsResult = mysqli_query($con, "SELECT DATE(date) AS label_date, COUNT(*) AS TotalCount FROM contact_query GROUP BY DATE(date) ORDER BY DATE(date) DESC LIMIT 7");
-   while ($LeadRow = mysqli_fetch_assoc($LeadsResult))
-   {
-      $ChartLabels[] = date('M d', strtotime($LeadRow['label_date']));
-      $LabelSeries[] = $LeadRow['TotalCount'];
+   function dashboard_e($value) {
+      return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
    }
 
-   $ChartLabels = array_reverse($ChartLabels);
-   $LabelSeries = array_reverse($LabelSeries);
+   function dashboard_format_number($value) {
+      return number_format((int)$value);
+   }
+
+   function dashboard_format_percent($value, $total) {
+      if ((int)$total <= 0) {
+         return '0.0';
+      }
+
+      return number_format(((int)$value / (int)$total) * 100, 1);
+   }
+
+   function dashboard_fetch_category_counts($con, $tableName) {
+      $counts = array();
+      $sql = "SELECT category, COUNT(*) AS total_count FROM {$tableName} WHERE TRIM(IFNULL(title,'')) <> '' AND TRIM(IFNULL(category,'')) <> '' GROUP BY category";
+      $result = mysqli_query($con, $sql);
+
+      if ($result) {
+         while ($row = mysqli_fetch_assoc($result)) {
+            $category = trim((string)$row['category']);
+            if ($category !== '') {
+               $counts[$category] = (int)$row['total_count'];
+            }
+         }
+      }
+
+      return $counts;
+   }
+
+   function dashboard_find_category_count($counts, $includeToken, $excludeToken = '') {
+      foreach ($counts as $category => $count) {
+         $normalized = strtolower(preg_replace('/\s+/', '', (string)$category));
+         if (strpos($normalized, $includeToken) !== false) {
+            if ($excludeToken !== '' && strpos($normalized, $excludeToken) !== false) {
+               continue;
+            }
+            return (int)$count;
+         }
+      }
+
+      return 0;
+   }
+
+   function dashboard_fetch_latest_rows($con, $tableName, $limit = 4) {
+      $rows = array();
+      $limit = (int)$limit;
+      if ($limit <= 0) {
+         $limit = 4;
+      }
+
+      $sql = "SELECT id, title, category, local_path, image FROM {$tableName} WHERE TRIM(IFNULL(title,'')) <> '' AND TRIM(IFNULL(category,'')) <> '' ORDER BY id DESC LIMIT {$limit}";
+      $result = mysqli_query($con, $sql);
+
+      if ($result) {
+         while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+         }
+      }
+
+      return $rows;
+   }
+
+   function dashboard_row_image($row) {
+      if (!is_array($row)) {
+         return 'images/default-profile.png';
+      }
+
+      $localPath = isset($row['local_path']) ? trim((string)$row['local_path']) : '';
+      if ($localPath !== '') {
+         return $localPath;
+      }
+
+      $imageUrl = isset($row['image']) ? trim((string)$row['image']) : '';
+      if ($imageUrl !== '') {
+         return $imageUrl;
+      }
+
+      return 'images/default-profile.png';
+   }
+
+   function dashboard_badge_class($category) {
+      $normalized = strtolower((string)$category);
+
+      if (strpos($normalized, 'ultra') !== false) {
+         return 'pill-blue';
+      }
+      if (strpos($normalized, 'lux') !== false) {
+         return 'pill-green';
+      }
+      if (strpos($normalized, 'indi') !== false) {
+         return 'pill-cyan';
+      }
+      if (strpos($normalized, 'camp') !== false) {
+         return 'pill-orange';
+      }
+
+      return 'pill-blue';
+   }
+
+   $resortCounts = dashboard_fetch_category_counts($con, 'resort_types');
+   $projectCounts = dashboard_fetch_category_counts($con, 'project_types');
+
+   $tentUltraCount = dashboard_find_category_count($resortCounts, 'ultra');
+   $tentLuxuryCount = dashboard_find_category_count($resortCounts, 'luxury', 'ultra');
+   $tentIndianCount = dashboard_find_category_count($resortCounts, 'indian');
+   $tentCampingCount = dashboard_find_category_count($resortCounts, 'camp');
+
+   $projectInternationalCount = dashboard_find_category_count($projectCounts, 'international');
+   $projectNationalCount = dashboard_find_category_count($projectCounts, 'national', 'international');
+
+   $blogsCount = 0;
+   $blogsResult = mysqli_query($con, "SELECT COUNT(*) AS total_count FROM blog_inner_content");
+   if ($blogsResult) {
+      $blogsRow = mysqli_fetch_assoc($blogsResult);
+      if (is_array($blogsRow) && isset($blogsRow['total_count'])) {
+         $blogsCount = (int)$blogsRow['total_count'];
+      }
+   }
+
+   $projectAllTotal = array_sum($projectCounts);
+   $projectBaseCount = $projectAllTotal - $projectInternationalCount - $projectNationalCount;
+   if ($projectBaseCount < 0) {
+      $projectBaseCount = 0;
+   }
+
+   $tentTotal = $tentUltraCount + $tentLuxuryCount + $tentIndianCount + $tentCampingCount;
+   $projectTotal = $projectBaseCount + $projectInternationalCount + $projectNationalCount;
+
+   $latestTents = dashboard_fetch_latest_rows($con, 'resort_types', 4);
+   $latestProjects = dashboard_fetch_latest_rows($con, 'project_types', 4);
+
+   $latestLeads = array();
+   $leadResult = mysqli_query($con, "SELECT id, name, mobile, date FROM contact_query ORDER BY id DESC LIMIT 4");
+   if ($leadResult) {
+      while ($leadRow = mysqli_fetch_assoc($leadResult)) {
+         $latestLeads[] = $leadRow;
+      }
+   }
+
+   $dashboardUserName = '';
+   $profileResult = mysqli_query($con, "SELECT fname, lname FROM profile_info LIMIT 1");
+   if ($profileResult && mysqli_num_rows($profileResult) > 0) {
+      $profileRow = mysqli_fetch_assoc($profileResult);
+      $firstName = isset($profileRow['fname']) ? trim((string)$profileRow['fname']) : '';
+      $lastName = isset($profileRow['lname']) ? trim((string)$profileRow['lname']) : '';
+      $dashboardUserName = trim($firstName . ' ' . $lastName);
+   }
+
+   if ($dashboardUserName === '' && isset($_SESSION['u'])) {
+      $sessionUser = trim((string)$_SESSION['u']);
+      if ($sessionUser !== '') {
+         $emailParts = explode('@', $sessionUser);
+         $dashboardUserName = trim((string)$emailParts[0]);
+      }
+   }
+
+   if ($dashboardUserName === '') {
+      $dashboardUserName = 'Admin';
+   }
 ?>
 
 <div class="pcoded-content">
@@ -34,71 +173,109 @@
       <div class="main-body">
          <div class="page-wrapper">
             <div class="page-body">
-               <div class="listing-page-head">
+               <div class="listing-page-head dashboard-head-wrap">
                   <div class="listing-title-wrap">
                      <h1>Dashboard</h1>
-                     <p class="listing-subtitle">Welcome back, Tarun! Here is what is happening with your website today.</p>
+                     <p class="listing-subtitle">Welcome back, <?php echo dashboard_e($dashboardUserName); ?>! Here's what's happening with your business.</p>
                   </div>
-                  <div class="listing-cta"></div>
+               </div>
+               <div class="dashboard-kpi-grid mb-20">
+                  <div class="dashboard-kpi-card kpi-accent-blue">
+                     <div class="dashboard-kpi-icon"><span class="material-icons">villa</span></div>
+                     <div class="dashboard-kpi-content">
+                        <p>Ultra Luxury Resort Tent</p>
+                        <h3><?php echo dashboard_format_number($tentUltraCount); ?></h3>
+                     </div>
+                  </div>
+                  <div class="dashboard-kpi-card kpi-accent-green">
+                     <div class="dashboard-kpi-icon"><span class="material-icons">holiday_village</span></div>
+                     <div class="dashboard-kpi-content">
+                        <p>Luxury Resort Tent</p>
+                        <h3><?php echo dashboard_format_number($tentLuxuryCount); ?></h3>
+                     </div>
+                  </div>
+                  <div class="dashboard-kpi-card kpi-accent-cyan">
+                     <div class="dashboard-kpi-icon"><span class="material-icons">cabin</span></div>
+                     <div class="dashboard-kpi-content">
+                        <p>Indian Resort Tent</p>
+                        <h3><?php echo dashboard_format_number($tentIndianCount); ?></h3>
+                     </div>
+                  </div>
+                  <div class="dashboard-kpi-card kpi-accent-orange">
+                     <div class="dashboard-kpi-icon"><span class="material-icons">terrain</span></div>
+                     <div class="dashboard-kpi-content">
+                        <p>Camping Tents</p>
+                        <h3><?php echo dashboard_format_number($tentCampingCount); ?></h3>
+                     </div>
+                  </div>
+                  <div class="dashboard-kpi-card kpi-accent-green">
+                     <div class="dashboard-kpi-icon"><span class="material-icons">public</span></div>
+                     <div class="dashboard-kpi-content">
+                        <p>International Projects</p>
+                        <h3><?php echo dashboard_format_number($projectInternationalCount); ?></h3>
+                     </div>
+                  </div>
+                  <div class="dashboard-kpi-card kpi-accent-blue">
+                     <div class="dashboard-kpi-icon"><span class="material-icons">map</span></div>
+                     <div class="dashboard-kpi-content">
+                        <p>National Projects</p>
+                        <h3><?php echo dashboard_format_number($projectNationalCount); ?></h3>
+                     </div>
+                  </div>
+                     <div class="dashboard-kpi-card kpi-accent-slate">
+                        <div class="dashboard-kpi-icon"><span class="material-icons">article</span></div>
+                        <div class="dashboard-kpi-content">
+                           <p>Blogs</p>
+                           <h3><?php echo dashboard_format_number($blogsCount); ?></h3>
+                        </div>
+                     </div>
                </div>
 
                <div class="row">
-                  <div class="col-lg-3 col-md-6 col-sm-12 mb-20">
-                     <div class="card">
+                  <div class="col-lg-6 col-md-12 mb-20">
+                     <div class="card dashboard-analytic-card h-100">
+                        <div class="card-header">
+                           <span>Tents Overview (By Category)</span>
+                        </div>
                         <div class="card-body">
-                           <div class="d-flex align-items-center mb-2">
-                              <span class="material-icons rounded-circle bg-success text-white p-2 me-2">home_work</span>
-                              <div>
-                                 <div class="text-muted">Total Tents</div>
-                                 <h3 class="mb-0"><?php echo $TotalTents; ?></h3>
+                           <div class="dashboard-donut-layout">
+                              <div class="dashboard-donut donut-tents">
+                                 <div class="dashboard-donut-center">
+                                    <span>Total</span>
+                                    <strong><?php echo dashboard_format_number($tentTotal); ?></strong>
+                                    <small>Tents</small>
+                                 </div>
+                              </div>
+                              <div class="dashboard-donut-legend">
+                                 <div><span class="dot dot-blue"></span>Ultra Luxury Resort Tent <strong><?php echo dashboard_format_number($tentUltraCount); ?> (<?php echo dashboard_format_percent($tentUltraCount, $tentTotal); ?>%)</strong></div>
+                                 <div><span class="dot dot-green"></span>Luxury Resort Tent <strong><?php echo dashboard_format_number($tentLuxuryCount); ?> (<?php echo dashboard_format_percent($tentLuxuryCount, $tentTotal); ?>%)</strong></div>
+                                 <div><span class="dot dot-cyan"></span>Indian Resort Tent <strong><?php echo dashboard_format_number($tentIndianCount); ?> (<?php echo dashboard_format_percent($tentIndianCount, $tentTotal); ?>%)</strong></div>
+                                 <div><span class="dot dot-orange"></span>Camping Tents <strong><?php echo dashboard_format_number($tentCampingCount); ?> (<?php echo dashboard_format_percent($tentCampingCount, $tentTotal); ?>%)</strong></div>
                               </div>
                            </div>
-                           <a href="project-listing.php" class="text-muted">View all tents <i class="feather icon-arrow-right"></i></a>
                         </div>
                      </div>
                   </div>
 
-                  <div class="col-lg-3 col-md-6 col-sm-12 mb-20">
-                     <div class="card">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center mb-2">
-                              <span class="material-icons rounded-circle bg-warning text-white p-2 me-2">apartment</span>
-                              <div>
-                                 <div class="text-muted">Total Projects</div>
-                                 <h3 class="mb-0"><?php echo $TotalProjects; ?></h3>
-                              </div>
-                           </div>
-                           <a href="project-listings.php" class="text-muted">View all projects <i class="feather icon-arrow-right"></i></a>
+                  <div class="col-lg-6 col-md-12 mb-20">
+                     <div class="card dashboard-analytic-card h-100">
+                        <div class="card-header">
+                           <span>Projects Overview (By Type)</span>
                         </div>
-                     </div>
-                  </div>
-
-                  <div class="col-lg-3 col-md-6 col-sm-12 mb-20">
-                     <div class="card">
                         <div class="card-body">
-                           <div class="d-flex align-items-center mb-2">
-                              <span class="material-icons rounded-circle bg-success text-white p-2 me-2">article</span>
-                              <div>
-                                 <div class="text-muted">Total Blogs</div>
-                                 <h3 class="mb-0"><?php echo $TotalBlogs; ?></h3>
+                           <div class="dashboard-donut-layout">
+                              <div class="dashboard-donut donut-projects">
+                                 <div class="dashboard-donut-center">
+                                    <span>Total</span>
+                                    <strong><?php echo dashboard_format_number($projectTotal); ?></strong>
+                                    <small>Projects</small>
+                                 </div>
+                              </div>
+                              <div class="dashboard-donut-legend">
+                                 <div><span class="dot dot-charcoal"></span>International Projects <strong><?php echo dashboard_format_number($projectInternationalCount); ?> (<?php echo dashboard_format_percent($projectInternationalCount, $projectTotal); ?>%)</strong></div>
+                                 <div><span class="dot dot-gray"></span>National Projects <strong><?php echo dashboard_format_number($projectNationalCount); ?> (<?php echo dashboard_format_percent($projectNationalCount, $projectTotal); ?>%)</strong></div>
                               </div>
                            </div>
-                           <a href="blog-list-page.php" class="text-muted">View all blogs <i class="feather icon-arrow-right"></i></a>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div class="col-lg-3 col-md-6 col-sm-12 mb-20">
-                     <div class="card">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center mb-2">
-                              <span class="material-icons rounded-circle bg-warning text-white p-2 me-2">call</span>
-                              <div>
-                                 <div class="text-muted">New Leads</div>
-                                 <h3 class="mb-0"><?php echo $TotalLeads; ?></h3>
-                              </div>
-                           </div>
-                           <a href="contact-us-list.php" class="text-muted">View all leads <i class="feather icon-arrow-right"></i></a>
                         </div>
                      </div>
                   </div>
@@ -106,155 +283,136 @@
 
                <div class="row">
                   <div class="col-lg-4 col-md-12 mb-20">
-                     <div class="card h-100">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                           <span>Leads Overview</span>
-                           <select class="form-control form-control-sm" style="max-width: 140px;">
-                              <option>Last 30 Days</option>
-                           </select>
-                        </div>
-                        <div class="card-body">
-                           <div class="d-flex gap-3 mb-2 text-muted">
-                              <span><i class="feather icon-minus" style="color:#198754;"></i> Contact Leads</span>
-                              <!-- <span><i class="feather icon-minus" style="color:#f59f00;"></i> Website Calls</span> -->
+                     <div class="card dashboard-list-card h-100">
+                        <div class="card-header dashboard-list-header">
+                           <div class="dashboard-list-title-wrap">
+                              <span>Most Viewed Tents</span>
                            </div>
-                           <canvas id="leadsOverviewChart" class="w-100" height="250"></canvas>
                         </div>
-                     </div>
-                  </div>
-
-                  <div class="col-lg-6 col-md-12 mb-20">
-                     <div class="card h-100">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                           <span>Recent Leads</span>
-                           <a href="contact-us-list.php" class="btn btn-primary btn-sm">View All</a>
-                        </div>
-                        <div class="card-body table-responsive">
-                           <table class="table table-bordered listing-table mb-0">
-                              <thead>
-                                 <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Country</th>
-                                    <th>Date</th>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 <?php   
-                                    $LeadsResult = mysqli_query($con, "SELECT * FROM contact_query ORDER BY date DESC LIMIT 5");
-                                    while($Lead = mysqli_fetch_assoc($LeadsResult))
-                                    {
-                                       ?>
+                        <div class="card-body p-0">
+                           <div class="table-responsive">
+                              <table class="table dashboard-mini-table mb-0">
+                                 <thead>
+                                    <tr>
+                                       <th>#</th>
+                                       <th>Tent Name</th>
+                                       <th>Category</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <?php for ($i = 0; $i < 4; $i++) { ?>
+                                       <?php $row = isset($latestTents[$i]) ? $latestTents[$i] : null; ?>
                                        <tr>
-                                          <td><?php echo $Lead['name']; ?></td>
-                                          <td><?php echo $Lead['email']; ?></td>
-                                          <td><?php echo $Lead['l_country']; ?></td>
-                                          <td><?php echo date("d M, Y", strtotime($Lead['date'])); ?></td>
-                                    <?php  }  ?>
-                                 </tr>
-                              </tbody>
-                           </table>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div class="col-lg-2 col-md-12 mb-20">
-                     <div class="card h-100">
-                        <div class="card-header">Quick Actions</div>
-                        <div class="card-body">
-                           <div class="list-group">
-                              <a href="project-internal.php" class="list-group-item list-group-item-action d-flex align-items-center">
-                                 <span class="material-icons me-2 text-success">add_circle</span> Add New Tent
-                              </a>
-                              <a href="project-internals.php" class="list-group-item list-group-item-action d-flex align-items-center">
-                                 <span class="material-icons me-2 text-warning">apartment</span> Add New Project
-                              </a>
-                              <a href="blog-inner-page.php" class="list-group-item list-group-item-action d-flex align-items-center">
-                                 <span class="material-icons me-2 text-success">description</span> Add New Blog
-                              </a>
-                              <a href="add-gallery.php" class="list-group-item list-group-item-action d-flex align-items-center">
-                                 <span class="material-icons me-2 text-warning">collections</span> Upload to Gallery
-                              </a>
-                              <a href="counters-inner-page.php" class="list-group-item list-group-item-action d-flex align-items-center">
-                                 <span class="material-icons me-2 text-success">quiz</span> Add FAQ
-                              </a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-
-               <!-- <div class="row">
-                  <div class="col-lg-6 col-md-12 mb-20">
-                     <div class="card h-100">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                           <span>Most Viewed Tents</span>
-                           <a href="project-listing.php" class="btn btn-primary btn-sm">View All</a>
-                        </div>
-                        <div class="card-body">
-                           <div class="d-flex align-items-center border-bottom py-2">
-                              <span class="material-icons me-2 text-warning">looks_one</span>
-                              <img src="images/default-profile.png" alt="tent" class="me-2" style="width:56px;height:40px;object-fit:cover;">
-                              <div>
-                                 <div class="fw-bold">The Taj Resort Tent</div>
-                                 <small class="text-muted">1,248 Views</small>
-                              </div>
-                           </div>
-                           <div class="d-flex align-items-center border-bottom py-2">
-                              <span class="material-icons me-2 text-warning">looks_two</span>
-                              <img src="images/default-profile.png" alt="tent" class="me-2" style="width:56px;height:40px;object-fit:cover;">
-                              <div>
-                                 <div class="fw-bold">Luxury Villa Tent</div>
-                                 <small class="text-muted">987 Views</small>
-                              </div>
-                           </div>
-                           <div class="d-flex align-items-center py-2">
-                              <span class="material-icons me-2 text-warning">looks_3</span>
-                              <img src="images/default-profile.png" alt="tent" class="me-2" style="width:56px;height:40px;object-fit:cover;">
-                              <div>
-                                 <div class="fw-bold">Maharaja Tent</div>
-                                 <small class="text-muted">756 Views</small>
-                              </div>
+                                          <td><?php echo $i + 1; ?></td>
+                                          <td>
+                                             <div class="dashboard-item-cell">
+                                                <img src="<?php echo dashboard_e(dashboard_row_image($row)); ?>" alt="Tent" onerror="this.src='images/default-profile.png';">
+                                                <span><?php echo $row ? dashboard_e($row['title']) : '-'; ?></span>
+                                             </div>
+                                          </td>
+                                          <td>
+                                             <?php if ($row) { ?>
+                                                <span class="dashboard-pill <?php echo dashboard_badge_class($row['category']); ?>"><?php echo dashboard_e($row['category']); ?></span>
+                                             <?php } else { ?>
+                                                -
+                                             <?php } ?>
+                                          </td>
+                                       </tr>
+                                    <?php } ?>
+                                 </tbody>
+                              </table>
                            </div>
                         </div>
                      </div>
                   </div>
 
                   <div class="col-lg-4 col-md-12 mb-20">
-                     <div class="card h-100">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                           <span>Most Viewed Projects</span>
-                           <a href="project-listings.php" class="btn btn-primary btn-sm">View All</a>
+                     <div class="card dashboard-list-card h-100">
+                        <div class="card-header dashboard-list-header">
+                           <div class="dashboard-list-title-wrap">
+                              <span>Most Viewed Projects</span>
+                           </div>
                         </div>
-                        <div class="card-body">
-                           <div class="d-flex align-items-center border-bottom py-2">
-                              <span class="material-icons me-2 text-warning">looks_one</span>
-                              <img src="images/default-profile.png" alt="project" class="me-2" style="width:56px;height:40px;object-fit:cover;">
-                              <div>
-                                 <div class="fw-bold">Oberoi Rajgarh, Khajuraho</div>
-                                 <small class="text-muted">1,564 Views</small>
-                              </div>
-                           </div>
-                           <div class="d-flex align-items-center border-bottom py-2">
-                              <span class="material-icons me-2 text-warning">looks_two</span>
-                              <img src="images/default-profile.png" alt="project" class="me-2" style="width:56px;height:40px;object-fit:cover;">
-                              <div>
-                                 <div class="fw-bold">The Leela Palace, Udaipur</div>
-                                 <small class="text-muted">1,102 Views</small>
-                              </div>
-                           </div>
-                           <div class="d-flex align-items-center py-2">
-                              <span class="material-icons me-2 text-warning">looks_3</span>
-                              <img src="images/default-profile.png" alt="project" class="me-2" style="width:56px;height:40px;object-fit:cover;">
-                              <div>
-                                 <div class="fw-bold">Jaisalmer Desert Camp</div>
-                                 <small class="text-muted">876 Views</small>
-                              </div>
+                        <div class="card-body p-0">
+                           <div class="table-responsive">
+                              <table class="table dashboard-mini-table mb-0">
+                                 <thead>
+                                    <tr>
+                                       <th>#</th>
+                                       <th>Project Name</th>
+                                       <th>Category</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <?php for ($i = 0; $i < 4; $i++) { ?>
+                                       <?php $row = isset($latestProjects[$i]) ? $latestProjects[$i] : null; ?>
+                                       <tr>
+                                          <td><?php echo $i + 1; ?></td>
+                                          <td>
+                                             <div class="dashboard-item-cell">
+                                                <img src="<?php echo dashboard_e(dashboard_row_image($row)); ?>" alt="Project" onerror="this.src='images/default-profile.png';">
+                                                <span><?php echo $row ? dashboard_e($row['title']) : '-'; ?></span>
+                                             </div>
+                                          </td>
+                                          <td>
+                                             <?php if ($row) { ?>
+                                                <span class="dashboard-pill <?php echo dashboard_badge_class($row['category']); ?>"><?php echo dashboard_e($row['category']); ?></span>
+                                             <?php } else { ?>
+                                                -
+                                             <?php } ?>
+                                          </td>
+                                       </tr>
+                                    <?php } ?>
+                                 </tbody>
+                              </table>
                            </div>
                         </div>
                      </div>
                   </div>
-               </div> -->
+
+                  <div class="col-lg-4 col-md-12 mb-20">
+                     <div class="card dashboard-list-card h-100">
+                        <div class="card-header dashboard-list-header">
+                           <div class="dashboard-list-title-wrap">
+                              <span>Recent Leads</span>
+                           </div>
+                        </div>
+                        <div class="card-body p-0">
+                           <div class="table-responsive">
+                              <table class="table dashboard-mini-table mb-0">
+                                 <thead>
+                                    <tr>
+                                       <th>#</th>
+                                       <th>Name</th>
+                                       <th>Phone</th>
+                                       <th>Date</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <?php for ($i = 0; $i < 4; $i++) { ?>
+                                       <?php $row = isset($latestLeads[$i]) ? $latestLeads[$i] : null; ?>
+                                       <tr>
+                                          <td><?php echo $i + 1; ?></td>
+                                          <td><?php echo $row ? dashboard_e($row['name']) : '-'; ?></td>
+                                          <td><?php echo $row ? dashboard_e($row['mobile']) : '-'; ?></td>
+                                          <td>
+                                             <?php
+                                             if ($row && !empty($row['date']) && $row['date'] !== '0000-00-00') {
+                                                echo dashboard_e(date('d M Y', strtotime($row['date'])));
+                                             } else {
+                                                echo '-';
+                                             }
+                                             ?>
+                                          </td>
+                                       </tr>
+                                    <?php } ?>
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
       </div>

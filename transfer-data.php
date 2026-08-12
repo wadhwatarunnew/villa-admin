@@ -251,96 +251,94 @@
 ?>
 
 <style>
-	#galcs {
-		max-width: 100%;
-	}
+   #galcs {
+      max-width: 100%;
+   }
 </style>
 
 <div class="pcoded-content">
-	<div class="pcoded-inner-content">
-		<div class="main-body">
-			<div class="page-wrapper">
-				<div>
-					<div class="page-body">
-						<?php if (!empty($_SESSION['Message'])) {
-                     echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
-                              . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
-                              . "</div>";
+   <div class="pcoded-inner-content">
+      <div class="main-body">
+         <div class="page-wrapper">
+            <div class="page-body">
+              	<div class="listing-page-head">
+                  <div class="listing-title-wrap">
+                     <h1>Transfer Gallery Photos</h1>
+                     <div class="listing-breadcrumb">
+                        <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Gallery</span><span class="crumb-sep">&gt;</span><span>Transfer</span>
+                     </div>
+                 	</div>
 
-                     unset($_SESSION['Message']);
-                     unset($_SESSION['BannerColor']);
-                  } ?>
-						<div class="row">
-							<div class="col-sm-12">
-								<div class="card mb-30">
-									<div class="card-header">Transfer</div>
-								</div>
-							</div>
-						</div>
+                  <div class="listing-cta">
+                     <a href="add-gallery.php" class="btn btn-outline-primary btn-sm"><i class="feather icon-plus"></i> Add</a>
+                     <a href="update-gallery.php" class="btn btn-outline-secondary btn-sm"><i class="feather icon-edit"></i> Update</a>
+                     <a href="delete-gallery.php" class="btn btn-outline-danger btn-sm"><i class="feather icon-trash-2"></i> Delete</a>
+                  </div>
+              	</div>
 
-						<div class="row">
-							<div class="col-lg-12">
-								<h4 class="page-header">Transfer Photos</h4>
-								<div class="demo-gallery dark mrb35">
-									<br>
-									<ul id="lg-share-demo" class="list-unstyled" >
-										<form action="" method="post" enctype="multipart/form-data">
-											<select name="state" class="form-control country input" required>
-												<option value="">--Select--</option>
-												<option value="Resort Tents">Resort Tents</option>
-												<option value="Projects">Projects</option>
-											</select><br><br>
-											
-											<div id="categories">
-											</div>
-											<br><br>
-											
-											<div id="response">
-											</div><br><br>
+               <?php if (!empty($_SESSION['Message'])) {
+                  echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+                           . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+                           . "</div>";
 
-											<div id="response1">
-											</div><br>
-										</form>
-									</ul>
-									<hr>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                  unset($_SESSION['Message']);
+                  unset($_SESSION['BannerColor']);
+               } ?>
+              	<div class="card mb-30">
+                  <div class="card-header">Transfer Photos</div>
+                  <div class="card-body">
+                     <form action="" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                           <div class="col-lg-6 col-md-12">
+                              <div class="commonSection">
+                                 <label>Gallery Type <span class="required">*</span></label>
+                                 <select name="state" class="form-control country input" required>
+                                    <option value="">--Select--</option>
+                                    <option value="Resort Tents">Resort Tents</option>
+                                    <option value="Projects">Projects</option>
+                                 </select>
+                              </div>
+
+                              <div id="categories" class="mb-20"></div>
+                              <div id="response" class="mb-20"></div>
+                              <div id="response1"></div>
+                           </div>
+                         </div>
+                     </form>
+                  </div>
+              	</div>
+            </div>
+         </div>
+      </div>
+   </div>
 </div>
-<!---->
 
 <script>
 	var limit = 3;
-												
-	$(document).ready(function() {
-		$('input.single-checkbox').on('change', function(evt) {
+    $(document).ready(function() {
+    	$('input.single-checkbox').on('change', function(evt) {
 			if($(this).find('.single-checkbox:checked').length >= limit)
 			{
 				this.checked = false;
 			}
 		});
 
-		$("select.country").change(function() {
-			var selectedCountry = $(".country option:selected").val();
-			
-			console.log(selectedCountry);
-			$.ajax({
-				type: "POST",
-				url: "getSelectedCategoryTransfer.php",
-				data: { country : selectedCountry } 
-			}).done(function(data){
-				$("#categories").html('');
-				$("#response").html('');
-				$("#response1").html('');
-				$("#categories").html(data);
-			});
-		});
-	});
+        $("select.country").change(function() {
+            var selectedCountry = $(".country option:selected").val();
+            $.ajax({
+                type: "POST",
+                url: "getSelectedCategoryTransfer.php",
+                data: {
+                    country: selectedCountry
+                }
+            }).done(function(data) {
+                $("#categories").html('');
+                $("#response").html('');
+                $("#response1").html('');
+                $("#categories").html(data);
+            });
+        });
+    });
 </script>
 
 <?php include_once('common/footer.php'); ?>

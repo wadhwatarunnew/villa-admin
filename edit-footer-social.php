@@ -36,13 +36,13 @@
                            <div class="listing-title-wrap">
                               <h1>Edit Social Media</h1>
                               <div class="listing-breadcrumb">
-                                 <span>Home</span><span class="crumb-sep">&gt;</span><span>Social Medias</span><span class="crumb-sep">&gt;</span><span>Edit Social Media</span>
+                                 <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Footer</span><span class="crumb-sep">&gt;</span><span>Edit Social</span>
                               </div>
                            </div>
 
                            <div class="listing-cta">
-                              <a href="socialmedialist.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back to Social Medias</a>
-                              <button type="submit" class="btn btn-success btn-sm" name="sub"><i class="feather icon-save"></i> Save Social Media</button>
+                              <a href="socialmedialist.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+                              <button type="submit" class="btn btn-success btn-sm" name="sub"><i class="feather icon-save"></i> Save</button>
                            </div>
                         </div>
                      </div>
@@ -98,9 +98,8 @@
                         </div>
                      </div>
                   </div>
-               </div>
-            </form>
-         </div>
+            </div>
+         </form>
       </div>
    </div>
 </div>

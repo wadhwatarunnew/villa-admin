@@ -183,8 +183,26 @@
 	<div class="pcoded-inner-content">
 		<div class="main-body">
 			<div class="page-wrapper">
-				<form action ="" enctype="multipart/form-data" method="post" >
+				<form action ="" enctype="multipart/form-data" method="post" id="contactContentForm">
 					<div class="page-body">
+						<div class="listing-page-head">
+							<div class="listing-title-wrap">
+								<h1>Contact Page</h1>
+								<div class="listing-breadcrumb">
+									<span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Pages</span><span class="crumb-sep">&gt;</span><span>Contact</span>
+								</div>
+							</div>
+
+							<div class="listing-cta">
+								<a href="dashboard.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+								<?php if (!$b['local_path']) { ?>
+									<input type="submit" class="btn btn-success btn-sm" id="btnn" name="update" value="Save" form="contactContentForm">
+								<?php } else { ?>
+									<input type="submit" class="btn btn-success btn-sm" id="btnn1" name="update1" value="Save" form="contactContentForm">
+								<?php } ?>
+							</div>
+						</div>
+
 						<?php if (!empty($_SESSION['Message'])) {
 		                     echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
 		                              . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
@@ -194,158 +212,113 @@
 		                     unset($_SESSION['BannerColor']);
 		                } ?>
 						<div class="row">
-							<div class="col-sm-12">
+							<div class="col-lg-4 col-md-12">
 								<div class="card mb-30">
 									<div class="card-header">Seo Meta Tags</div>
 									<div class="card-body">
-										<div class="row">
-											<div class="col-sm-4">
-												<div class="commonSection">
-													<label>Meta Title</label>
-													<textarea name="metaTitle" id="metaTitle" class="form-control" required placeholder="Enter Meta Title"><?php echo $d["title"]; ?></textarea>
-												</div>
+										<form action="" method="post">
+											<div class="commonSection">
+												<label>Meta Title</label>
+												<textarea name="metaTitle" id="metaTitle" class="form-control" required placeholder="Enter Meta Title"><?php echo $d['title']; ?></textarea>
 											</div>
-
-											<div class="col-sm-4">
-												<div class="commonSection">
-													<label>Meta Keyword</label>
-													<textarea name="keyword" id="metaTitle" class="form-control" required placeholder="Enter Keyword"><?php echo $d["keyword"]; ?></textarea>
-												</div>
+											<div class="commonSection">
+												<label>Meta Keyword</label>
+												<textarea name="keyword" id="metaKeyword" class="form-control" required placeholder="Enter Keyword"><?php echo $d['keyword']; ?></textarea>
 											</div>
-
-											<div class="col-sm-4">
-												<div class="commonSection">
-													<label>Meta Description</label>
-													<textarea name="disc" id="metaTitle" class="form-control" required placeholder="Enter Description"><?php echo $d["discription"]; ?></textarea>
-												</div>
+											<div class="commonSection">
+												<label>Meta Description</label>
+												<textarea name="disc" id="metaDescription" class="form-control" required placeholder="Enter Description"><?php echo $d['discription']; ?></textarea>
 											</div>
-										</div>
+										</form>
 									</div>
 								</div>
 							</div>
-						</div>
 
-						<div class="row">
-							<div class="col-sm-12">
-								<div class="card mb-30">
-									<div class="card-header">Manage Blog Content Inner</div>
-									<div class="card-body">
-										<div class="row">
-											<?php if (!$b["local_path"]) { ?>
-												<div class="col-sm-12">
-													<div class="commonSection">
-														<label>Title</label>
-														<input class="form-control" type="text" name="title" id="title" required value="<?php echo $b["title"]; ?>" placeholder="Enter Heading">
-													</div>
-												</div>
+							<div class="col-lg-8 col-md-12">
+								<div class="row">
+									<div class="col-lg-6 col-md-12">
+										<div class="card mb-30">
+											<div class="card-header">Banner Image <span class="required">*</span></div>
+											<div class="card-body">
+												<div class="banner-image-upload">
+													<?php
+														$middlePreviewImage = "images/default-profile.png";
+														if (!empty($b['local_path'])) {
+															$middlePreviewImage = $b['local_path'];
+														} elseif (!empty($b['image'])) {
+															$middlePreviewImage = $b['image'];
+														}
+													?>
+													<img src="<?php echo $middlePreviewImage; ?>" class="banner-image-preview" id="imgPreview" alt="Banner Image" onerror="this.src='images/default-profile.png';">
+													<div class="banner-recommended-size">Recommended size: 1920x800px</div>
 
-												<div class="col-sm-12">
-													<div class="commonSection">
-														<label>Content</label>
-														<textarea name="editor1" id="editor1" rows="10" cols="80" required><?php echo $b["content"]; ?></textarea>
-													</div>
-												</div>
-											<?php } else { ?>
-												<div class="col-sm-12">
-													<div class="commonSection">
-														<label>Title</label>
-														<input class="form-control" type="text" name="title1" required id="title1" value="<?php echo $b["title"]; ?>" placeholder="Enter Heading">
-													</div>
-												</div>
-
-												<div class="col-sm-12">
-													<div class="commonSection">
-														<label>Content</label>
-														<textarea name="editor2" id="editor2" rows="10" cols="80" required><?php echo $b["content"]; ?></textarea>
-													</div>
-												</div>
-											<?php } ?>
-
-											<div class="col-sm-12">
-												<div class="commonSection">
-													<label>Image Type</label>
-													<?php if (!$b["local_path"]) { ?>
-														<div class="radio-inline-group" style="display: inline-block !important;">
-														    <label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();"  checked="">Image URL</label>
-														    <label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();" >Select Image</label>
+													<?php if (!$b['local_path']) { ?>
+														<div class="radio-inline-group" style="margin-top: 12px;">
+															<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();" checked="">Image URL</label>
+															<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();">Select Image</label>
+														</div>
+														<div id="image_url" style="margin-top: 12px;">
+															<input class="form-control banner-form-control" type="text" name="image" id="image" value="<?php echo $b['image']; ?>" placeholder="Enter image URL">
+														</div>
+														<div id="select_image1" style="display: none; margin-top: 12px;">
+															<input type="file" name="myFile" id="myFile" style="display: none;" accept="image/*">
+															<div class="banner-upload-actions">
+																<button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('myFile').click();">
+																	<i class="feather icon-upload"></i> Change Image
+																</button>
+																<button type="button" class="btn btn-sm btn-danger" onclick="res();">Reset Image</button>
+															</div>
 														</div>
 													<?php } else { ?>
-														<div class="radio-inline-group" style="display: inline-block !important;">
-														    <label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show3();"  >Image URL</label>
-														    <label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show4();"  checked="">Select Image</label>
+														<div class="radio-inline-group" style="margin-top: 12px;">
+															<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show3();">Image URL</label>
+															<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show4();" checked="">Select Image</label>
+														</div>
+														<div id="image_url1" style="display: none; margin-top: 12px;">
+															<input class="form-control banner-form-control" type="text" name="image1" id="image1" value="<?php echo $b['image']; ?>" placeholder="Enter image URL">
+														</div>
+														<div id="select_image" style="margin-top: 12px;">
+															<input type="file" name="myFile1" id="myFile1" style="display: none;" accept="image/*">
+															<div class="banner-upload-actions">
+																<button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('myFile1').click();">
+																	<i class="feather icon-upload"></i> Change Image
+																</button>
+																<button type="button" class="btn btn-sm btn-danger" onclick="res1();">Reset Image</button>
+															</div>
 														</div>
 													<?php } ?>
 												</div>
 											</div>
-											
-											
-											<?php if (!$b["local_path"]) { ?>
-												<div class="col-sm-12" id="image_url">
+										</div>
+									</div>
+
+									<div class="col-lg-6 col-md-12">
+										<div class="card mb-30">
+											<div class="card-header">Contact Content</div>
+											<div class="card-body">
+												<?php if (!$b['local_path']) { ?>
 													<div class="commonSection">
-														<label>Image URL</label>
-														<input class="form-control" type="text" name="image" id="image" value="<?php echo $b["image"]; ?>" placeholder="Enter url">
+														<label>Title</label>
+														<input class="form-control" type="text" name="title" id="title" required value="<?php echo $b['title']; ?>" placeholder="Enter Heading">
 													</div>
-												</div>
-
-												<div class="row" id="select_image1">
-													<div class="col-sm-6">
-														<div class="commonSection"> 
-															<label>Image</label>
-															<img src="<?php echo $b["image"]; ?>" class="img-thumbnail" id="imgPreview" >
-														</div>
-													</div>
-
-													<div class="col-sm-6">
-														<div class="commonSection">
-															<label>Select Image</label>
-																<input type="file" name="myFile" id="myFile" class="form-control"><br>
-																<button type="button" class="btn btn-sm btn-danger" onclick="res();">Reset Image</button>
-															</div>
-														</div>
-													</div>
-												</div>
-											<?php } else { ?>
-												<div class="col-sm-12" id="image_url1">
 													<div class="commonSection">
-														<label>Image URL</label>
-														<input class="form-control" type="text" name="image1" id="image1" value="<?php echo $b["image"]; ?>" placeholder="Enter url">
+														<label>Content</label>
+														<textarea name="editor1" id="editor1" rows="10" cols="80" required><?php echo $b['content']; ?></textarea>
 													</div>
-												</div>
-												
-												<div class="row" id="select_image">
-													<div class="col-sm-6">
-														<div class="commonSection"> 
-															<label>Image</label>
-															<img src="<?php echo $b["local_path"]; ?>" class="img-thumbnail" id="imgPreview" >
-														</div>
+												<?php } else { ?>
+													<div class="commonSection">
+														<label>Title</label>
+														<input class="form-control" type="text" name="title1" id="title1" required value="<?php echo $b['title']; ?>" placeholder="Enter Heading">
 													</div>
-
-													<div class="col-sm-6">
-														<div class="commonSection">
-															<label>Select Image</label>
-															<input type="file" name="myFile1" id="myFile1" class="form-control"><br>
-																<button type="button" class="btn btn-sm btn-danger" onclick="res1();">Reset Image</button>
-															</div>
-														</div>
+													<div class="commonSection">
+														<label>Content</label>
+														<textarea name="editor2" id="editor2" rows="10" cols="80" required><?php echo $b['content']; ?></textarea>
 													</div>
-											<?php } ?>
+												<?php } ?>
+											</div>
 										</div>
 									</div>
 								</div>
-								
-								<?php if (!$b["local_path"]) { ?>
-									<div class="row">
-										<div class="col-sm-12">
-											<input type="submit" class="btn btn-success btn-lg" id="btnn" name="update" value="Save">
-										</div>
-									</div>
-								<?php } else { ?>
-									<div class="row">
-										<div class="col-sm-12">
-											<input type="submit" class="btn btn-success btn-lg" id="btnn1" name="update1" value="Save">
-										</div>
-									</div>
-								<?php } ?>
 							</div>
 						</div>
 					</div>

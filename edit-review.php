@@ -1,8 +1,4 @@
-<?php 
-   ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
+<?php
    include "db.php";
    include_once('common/header.php');
    $PageTitle = "Villatent: Reviews";
@@ -10,20 +6,6 @@ error_reporting(E_ALL);
    $id = $_GET['id'];
    $quer = mysqli_query($con,"SELECT * from home_testimonials WHERE id=$id");
    $q1 = mysqli_fetch_assoc($quer);
-
-   // if (isset($_POST['subm']))
-   // {
-   	// $page    = "Update";
-   	// $fname   = $_POST['fname'];
-   	// $desig   = $_POST['desig'];
-   	// $rating  = $_POST['rating'];
-   	// $editor1 = $_POST['editor1'];
-   	
-   	
-   	
-   // 	//header("location:edit-review.php?id=$id");
-   // 	header( "refresh:2; url=edit-review.php?id=$id" );
-   // };
 
    if (isset($_POST['submit']))
    {
@@ -92,26 +74,26 @@ error_reporting(E_ALL);
    <div class="pcoded-inner-content">
       <div class="main-body">
          <div class="page-wrapper">
-            <form action ="" method="post" enctype="multipart/form-data">
+            <form action ="" method="post" id="editReviewForm">
                <div class="page-body">
                   <div class="listing-page-head">
                      <div class="listing-title-wrap">
-                        <h1>Edit Reviews</h1>
+                        <h1>Edit Review</h1>
                         <div class="listing-breadcrumb">
-                           <span>Home</span><span class="crumb-sep">&gt;</span><span>Reviews</span><span class="crumb-sep">&gt;</span><span>Edit Review</span>
+                           <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Reviews</span><span class="crumb-sep">&gt;</span><span>Edit</span>
                         </div>
                      </div>
 
                      <div class="listing-cta">
-                        <a href="review-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back to Reviews</a>
-                        <button type="submit" class="btn btn-success btn-sm" name="submit"><i class="feather icon-save"></i> Save Review</button>
+                        <a href="review-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+                        <input type="submit" class="btn btn-success btn-sm" name="submit" value="Save" form="editReviewForm">
                      </div>
                   </div>
 
                   <?php if (!empty($_SESSION['Message'])) {
                      echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
-                           . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
-                           . "</div>";
+                              . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+                              . "</div>";
 
                      unset($_SESSION['Message']);
                      unset($_SESSION['BannerColor']);
@@ -119,6 +101,7 @@ error_reporting(E_ALL);
                   <div class="row">
                      <div class="col-sm-12">
                         <div class="card">
+                           <div class="card-header">Manage Reviews</div>
                            <div class="card-body">
                               <div class="row">
                                  <div class="col-sm-4">
