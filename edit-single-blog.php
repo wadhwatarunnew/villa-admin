@@ -1,159 +1,129 @@
 <?php 
-error_reporting(0);
-
-$id = $_GET['id'];
-
-include "db.php";
-
-$FileExists = false;
-$query3 = mysqli_query($con,"select * from blog_inner_content where id=$id");
-$b = mysqli_fetch_assoc($query3);
-
-if (isset($_POST['update_seo'])){
-	$page = "Update";
-	$metaTitle = $_POST['metaTitle'];
-	$keyword = $_POST['keyword'];
-	$disc = $_POST['disc'];
-
+	error_reporting(0);
 	include "db.php";
-	mysqli_query($con,"UPDATE blog_inner_seo_meta_data SET metatitle='$metaTitle',keyword='$keyword',discription='$disc' ");
-	header("refresh:2; url=edit-single-blog.php");
-}
+	include_once('common/header.php');
+	$PageTitle = "Villatent: Blog Page";
 
-if (isset($_POST['update'])){
-	$page = "Update";
-	$metaTitle = $_POST['metaTitle'];
-	$keyword = $_POST['keyword'];
-	$disc = $_POST['disc'];
-	$title = $_POST['title'];
-	$date = $_POST['date'];
-	$editor1 = $_POST['editor1'];
-	$imageUrl = $_POST['image'];
-	$myFile = $_FILES['myFile']['name'];
+	$id=$_GET['id'];
+	$FileExists = false;	
 
-	$path = "uploads/pageimages/blogs/single/";
-	$path_original = "uploads/pageimages/blogs/single/";
+	$query3 = mysqli_query($con, "SELECT * FROM blog_inner_content WHERE id=$id");										
+	$b = mysqli_fetch_assoc($query3);
 
-	if(!$imageUrl){
-		if($myFile != '' && (file_exists("uploads/pageimages/".$myFile) || file_exists("uploads/pageimages/addgallery/".$myFile) || file_exists("uploads/pageimages/addgallery/project/".$myFile) || file_exists("uploads/pageimages/addgallery/resort/".$myFile) || file_exists("uploads/pageimages/blogs/".$myFile) || file_exists("uploads/pageimages/blogs/single/".$myFile) || file_exists("uploads/pageimages/contact/".$myFile) || file_exists("uploads/pageimages/nav/".$myFile) || file_exists("uploads/pageimages/nav/category/".$myFile) || file_exists("uploads/pageimages/nav/types/".$myFile) || file_exists("uploads/pageimages/project/".$myFile) || file_exists("uploads/pageimages/project/category/".$myFile) || file_exists("uploads/pageimages/project/types/".$myFile) || file_exists("uploads/pageimages/resort/".$myFile) || file_exists("uploads/pageimages/resort/category/".$myFile) || file_exists("uploads/pageimages/resort/types/".$myFile) || file_exists("uploads/pageimages/slider/".$myFile) || file_exists("uploads/pageimages/youtube/".$myFile))) {
-			$FileExists = true;
-			header("refresh:2; url=edit-single-blog.php?id=$id");
-		} else {
-			include "db.php";
-			move_uploaded_file($_FILES['myFile']['tmp_name'],$path.$myFile);
-			$path = $path_original.$myFile;
-			mysqli_query($con,"update blog_inner_content SET title='$title',date='$date',content='$editor1',image='',local_path='$path',metatitle='$metaTitle',keyword='$keyword',discription='$disc' where id=$id");
-			header("refresh:2; url=edit-single-blog.php?id=$id");
+	if (isset($_POST['update']))
+	{
+		$page = "Update";
+		$metaTitle = $_POST['metaTitle'];
+		$keyword   = $_POST['keyword'];
+		$disc 	  = $_POST['disc'];
+		$title 	  = $_POST['title'];
+		$date 	  = $_POST['date'];
+		$editor1   = $_POST['editor1'];
+		$imageUrl  = $_POST['image'];
+		$myFile    = $_FILES['myFile']['name'];
+		
+		$path="uploads/pageimages/blogs/single/";
+		$path_original="uploads/pageimages/blogs/single/";
+		
+		if(!$imageUrl)
+		{
+			if($myFile != '' && (file_exists("uploads/pageimages/".$myFile) || file_exists("uploads/pageimages/addgallery/".$myFile) || file_exists("uploads/pageimages/addgallery/project/".$myFile) || file_exists("uploads/pageimages/addgallery/resort/".$myFile) || file_exists("uploads/pageimages/blogs/".$myFile) || file_exists("uploads/pageimages/blogs/single/".$myFile)  || file_exists("uploads/pageimages/contact/".$myFile) || file_exists("uploads/pageimages/nav/".$myFile) || file_exists("uploads/pageimages/nav/category/".$myFile) || file_exists("uploads/pageimages/nav/types/".$myFile) || file_exists("uploads/pageimages/project/".$myFile) || file_exists("uploads/pageimages/project/category/".$myFile) || file_exists("uploads/pageimages/project/types/".$myFile) || file_exists("uploads/pageimages/resort/".$myFile) || file_exists("uploads/pageimages/resort/category/".$myFile) || file_exists("uploads/pageimages/resort/types/".$myFile) || file_exists("uploads/pageimages/slider/".$myFile) || file_exists("uploads/pageimages/youtube/".$myFile)))
+	    	{
+	    	   $FileExists = true;
+            $_SESSION['BannerColor'] = "background-color:#FF0000;";
+            $_SESSION['Message'] = "Selected image already exists!";
+            echo "<script>window.location.href='edit-single-blog.php?id=$id';</script>";
+            exit;
+	    	}
+	    	else
+	    	{ 	
+	        	move_uploaded_file($_FILES['myFile']['tmp_name'],$path.$myFile) ;
+	        	$path=$path_original.$myFile;
+		
+	        	mysqli_query($con,"UPDATE blog_inner_content SET title='$title', date='$date', content='$editor1', image='', local_path='$path', metatitle='$metaTitle', keyword='$keyword', discription='$disc' WHERE id=$id");
+	        	
+	        	$_SESSION['BannerColor'] = "background-color:#4BB543;";
+	         $_SESSION['Message'] = "Updated Successfully!";
+	         echo "<script>window.location.href='edit-single-blog.php?id=$id';</script>";
+	         exit;
+	    	}
+		
 		}
-	} else {
-		include "db.php";
-		mysqli_query($con,"update blog_inner_content SET title='$title',date='$date',content='$editor1',image='$imageUrl',metatitle='$metaTitle',keyword='$keyword',discription='$disc' where id=$id");
-		header("refresh:2; url=edit-single-blog.php?id=$id");
+		else
+		{	
+	    	mysqli_query($con, "UPDATE blog_inner_content SET title='$title', date='$date', content='$editor1', image='$imageUrl', metatitle='$metaTitle', keyword='$keyword', discription='$disc' WHERE id=$id");
+
+	    	$_SESSION['BannerColor'] = "background-color:#4BB543;";
+         $_SESSION['Message'] = "Updated Successfully!";
+         echo "<script>window.location.href='edit-single-blog.php?id=$id';</script>";
+         exit;
+	   }
 	}
-}
-
-if (isset($_POST['update1'])){
-	$page = "Update";
-	$metaTitle1 = $_POST['metaTitle1'];
-	$keyword1 = $_POST['keyword1'];
-	$disc1 = $_POST['disc1'];
-	$title1 = $_POST['title1'];
-	$date1 = $_POST['date1'];
-	$editor2 = $_POST['editor2'];
-	$imageUrl1 = $_POST['image1'];
-	$myFile1 = $_FILES['myFile1']['name'];
-
-	$path2 = "uploads/pageimages/blogs/single/";
-	$path_original2 = "uploads/pageimages/blogs/single/";
-
-	if(!$imageUrl1){
-		if($myFile1 != '' && (file_exists("uploads/pageimages/".$myFile1) || file_exists("uploads/pageimages/addgallery/".$myFile1) || file_exists("uploads/pageimages/addgallery/project/".$myFile1) || file_exists("uploads/pageimages/addgallery/resort/".$myFile1) || file_exists("uploads/pageimages/blogs/".$myFile1) || file_exists("uploads/pageimages/blogs/single/".$myFile1) || file_exists("uploads/pageimages/contact/".$myFile1) || file_exists("uploads/pageimages/nav/".$myFile1) || file_exists("uploads/pageimages/nav/category/".$myFile1) || file_exists("uploads/pageimages/nav/types/".$myFile1) || file_exists("uploads/pageimages/project/".$myFile1) || file_exists("uploads/pageimages/project/category/".$myFile1) || file_exists("uploads/pageimages/project/types/".$myFile1) || file_exists("uploads/pageimages/resort/".$myFile1) || file_exists("uploads/pageimages/resort/category/".$myFile1) || file_exists("uploads/pageimages/resort/types/".$myFile1) || file_exists("uploads/pageimages/slider/".$myFile1) || file_exists("uploads/pageimages/youtube/".$myFile1))) {
-			$FileExists = true;
-			header("refresh:2; url=edit-single-blog.php?id=$id");
-		} else {
-			include "db.php";
-			move_uploaded_file($_FILES['myFile1']['tmp_name'],$path2.$myFile1);
-			$path1 = $path_original2.$myFile1;
-
-			if(!$_FILES['myFile1']['name']){
-				mysqli_query($con,"update blog_inner_content SET title='$title1',date='$date1',content='$editor2',metatitle='$metaTitle1',keyword='$keyword1',discription='$disc1' where id=$id");
-				header("refresh:2; url=edit-single-blog.php?id=$id");
-			} else {
-				mysqli_query($con,"update blog_inner_content SET title='$title1',date='$date1',content='$editor2',local_path='$path1',metatitle='$metaTitle1',keyword='$keyword1',discription='$disc1' where id=$id");
-				header("refresh:2; url=edit-single-blog.php?id=$id");
-			}
-		}
-	} else {
-		include "db.php";
-		mysqli_query($con,"update blog_inner_content SET title='$title1',date='$date1',content='$editor2',image='$imageUrl1',local_path='',metatitle='$metaTitle1',keyword='$keyword1',discription='$disc1' where id=$id");
-		header("refresh:2; url=edit-single-blog.php?id=$id");
-	}
-}
 ?>
 
-<?php $PageTitle = "Villatent: Blog Page"; ?>
-<?php include_once('common/header.php'); ?>
 <div class="pcoded-content">
-	<div class="pcoded-inner-content">
-		<div class="main-body">
-			<div class="page-wrapper">
-				<div class="page-body">
-					<div class="listing-page-head">
-						<div class="listing-title-wrap">
-							<h1>Edit Single Blog</h1>
-							<div class="listing-breadcrumb">
-								<span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Blogs</span><span class="crumb-sep">&gt;</span><span>Edit</span>
-							</div>
-						</div>
-						<div class="listing-cta">
-							<a href="blog-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
-							<?php if(!$b['local_path']){ ?>
-							<input type="submit" class="btn btn-success btn-sm" id="btnn" name="update" value="Save" form="editSingleBlogForm">
-							<?php }else{ ?>
-							<input type="submit" class="btn btn-success btn-sm" id="btnn1" name="update1" value="Save" form="editSingleBlogForm">
-							<?php } ?>
-						</div>
-					</div>
-
-					<form action="" enctype="multipart/form-data" method="post" id="editSingleBlogForm">
-						<div class="row">
-							<div class="col-lg-4 col-md-12">
-								<?php include "alert-update.php"; ?>
-								<div class="card mb-30">
-									<div class="card-header">Seo Meta Tags</div>
-									<div class="card-body">
-										<?php if(!$b['local_path']){ ?>
-										<div class="commonSection">
-											<label>Meta Title</label>
-											<textarea name="metaTitle" id="metaTitle" class="form-control" placeholder="Enter Meta Title"><?php echo $b['metatitle']; ?></textarea>
-										</div>
-										<div class="commonSection">
-											<label>Meta Keyword</label>
-											<textarea name="keyword" id="metaKeyword" class="form-control" placeholder="Enter Keyword"><?php echo $b['keyword']; ?></textarea>
-										</div>
-										<div class="commonSection">
-											<label>Meta Description</label>
-											<textarea name="disc" id="metaDescription" class="form-control" placeholder="Enter Description"><?php echo $b['discription']; ?></textarea>
-										</div>
-										<?php }else{ ?>
-										<div class="commonSection">
-											<label>Meta Title</label>
-											<textarea name="metaTitle1" id="metaTitle1" class="form-control" placeholder="Enter Meta Title"><?php echo $b['metatitle']; ?></textarea>
-										</div>
-										<div class="commonSection">
-											<label>Meta Keyword</label>
-											<textarea name="keyword1" id="metaKeyword1" class="form-control" placeholder="Enter Keyword"><?php echo $b['keyword']; ?></textarea>
-										</div>
-										<div class="commonSection">
-											<label>Meta Description</label>
-											<textarea name="disc1" id="metaDescription1" class="form-control" placeholder="Enter Description"><?php echo $b['discription']; ?></textarea>
-										</div>
-										<?php } ?>
-									</div>
+   <div class="pcoded-inner-content">
+      <div class="main-body">
+         <div class="page-wrapper">
+         	<div class="page-body">
+         		<form action="" enctype="multipart/form-data" method="post" id="editSingleBlogForm">
+						<div class="listing-page-head">
+							<div class="listing-title-wrap">
+								<h1>Edit Single Blog</h1>
+								<div class="listing-breadcrumb">
+									<span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Blogs</span><span class="crumb-sep">&gt;</span><span>Edit</span>
 								</div>
 							</div>
+							<div class="listing-cta">
+								<a href="blog-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+								<?php if(!$b['local_path']){ ?>
+									<input type="submit" class="btn btn-success btn-sm" id="btnn" name="update" value="Save" form="editSingleBlogForm">
+								<?php }else{ ?>
+									<input type="submit" class="btn btn-success btn-sm" id="btnn1" name="update1" value="Save" form="editSingleBlogForm">
+								<?php } ?>
+							</div>
+						</div>
 
-							<div class="col-lg-8 col-md-12">
+                  <?php if (!empty($_SESSION['Message'])) {
+                     echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+                              . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+                              . "</div>";
+
+                     unset($_SESSION['Message']);
+                     unset($_SESSION['BannerColor']);
+                  } ?>
+                  <div class="row">
+	                  <div class="col-lg-4 col-md-12">
+	                     <div class="card mb-30">
+	                        <div class="card-header">Seo Meta Tags</div>
+	                        <div class="card-body">
+	                           <div class="row">
+	                              <div class="col-sm-12">
+	                                 <div class="commonSection">
+	               					 		<label>Meta Title</label>
+	                                    <textarea name="metaTitle" id="metaTitle" class="form-control"  placeholder="Enter Meta Title"><?php echo $b['metatitle']; ?></textarea>
+	                                 </div>
+	                              </div>
+
+	                              <div class="col-sm-12">
+	                                 <div class="commonSection">
+	                                    <label>Meta Keyword</label>
+	                                    <textarea name="keyword" id="metaTitle" class="form-control"  placeholder="Enter Keyword"><?php echo $b['keyword']; ?></textarea>
+	                                 </div>
+	                              </div>
+
+	                              <div class="col-sm-12">
+	                                 <div class="commonSection">
+	                                    <label>Meta Description</label>
+	                                     <textarea name="disc" id="metaTitle" class="form-control"  placeholder="Enter Description"><?php echo $b['discription']; ?></textarea>
+	                                 </div>
+	                              </div>
+	                           </div>
+	                     	</div>
+	                  	</div>
+	              	 	</div>
+	            	
+	                  <div class="col-lg-8 col-md-12">
 								<div class="row">
 									<div class="col-lg-6 col-md-12">
 										<div class="card mb-30">
@@ -161,46 +131,48 @@ if (isset($_POST['update1'])){
 											<div class="card-body">
 												<div class="banner-image-upload">
 													<?php
-													$middlePreviewImage = "images/default-profile.png";
-													if (!empty($b['local_path'])) {
-														$middlePreviewImage = $b['local_path'];
-													} elseif (!empty($b['image'])) {
-														$middlePreviewImage = $b['image'];
-													}
+														$middlePreviewImage = "images/default-profile.png";
+														if (!empty($b['local_path'])) {
+															$middlePreviewImage = $b['local_path'];
+														} elseif (!empty($b['image'])) {
+															$middlePreviewImage = $b['image'];
+														}
 													?>
 													<img src="<?php echo $middlePreviewImage; ?>" class="banner-image-preview" id="imgPreview" alt="Banner Image" onerror="this.src='images/default-profile.png';">
 													<div class="banner-recommended-size">Recommended size: 1920x800px</div>
 
 													<?php if(!$b['local_path']){ ?>
-													<div class="radio-inline-group" style="margin-top: 12px;">
-														<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();" checked="">Image URL</label>
-														<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();">Select New Image</label>
-													</div>
-													<div id="image_url" style="margin-top: 12px;">
-														<input class="form-control banner-form-control" type="text" name="image" id="image" value="<?php echo $b['image']; ?>" placeholder="Enter image URL">
-													</div>
-													<div id="select_image1" style="display: none; margin-top: 12px;">
-														<input type="file" name="myFile" id="myFile" style="display: none;" accept="image/*">
-														<div class="banner-upload-actions">
-															<button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('myFile').click();"><i class="feather icon-upload"></i> Change Image</button>
-															<button type="button" class="btn btn-sm btn-danger" onclick="res();">Reset Image</button>
+														<div class="radio-inline-group" style="margin-top: 12px;">
+															<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();" checked="">Image URL</label>
+															<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();">Select New Image</label>
 														</div>
-													</div>
-													<?php }else{ ?>
-													<div class="radio-inline-group" style="margin-top: 12px;">
-														<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show3();">Image URL</label>
-														<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show4();" checked="">Select New Image</label>
-													</div>
-													<div id="image_url1" style="display: none; margin-top: 12px;">
-														<input class="form-control banner-form-control" type="text" name="image1" id="image1" value="<?php echo $b['image']; ?>" placeholder="Enter image URL">
-													</div>
-													<div id="select_image" style="margin-top: 12px;">
-														<input type="file" name="myFile1" id="myFile1" style="display: none;" accept="image/*">
-														<div class="banner-upload-actions">
-															<button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('myFile1').click();"><i class="feather icon-upload"></i> Change Image</button>
-															<button type="button" class="btn btn-sm btn-danger" onclick="res1();">Reset Image</button>
+
+														<div id="image_url" style="margin-top: 12px;">
+															<input class="form-control banner-form-control" type="text" name="image" id="image" value="<?php echo $b['image']; ?>" placeholder="Enter image URL">
 														</div>
-													</div>
+
+														<div id="select_image1" style="display: none; margin-top: 12px;">
+															<input type="file" name="myFile" id="myFile" style="display: none;" accept="image/*">
+															<div class="banner-upload-actions">
+																<button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('myFile').click();"><i class="feather icon-upload"></i> Change Image</button>
+																<button type="button" class="btn btn-sm btn-danger" onclick="res();">Reset Image</button>
+															</div>
+														</div>
+													<?php } else { ?>
+														<div class="radio-inline-group" style="margin-top: 12px;">
+															<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show3();">Image URL</label>
+															<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show4();" checked="">Select New Image</label>
+														</div>
+														<div id="image_url1" style="display: none; margin-top: 12px;">
+															<input class="form-control banner-form-control" type="text" name="image1" id="image1" value="<?php echo $b['image']; ?>" placeholder="Enter image URL">
+														</div>
+														<div id="select_image" style="margin-top: 12px;">
+															<input type="file" name="myFile1" id="myFile1" style="display: none;" accept="image/*">
+															<div class="banner-upload-actions">
+																<button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('myFile1').click();"><i class="feather icon-upload"></i> Change Image</button>
+																<button type="button" class="btn btn-sm btn-danger" onclick="res1();">Reset Image</button>
+															</div>
+														</div>
 													<?php } ?>
 												</div>
 											</div>
@@ -213,51 +185,57 @@ if (isset($_POST['update1'])){
 											<div class="card-body">
 												<p class="text-danger">* Note for Image Type: select only one option. Both empty and both filled are not valid.</p>
 												<?php if(!$b['local_path']){ ?>
-												<div class="row">
-													<div class="col-sm-8"><div class="commonSection"><label>Title</label><input class="form-control" type="text" name="title" required id="title" value="<?php echo $b['title']; ?>" placeholder="Enter Heading"></div></div>
-													<div class="col-sm-4"><div class="commonSection"><label>Date</label><input class="form-control" type="date" name="date" required id="date" value="<?php echo $b['date']; ?>"></div></div>
-													<div class="col-sm-12">
-														<div class="commonSection">
-															<label>Content</label>
-															<textarea name="editor1" id="editor1" rows="10" cols="80" required><?php echo $b['content']; ?></textarea>
-															<script>
-																CKEDITOR.editorConfig = function (config) {
-																	config.language = 'es';
-																	config.uiColor = '#F7B42C';
-																	config.height = 300;
-																	config.toolbarCanCollapse = true;
-																};
-																CKEDITOR.replace('editor1');
-															</script>
+													<div class="row">
+														<div class="col-sm-8">
+															<div class="commonSection">
+																<label>Title</label>
+																<input class="form-control" type="text" name="title" required id="title" value="<?php echo $b['title']; ?>" placeholder="Enter Heading">
+															</div>
+														</div>
+
+														<div class="col-sm-4">
+															<div class="commonSection">
+																<label>Date</label>
+																<input class="form-control" type="date" name="date" required id="date" value="<?php echo $b['date']; ?>">
+															</div>
+														</div>
+
+														<div class="col-sm-12">
+															<div class="commonSection">
+																<label>Content</label>
+																<textarea name="editor1" id="editor1" rows="10" cols="80" required><?php echo $b['content']; ?></textarea>
+															</div>
 														</div>
 													</div>
-												</div>
-												<?php }else{ ?>
-												<div class="row">
-													<div class="col-sm-8"><div class="commonSection"><label>Title</label><input class="form-control" type="text" name="title1" required id="title1" value="<?php echo $b['title']; ?>" placeholder="Enter Heading"></div></div>
-													<div class="col-sm-4"><div class="commonSection"><label>Date</label><input class="form-control" type="date" name="date1" required id="date1" value="<?php echo $b['date']; ?>"></div></div>
-													<div class="col-sm-12">
-														<div class="commonSection">
-															<label>Content</label>
-															<textarea name="editor2" id="editor2" rows="10" cols="80" required><?php echo $b['content']; ?></textarea>
-															<script>
-																CKEDITOR.editorConfig = function (config) {
-																	config.language = 'es';
-																	config.uiColor = '#F7B42C';
-																	config.height = 300;
-																	config.toolbarCanCollapse = true;
-																};
-																CKEDITOR.replace('editor2');
-															</script>
+												<?php } else { ?>
+													<div class="row">
+														<div class="col-sm-8">
+															<div class="commonSection">
+																<label>Title</label>
+																<input class="form-control" type="text" name="title1" required id="title1" value="<?php echo $b['title']; ?>" placeholder="Enter Heading">
+															</div>
+														</div>
+
+														<div class="col-sm-4">
+															<div class="commonSection">
+																<label>Date</label>
+																<input class="form-control" type="date" name="date1" required id="date1" value="<?php echo $b['date']; ?>">
+															</div>
+														</div>
+
+														<div class="col-sm-12">
+															<div class="commonSection">
+																<label>Content</label>
+																<textarea name="editor2" id="editor2" rows="10" cols="80" required><?php echo $b['content']; ?></textarea>
+															</div>
 														</div>
 													</div>
-												</div>
 												<?php } ?>
 
 												<?php if(!$b['local_path']){ ?>
-												<input type="hidden" name="update" value="1">
+													<input type="hidden" name="update" value="1">
 												<?php }else{ ?>
-												<input type="hidden" name="update1" value="1">
+													<input type="hidden" name="update1" value="1">
 												<?php } ?>
 											</div>
 										</div>
@@ -265,110 +243,109 @@ if (isset($_POST['update1'])){
 								</div>
 							</div>
 						</div>
-					</form>
-
-					<script>
-						function res(){
-							document.getElementById('myFile').value = "";
-							var p = document.getElementById("image").value;
-							document.getElementById("btnn").disabled = !p;
-							$('#imgPreview').attr('src', p || 'images/default-profile.png');
-						}
-
-						function res1(){
-							document.getElementById('myFile1').value = "";
-							var p1 = document.getElementById("image1").value;
-							document.getElementById("btnn1").disabled = !p1;
-							$('#imgPreview').attr('src', p1 || 'images/default-profile.png');
-						}
-					</script>
-
-					<script>
-						$(document).ready(function() {
-							if (document.getElementById("btnn")) {
-								var x = document.getElementById("myFile").value;
-								var x1 = document.getElementById("image").value;
-								document.getElementById("btnn").disabled = (x1 && x) || (!x1 && !x);
-
-								$('#image').on('input', function() {
-									var dInput = this.value;
-									$('#imgPreview').attr('src', dInput || 'images/default-profile.png');
-									var fileVal = document.getElementById("myFile").value;
-									document.getElementById("btnn").disabled = (dInput && fileVal) || (!dInput && !fileVal);
-								});
-
-								document.getElementById('myFile').onchange = function () {
-									if (this.files && this.files[0]) {
-										var reader = new FileReader();
-										reader.onload = function(e) {
-											$('#imgPreview').attr('src', e.target.result);
-										};
-										reader.readAsDataURL(this.files[0]);
-									}
-									var pInput = this.value;
-									var y = document.getElementById("image").value;
-									document.getElementById("btnn").disabled = (pInput && y) || (!pInput && !y);
-								};
-							}
-
-							if (document.getElementById("btnn1")) {
-								var f = document.getElementById("myFile1").value;
-								var f1 = document.getElementById("image1").value;
-								document.getElementById("btnn1").disabled = (f1 && f) || (!f1 && !f);
-
-								$('#image1').on('input', function() {
-									var dInput1 = this.value;
-									$('#imgPreview').attr('src', dInput1 || 'images/default-profile.png');
-									var x2 = document.getElementById("myFile1").value;
-									document.getElementById("btnn1").disabled = (dInput1 && x2) || (!dInput1 && !x2);
-								});
-
-								document.getElementById('myFile1').onchange = function () {
-									if (this.files && this.files[0]) {
-										var reader1 = new FileReader();
-										reader1.onload = function(e) {
-											$('#imgPreview').attr('src', e.target.result);
-										};
-										reader1.readAsDataURL(this.files[0]);
-									}
-									var pInput1 = this.value;
-									var y1 = document.getElementById("image1").value;
-									document.getElementById("btnn1").disabled = (pInput1 && y1) || (!pInput1 && !y1);
-								};
-							}
-						});
-					</script>
-
-					<?php if(!$b['local_path']){ ?>
-					<script>
-						document.getElementById('select_image1').style.display = 'none';
-						function show2(){
-							document.getElementById('image_url').style.display = 'none';
-							document.getElementById('select_image1').style.display = 'block';
-						}
-
-						function show1(){
-							document.getElementById('select_image1').style.display = 'none';
-							document.getElementById('image_url').style.display = 'block';
-						}
-					</script>
-					<?php }else{ ?>
-					<script>
-						document.getElementById('image_url1').style.display = 'none';
-						function show3(){
-							document.getElementById('image_url1').style.display = 'block';
-							document.getElementById('select_image').style.display = 'none';
-						}
-
-						function show4(){
-							document.getElementById('select_image').style.display = 'block';
-							document.getElementById('image_url1').style.display = 'none';
-						}
-					</script>
-					<?php } ?>
+      			</form>
 				</div>
-			</div>
-		</div>
-	</div>
+         </div>
+      </div>
+   </div>
 </div>
+
 <?php include_once('common/footer.php'); ?>
+
+<script type="text/javascript">
+	CKEDITOR.editorConfig = function (config) {
+	   config.language = 'es';
+	   config.uiColor = '#F7B42C';
+	   config.height = 300;
+	   config.toolbarCanCollapse = true; 
+   };
+   CKEDITOR.replace('editor1');
+
+   CKEDITOR.editorConfig = function (config) {
+		config.language = 'es';
+		config.uiColor = '#F7B42C';
+		config.height = 300;
+		config.toolbarCanCollapse = true;
+	};
+	CKEDITOR.replace('editor2');
+
+   $(document).ready(function() {
+		var x = document.getElementById("myFile").value;
+		var x1 = document.getElementById("image").value;
+		
+		if(x1 && x)
+		{
+			document.getElementById("btnn").disabled = true;	
+		}
+		else if(!x1 && !x)
+		{
+			document.getElementById("btnn").disabled = true;	
+		}
+		else
+		{
+			document.getElementById("btnn").disabled = false;
+		}
+		
+		$('#image').keyup(function() {
+			var dInput = this.value;
+			var x = document.getElementById("myFile").value;
+
+			if(dInput && x)
+			{	
+				document.getElementById("btnn").disabled = true;	
+			}
+			else if(!dInput && !x)
+			{	
+				document.getElementById("btnn").disabled = true;	
+			}
+			else
+			{	
+				document.getElementById("btnn").disabled = false;				
+			}
+		});
+		
+		document.getElementById('myFile').onchange = function ()
+		{
+			var pInput = this.value;
+			document.getElementById("image").value = "";
+			var y = document.getElementById("image").value;
+			
+			if(!pInput && !y)
+			{	
+				document.getElementById("btnn").disabled = true;	
+			}
+			else
+			{	
+				document.getElementById("btnn").disabled = false;
+			}
+		}
+	});
+
+	document.getElementById('select_image1').style.display = 'none';
+	function show1()
+	{
+      document.getElementById('select_image1').style.display = 'none';    
+      document.getElementById('image_url').style.display = 'block';
+   }
+
+	function show2()
+	{				
+	   document.getElementById('image_url').style.display = 'none';
+      document.getElementById('select_image1').style.display = 'block';
+	}
+
+	function res()
+	{
+		document.getElementById('myFile').value= "";
+		var p = document.getElementById("image").value;
+		
+		if(p)
+		{	
+			document.getElementById("btnn").disabled = false;
+		}
+		else
+		{	
+			document.getElementById("btnn").disabled = true;	
+		}
+	}
+</script>

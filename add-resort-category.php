@@ -1,66 +1,58 @@
-<?php 
+<?php
+	include "db.php";
+	include_once('common/header.php');
+	$PageTitle = "Villatent: Resort Category";
 
+	$FileExists = false;
+	if (isset($_POST['sub']))
+	{
+		$page 	   	= "Update";
+		$metaTitle 	= $_POST['metaTitle'];
+		$keyword 	= $_POST['keyword'];
+		$disc 		= $_POST['disc'];	
+		$order 		= $_POST['order'];
+		$title 		= $_POST['title'];
+		$editor1 	= $_POST['editor1'];
+		$color 		= $_POST['color'];
+		$imageUrl 	= $_POST['image'];
+		$myFile 		= $_FILES['myFile']['name'];
 
-$FileExists = false;
-if (isset($_POST['sub'])){
-	$page = "Update";
-	$metaTitle = $_POST['metaTitle'];
-	$keyword = $_POST['keyword'];
-	$disc = $_POST['disc'];
-	
-	$order = $_POST['order'];
-	$title = $_POST['title'];
-	//$date = $_POST['date'];
-	$editor1 = $_POST['editor1'];
-	$color = $_POST['color'];
-	$imageUrl = $_POST['image'];
-	
-	$myFile=$_FILES['myFile']['name'];
-	
+		$path="uploads/pageimages/resort/category/";
+		$path_original="uploads/pageimages/resort/category/";
 
-	$path="uploads/pageimages/resort/category/";
-	$path_original="uploads/pageimages/resort/category/";
-
-	
-	if(!$imageUrl){
-		
-		if($myFile != '' && (file_exists("uploads/pageimages/".$myFile) || file_exists("uploads/pageimages/addgallery/".$myFile) || file_exists("uploads/pageimages/addgallery/project/".$myFile) || file_exists("uploads/pageimages/addgallery/resort/".$myFile) || file_exists("uploads/pageimages/blogs/".$myFile) || file_exists("uploads/pageimages/blogs/single/".$myFile)  || file_exists("uploads/pageimages/contact/".$myFile) || file_exists("uploads/pageimages/nav/".$myFile) || file_exists("uploads/pageimages/nav/category/".$myFile) || file_exists("uploads/pageimages/nav/types/".$myFile) || file_exists("uploads/pageimages/project/".$myFile) || file_exists("uploads/pageimages/project/category/".$myFile) || file_exists("uploads/pageimages/project/types/".$myFile) || file_exists("uploads/pageimages/resort/".$myFile) || file_exists("uploads/pageimages/resort/category/".$myFile) || file_exists("uploads/pageimages/resort/types/".$myFile) || file_exists("uploads/pageimages/slider/".$myFile) || file_exists("uploads/pageimages/youtube/".$myFile)))
+		if(!$imageUrl)
 		{
-			$FileExists = true;
-			header( "refresh:2; url=add-resort-category.php" );
+			if($myFile != '' && (file_exists("uploads/pageimages/".$myFile) || file_exists("uploads/pageimages/addgallery/".$myFile) || file_exists("uploads/pageimages/addgallery/project/".$myFile) || file_exists("uploads/pageimages/addgallery/resort/".$myFile) || file_exists("uploads/pageimages/blogs/".$myFile) || file_exists("uploads/pageimages/blogs/single/".$myFile)  || file_exists("uploads/pageimages/contact/".$myFile) || file_exists("uploads/pageimages/nav/".$myFile) || file_exists("uploads/pageimages/nav/category/".$myFile) || file_exists("uploads/pageimages/nav/types/".$myFile) || file_exists("uploads/pageimages/project/".$myFile) || file_exists("uploads/pageimages/project/category/".$myFile) || file_exists("uploads/pageimages/project/types/".$myFile) || file_exists("uploads/pageimages/resort/".$myFile) || file_exists("uploads/pageimages/resort/category/".$myFile) || file_exists("uploads/pageimages/resort/types/".$myFile) || file_exists("uploads/pageimages/slider/".$myFile) || file_exists("uploads/pageimages/youtube/".$myFile)))
+			{
+				$FileExists = true;
+		   	$_SESSION['BannerColor'] = "background-color:#FF0000;";
+		   	$_SESSION['Message'] = "Selected image already exists!";
+		   	echo "<script>window.location.href='add-resort-category.php';</script>";
+			   exit;
+			}
+			else
+			{
+				move_uploaded_file($_FILES['myFile']['tmp_name'],$path.$myFile) ;
+				$path = $path_original.$myFile;
+				
+				mysqli_query($con, "INSERT INTO resort_category (metatitle, keyword, discription, title, order_no, content, local_path, color) VALUES ('$metaTitle', '$keyword', '$disc', '$title', '$order', '$editor1', '$path', '$color')");
+	        	$_SESSION['BannerColor'] = "background-color:#4BB543;";
+	      	$_SESSION['Message'] = "Added Successfully!";
+	      	echo "<script>window.location.href='add-resort-category.php';</script>";
+		     	exit;
+			}
 		}
 		else
-		{
-			
-			move_uploaded_file($_FILES['myFile']['tmp_name'],$path.$myFile) ;
-			$path=$path_original.$myFile;
-			include "db.php";
-			
-			mysqli_query($con,"insert into resort_category (metatitle,keyword,discription,title,order_no,content,local_path,color) values ('$metaTitle','$keyword','$disc','$title','$order','$editor1','$path','$color') ");
-			
-        	//header("location:add-resort-category.php");
-			header( "refresh:2; url=add-resort-category.php" );
+		{	
+			mysqli_query($con, "INSERT INTO resort_category (metatitle, keyword, discription, title, order_no, content, image, color) VALUES ('$metaTitle', '$keyword', '$disc', '$title', '$order', '$editor1', '$imageUrl', '$color')");
+			$_SESSION['BannerColor'] = "background-color:#4BB543;";
+      	$_SESSION['Message'] = "Added Successfully!";
+      	echo "<script>window.location.href='add-resort-category.php';</script>";
+	     	exit;
 		}
-	}else{
-		
-		include "db.php";
-		
-		mysqli_query($con,"insert into resort_category (metatitle,keyword,discription,title,order_no,content,image,color) values ('$metaTitle','$keyword','$disc','$title','$order','$editor1','$imageUrl','$color') ");
-		
-    	//header("location:add-resort-category.php");
-		header( "refresh:2; url=add-resort-category.php" );
-		
 	}
-	
-	
-};
-
-
-
 ?>
 
-<?php $PageTitle = "Villatent: Resort Category"; ?>
-<?php include_once('common/header.php'); ?>
 <div class="pcoded-content">
 	<div class="pcoded-inner-content">
 		<div class="main-body">
@@ -74,15 +66,23 @@ if (isset($_POST['sub'])){
 									<span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Resort Category</span><span class="crumb-sep">&gt;</span><span>Add New</span>
 								</div>
 							</div>
+
 							<div class="listing-cta">
 								<a href="resort-category-listing.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
 								<input type="submit" class="btn btn-success btn-sm" id="btnn" name="sub" value="Save Category" form="resortCategoryForm">
 							</div>
 						</div>
 
+						<?php if (!empty($_SESSION['Message'])) {
+		               	echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+		                        . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+		                        . "</div>";
+
+		               	unset($_SESSION['Message']);
+		               	unset($_SESSION['BannerColor']);
+			        	} ?>
 						<div class="row">
 							<div class="col-lg-4 col-md-12">
-								<?php include "alert-insert.php" ?>
 								<div class="card mb-30">
 									<div class="card-header">Seo Meta Tags</div>
 									<div class="card-body">
@@ -90,10 +90,12 @@ if (isset($_POST['sub'])){
 											<label>Meta Title</label>
 											<textarea name="metaTitle" id="metaTitle" class="form-control" required placeholder="Enter Meta Title"></textarea>
 										</div>
+
 										<div class="commonSection">
 											<label>Meta Keyword</label>
 											<textarea name="keyword" id="metaKeyword" class="form-control" required placeholder="Enter Keyword"></textarea>
 										</div>
+
 										<div class="commonSection">
 											<label>Meta Description</label>
 											<textarea name="disc" id="metaDescription" class="form-control" required placeholder="Enter Description"></textarea>
@@ -115,9 +117,11 @@ if (isset($_POST['sub'])){
 														<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();" checked="">Image URL</label>
 														<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();">Select New Image</label>
 													</div>
+
 													<div id="image_url" style="margin-top: 12px;">
 														<input class="form-control banner-form-control" type="text" name="image" id="image" placeholder="Enter image URL">
 													</div>
+
 													<div id="select_image" style="display: none; margin-top: 12px;">
 														<input type="file" name="myFile" id="myFile" style="display: none;" accept="image/*">
 														<div class="banner-upload-actions">
@@ -129,6 +133,22 @@ if (isset($_POST['sub'])){
 													</div>
 												</div>
 											</div>
+										
+											<div class="col-sm-12" id="select_image" style="display: none;">
+										    	<div class="commonSection">
+	    											<label>Select Image</label>
+													<input type="file" name="myFile" id="myFile" class="form-control"><br>
+													<button type="button" class="btn btn-sm btn-danger" onclick="rese();">Reset Image</button><br>
+												</div>
+											</div>
+										
+											<div class="col-sm-6">
+		    									<div class="commonSection">
+		    										<label>Color</label>
+		    										<input class="form-control" type="text" name="color" id="color">
+		    										<input type="color" id="colorPicker" style='width: 10%;'>
+		    									</div>
+		    								</div>
 										</div>
 									</div>
 
@@ -143,12 +163,14 @@ if (isset($_POST['sub'])){
 															<input class="form-control" type="text" required name="title" id="title" placeholder="Enter Heading">
 														</div>
 													</div>
+
 													<div class="col-sm-4">
 														<div class="commonSection">
 															<label>Order No.</label>
 															<input class="form-control" type="number" name="order" id="order" placeholder="Page Order no">
 														</div>
 													</div>
+
 													<div class="col-sm-12">
 														<div class="commonSection">
 															<label>Content</label>
@@ -164,6 +186,7 @@ if (isset($_POST['sub'])){
 															</script>
 														</div>
 													</div>
+
 													<div class="col-sm-12">
 														<div class="commonSection">
 															<label>Color</label>
@@ -172,7 +195,6 @@ if (isset($_POST['sub'])){
 														</div>
 													</div>
 												</div>
-
 												<input type="hidden" name="sub" value="1">
 											</div>
 										</div>
@@ -181,77 +203,91 @@ if (isset($_POST['sub'])){
 							</div>
 						</div>
 					</form>
-
-					<script>
-						function rese(){
-							console.log("lhariom");
-							document.getElementById('myFile').value = "";
-							var p = document.getElementById("image").value;
-							document.getElementById("btnn").disabled = !p;
-							$('#imgPreview').attr('src', p || 'images/default-profile.png');
-						}
-					</script>
-
-					<script>
-						document.getElementById("btnn").disabled = true;
-
-						$(document).ready(function() {
-							$('#image').on('input', function() {
-								var dInput = this.value;
-								var x = document.getElementById("myFile").value;
-								$('#imgPreview').attr('src', dInput || 'images/default-profile.png');
-
-								if(dInput && x){
-									document.getElementById("btnn").disabled = true;
-								}else if(!dInput && !x){
-									document.getElementById("btnn").disabled = true;
-								}else{
-									document.getElementById("btnn").disabled = false;
-								}
-							});
-
-							document.getElementById('myFile').onchange = function () {
-								if (this.files && this.files[0]) {
-									var reader = new FileReader();
-									reader.onload = function(e) {
-										$('#imgPreview').attr('src', e.target.result);
-									};
-									reader.readAsDataURL(this.files[0]);
-								}
-
-								var pInput = this.value;
-								var y = document.getElementById("image").value;
-								if(pInput && y){
-									document.getElementById("btnn").disabled = true;
-								}else if(!pInput && !y){
-									document.getElementById("btnn").disabled = true;
-								}else{
-									document.getElementById("btnn").disabled = false;
-								}
-							};
-						});
-					</script>
-
-					<script>
-						function show2(){
-							document.getElementById('select_image').style.display = 'block';
-							document.getElementById('image_url').style.display = 'none';
-						}
-
-						function show1(){
-							document.getElementById('select_image').style.display = 'none';
-							document.getElementById('image_url').style.display = 'block';
-						}
-					</script>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 <?php include_once('common/footer.php'); ?>
+
 <script>
-	$('#colorPicker').on('input', function() {
-		var selectedColor = $(this).val();
-		$('#color').val(selectedColor);
+    $('#colorPicker').on('input', function() {
+        var selectedColor = $(this).val();
+        $('#color').val(selectedColor);
+    });
+
+	CKEDITOR.editorConfig = function (config) {
+		config.language = 'es';
+		config.uiColor = '#F7B42C';
+		config.height = 300;
+		config.toolbarCanCollapse = true;
+		
+	};
+	CKEDITOR.replace('editor1');
+
+	document.getElementById("btnn").disabled = true;				
+	$(document).ready(function() {
+		$('#image').keyup(function() {
+			var dInput = this.value;
+			var x = document.getElementById("myFile").value;
+			
+			if(dInput && x)
+			{	
+				document.getElementById("btnn").disabled = true;	
+			}
+			else if(!dInput && !x)
+			{	
+				document.getElementById("btnn").disabled = true;	
+			}
+			else
+			{	
+				document.getElementById("btnn").disabled = false;
+			}
+		});
+		
+		document.getElementById('myFile').onchange = function () {
+			var pInput = this.value;
+			var y = document.getElementById("image").value;
+			
+			if(pInput && y)
+			{	
+				document.getElementById("btnn").disabled = true;	
+			}
+			else if(!pInput && !x)
+			{	
+				document.getElementById("btnn").disabled = true;	
+			}
+			else
+			{	
+				document.getElementById("btnn").disabled = false;
+			}
+		};
 	});
+
+	function show2()
+	{
+		document.getElementById('select_image').style.display = 'block';	
+		document.getElementById('image_url').style.display = 'none';
+	}
+
+	function show1()
+	{
+		document.getElementById('select_image').style.display = 'none';	
+		document.getElementById('image_url').style.display = 'block';
+	}
+
+	function rese()
+	{
+		document.getElementById('myFile').value= "";	
+		var p = document.getElementById("image").value;
+		
+		if(p)
+		{	
+			document.getElementById("btnn").disabled = false;	
+		}
+		else
+		{	
+			document.getElementById("btnn").disabled = true;	
+		}
+	}
 </script>

@@ -1,36 +1,54 @@
 <?php
+	include "db.php";
+	include_once('common/header.php');
+	$PageTitle = "Villatent: Youtube Inner Page";
 
-if (isset($_POST['update'])){
-	$page = "Update";
-	$title = $_POST['title'];
-	$url = $_POST['url'];
-	$imageUrl = $_POST['image'];
-	$myFile = $_FILES['myFile']['name'];
+	if (isset($_POST['update']))
+	{	
+		$page 	 = "Update";
+		$title 	 = $_POST['title'];
+		$url  	 = $_POST['url'];
+		$imageUrl = $_POST['image'];
+		$myFile 	 = $_FILES['myFile']['name'];
 
-	$path = "uploads/pageimages/youtube/";
-	$path_original = "uploads/pageimages/youtube/";
-
-	if(!$imageUrl){
-		if($myFile != '' && (file_exists("uploads/pageimages/".$myFile) || file_exists("uploads/pageimages/addgallery/".$myFile) || file_exists("uploads/pageimages/addgallery/project/".$myFile) || file_exists("uploads/pageimages/addgallery/resort/".$myFile) || file_exists("uploads/pageimages/blogs/".$myFile) || file_exists("uploads/pageimages/blogs/single/".$myFile) || file_exists("uploads/pageimages/contact/".$myFile) || file_exists("uploads/pageimages/nav/".$myFile) || file_exists("uploads/pageimages/nav/category/".$myFile) || file_exists("uploads/pageimages/nav/types/".$myFile) || file_exists("uploads/pageimages/project/".$myFile) || file_exists("uploads/pageimages/project/category/".$myFile) || file_exists("uploads/pageimages/project/types/".$myFile) || file_exists("uploads/pageimages/resort/".$myFile) || file_exists("uploads/pageimages/resort/category/".$myFile) || file_exists("uploads/pageimages/resort/types/".$myFile) || file_exists("uploads/pageimages/slider/".$myFile) || file_exists("uploads/pageimages/youtube/".$myFile))) {
-			$FileExists = true;
-			header("refresh:2; url=youtube-inner-page.php");
-		} else {
-			move_uploaded_file($_FILES['myFile']['tmp_name'],$path.$myFile);
-			$path = $path_original.$myFile;
-			include "db.php";
-			mysqli_query($con,"insert into youtube_video (title,youtube_url,local_path) values ('$title','$url','$path') ");
-			header("refresh:2; url=youtube-inner-page.php");
+		$path="uploads/pageimages/youtube/";
+		$path_original="uploads/pageimages/youtube/";
+		
+		if(!$imageUrl)
+		{	
+			if($myFile != '' && (file_exists("uploads/pageimages/".$myFile) || file_exists("uploads/pageimages/addgallery/".$myFile) || file_exists("uploads/pageimages/addgallery/project/".$myFile) || file_exists("uploads/pageimages/addgallery/resort/".$myFile) || file_exists("uploads/pageimages/blogs/".$myFile) || file_exists("uploads/pageimages/blogs/single/".$myFile)  || file_exists("uploads/pageimages/contact/".$myFile) || file_exists("uploads/pageimages/nav/".$myFile) || file_exists("uploads/pageimages/nav/category/".$myFile) || file_exists("uploads/pageimages/nav/types/".$myFile) || file_exists("uploads/pageimages/project/".$myFile) || file_exists("uploads/pageimages/project/category/".$myFile) || file_exists("uploads/pageimages/project/types/".$myFile) || file_exists("uploads/pageimages/resort/".$myFile) || file_exists("uploads/pageimages/resort/category/".$myFile) || file_exists("uploads/pageimages/resort/types/".$myFile) || file_exists("uploads/pageimages/slider/".$myFile) || file_exists("uploads/pageimages/youtube/".$myFile)))
+			{
+				$FileExists = true;
+			   $_SESSION['BannerColor'] = "background-color:#FF0000;";
+			   $_SESSION['Message'] = "Selected image already exists!";
+			   echo "<script>window.location.href='youtube-inner-page.php';</script>";
+			   exit;
+			}
+			else
+			{	
+				move_uploaded_file($_FILES['myFile']['tmp_name'],$path.$myFile) ;
+				$path = $path_original.$myFile;
+				
+				mysqli_query($con, "INSERT INTO youtube_video (title, youtube_url, local_path) VALUES ('$title', '$url', '$path') ");
+	        	
+				$_SESSION['BannerColor'] = "background-color:#4BB543;";
+		      $_SESSION['Message'] = "Added Successfully!";
+		      echo "<script>window.location.href='youtube-inner-page.php';</script>";
+		     	exit;
+			}
 		}
-	} else {
-		include "db.php";
-		mysqli_query($con,"insert into youtube_video (title,youtube_url,image) values ('$title','$url','$imageUrl') ");
-		header("refresh:2; url=youtube-inner-page.php");
+		else
+		{	
+			mysqli_query($con, "INSERT INTO youtube_video (title, youtube_url, image) VALUES ('$title', '$url', '$imageUrl') ");
+			
+			$_SESSION['BannerColor'] = "background-color:#4BB543;";
+	      $_SESSION['Message'] = "Added Successfully!";
+	      echo "<script>window.location.href='youtube-inner-page.php';</script>";
+	     	exit;
+		}
 	}
-}
 ?>
 
-<?php $PageTitle = "Villatent: Youtube Inner Page"; ?>
-<?php include_once('common/header.php'); ?>
 <div class="pcoded-content">
 	<div class="pcoded-inner-content">
 		<div class="main-body">
@@ -50,9 +68,16 @@ if (isset($_POST['update'])){
 							</div>
 						</div>
 
+						<?php if (!empty($_SESSION['Message'])) {
+		            	echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+		                     . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+		                     . "</div>";
+
+		            	unset($_SESSION['Message']);
+		            	unset($_SESSION['BannerColor']);
+		            } ?>
 						<div class="row">
 							<div class="col-lg-4 col-md-12">
-								<?php include "alert-insert.php"; ?>
 								<div class="card mb-30">
 									<div class="card-header">Video Details</div>
 									<div class="card-body">
@@ -81,14 +106,16 @@ if (isset($_POST['update'])){
 														<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();" checked="">Image URL</label>
 														<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();">Select New Image</label>
 													</div>
+
 													<div id="image_url" style="margin-top: 12px;">
 														<input class="form-control banner-form-control" type="text" name="image" id="image" placeholder="Enter image URL">
 													</div>
+													
 													<div id="select_image" style="display: none; margin-top: 12px;">
 														<input type="file" name="myFile" id="myFile" style="display: none;" accept="image/*">
 														<div class="banner-upload-actions">
 															<button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('myFile').click();"><i class="feather icon-upload"></i> Change Image</button>
-															<button type="button" class="btn btn-sm btn-danger" onclick="rese();">Reset Image</button>
+															<button type="button" class="btn btn-sm btn-danger" onclick="reset();">Reset Image</button>
 														</div>
 													</div>
 												</div>
@@ -112,55 +139,59 @@ if (isset($_POST['update'])){
 							</div>
 						</div>
 					</form>
-
-					<script>
-						function rese(){
-							document.getElementById('myFile').value = "";
-							var p = document.getElementById("image").value;
-							document.getElementById("btnn").disabled = !p;
-							$('#imgPreview').attr('src', p || 'images/default-profile.png');
-						}
-					</script>
-
-					<script>
-						document.getElementById("btnn").disabled = true;
-						$(document).ready(function() {
-							$('#image').on('input', function() {
-								var dInput = this.value;
-								var x = document.getElementById("myFile").value;
-								$('#imgPreview').attr('src', dInput || 'images/default-profile.png');
-								document.getElementById("btnn").disabled = (dInput && x) || (!dInput && !x);
-							});
-
-							document.getElementById('myFile').onchange = function () {
-								if (this.files && this.files[0]) {
-									var reader = new FileReader();
-									reader.onload = function(e) {
-										$('#imgPreview').attr('src', e.target.result);
-									};
-									reader.readAsDataURL(this.files[0]);
-								}
-								var pInput = this.value;
-								var y = document.getElementById("image").value;
-								document.getElementById("btnn").disabled = (pInput && y) || (!pInput && !y);
-							};
-						});
-					</script>
-
-					<script>
-						function show2(){
-							document.getElementById('select_image').style.display = 'block';
-							document.getElementById('image_url').style.display = 'none';
-						}
-
-						function show1(){
-							document.getElementById('select_image').style.display = 'none';
-							document.getElementById('image_url').style.display = 'block';
-						}
-					</script>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
 <?php include_once('common/footer.php'); ?>
+
+<script>
+	$(document).ready(function() {		
+		document.getElementById('myFile').onchange = function () {
+			var pInput = this.value;
+			var y = document.getElementById("image").value;
+			
+			if(pInput && y)
+			{	
+				document.getElementById("btnn").disabled = true;	
+			}
+			else if(!pInput && !x)
+			{	
+				document.getElementById("btnn").disabled = true;
+			}
+			else
+			{	
+				document.getElementById("btnn").disabled = false;
+			}
+		}
+	});
+
+	function reset()
+	{
+		document.getElementById('myFile').value= "";	
+		var p = document.getElementById("image").value;
+		
+		if(p)
+		{	
+			document.getElementById("btnn").disabled = false;	
+		}
+		else
+		{	
+			document.getElementById("btnn").disabled = true;	
+		}
+	}
+
+	function show1()
+	{
+		document.getElementById('select_image').style.display = 'none';	
+		document.getElementById('image_url').style.display = 'block';
+	}
+
+	function show2()
+	{
+		document.getElementById('select_image').style.display = 'block';	
+		document.getElementById('image_url').style.display = 'none';
+	}
+</script>

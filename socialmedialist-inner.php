@@ -45,8 +45,8 @@
                            </div>
 
                            <div class="listing-cta">
-                              <a href="socialmedialist.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back to Social Medias</a>
-                              <button type="submit" class="btn btn-success btn-sm" name="sub"><i class="feather icon-save"></i> Save Social Media</button>
+                              <a href="socialmedialist.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+                              <button type="submit" class="btn btn-success btn-sm" name="sub"><i class="feather icon-save"></i> Save</button>
                            </div>
                         </div>
                      </div>
