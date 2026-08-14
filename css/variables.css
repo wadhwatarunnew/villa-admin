@@ -96,7 +96,30 @@
     --color-banner-preview-desc: #e5e7eb;
     --color-banner-label: #374151;
     /* =========================
-       10) Legacy Aliases
+       10) Dashboard Module Colors
+    ========================= */
+    --dashboard-accent-blue: #2f6fed;
+    --dashboard-accent-green: #1e8f5a;
+    --dashboard-accent-cyan: #1ba9e2;
+    --dashboard-accent-orange: #f59e0b;
+    --dashboard-accent-slate: #aeb6c4;
+    --dashboard-accent-charcoal: #323b49;
+    --dashboard-accent-deepgreen: #2f7a5f;
+    --dashboard-accent-gray: #d1d5db;
+    --dashboard-icon-bg-blue: #eef3fb;
+    --dashboard-icon-bg-green: #eaf7f0;
+    --dashboard-icon-bg-cyan: #eaf8ff;
+    --dashboard-icon-bg-orange: #fff5e6;
+    --dashboard-icon-bg-slate: #f3f4f6;
+    --dashboard-pill-bg-blue: #e8f0ff;
+    --dashboard-pill-bg-green: #e8f7ef;
+    --dashboard-pill-bg-cyan: #e8f8ff;
+    --dashboard-pill-bg-orange: #fff5e6;
+    --dashboard-fs-11: 0.6875rem;
+    --dashboard-fs-2xl: 2.125rem;
+    --dashboard-shadow-card: 0 6px 18px rgba(15, 23, 42, 0.05);
+    /* =========================
+       11) Legacy Aliases
     ========================= */
     --forest: var(--color-focus);
     --forest-dark: var(--color-focus-dark);
