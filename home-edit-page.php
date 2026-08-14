@@ -48,7 +48,7 @@
                      </div>
 
                      <div class="listing-cta">
-                        <a href="dashboard.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+                        <a href="index.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
                         <input type="submit" class="btn btn-success btn-sm" name="update-submit" value="Save" form="homeAboutForm">
                      </div>
                   </div>

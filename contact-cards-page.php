@@ -1,5 +1,9 @@
-<?php $PageTitle = "Villatent: Contact Cards"; ?>
-<?php include_once('common/header.php'); ?>
+<?php
+    include "db.php";
+    include_once('common/header.php');
+    $PageTitle = "Villatent: Contact Cards";
+?>
+
 <div class="pcoded-content">
     <div class="pcoded-inner-content">
         <div class="main-body">

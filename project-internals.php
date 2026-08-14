@@ -1,46 +1,115 @@
 <?php
-$FileExists = false;
+	include "db.php";
+	include_once('common/header.php');
+	$PageTitle = "Villatent: Projects";
+	$FileExists = false;
 
-if (isset($_POST['sub'])) {
-	$page = "Update";
-	$metaTitle = $_POST['metaTitle'];
-	$keyword = $_POST['keyword'];
-	$disc = $_POST['disc'];
-	$cat = $_POST['cat'];
-	$order = $_POST['order'];
-	$title = $_POST['title'];
-	$editor1 = $_POST['editor1'];
-	$imageUrl = isset($_POST['image']) ? trim($_POST['image']) : '';
-	$myFile = isset($_FILES['myFile']['name']) ? $_FILES['myFile']['name'] : '';
+	if (isset($_POST['sub']))
+	{
+		$page = "Update";
+		$metaTitle = $_POST['metaTitle'];
+		$keyword = $_POST['keyword'];
+		$disc = $_POST['disc'];
+		$cat = $_POST['cat'];
+		$order = $_POST['order'];
+		$subtitle = $_POST['small_heading'];
+		$title = $_POST['title'];
+		$editor1 = $_POST['editor1'];
+		$quote = $_POST['editor1'];
+		$client_name = $_POST['editor1'];
+		$designation = $_POST['editor1'];
+		$company = $_POST['editor1'];
+		$back_color = $_POST['editor1'];
+		$text_color = $_POST['editor1'];
+		$accent_color = $_POST['editor1'];
+		$border = $_POST['editor1'];
+		$imageUrl = isset($_POST['image']) ? trim($_POST['image']) : '';
+		$myFile = isset($_FILES['myFile']['name']) ? $_FILES['myFile']['name'] : '';
 
-	$path = "uploads/pageimages/project/types/";
-	$path_original = "uploads/pageimages/project/types/";
+		$path = "uploads/pageimages/project/types/";
+		$path_original = "uploads/pageimages/project/types/";
 
-	if ($imageUrl === '') {
-		if ($myFile === '') {
-			include "db.php";
-			mysqli_query($con, "insert into project_types (metatitle,keyword,discription,category,order_no,title,content,image) values ('$metaTitle','$keyword','$disc','$cat','$order','$title','$editor1','') ");
-			header("refresh:2; url=project-internals.php");
-		} elseif ($myFile != '' && (file_exists("uploads/pageimages/" . $myFile) || file_exists("uploads/pageimages/addgallery/" . $myFile) || file_exists("uploads/pageimages/addgallery/project/" . $myFile) || file_exists("uploads/pageimages/addgallery/resort/" . $myFile) || file_exists("uploads/pageimages/blogs/" . $myFile) || file_exists("uploads/pageimages/blogs/single/" . $myFile) || file_exists("uploads/pageimages/contact/" . $myFile) || file_exists("uploads/pageimages/nav/" . $myFile) || file_exists("uploads/pageimages/nav/category/" . $myFile) || file_exists("uploads/pageimages/nav/types/" . $myFile) || file_exists("uploads/pageimages/project/" . $myFile) || file_exists("uploads/pageimages/project/category/" . $myFile) || file_exists("uploads/pageimages/project/types/" . $myFile) || file_exists("uploads/pageimages/resort/" . $myFile) || file_exists("uploads/pageimages/resort/category/" . $myFile) || file_exists("uploads/pageimages/resort/types/" . $myFile) || file_exists("uploads/pageimages/slider/" . $myFile) || file_exists("uploads/pageimages/youtube/" . $myFile))) {
-			$FileExists = true;
-			header("refresh:2; url=project-internals.php");
-		} else {
-			move_uploaded_file($_FILES['myFile']['tmp_name'], $path . $myFile);
-			$path = $path_original . $myFile;
-			include "db.php";
-			mysqli_query($con, "insert into project_types (metatitle,keyword,discription,category,order_no,title,content,local_path) values ('$metaTitle','$keyword','$disc','$cat','$order','$title','$editor1','$path') ");
-			header("refresh:2; url=project-internals.php");
+		if ($imageUrl === '')
+		{
+			if ($myFile === '')
+			{
+				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, content, image, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$editor1', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
+				$LastInsertID = mysqli_insert_id($con);
+			}
+			elseif ($myFile != '' && (file_exists("uploads/pageimages/" . $myFile) || file_exists("uploads/pageimages/addgallery/" . $myFile) || file_exists("uploads/pageimages/addgallery/project/" . $myFile) || file_exists("uploads/pageimages/addgallery/resort/" . $myFile) || file_exists("uploads/pageimages/blogs/" . $myFile) || file_exists("uploads/pageimages/blogs/single/" . $myFile) || file_exists("uploads/pageimages/contact/" . $myFile) || file_exists("uploads/pageimages/nav/" . $myFile) || file_exists("uploads/pageimages/nav/category/" . $myFile) || file_exists("uploads/pageimages/nav/types/" . $myFile) || file_exists("uploads/pageimages/project/" . $myFile) || file_exists("uploads/pageimages/project/category/" . $myFile) || file_exists("uploads/pageimages/project/types/" . $myFile) || file_exists("uploads/pageimages/resort/" . $myFile) || file_exists("uploads/pageimages/resort/category/" . $myFile) || file_exists("uploads/pageimages/resort/types/" . $myFile) || file_exists("uploads/pageimages/slider/" . $myFile) || file_exists("uploads/pageimages/youtube/" . $myFile))) {
+				$FileExists = true;
+			   	$_SESSION['BannerColor'] = "background-color:#FF0000;";
+			   	$_SESSION['Message'] = "Selected image already exists!";
+			   	echo "<script>window.location.href='project-internals.php';</script>";
+			   	exit;
+			}
+			else
+			{
+				move_uploaded_file($_FILES['myFile']['tmp_name'], $path . $myFile);
+				$path = $path_original . $myFile;
+
+				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, content, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$editor1', '$path', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
+				$LastInsertID = mysqli_insert_id($con);
+			}
 		}
-	} else {
-		include "db.php";
-		mysqli_query($con, "insert into project_types (metatitle,keyword,discription,category,order_no,title,content,image) values ('$metaTitle','$keyword','$disc','$cat','$order','$title','$editor1','$imageUrl') ");
-		header("refresh:2; url=project-internals.php");
+		else
+		{
+			mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, content, image, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$editor1', '$imageUrl', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
+			$LastInsertID = mysqli_insert_id($con);
+		}
+
+		if($LastInsertID != '')
+		{
+			$CurrentDateTime = Date("Y-m-d H:i:s");
+			if (isset($_POST['project_info']) && !empty($_POST['project_info']))
+			{
+				foreach ($_POST['project_info'] as $item) {
+					$icon = isset($item['icon']) ? trim($item['icon']) : '';
+				    $title = isset($item['title']) ? trim($item['title']) : '';
+				    $description = isset($item['description']) ? trim($item['description']) : '';
+
+				    if ($icon != '' && $title != '' && $description != '') {
+				      mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, created_at) VALUES ('$LastInsertID', 'Project Info', '$title', '$description', '$icon', '$CurrentDateTime')");
+				    }
+				}
+			}
+
+			if (isset($_POST['challenges']) && !empty($_POST['challenges']))
+			{
+				foreach ($_POST['challenges'] as $item) {
+					$title = isset($item['title']) ? trim($item['title']) : '';
+				    $icon = isset($item['icon']) ? trim($item['icon']) : '';
+				    $description = isset($item['description']) ? trim($item['description']) : '';
+				    $orderNo = isset($item['order']) ? (int)$item['order'] : 0;
+
+				    if ($icon != '' && $title != '' && $description != '') {
+				      mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, sort_order, created_at) VALUES ('$LastInsertID', 'Challenges', '$title', '$description', '$icon', '$orderNo', '$CurrentDateTime')");
+				    }
+				}
+			}
+
+			if (isset($_POST['solutions']) && !empty($_POST['solutions']))
+			{
+				foreach ($_POST['solutions'] as $item) {
+					$title = isset($item['title']) ? trim($item['title']) : '';
+				    $icon = isset($item['icon']) ? trim($item['icon']) : '';
+				    $description = isset($item['description']) ? trim($item['description']) : '';
+				    $orderNo = isset($item['order']) ? (int)$item['order'] : 0;
+
+				    if ($icon != '' && $title != '' && $description != '') {
+				        mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, sort_order, created_at) VALUES ('$LastInsertID', 'Solutions', '$title', '$description', '$icon', '$orderNo', '$CurrentDateTime')");
+				    }
+				}
+			}
+
+			$_SESSION['BannerColor'] = "background-color:#4BB543;";
+      	$_SESSION['Message'] = "Added Successfully!";
+      	echo "<script>window.location.href='project-internals.php';</script>";
+	     	exit;
+		}
 	}
-}
 ?>
 
-<?php $PageTitle = "Villatent: Projects"; ?>
-<?php include_once('common/header.php'); ?>
 <div class="pcoded-content">
 	<div class="pcoded-inner-content">
 		<div class="main-body">
@@ -60,8 +129,14 @@ if (isset($_POST['sub'])) {
 							</div>
 						</div>
 
-						<?php include "alert-insert.php"; ?>
+						<?php if (!empty($_SESSION['Message'])) {
+			               	echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+			                        . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+			                        . "</div>";
 
+			               	unset($_SESSION['Message']);
+			               	unset($_SESSION['BannerColor']);
+			        	} ?>
 						<div class="card mb-30">
 							<div class="card-header">SEO Metadata</div>
 							<div class="card-body">
@@ -95,7 +170,7 @@ if (isset($_POST['sub'])) {
 									<div class="col-lg-3 col-md-6">
 										<div class="commonSection">
 											<label>Section Small Title</label>
-											<input type="text" class="form-control" name="small_heading_ui" id="small_heading_ui" placeholder="PROJECT OVERVIEW">
+											<input type="text" class="form-control" name="small_heading" id="small_heading" placeholder="PROJECT OVERVIEW">
 										</div>
 									</div>
 									<div class="col-lg-5 col-md-6">
@@ -216,54 +291,63 @@ if (isset($_POST['sub'])) {
 									<div class="col-lg-6 col-md-12">
 										<div class="commonSection">
 											<label>Quote</label>
-											<textarea class="form-control" name="testimonial_quote_ui" rows="5" placeholder="Enter testimonial quote"></textarea>
+											<textarea class="form-control" name="quote" rows="5" placeholder="Enter testimonial quote"></textarea>
 										</div>
 									</div>
 									<div class="col-lg-3 col-md-6">
 										<div class="commonSection">
 											<label>Client Name</label>
-											<input class="form-control" type="text" name="testimonial_client_name_ui" placeholder="Client name">
+											<input class="form-control" type="text" name="client_name" placeholder="Client name">
 										</div>
 									</div>
 									<div class="col-lg-3 col-md-6">
 										<div class="commonSection">
 											<label>Designation</label>
-											<input class="form-control" type="text" name="testimonial_designation_ui" placeholder="Designation">
+											<input class="form-control" type="text" name="designation" placeholder="Designation">
 										</div>
 									</div>
 									<div class="col-lg-4 col-md-6">
 										<div class="commonSection mb-0">
 											<label>Company / Hotel Name</label>
-											<input class="form-control" type="text" name="testimonial_company_ui" placeholder="Company name">
+											<input class="form-control" type="text" name="company" placeholder="Company name">
 										</div>
 									</div>
 									<div class="col-lg-2 col-md-6">
 										<div class="commonSection mb-0">
 											<label>Background Color</label>
-											<input class="form-control" type="text" name="testimonial_bg_ui" placeholder="#0E3528">
+											<input class="form-control" type="text" name="back_color" placeholder="#0E3528">
 										</div>
 									</div>
 									<div class="col-lg-2 col-md-6">
 										<div class="commonSection mb-0">
 											<label>Text Color</label>
-											<input class="form-control" type="text" name="testimonial_text_ui" placeholder="#FFFFFF">
+											<input class="form-control" type="text" name="text_color" placeholder="#FFFFFF">
 										</div>
 									</div>
 									<div class="col-lg-2 col-md-6">
 										<div class="commonSection mb-0">
 											<label>Accent Color</label>
-											<input class="form-control" type="text" name="testimonial_accent_ui" placeholder="#C9A45A">
+											<input class="form-control" type="text" name="accent_color" placeholder="#C9A45A">
 										</div>
 									</div>
 									<div class="col-lg-2 col-md-6">
 										<div class="commonSection mb-0">
 											<label>Border Radius</label>
-											<input class="form-control" type="number" name="testimonial_radius_ui" placeholder="12">
+											<input class="form-control" type="number" name="border" placeholder="12">
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+
+						<!-- Dynamic Project Information form inputs -->
+						<div id="projectInfoHiddenInputs"></div>
+
+						<!-- Dynamic Challenges form inputs -->
+						<div id="challengeHiddenInputs"></div>
+
+						<!-- Dynamic Solutions form inputs -->
+						<div id="solutionHiddenInputs"></div>
 
 						<input type="hidden" name="sub" value="1">
 					</form>
@@ -536,64 +620,129 @@ if (isset($_POST['sub'])) {
 							}
 
 							document.getElementById('saveProjectInfo').addEventListener('click', function() {
-								var icon = document.getElementById('piIcon').value.trim();
-								var title = document.getElementById('piTitle').value.trim();
-								var description = document.getElementById('piDescription').value.trim();
-								if (!icon || !title || !description) {
-									return;
-								}
-								if (editingState.projectInfo) {
-									editingState.projectInfo.cells[0].setAttribute('data-icon', icon);
-									editingState.projectInfo.cells[0].innerHTML = iconCell(icon);
-									editingState.projectInfo.cells[1].textContent = title;
-									editingState.projectInfo.cells[2].textContent = description;
-								} else {
-									appendProjectInfoRow(icon, title, description);
-								}
-								closeModal('projectInfoModal');
-								resetProjectInfoModal();
+							    var icon = document.getElementById('piIcon').value.trim();
+							    var title = document.getElementById('piTitle').value.trim();
+							    var description = document.getElementById('piDescription').value.trim();
+
+							    if (!icon || !title || !description) {
+							        alert('Please fill all Project Information fields.');
+							        return;
+							    }
+
+							    if (editingState.projectInfo) {
+
+							        editingState.projectInfo.cells[0].setAttribute(
+							            'data-icon',
+							            icon
+							        );
+
+							        editingState.projectInfo.cells[0].innerHTML =
+							            iconCell(icon);
+
+							        editingState.projectInfo.cells[1].textContent =
+							            title;
+
+							        editingState.projectInfo.cells[2].textContent =
+							            description;
+
+							    } else {
+							        appendProjectInfoRow(
+							            icon,
+							            title,
+							            description
+							        );
+							    }
+
+							    updateDynamicFormInputs();
+							    closeModal('projectInfoModal');
+							    resetProjectInfoModal();
 							});
 
 							document.getElementById('saveChallenge').addEventListener('click', function() {
-								var title = document.getElementById('challengeTitle').value.trim();
-								var icon = document.getElementById('challengeIcon').value.trim();
-								var description = document.getElementById('challengeDescription').value.trim();
-								var order = document.getElementById('challengeOrder').value.trim();
-								if (!title || !icon || !description || !order) {
-									return;
-								}
-								if (editingState.challenge) {
-									editingState.challenge.cells[0].textContent = title;
-									editingState.challenge.cells[1].setAttribute('data-icon', icon);
-									editingState.challenge.cells[1].innerHTML = iconCell(icon);
-									editingState.challenge.cells[2].textContent = description;
-									editingState.challenge.cells[3].textContent = order;
-								} else {
-									appendChallengeRow(title, icon, description, order);
-								}
-								closeModal('challengeModal');
-								resetChallengeModal();
+							    var title = document.getElementById('challengeTitle').value.trim();
+							    var icon = document.getElementById('challengeIcon').value.trim();
+							    var description = document.getElementById('challengeDescription').value.trim();
+							    var order = document.getElementById('challengeOrder').value.trim();
+
+							    if (!title || !icon || !description || !order) {
+							        alert('Please fill all Challenge fields.');
+							        return;
+							    }
+
+							    if (editingState.challenge) {
+							        editingState.challenge.cells[0].textContent =
+							            title;
+
+							        editingState.challenge.cells[1].setAttribute(
+							            'data-icon',
+							            icon
+							        );
+
+							        editingState.challenge.cells[1].innerHTML =
+							            iconCell(icon);
+
+							        editingState.challenge.cells[2].textContent =
+							            description;
+
+							        editingState.challenge.cells[3].textContent =
+							            order;
+							    } else {
+							        appendChallengeRow(
+							            title,
+							            icon,
+							            description,
+							            order
+							        );
+							    }
+
+							    updateDynamicFormInputs();
+							    closeModal('challengeModal');
+							    resetChallengeModal();
 							});
 
 							document.getElementById('saveSolution').addEventListener('click', function() {
-								var title = document.getElementById('solutionTitle').value.trim();
-								var icon = document.getElementById('solutionIcon').value.trim();
-								var description = document.getElementById('solutionDescription').value.trim();
-								var order = document.getElementById('solutionOrder').value.trim();
-								if (!title || !icon || !description || !order) {
-									return;
-								}
-								if (editingState.solution) {
-									editingState.solution.cells[0].textContent = title;
-									editingState.solution.cells[1].setAttribute('data-icon', icon);
-									editingState.solution.cells[1].innerHTML = iconCell(icon);
-									editingState.solution.cells[2].textContent = description;
-									editingState.solution.cells[3].textContent = order;
-								} else {
-									appendSolutionRow(title, icon, description, order);
-								}
-								closeModal('solutionModal');
-								resetSolutionModal();
+
+							    var title = document.getElementById('solutionTitle').value.trim();
+							    var icon = document.getElementById('solutionIcon').value.trim();
+							    var description = document.getElementById('solutionDescription').value.trim();
+							    var order = document.getElementById('solutionOrder').value.trim();
+
+
+							    if (!title || !icon || !description || !order) {
+							        alert('Please fill all Solution fields.');
+							        return;
+							    }
+
+
+							    if (editingState.solution) {
+							        editingState.solution.cells[0].textContent =
+							            title;
+
+							        editingState.solution.cells[1].setAttribute(
+							            'data-icon',
+							            icon
+							        );
+
+							        editingState.solution.cells[1].innerHTML =
+							            iconCell(icon);
+
+							        editingState.solution.cells[2].textContent =
+							            description;
+
+							        editingState.solution.cells[3].textContent =
+							            order;
+							    } else {
+							        appendSolutionRow(
+							            title,
+							            icon,
+							            description,
+							            order
+							        );
+							    }
+
+							    updateDynamicFormInputs();
+							    closeModal('solutionModal');
+							    resetSolutionModal();
 							});
 
 							document.addEventListener('click', function(event) {
@@ -656,15 +805,22 @@ if (isset($_POST['sub'])) {
 							});
 
 							document.getElementById('confirmDeleteYes').addEventListener('click', function() {
-								if (rowToDelete) {
-									var parentTbody = rowToDelete.closest('tbody');
-									rowToDelete.remove();
-									if (parentTbody && parentTbody.id) {
-										ensureEmptyState(parentTbody.id);
-									}
-								}
-								rowToDelete = null;
-								closeModal('confirmDeleteModal');
+							    if (rowToDelete) {
+							        var parentTbody = rowToDelete.closest('tbody');
+
+							        rowToDelete.remove();
+
+							        if (parentTbody && parentTbody.id) {
+							            ensureEmptyState(parentTbody.id);
+							        }
+							    }
+
+							    /*
+							     * Rebuild submitted data after deleting.
+							     */
+							    updateDynamicFormInputs();
+							    rowToDelete = null;
+							    closeModal('confirmDeleteModal');
 							});
 
 							document.getElementById('confirmDeleteModal').addEventListener('hidden.bs.modal', function() {
@@ -734,7 +890,155 @@ if (isset($_POST['sub'])) {
 							['projectInfoTableBody', 'challengeTableBody', 'solutionTableBody'].forEach(function(tbodyId) {
 								ensureEmptyState(tbodyId);
 							});
+
+							function addHiddenInput(container, name, value) {
+							    var input = document.createElement('input');
+							    input.type = 'hidden';
+							    input.name = name;
+							    input.value = value || '';
+							    container.appendChild(input);
+							}
+
+							function updateDynamicFormInputs() {
+							    var projectContainer = document.getElementById('projectInfoHiddenInputs');
+							    var challengeContainer = document.getElementById('challengeHiddenInputs');
+							    var solutionContainer = document.getElementById('solutionHiddenInputs');
+
+							    if (!projectContainer ||
+							        !challengeContainer ||
+							        !solutionContainer) {
+							        return;
+							    }
+
+							    /*
+							     * Clear old hidden inputs.
+							     * They will be rebuilt from the current table rows.
+							     */
+							    projectContainer.innerHTML = '';
+							    challengeContainer.innerHTML = '';
+							    solutionContainer.innerHTML = '';
+
+							    /* =========================================================
+							       PROJECT INFORMATION
+							    ========================================================= */
+
+							    var projectRows = document.querySelectorAll(
+							        '#projectInfoTableBody tr:not(.no-record-row)'
+							    );
+
+							    Array.prototype.forEach.call(projectRows, function(row, index) {
+
+							        var icon = row.cells[0].getAttribute('data-icon') || '';
+							        var title = row.cells[1].textContent.trim();
+							        var description = row.cells[2].textContent.trim();
+
+							        addHiddenInput(
+							            projectContainer,
+							            'project_info[' + index + '][icon]',
+							            icon
+							        );
+
+							        addHiddenInput(
+							            projectContainer,
+							            'project_info[' + index + '][title]',
+							            title
+							        );
+
+							        addHiddenInput(
+							            projectContainer,
+							            'project_info[' + index + '][description]',
+							            description
+							        );
+
+							    });
+
+
+							    /* =========================================================
+							       CHALLENGES
+							    ========================================================= */
+
+							    var challengeRows = document.querySelectorAll(
+							        '#challengeTableBody tr:not(.no-record-row)'
+							    );
+
+							    Array.prototype.forEach.call(challengeRows, function(row, index) {
+
+							        var title = row.cells[0].textContent.trim();
+							        var icon = row.cells[1].getAttribute('data-icon') || '';
+							        var description = row.cells[2].textContent.trim();
+							        var order = row.cells[3].textContent.trim();
+
+							        addHiddenInput(
+							            challengeContainer,
+							            'challenges[' + index + '][title]',
+							            title
+							        );
+
+							        addHiddenInput(
+							            challengeContainer,
+							            'challenges[' + index + '][icon]',
+							            icon
+							        );
+
+							        addHiddenInput(
+							            challengeContainer,
+							            'challenges[' + index + '][description]',
+							            description
+							        );
+
+							        addHiddenInput(
+							            challengeContainer,
+							            'challenges[' + index + '][order]',
+							            order
+							        );
+							    });
+
+
+							    /* =========================================================
+							       SOLUTIONS
+							    ========================================================= */
+
+							    var solutionRows = document.querySelectorAll(
+							        '#solutionTableBody tr:not(.no-record-row)'
+							    );
+
+							    Array.prototype.forEach.call(solutionRows, function(row, index) {
+
+							        var title = row.cells[0].textContent.trim();
+							        var icon = row.cells[1].getAttribute('data-icon') || '';
+							        var description = row.cells[2].textContent.trim();
+							        var order = row.cells[3].textContent.trim();
+
+							        addHiddenInput(
+							            solutionContainer,
+							            'solutions[' + index + '][title]',
+							            title
+							        );
+
+							        addHiddenInput(
+							            solutionContainer,
+							            'solutions[' + index + '][icon]',
+							            icon
+							        );
+
+							        addHiddenInput(
+							            solutionContainer,
+							            'solutions[' + index + '][description]',
+							            description
+							        );
+
+							        addHiddenInput(
+							            solutionContainer,
+							            'solutions[' + index + '][order]',
+							            order
+							        );
+							    });
+							}
 						})();
+
+						document.getElementById('projectInternalsForm').addEventListener('submit', function() {
+						    updateDynamicFormInputs();
+						});
 					</script>
 				</div>
 			</div>

@@ -194,7 +194,7 @@
 							</div>
 
 							<div class="listing-cta">
-								<a href="dashboard.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+								<a href="index.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
 								<?php if (!$b['local_path']) { ?>
 									<input type="submit" class="btn btn-success btn-sm" id="btnn" name="update" value="Save" form="contactContentForm">
 								<?php } else { ?>

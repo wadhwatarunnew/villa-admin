@@ -74,13 +74,13 @@
 						</div>
 
 						<?php if (!empty($_SESSION['Message'])) {
-			               	echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
-			                        . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
-			                        . "</div>";
+		               	echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+		                        . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+		                        . "</div>";
 
-			               	unset($_SESSION['Message']);
-			               	unset($_SESSION['BannerColor']);
-				        } ?>
+		               	unset($_SESSION['Message']);
+		               	unset($_SESSION['BannerColor']);
+			        	} ?>
 						<div class="row">
 							<div class="col-lg-4 col-md-12">
 								<div class="card mb-30">
