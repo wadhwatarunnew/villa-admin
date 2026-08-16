@@ -18,7 +18,7 @@
                         </div>
                         <div class="listing-cta">
                             <a href="contact-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
-                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#contactCardModal"><i class="feather icon-plus"></i> Add Card</button>
+                           
                         </div>
                     </div>
 
@@ -49,13 +49,14 @@
                     </div>
 
                     <div class="card mb-30">
-                        <div class="card-header">Contact Information Cards</div>
+                        <div class="card-header">Contact Information Cards
+                             <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#contactCardModal"><i class="feather icon-plus"></i> Add Card</button>
+                        </div>
                         <div class="card-body">
                             <p class="listing-info-text" style="margin-top:0; margin-bottom:12px;">These details will be shown in the contact detail section.</p>
                             <div class="contact-cards-grid" id="contactCardsGrid">
                                 <div class="contact-info-card">
                                     <div class="contact-card-actions-row">
-                                        <span class="contact-card-handle material-icons">drag_indicator</span>
                                         <div class="contact-card-actions">
                                             <button type="button" class="btn btn-link p-0 edit-contact-card-btn" title="Edit Card"><i class="material-icons">edit</i></button>
                                             <button type="button" class="btn btn-link p-0 delete-contact-card-btn" title="Delete Card"><i class="material-icons">delete</i></button>
@@ -70,7 +71,6 @@
 
                                 <div class="contact-info-card">
                                     <div class="contact-card-actions-row">
-                                        <span class="contact-card-handle material-icons">drag_indicator</span>
                                         <div class="contact-card-actions">
                                             <button type="button" class="btn btn-link p-0 edit-contact-card-btn" title="Edit Card"><i class="material-icons">edit</i></button>
                                             <button type="button" class="btn btn-link p-0 delete-contact-card-btn" title="Delete Card"><i class="material-icons">delete</i></button>
@@ -84,7 +84,6 @@
 
                                 <div class="contact-info-card">
                                     <div class="contact-card-actions-row">
-                                        <span class="contact-card-handle material-icons">drag_indicator</span>
                                         <div class="contact-card-actions">
                                             <button type="button" class="btn btn-link p-0 edit-contact-card-btn" title="Edit Card"><i class="material-icons">edit</i></button>
                                             <button type="button" class="btn btn-link p-0 delete-contact-card-btn" title="Delete Card"><i class="material-icons">delete</i></button>
@@ -98,7 +97,6 @@
 
                                 <div class="contact-info-card">
                                     <div class="contact-card-actions-row">
-                                        <span class="contact-card-handle material-icons">drag_indicator</span>
                                         <div class="contact-card-actions">
                                             <button type="button" class="btn btn-link p-0 edit-contact-card-btn" title="Edit Card"><i class="material-icons">edit</i></button>
                                             <button type="button" class="btn btn-link p-0 delete-contact-card-btn" title="Delete Card"><i class="material-icons">delete</i></button>
@@ -112,7 +110,6 @@
 
                                 <div class="contact-info-card">
                                     <div class="contact-card-actions-row">
-                                        <span class="contact-card-handle material-icons">drag_indicator</span>
                                         <div class="contact-card-actions">
                                             <button type="button" class="btn btn-link p-0 edit-contact-card-btn" title="Edit Card"><i class="material-icons">edit</i></button>
                                             <button type="button" class="btn btn-link p-0 delete-contact-card-btn" title="Delete Card"><i class="material-icons">delete</i></button>
@@ -162,34 +159,25 @@
     </div>
 </div>
 
-<div class="modal fade app-themed-modal" id="contactCardModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="contactCardModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="contactCardModalTitle">Add Quick Info Item</h5>
-                <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" class="material-icons">close</span>
-                </button>
-            </div>
+            <div class="modal-header"><h5 class="modal-title" id="contactCardModalTitle">Add Card</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body">
+                <div class="commonSection">
+                    <label>Card Title</label>
+                    <input type="text" class="form-control" id="cardTitleInput" placeholder="CALL US">
+                </div>
+                <div class="commonSection">
+                    <label>Icon</label>
+                    <div class="counter-icon-box">
+                        <div class="counter-icon-preview">
+                            <span class="material-icons" id="cardIconPreview">call</span>
+                        </div>
+                        <input type="text" class="form-control" id="cardIconInput" value="call" placeholder="call">
+                    </div>
+                </div>
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="commonSection">
-                            <label>Card Title</label>
-                            <input type="text" class="form-control" id="cardTitleInput" placeholder="CALL US">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="commonSection">
-                            <label>Icon</label>
-                            <div class="counter-icon-box">
-                                <div class="counter-icon-preview">
-                                    <span class="material-icons" id="cardIconPreview">call</span>
-                                </div>
-                                <input type="text" class="form-control" id="cardIconInput" value="call" placeholder="call">
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-md-6">
                         <div class="commonSection">
                             <label>Line One</label>
@@ -209,160 +197,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-light btn-sm modal-cancel-btn" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success btn-sm modal-save-btn" data-dismiss="modal">Add Item</button>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="saveContactCard" data-bs-dismiss="modal">Add Card</button>
             </div>
         </div>
     </div>
 </div>
-
-<style>
-.contact-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-}
-
-.app-themed-modal .modal-content {
-    border-radius: 14px;
-    border: 1px solid var(--color-input-border);
-    box-shadow: 0 20px 44px rgba(15, 23, 42, 0.18);
-    overflow: hidden;
-}
-
-.app-themed-modal .modal-header {
-    padding: 20px;
-    border-bottom: 1px solid var(--color-border);
-}
-
-.app-themed-modal .modal-title {
-    font-size: 36px;
-    font-weight: 700;
-    color: var(--color-text-ink);
-    margin: 0;
-}
-
-.app-themed-modal .modal-body {
-    padding: 22px 20px;
-}
-
-.app-themed-modal .modal-footer {
-    padding: 18px 20px;
-    border-top: 1px solid var(--color-border);
-    background: var(--color-bg-panel);
-}
-
-.app-themed-modal .commonSection {
-    margin-bottom: 20px;
-}
-
-.app-themed-modal .commonSection label {
-    font-size: 16px;
-    font-weight: 600;
-    color: #374151;
-}
-
-.app-themed-modal .form-control {
-    min-height: 50px;
-    border-radius: 12px;
-    font-size: 15px;
-}
-
-.app-themed-modal textarea.form-control {
-    min-height: 138px;
-}
-
-.modal-close-btn {
-    opacity: 1;
-    color: #6b7280;
-    text-shadow: none;
-}
-
-.modal-close-btn .material-icons {
-    font-size: 30px;
-    line-height: 1;
-}
-
-.modal-cancel-btn {
-    border-radius: 12px;
-    min-width: 100px;
-    background: #f3f4f6;
-    border-color: #f3f4f6;
-    color: #111827;
-    font-weight: 600;
-}
-
-.modal-save-btn {
-    border-radius: 12px;
-    min-width: 130px;
-    font-weight: 700;
-}
-
-.contact-info-card {
-    border: 1px solid var(--color-input-border);
-    border-radius: 12px;
-    padding: 12px;
-    background: var(--color-bg-panel);
-}
-
-.contact-card-actions-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.contact-card-handle {
-    font-size: 16px;
-    color: var(--color-text-muted);
-}
-
-.contact-card-actions .material-icons {
-    font-size: 18px;
-    color: #dc3545;
-}
-
-.contact-card-actions .edit-contact-card-btn .material-icons {
-    color: #2c7a67;
-}
-
-.contact-card-icon-wrap {
-    width: 56px;
-    height: 56px;
-    border-radius: 999px;
-    margin: 0 auto 10px;
-    background: #e8f6ee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.contact-card-icon-wrap .material-icons {
-    color: #2c7a67;
-    font-size: 28px;
-}
-
-.contact-info-card h3 {
-    margin: 0 0 8px;
-    font-size: 14px;
-    font-weight: 700;
-    color: #145c49;
-    text-align: center;
-}
-
-.contact-card-line {
-    margin: 0 0 4px;
-    text-align: center;
-    color: #1f2937;
-    font-size: 13px;
-}
-
-.contact-card-note {
-    margin: 8px 0 0;
-    text-align: center;
-    color: #6b7280;
-    font-size: 12px;
-    line-height: 1.45;
-}
-</style>
 <?php include_once('common/footer.php'); ?>

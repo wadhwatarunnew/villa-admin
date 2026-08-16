@@ -341,16 +341,45 @@
 									</div>
 								</div>
 							</div>
+							<div class="col-lg-6 col-md-12">
+								<div class="card mb-30">
+									<div class="card-header">Banner Image</div>
+									<div class="card-body">
+										<div class="banner-image-upload">
+											<img src="images/default-profile.png" class="banner-image-preview" id="floorPlanPreview" alt="Floor Plan Image">
+											<div class="banner-recommended-size">Recommended size: 1200x800px</div>
+											<input type="file" name="floor_plan_image" id="floorPlanFile" style="display:none;" accept="image/*">
+											<button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('floorPlanFile').click();">
+												<i class="feather icon-upload"></i> Change Image
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 
 						<input type="hidden" name="sub" value="1">
 					</form>
 
 					<div class="modal fade" id="addItemModal" tabindex="-1" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 							<div class="modal-content">
 								<div class="modal-header"><h5 class="modal-title">Add Quick Info Item</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
 								<div class="modal-body">
+									<div class="commonSection">
+										<label>Icon</label>
+										<div class="counter-icon-box">
+											<div class="counter-icon-preview" style="margin-bottom:8px;">
+												<span class="material-icons" id="quickItemIconUiPreview">home</span>
+											</div>
+											<div class="d-flex align-items-center justify-content-between" style="gap:10px; margin-bottom:8px;">
+												<button type="button" class="btn btn-outline-secondary btn-sm" onclick="openQuickInfoIconModal()">Open Material Icons</button>
+												<span class="counter-icon-help" style="margin:0;">Choose any icon name</span>
+											</div>
+											<input type="text" class="form-control" id="quickItemIconUiOnly" value="home" placeholder="Ex: home, verified, location_on">
+											<div class="counter-icon-help">UI only (not saved yet)</div>
+										</div>
+									</div>
 									<div class="commonSection"><label>Title</label><input type="text" class="form-control" id="quickItemTitle" placeholder="Enter title"></div>
 									<div class="commonSection"><label>Description</label><textarea class="form-control" id="quickItemDescription" rows="3" placeholder="Enter description"></textarea></div>
 								</div>
@@ -360,10 +389,24 @@
 					</div>
 
 					<div class="modal fade" id="addFeatureModal" tabindex="-1" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 							<div class="modal-content">
 								<div class="modal-header"><h5 class="modal-title">Add Feature</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
 								<div class="modal-body">
+									<div class="commonSection">
+										<label>Icon</label>
+										<div class="counter-icon-box">
+											<div class="counter-icon-preview" style="margin-bottom:8px;">
+												<span class="material-icons" id="quickItemIconUiPreview">home</span>
+											</div>
+											<div class="d-flex align-items-center justify-content-between" style="gap:10px; margin-bottom:8px;">
+												<button type="button" class="btn btn-outline-secondary btn-sm" onclick="openQuickInfoIconModal()">Open Material Icons</button>
+												<span class="counter-icon-help" style="margin:0;">Choose any icon name</span>
+											</div>
+											<input type="text" class="form-control" id="quickItemIconUiOnly" value="home" placeholder="Ex: home, verified, location_on">
+											<div class="counter-icon-help">UI only (not saved yet)</div>
+										</div>
+									</div>
 									<div class="commonSection"><label>Title</label><input type="text" class="form-control" id="featureTitle" placeholder="Enter title"></div>
 									<div class="commonSection"><label>Description</label><textarea class="form-control" id="featureDescription" rows="3" placeholder="Enter description"></textarea></div>
 								</div>
@@ -373,10 +416,24 @@
 					</div>
 
 					<div class="modal fade" id="addMaterialModal" tabindex="-1" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 							<div class="modal-content">
 								<div class="modal-header"><h5 class="modal-title">Add Material</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
 								<div class="modal-body">
+									<div class="commonSection">
+										<label>Icon</label>
+										<div class="counter-icon-box">
+											<div class="counter-icon-preview" style="margin-bottom:8px;">
+												<span class="material-icons" id="quickItemIconUiPreview">home</span>
+											</div>
+											<div class="d-flex align-items-center justify-content-between" style="gap:10px; margin-bottom:8px;">
+												<button type="button" class="btn btn-outline-secondary btn-sm" onclick="openQuickInfoIconModal()">Open Material Icons</button>
+												<span class="counter-icon-help" style="margin:0;">Choose any icon name</span>
+											</div>
+											<input type="text" class="form-control" id="quickItemIconUiOnly" value="home" placeholder="Ex: home, verified, location_on">
+											<div class="counter-icon-help">UI only (not saved yet)</div>
+										</div>
+									</div>
 									<div class="commonSection"><label>Title</label><input type="text" class="form-control" id="materialTitle" placeholder="Enter title"></div>
 									<div class="commonSection"><label>Description</label><textarea class="form-control" id="materialDescription" rows="3" placeholder="Enter description"></textarea></div>
 								</div>
@@ -386,7 +443,7 @@
 					</div>
 
 					<div class="modal fade" id="addSpecificationModal" tabindex="-1" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 							<div class="modal-content">
 								<div class="modal-header"><h5 class="modal-title">Add Specification</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
 								<div class="modal-body">
@@ -406,7 +463,7 @@
 					</div>
 
 					<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 							<div class="modal-content">
 								<div class="modal-header">
 									<h5 class="modal-title">Confirm Delete</h5>
@@ -418,6 +475,21 @@
 								<div class="modal-footer">
 									<button type="button" class="btn btn-light" data-bs-dismiss="modal">No</button>
 									<button type="button" class="btn btn-danger" id="confirmDeleteYes">Yes</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="modal fade" id="quickInfoMaterialIconModal" tabindex="-1" aria-labelledby="quickInfoMaterialIconModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="quickInfoMaterialIconModalLabel">Select Material Icon</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<input type="text" class="form-control mb-3" id="quickInfoIconSearch" placeholder="Search icons...">
+									<div class="icon-picker-grid" id="quickInfoIconGrid"></div>
 								</div>
 							</div>
 						</div>
@@ -454,6 +526,16 @@
 	(function() {
 		var editingRowByModal = {};
 		var rowToDelete = null;
+		var quickInfoIconList = [
+			'home', 'apartment', 'cottage', 'house', 'hotel',
+			'groups', 'people', 'person', 'person_outline', 'face',
+			'verified', 'badge', 'workspace_premium', 'emoji_events', 'star',
+			'public', 'language', 'location_on', 'map', 'place',
+			'construction', 'foundation', 'build', 'architecture', 'engineering',
+			'trending_up', 'show_chart', 'timeline', 'insights', 'analytics',
+			'favorite', 'thumb_up', 'mood', 'support_agent', 'handshake',
+			'calendar_today', 'schedule', 'access_time', 'history', 'event'
+		];
 
 		var modalConfig = {
 			addItemModal: {
@@ -936,5 +1018,94 @@
 		['quickInfoTableBody', 'featureTableBody', 'materialTableBody', 'specificationTableBody'].forEach(function(tbodyId) {
 			ensureEmptyState(tbodyId);
 		});
+
+		var addItemModalEl = document.getElementById('addItemModal');
+		var iconModalEl = document.getElementById('quickInfoMaterialIconModal');
+		var iconGridEl = document.getElementById('quickInfoIconGrid');
+		var iconSearchEl = document.getElementById('quickInfoIconSearch');
+		var iconInputEl = document.getElementById('quickItemIconUiOnly');
+		var iconPreviewEl = document.getElementById('quickItemIconUiPreview');
+
+		if (iconGridEl) {
+			quickInfoIconList.forEach(function(name) {
+				var btn = document.createElement('button');
+				btn.type = 'button';
+				btn.className = 'icon-picker-item';
+				btn.setAttribute('data-icon', name);
+				btn.setAttribute('title', name);
+				btn.innerHTML = '<span class="material-icons">' + name + '</span><span class="icon-picker-label">' + name + '</span>';
+				iconGridEl.appendChild(btn);
+			});
+		}
+
+		if (iconSearchEl) {
+			iconSearchEl.addEventListener('input', function() {
+				var term = this.value.toLowerCase();
+				var pickerItems = document.querySelectorAll('#quickInfoIconGrid .icon-picker-item');
+				Array.prototype.forEach.call(pickerItems, function(item) {
+					var name = item.getAttribute('data-icon').toLowerCase();
+					item.style.display = name.indexOf(term) !== -1 ? 'inline-flex' : 'none';
+				});
+			});
+		}
+
+		if (iconGridEl) {
+			iconGridEl.addEventListener('click', function(event) {
+				var iconItem = event.target.closest('.icon-picker-item');
+				if (!iconItem) {
+					return;
+				}
+				var iconName = iconItem.getAttribute('data-icon');
+				if (iconInputEl) {
+					iconInputEl.value = iconName;
+				}
+				if (iconPreviewEl) {
+					iconPreviewEl.textContent = iconName;
+				}
+				if (iconModalEl) {
+					var iconModal = bootstrap.Modal.getInstance(iconModalEl);
+					if (iconModal) {
+						iconModal.hide();
+					}
+				}
+			});
+		}
+
+		if (iconInputEl) {
+			iconInputEl.addEventListener('input', function() {
+				if (iconPreviewEl) {
+					iconPreviewEl.textContent = this.value.trim() || 'home';
+				}
+			});
+		}
+
+		window.openQuickInfoIconModal = function() {
+			if (!iconModalEl || !addItemModalEl) {
+				return;
+			}
+
+			if (iconSearchEl) {
+				iconSearchEl.value = '';
+				var pickerItems = document.querySelectorAll('#quickInfoIconGrid .icon-picker-item');
+				Array.prototype.forEach.call(pickerItems, function(item) {
+					item.style.display = 'inline-flex';
+				});
+			}
+
+			var addItemModal = bootstrap.Modal.getInstance(addItemModalEl);
+			if (addItemModal) {
+				addItemModal.hide();
+			}
+
+			bootstrap.Modal.getOrCreateInstance(iconModalEl).show();
+		};
+
+		if (iconModalEl) {
+			iconModalEl.addEventListener('hidden.bs.modal', function() {
+				if (addItemModalEl) {
+					bootstrap.Modal.getOrCreateInstance(addItemModalEl).show();
+				}
+			});
+		}
 	})();
 </script>
