@@ -19,7 +19,7 @@
    	
    	$_SESSION['BannerColor'] = "background-color:#4BB543;";
       $_SESSION['Message'] = "Updated Successfully!";
-      echo "<script>window.location.href='edit-footer-social.php?id=$id';</script>";
+      echo "<script>window.location.href='edit-media.php?id=$id';</script>";
       exit;
    }
 ?>

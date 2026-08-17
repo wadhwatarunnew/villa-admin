@@ -23,7 +23,7 @@
 	    {
 	        $_SESSION['BannerColor'] = "background-color:#FF0000;";
 	        $_SESSION['Message'] = "Slide already exists!";
-	        echo "<script>window.location.href='home-new-slider.php';</script>";
+	        echo "<script>window.location.href='add-home-slider.php';</script>";
 	        exit;
 	    }
 		
@@ -52,7 +52,7 @@
 				$FileExists = true;
 	            $_SESSION['BannerColor'] = "background-color:#FF0000;";
 	            $_SESSION['Message'] = "Selected image already exists!";
-	            echo "<script>window.location.href='home-new-slider.php';</script>";
+	            echo "<script>window.location.href='add-home-slider.php';</script>";
 	            exit;
 			}
 			else
@@ -64,7 +64,7 @@
                 
 	            $_SESSION['BannerColor'] = "background-color:#4BB543;";
 	            $_SESSION['Message'] = "Added Successfully!";
-	            echo "<script>window.location.href='home-new-slider.php';</script>";
+	            echo "<script>window.location.href='add-home-slider.php';</script>";
 	            exit;
 			}
 		}
@@ -74,7 +74,7 @@
                 
             $_SESSION['BannerColor'] = "background-color:#4BB543;";
             $_SESSION['Message'] = "Added Successfully!";
-            echo "<script>window.location.href='home-new-slider.php';</script>";
+            echo "<script>window.location.href='add-home-slider.php';</script>";
             exit;
 		}
 	};

@@ -1,7 +1,7 @@
 <div class="sidebarDiv">
    <ul>
-      <li class="menu-link"><a href="index.php"><i class="feather icon-home"></i> Dashboard</a></li>
-      <li><a href="dashboard-home.php"><i class="feather icon-grid"></i> Dashboard Home</a></li>
+      <!-- <li class="menu-link"><a href="index.php"><i class="feather icon-home"></i> Dashboard</a></li> -->
+      <li><a href="index.php"><i class="feather icon-grid"></i> Dashboard</a></li>
       <li><a href="home-slider.php"><i class="feather icon-home"></i> Home Slider </a></li>
       <li><a href="banner-listing.php"><i class="feather icon-image"></i> Banners </a></li>
       <li class="menu-link"><a href="JavaScript:Void(0);" class="br-menu-link"><i class="feather icon-file-text"></i>Pages </a>
@@ -32,24 +32,24 @@
 
       <li class="menu-link"><a href="#" class="br-menu-link"><i class="feather icon-map"></i>Tents</a>
          <ul class="br-menu-sub">
-            <li><a href="add-project.php"><i class="feather icon-chevron-right"></i> Tent Page</a></li>
+            <li><a href="tent-page.php"><i class="feather icon-chevron-right"></i> Tent Page</a></li>
 	         <li><a href="resort-category-listing.php"><i class="feather icon-chevron-right"></i>Category Listing</a></li>
-            <li><a href="project-listing.php"><i class="feather icon-chevron-right"></i>Tents Listing</a></li>
+            <li><a href="tents-listing.php"><i class="feather icon-chevron-right"></i>Tents Listing</a></li>
          </ul>
       </li>
 
       <li class="menu-link"><a href="#" class="br-menu-link"><i class="feather icon-briefcase"></i> Projects</a>
          <ul class="br-menu-sub">
-            <li><a href="add-projects.php"><i class="feather icon-chevron-right"></i>Projects Page</a></li>
+            <li><a href="project-page.php"><i class="feather icon-chevron-right"></i>Projects Page</a></li>
 		      <li><a href="project-category-listing.php"><i class="feather icon-chevron-right"></i>Category Listing</a></li>
-            <li><a href="project-listings.php"><i class="feather icon-chevron-right"></i>Projects Listing</a></li>
+            <li><a href="projects-listing.php"><i class="feather icon-chevron-right"></i>Projects Listing</a></li>
          </ul>
       </li>
 
       <li class="menu-link"><a href="#" class="br-menu-link"><i class="feather icon-edit"></i> Blogs</a>
          <ul class="br-menu-sub">
             <li><a href="blog-page.php"><i class="feather icon-chevron-right"></i>Blogs Page</a></li>
-            <li><a href="blog-list-page.php"><i class="feather icon-chevron-right"></i>Blogs Listing</a></li>
+            <li><a href="blogs-listing.php"><i class="feather icon-chevron-right"></i>Blogs Listing</a></li>
          </ul>
 	   </li>
 

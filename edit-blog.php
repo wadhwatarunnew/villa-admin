@@ -32,7 +32,7 @@
 	    	   $FileExists = true;
             $_SESSION['BannerColor'] = "background-color:#FF0000;";
             $_SESSION['Message'] = "Selected image already exists!";
-            echo "<script>window.location.href='edit-single-blog.php?id=$id';</script>";
+            echo "<script>window.location.href='edit-blog.php?id=$id';</script>";
             exit;
 	    	}
 	    	else
@@ -44,7 +44,7 @@
 	        	
 	        	$_SESSION['BannerColor'] = "background-color:#4BB543;";
 	         $_SESSION['Message'] = "Updated Successfully!";
-	         echo "<script>window.location.href='edit-single-blog.php?id=$id';</script>";
+	         echo "<script>window.location.href='edit-blog.php?id=$id';</script>";
 	         exit;
 	    	}
 		
@@ -55,7 +55,7 @@
 
 	    	$_SESSION['BannerColor'] = "background-color:#4BB543;";
          $_SESSION['Message'] = "Updated Successfully!";
-         echo "<script>window.location.href='edit-single-blog.php?id=$id';</script>";
+         echo "<script>window.location.href='edit-blog.php?id=$id';</script>";
          exit;
 	   }
 	}
@@ -75,7 +75,7 @@
 								</div>
 							</div>
 							<div class="listing-cta">
-								<a href="blog-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+								<a href="blogs-listing.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
 								<?php if(!$b['local_path']){ ?>
 									<input type="submit" class="btn btn-success btn-sm" id="btnn" name="update" value="Save" form="editSingleBlogForm">
 								<?php }else{ ?>

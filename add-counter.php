@@ -17,7 +17,7 @@
       {
          $_SESSION['BannerColor'] = "background-color:#FF0000;";
          $_SESSION['Message'] = "Counter already exists!";
-         echo "<script>window.location.href='counters-inner-page.php';</script>";
+         echo "<script>window.location.href='add-counter.php';</script>";
          exit;
       }
 
@@ -25,7 +25,7 @@
           
       $_SESSION['BannerColor'] = "background-color:#4BB543;";
       $_SESSION['Message'] = "Added Successfully!";
-      echo "<script>window.location.href='counters-inner-page.php';</script>";
+      echo "<script>window.location.href='add-counter.php';</script>";
       exit;
    }
 ?>

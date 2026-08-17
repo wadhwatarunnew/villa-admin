@@ -10,7 +10,6 @@
 
 	if (isset($_POST['update']))
 	{
-		echo "<pre>"; print_r($_POST); die;
 		$Updated = false;
 		$page = "Update";
 		$metaTitle = $_POST['metaTitle'];
@@ -47,7 +46,7 @@
 				$FileExists = true;
 		   	$_SESSION['BannerColor'] = "background-color:#FF0000;";
 		   	$_SESSION['Message'] = "Selected image already exists!";
-		   	echo "<script>window.location.href='edit-project-types.php?id=$id';</script>";
+		   	echo "<script>window.location.href='edit-project.php?id=$id';</script>";
 			   exit;
 			}
 			else
@@ -115,7 +114,7 @@
 
 			$_SESSION['BannerColor'] = "background-color:#4BB543;";
       	$_SESSION['Message'] = "Updated Successfully!";
-      	echo "<script>window.location.href='edit-project-types.php?id=$id';</script>";
+      	echo "<script>window.location.href='edit-project.php?id=$id';</script>";
 	     	exit;
 		}
 	}
@@ -158,7 +157,7 @@
 				$FileExists = true;
 		   	$_SESSION['BannerColor'] = "background-color:#FF0000;";
 		   	$_SESSION['Message'] = "Selected image already exists!";
-		   	echo "<script>window.location.href='edit-project-types.php?id=$id';</script>";
+		   	echo "<script>window.location.href='edit-project.php?id=$id';</script>";
 			   exit;
 			}
 			else
@@ -226,7 +225,7 @@
 
 			$_SESSION['BannerColor'] = "background-color:#4BB543;";
       	$_SESSION['Message'] = "Updated Successfully!";
-      	echo "<script>window.location.href='edit-project-types.php?id=$id';</script>";
+      	echo "<script>window.location.href='edit-project.php?id=$id';</script>";
 	     	exit;
 		}
 	}
@@ -246,7 +245,7 @@
 								</div>
 							</div>
 							<div class="listing-cta">
-								<a href="project-listings.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+								<a href="projects-listing.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
 								<?php if(!$b['local_path']){ ?>
 								<input type="submit" class="btn btn-success btn-sm" id="btnn" name="update" value="Save" form="editProjectTypesForm">
 								<?php }else{ ?>

@@ -36,7 +36,7 @@
 				$FileExists = true;
 		   	$_SESSION['BannerColor'] = "background-color:#FF0000;";
 		   	$_SESSION['Message'] = "Selected image already exists!";
-		   	echo "<script>window.location.href='project-internal.php';</script>";
+		   	echo "<script>window.location.href='add-tent.php';</script>";
 		   	exit;
 			}
 			else 
@@ -117,7 +117,7 @@
 
 			$_SESSION['BannerColor'] = "background-color:#4BB543;";
       	$_SESSION['Message'] = "Added Successfully!";
-      	echo "<script>window.location.href='project-internal.php';</script>";
+      	echo "<script>window.location.href='add-tent.php';</script>";
 	     	exit;
 		}
 	}
@@ -138,7 +138,7 @@
 							</div>
 
 							<div class="listing-cta">
-								<a href="project-listing.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+								<a href="tents-listing.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
 								<input type="submit" class="btn btn-success btn-sm" id="btnn" name="sub" value="Save" form="projectInternalForm">
 							</div>
 						</div>

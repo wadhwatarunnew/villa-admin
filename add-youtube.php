@@ -21,7 +21,7 @@
 				$FileExists = true;
 			   $_SESSION['BannerColor'] = "background-color:#FF0000;";
 			   $_SESSION['Message'] = "Selected image already exists!";
-			   echo "<script>window.location.href='youtube-inner-page.php';</script>";
+			   echo "<script>window.location.href='add-youtube.php';</script>";
 			   exit;
 			}
 			else
@@ -33,7 +33,7 @@
 	        	
 				$_SESSION['BannerColor'] = "background-color:#4BB543;";
 		      $_SESSION['Message'] = "Added Successfully!";
-		      echo "<script>window.location.href='youtube-inner-page.php';</script>";
+		      echo "<script>window.location.href='add-youtube.php';</script>";
 		     	exit;
 			}
 		}
@@ -43,7 +43,7 @@
 			
 			$_SESSION['BannerColor'] = "background-color:#4BB543;";
 	      $_SESSION['Message'] = "Added Successfully!";
-	      echo "<script>window.location.href='youtube-inner-page.php';</script>";
+	      echo "<script>window.location.href='add-youtube.php';</script>";
 	     	exit;
 		}
 	}

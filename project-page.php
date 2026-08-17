@@ -35,7 +35,7 @@
 				$FileExists = true;
 			   $_SESSION['BannerColor'] = "background-color:#FF0000;";
 			   $_SESSION['Message'] = "Selected image already exists!";
-			   echo "<script>window.location.href='add-projects.php';</script>";
+			   echo "<script>window.location.href='project-page.php';</script>";
 			   exit;
 			}
 			else
@@ -46,7 +46,7 @@
 				mysqli_query($con,"UPDATE project_content SET title='$title',content='$editor1',image='',local_path='$path'");
 	        	$_SESSION['BannerColor'] = "background-color:#4BB543;";
 	      	$_SESSION['Message'] = "Updated Successfully!";
-	      	echo "<script>window.location.href='add-projects.php';</script>";
+	      	echo "<script>window.location.href='project-page.php';</script>";
 		     	exit;
 			}
 		}
@@ -55,7 +55,7 @@
 			mysqli_query($con,"UPDATE project_content SET title='$title',content='$editor1',image='$imageUrl'");
 	    	$_SESSION['BannerColor'] = "background-color:#4BB543;";
 	   	$_SESSION['Message'] = "Updated Successfully!";
-	   	echo "<script>window.location.href='add-projects.php';</script>";
+	   	echo "<script>window.location.href='project-page.php';</script>";
 	     	exit;
 		}
 	}
@@ -86,7 +86,7 @@
 				$FileExists = true;
 			   $_SESSION['BannerColor'] = "background-color:#FF0000;";
 			   $_SESSION['Message'] = "Selected image already exists!";
-			   echo "<script>window.location.href='add-projects.php';</script>";
+			   echo "<script>window.location.href='project-page.php';</script>";
 			   exit;
 			}
 			else
@@ -99,7 +99,7 @@
 					mysqli_query($con,"UPDATE project_content SET title='$title1', content='$editor2'");
 			    	$_SESSION['BannerColor'] = "background-color:#4BB543;";
 			   	$_SESSION['Message'] = "Updated Successfully!";
-			   	echo "<script>window.location.href='add-projects.php';</script>";
+			   	echo "<script>window.location.href='project-page.php';</script>";
 			     	exit;
 				}
 				else
@@ -107,7 +107,7 @@
 					mysqli_query($con,"UPDATE project_content SET title='$title1', content='$editor2', local_path='$path1'");
 			    	$_SESSION['BannerColor'] = "background-color:#4BB543;";
 			   	$_SESSION['Message'] = "Updated Successfully!";
-			   	echo "<script>window.location.href='add-projects.php';</script>";
+			   	echo "<script>window.location.href='project-page.php';</script>";
 			     	exit;
 				}
 			}
@@ -117,7 +117,7 @@
 			mysqli_query($con,"UPDATE project_content SET title='$title1', content='$editor2', image='$imageUrl1', local_path=''");
 	    	$_SESSION['BannerColor'] = "background-color:#4BB543;";
 	   	$_SESSION['Message'] = "Updated Successfully!";
-	   	echo "<script>window.location.href='add-projects.php';</script>";
+	   	echo "<script>window.location.href='project-page.php';</script>";
 	     	exit;
 		}
 	}
@@ -138,7 +138,7 @@
 							</div>
 
 							<div class="listing-cta">
-								<a href="project-listings.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+								<!-- <a href="project-listings.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a> -->
 								<?php if(!$e['local_path']) { ?>
 									<input type="submit" class="btn btn-success btn-sm" id="btnn" name="update" value="Save" form="addProjectsContentForm">
 								<?php } else { ?>

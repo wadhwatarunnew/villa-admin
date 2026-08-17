@@ -28,7 +28,7 @@
                   </div>
 
                   <div class="listing-cta">
-                     <a href="home-new-slider.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add New Slider</a>
+                     <a href="add-home-slider.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add New Slider</a>
                   </div>
                </div>
 

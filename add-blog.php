@@ -32,7 +32,7 @@
 	    	   $FileExists = true;
             $_SESSION['BannerColor'] = "background-color:#FF0000;";
             $_SESSION['Message'] = "Selected image already exists!";
-            echo "<script>window.location.href='blog-inner-page.php';</script>";
+            echo "<script>window.location.href='add-blog.php';</script>";
             exit;
 	    	}
 	    	else
@@ -44,7 +44,7 @@
 
 	    		$_SESSION['BannerColor'] = "background-color:#4BB543;";
 	         $_SESSION['Message'] = "Added Successfully!";
-	         echo "<script>window.location.href='blog-inner-page.php';</script>";
+	         echo "<script>window.location.href='add-blog.php';</script>";
 	         exit;
 	    	}
 		}
@@ -54,7 +54,7 @@
 
 			$_SESSION['BannerColor'] = "background-color:#4BB543;";
          $_SESSION['Message'] = "Added Successfully!";
-         echo "<script>window.location.href='blog-inner-page.php';</script>";
+         echo "<script>window.location.href='add-blog.php';</script>";
          exit;
 		}
 	}
@@ -68,14 +68,14 @@
             	<form action="" enctype="multipart/form-data" method="post" id="blogInnerForm">
                   <div class="listing-page-head">
 							<div class="listing-title-wrap">
-								<h1>Add Blog Inner</h1>
+								<h1>Add Blog</h1>
 								<div class="listing-breadcrumb">
-									<span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Blogs</span><span class="crumb-sep">&gt;</span><span>Add Inner Blog</span>
+									<span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Blogs</span><span class="crumb-sep">&gt;</span><span>Add Blog</span>
 								</div>
 							</div>
 
 							<div class="listing-cta">
-								<a href="blog-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+								<a href="blogs-listing.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
 								<input type="submit" class="btn btn-success btn-sm" id="btnn" name="sub" value="Save" form="blogInnerForm">
 							</div>
 						</div>

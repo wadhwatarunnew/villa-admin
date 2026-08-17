@@ -28,7 +28,7 @@
                      </div>
                   </div>
                   <div class="listing-cta">
-                     <a href="counters-inner-page.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Counter</a>
+                     <a href="add-counter.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Counter</a>
                   </div>
                </div>
 

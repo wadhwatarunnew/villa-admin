@@ -60,7 +60,7 @@
                      </div>
 
                      <div class="listing-cta">
-                        <a href="youtube-inner-page.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Video</a>
+                        <a href="add-youtube.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Video</a>
                      </div>
                   </div>
 

@@ -28,7 +28,7 @@
                   </div>
 
                   <div class="listing-cta">
-                     <a href="socialmedialist-inner.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Social Media</a>
+                     <a href="add-media.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Social Media</a>
                   </div>
                </div>
 
@@ -71,7 +71,7 @@
                                        <td><span class="status-badge <?php echo $statusClass; ?>"><?php echo $statusLabel; ?></span></td>
                                        <td>
                                           <div class="table-actions">
-                                             <a href="edit-footer-social.php?id=<?php echo $q2['id']; ?>">
+                                             <a href="edit-media.php?id=<?php echo $q2['id']; ?>">
                                                 <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
                                              </a> 
 

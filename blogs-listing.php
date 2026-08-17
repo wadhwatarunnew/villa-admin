@@ -11,12 +11,12 @@
       mysqli_query($con, "DELETE FROM blog_inner_content WHERE id='$id'");
       $_SESSION['BannerColor'] = "background-color:#FF0000;";
       $_SESSION['Message'] = "Deleted successfully!";
-      echo "<script>window.location.href='blog-list-page.php';</script>";
+      echo "<script>window.location.href='blogs-listing.php';</script>";
       exit;
    }
 
    $sql = "SELECT * FROM blog_inner_content ORDER BY id DESC";
-   $paginationlink = "blog-list-page.php?page=";    
+   $paginationlink = "blogs-listing.php?page=";    
    $pagination_setting = "all-links";
                    
    $page = 1;
@@ -58,7 +58,7 @@
                   </div>
 
                   <div class="listing-cta">
-                     <a href="blog-inner-page.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Blog</a>
+                     <a href="add-blog.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Blog</a>
                   </div>
                </div>
 
@@ -109,11 +109,11 @@
                                     <td><span class="status-badge <?php echo $statusClass; ?>"><?php echo $statusLabel; ?></span></td>
                                     <td>
                                        <div class="table-actions">
-                                          <a href="edit-single-blog.php?id=<?php echo $b['id']; ?>">
+                                          <a href="edit-blog.php?id=<?php echo $b['id']; ?>">
                                              <button class="btn btn-outline-success btn-sm table-action-btn" type="button"><i class="feather icon-edit"></i></button>
                                           </a>
 
-                                          <a href="blog-list-page.php?id=<?php echo $b['id']; ?>" onclick="return confirm('Are you sure you want to delete this blog?');">
+                                          <a href="blogs-listing.php?id=<?php echo $b['id']; ?>" onclick="return confirm('Are you sure you want to delete this blog?');">
                                              <button class="btn btn-outline-danger btn-sm table-action-btn" type="button"><i class="feather icon-trash-2"></i></button>
                                           </a>
                                        </div>

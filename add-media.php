@@ -15,7 +15,7 @@
       {
          $_SESSION['BannerColor'] = "background-color:#FF0000;";
          $_SESSION['Message'] = "Social Media already exists!";
-         echo "<script>window.location.href='socialmedialist-inner.php';</script>";
+         echo "<script>window.location.href='add-media.php';</script>";
          exit;
       }
    	
@@ -23,7 +23,7 @@
    	
    	$_SESSION['BannerColor'] = "background-color:#4BB543;";
       $_SESSION['Message'] = "Added Successfully!";
-      echo "<script>window.location.href='socialmedialist-inner.php';</script>";
+      echo "<script>window.location.href='add-media.php';</script>";
       exit;
    }
 ?>
