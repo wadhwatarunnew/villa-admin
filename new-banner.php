@@ -7,9 +7,9 @@
    if (isset($_POST['addBanner']))
    {
       $Page        = $_POST['page_name'];
-      $Title       = $_POST['banner_title'];
-      $Subtitle    = $_POST['banner_sub_title'];
-      $Description = $_POST['banner_description'];
+      $Title       = mysqli_real_escape_string($con, $_POST['banner_title']);
+      $Subtitle    = mysqli_real_escape_string($con, $_POST['banner_sub_title']);
+      $Description = mysqli_real_escape_string($con, $_POST['banner_description']);
       $ButtonText  = $_POST['button_text'];
       $ButtonPath  = $_POST['button_url'];
       $Order       = $_POST['sort_order'];
@@ -17,8 +17,8 @@
       $imageUrl    = $_POST['image'];   
       $myFile      = $_FILES['myFile']['name'];
 
-      $path          = "uploads/pageimages/slider/";
-      $path_original  = "uploads/pageimages/slider/";
+      $path = "uploads/pageimages/";
+      $path_original = "uploads/pageimages/";
       
       $CheckDuplicate = mysqli_query($con, "SELECT * FROM top_banner WHERE page='$Page'");
       if(mysqli_num_rows($CheckDuplicate) > 0)
@@ -60,9 +60,9 @@
          else
          {
             move_uploaded_file($_FILES['myFile']['tmp_name'],$path.$myFile) ;
-            $path=$path_original.$myFile;
+            $path = $path_original.$myFile;
 
-            mysqli_query($con, "INSERT INTO top_banner (page, title, subtitle, description, btn_txt, btn_url, order_number, local_path, status) values ('$Page', '$Title', '$Subtitle', '$Description', '$ButtonText', '$ButtonPath', '$Order', '$path', '$Status') ");
+            mysqli_query($con, "INSERT INTO top_banner (page, title, subtitle, description, btn_txt, btn_url, order_number, image, local_path, status) values ('$Page', '$Title', '$Subtitle', '$Description', '$ButtonText', '$ButtonPath', '$Order', '', '$path', '$Status')");
                 
             $_SESSION['BannerColor'] = "background-color:#4BB543;";
             $_SESSION['Message'] = "Added Successfully!";
@@ -72,7 +72,7 @@
       }
       else
       {
-         mysqli_query($con, "INSERT INTO top_banner (page, title, subtitle, description, btn_txt, btn_url, order_number, image, status) VALUES ('$Page', '$Title', '$Subtitle', '$Description', '$ButtonText', '$ButtonPath', '$Order','$imageUrl', '$Status')");
+         mysqli_query($con, "INSERT INTO top_banner (page, title, subtitle, description, btn_txt, btn_url, order_number, image, local_path, status) VALUES ('$Page', '$Title', '$Subtitle', '$Description', '$ButtonText', '$ButtonPath', '$Order','$imageUrl', '', '$Status')");
                 
          $_SESSION['BannerColor'] = "background-color:#4BB543;";
          $_SESSION['Message'] = "Added Successfully!";
@@ -124,6 +124,8 @@
                                     <option value="Gallery">Gallery</option>
                                     <option value="Blogs">Blogs</option>
                                     <option value="Contact Us">Contact Us</option>
+                                    <option value="Brochure">Brochure</option>
+                                    <option value="Quote">Quote</option>
                                 </select>
                               </div>
 
@@ -194,8 +196,8 @@
                               <div class="form-group mb-20">
                                  <label class="banner-form-label">Status <span class="required">*</span></label>
                                  <select class="form-control banner-form-control" name="status" id="status">
-                                    <option value="published" selected>Published</option>
-                                    <option value="draft">Draft</option>
+                                    <option value="Published" selected>Published</option>
+                                    <option value="Draft">Draft</option>
                                  </select>
                               </div>
 
@@ -206,7 +208,7 @@
                            </div>
                         </div>
 
-                        <div class="card">
+                        <!-- <div class="card">
                            <div class="card-body">
                               <div class="banner-section-heading">Preview</div>
                               <div class="banner-preview-card">
@@ -220,7 +222,7 @@
                                  </div>
                               </div>
                            </div>
-                        </div>
+                        </div> -->
                      </div>
                   </div>
                </form>
