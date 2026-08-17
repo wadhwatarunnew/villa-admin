@@ -12,8 +12,8 @@
       $Status        = $_POST['status'];
       $ImageFile     = $_FILES['photo']['name'];
 
-      $path = "uploads/pageimages/founders/";
-      $path_original = "uploads/pageimages/founders/";
+      $path = "uploads/founders/";
+      $path_original = "uploads/founders/";
 
       if($ImageFile != '')
       {

@@ -11,9 +11,9 @@
     {
         $page               = "Update";
         $page_name       	= $_POST['page_name'];
-        $banner_title       = $_POST['banner_title'];
-        $banner_subtitle    = $_POST['banner_subtitle'];
-        $banner_description = $_POST['banner_description'];
+        $banner_title       = mysqli_real_escape_string($con, $_POST['banner_title']);
+        $banner_subtitle    = mysqli_real_escape_string($con, $_POST['banner_subtitle']);
+        $banner_description = mysqli_real_escape_string($con, $_POST['banner_description']);
         $button_text        = $_POST['button_text'];
         $button_url         = $_POST['button_url'];
         $order              = $_POST['order'];
@@ -21,8 +21,8 @@
         $imageUrl           = $_POST["image"];
         $myFile             = $_FILES["myFile"]["name"];
 
-        $path = "uploads/pageimages/slider/";
-        $path_original = "uploads/pageimages/slider/";
+        $path = "uploads/pageimages/";
+        $path_original = "uploads/pageimages/";
 
         if (!$imageUrl)
         {
@@ -56,10 +56,17 @@
             }
             else
             {
-                move_uploaded_file($_FILES["myFile"]["tmp_name"], $path . $myFile);
-                $path = $path_original . $myFile;
+                if(isset($_FILES["myFile"]["name"]) && $_FILES["myFile"]["name"] != '')
+                {
+                    move_uploaded_file($_FILES["myFile"]["tmp_name"], $path . $myFile);
+                    $path = $path_original . $myFile;
 
-                mysqli_query($con, "UPDATE top_banner SET page='$page_name', title='$banner_title', subtitle='$banner_subtitle', description='$banner_description', btn_txt='$button_text', btn_url='$button_url', order_number='$order', image='', local_path='$path', status='$status' WHERE id=$id");
+                    mysqli_query($con, "UPDATE top_banner SET page='$page_name', title='$banner_title', subtitle='$banner_subtitle', description='$banner_description', btn_txt='$button_text', btn_url='$button_url', order_number='$order', image='', local_path='$path', status='$status' WHERE id=$id");
+                }
+                else
+                {
+                    mysqli_query($con, "UPDATE top_banner SET page='$page_name', title='$banner_title', subtitle='$banner_subtitle', description='$banner_description', btn_txt='$button_text', btn_url='$button_url', order_number='$order', status='$status' WHERE id=$id");
+                }
                 
                 $_SESSION['BannerColor'] = "background-color:#4BB543;";
                 $_SESSION['Message'] = "Updated Successfully!";
@@ -69,7 +76,7 @@
         }
         else
         {
-            mysqli_query($con, "UPDATE top_banner SET page='$page_name', title='$banner_title', subtitle='$banner_subtitle', description='$banner_description', btn_txt='$button_text', btn_url='$button_url', order_number='$order' ,image='$imageUrl', status='$status' WHERE id=$id");
+            mysqli_query($con, "UPDATE top_banner SET page='$page_name', title='$banner_title', subtitle='$banner_subtitle', description='$banner_description', btn_txt='$button_text', btn_url='$button_url', order_number='$order' ,image='$imageUrl', local_path='', status='$status' WHERE id=$id");
 
             $_SESSION['BannerColor'] = "background-color:#4BB543;";
             $_SESSION['Message'] = "Updated Successfully!";
@@ -121,7 +128,9 @@
                                                 <option value="Projects" <?php echo ($b["page"] == 'Projects') ? 'selected' : ''; ?>>Projects</option>
                                                 <option value="Gallery" <?php echo ($b["page"] == 'Gallery') ? 'selected' : ''; ?>>Gallery</option>
                                                 <option value="Blogs" <?php echo ($b["page"] == 'Blogs') ? 'selected' : ''; ?>>Blogs</option>
-                                                <option value="Contact Us" <?php echo ($b["page"] == 'Contact Us') ? 'selected' : ''; ?>>Contact Us</option>
+                                                <option value="Contact Us" <?php echo ($b["page"] == 'Contact Us') ? 'selected' : ''; ?>>Contact Us</option>    
+                                                <option value="Brochure" <?php echo ($b["page"] == 'Brochure') ? 'selected' : ''; ?>>Brochure</option>
+                                                <option value="Quote" <?php echo ($b["page"] == 'Quote') ? 'selected' : ''; ?>>Quote</option>
                                             </select>
                                         </div>
 
@@ -162,13 +171,13 @@
                                             <div class="banner-image-upload">
     											<?php if (!$b["local_path"]) { ?>
                                                  	<div class="radio-inline-group">
-                                                     <label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();"  checked="">Image URL</label>
+                                                     <label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();"  checked>Image URL</label>
                                                      <label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();" >Select New Image</label>
                                                  	</div>
                                            		<?php } else { ?>
                                            			<div class="radio-inline-group">
                                                      	<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show3();"  >Image URL</label>
-                                                     	<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show4();"  checked="">Select New Image</label>
+                                                     	<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show4();"  checked>Select New Image</label>
                                                  	</div>
                                            		<?php }
 
@@ -176,27 +185,25 @@
                                                     <div id="image_url" style="margin-top: 12px;">
                                                		   <input class="form-control" type="text" name="image" id="image" value="<?php echo $b["image"]; ?>" placeholder="Enter url">
                                            		    </div>
-                                        	
+                                        	       
+                                                 	<img src="<?php echo $b["image"]; ?>" class="img-thumbnail" id="imgPreview" >
                                              		<div id="select_image1" style="display: none; margin-top: 12px;"> 
-                                                 		<img src="<?php echo $b["local_path"]; ?>" class="img-thumbnail" id="imgPreview" >
+                                                        <div class="commonSection">
+                                                            <input type="file" name="myFile" id="myFile" class="form-control"><br>
+                                                            <button type="button" class="btn btn-sm btn-danger" onclick="res1();">Reset Image</button>
+                                                        </div>
                                              		</div>
-
-                                                	<div class="commonSection">
-                                            				<input type="file" name="myFile" id="myFile" class="form-control"><br>
-                                            				<button type="button" class="btn btn-sm btn-danger" onclick="res();">Reset Image</button>
-                                                	</div>
                                              	<?php } else { ?>
-                                             		<div id="image_url1" style="margin-top: 12px;">
-                                             			<input class="form-control" type="text" name="image1" id="image1" value="<?php echo $b["image"]; ?>" placeholder="Enter url">
+                                             		<div id="image_url1" style="display: none; margin-top: 12px;">
+                                             			<input class="form-control" type="text" name="image" id="image" value="<?php echo $b["image"]; ?>" placeholder="Enter url">
                                              		</div>
 
-                                             		<div id="select_image"  style="display: none; margin-top: 12px;"> 
-                                             		    <img src="<?php echo $b["local_path"]; ?>" class="img-thumbnail" id="imgPreview">
-                                             		</div>
-                                             		
-                                             		<div class="commonSection">
-                                             		    <input type="file" name="myFile1" id="myFile1" class="form-control"><br>
-                                             			<button type="button" class="btn btn-sm btn-danger" onclick="res1();">Reset Image</button>
+                                             		<img src="<?php echo $b["local_path"]; ?>" class="img-thumbnail" id="imgPreview">
+                                             		<div id="select_image"  style="margin-top: 12px;"> 
+                                                 		<div class="commonSection">
+                                                 		    <input type="file" name="myFile" id="myFile" class="form-control"><br>
+                                                 			<button type="button" class="btn btn-sm btn-danger" onclick="res1();">Reset Image</button>
+                                                 		</div>
                                              		</div>
                                              	<?php } ?>
                                             </div>
@@ -211,8 +218,8 @@
 										<div class="form-group mb-20">
                                         	<label class="banner-form-label">Status <span class="required">*</span></label>
                                         	<select class="form-control banner-form-control" name="status" id="status">
-                                                <option value="published" <?php echo ($b["status"] == 'published') ? 'selected' : ''; ?>>Published</option>
-                                                <option value="draft" <?php echo ($b["status"] == 'draft') ? 'selected' : ''; ?>>Draft</option>
+                                                <option value="Published" <?php echo ($b["status"] == 'Published') ? 'selected' : ''; ?>>Published</option>
+                                                <option value="Draft" <?php echo ($b["status"] == 'Draft') ? 'selected' : ''; ?>>Draft</option>
                                         	</select>
                                     	</div>
 
@@ -234,116 +241,116 @@
 <?php include_once "common/footer.php"; ?>
 
 <script>
-    $(document).ready(function() {
-        var x = document.getElementById("myFile").value;
-        var x1 = document.getElementById("image").value;
+    // $(document).ready(function() {
+    //     var x = document.getElementById("myFile").value;
+    //     var x1 = document.getElementById("image").value;
 
-        if(x1 && x)
-        {
-            document.getElementById("btnn").disabled = true;
-        }
-        else if(!x1 && !x)
-        {
-            document.getElementById("btnn").disabled = true;
+    //     if(x1 && x)
+    //     {
+    //         document.getElementById("btnn").disabled = true;
+    //     }
+    //     else if(!x1 && !x)
+    //     {
+    //         document.getElementById("btnn").disabled = true;
 
-        }
-        else
-        {
-            document.getElementById("btnn").disabled = false;
-        }
+    //     }
+    //     else
+    //     {
+    //         document.getElementById("btnn").disabled = false;
+    //     }
 
 
-        $('#image').keyup(function() {
-            var dInput = this.value;
-            var x = document.getElementById("myFile").value;
+    //     $('#image').keyup(function() {
+    //         var dInput = this.value;
+    //         var x = document.getElementById("myFile").value;
 
-            if(dInput && x)
-            {
-                document.getElementById("btnn").disabled = true;
+    //         if(dInput && x)
+    //         {
+    //             document.getElementById("btnn").disabled = true;
 
-            }
-            else if(!dInput && !x)
-            {
-                document.getElementById("btnn").disabled = true;
-            }
-            else
-            {
-                document.getElementById("btnn").disabled = false;
-            }
-        });
+    //         }
+    //         else if(!dInput && !x)
+    //         {
+    //             document.getElementById("btnn").disabled = true;
+    //         }
+    //         else
+    //         {
+    //             document.getElementById("btnn").disabled = false;
+    //         }
+    //     });
 
-        document.getElementById('myFile').onchange = function () {
-            var pInput = this.value;
-            var y = document.getElementById("image").value;
+    //     document.getElementById('myFile').onchange = function () {
+    //         var pInput = this.value;
+    //         var y = document.getElementById("image").value;
 
-            if(pInput && y)
-            {
-                document.getElementById("btnn").disabled = true;
-            }
-            else if(!pInput && !x)
-            {
-                document.getElementById("btnn").disabled = true;
-            }
-            else
-            {
-                document.getElementById("btnn").disabled = false;
-            }
-        };
-    });
+    //         if(pInput && y)
+    //         {
+    //             document.getElementById("btnn").disabled = true;
+    //         }
+    //         else if(!pInput && !x)
+    //         {
+    //             document.getElementById("btnn").disabled = true;
+    //         }
+    //         else
+    //         {
+    //             document.getElementById("btnn").disabled = false;
+    //         }
+    //     };
+    // });
 
-    $(document).ready(function() {
-        var f = document.getElementById("myFile1").value;
-        var f1 = document.getElementById("image1").value;
+    // $(document).ready(function() {
+    //     var f = document.getElementById("myFile1").value;
+    //     var f1 = document.getElementById("image1").value;
 
-        if(f1 && f)
-        {
-            document.getElementById("btnn1").disabled = true;
-        }
-        else if(!f1 && !f)
-        {
-            document.getElementById("btnn1").disabled = false;
-        }
-        else
-        {
-            document.getElementById("btnn1").disabled = false;
-        }
+    //     if(f1 && f)
+    //     {
+    //         document.getElementById("btnn1").disabled = true;
+    //     }
+    //     else if(!f1 && !f)
+    //     {
+    //         document.getElementById("btnn1").disabled = false;
+    //     }
+    //     else
+    //     {
+    //         document.getElementById("btnn1").disabled = false;
+    //     }
 
-        $('#image1').keyup(function() {
-            var dInput1 = this.value;
-            var x2 = document.getElementById("myFile1").value;
+    //     $('#image1').keyup(function() {
+    //         var dInput1 = this.value;
+    //         var x2 = document.getElementById("myFile1").value;
 
-            if(dInput1 && x2)
-            {
-                document.getElementById("btnn1").disabled = true;
-            }
-            else if(!dInput1 && !x2)
-            {
-                document.getElementById("btnn1").disabled = true;
-            }
-            else
-            {
-                document.getElementById("btnn1").disabled = false;
-            }
-        });
+    //         if(dInput1 && x2)
+    //         {
+    //             document.getElementById("btnn1").disabled = true;
+    //         }
+    //         else if(!dInput1 && !x2)
+    //         {
+    //             document.getElementById("btnn1").disabled = true;
+    //         }
+    //         else
+    //         {
+    //             document.getElementById("btnn1").disabled = false;
+    //         }
+    //     });
 
-        document.getElementById('myFile1').onchange = function () {
-            var pInput1 = this.value;
-            var y1 = document.getElementById("image1").value;
+    //     document.getElementById('myFile1').onchange = function () {
+    //         var pInput1 = this.value;
+    //         var y1 = document.getElementById("image1").value;
 
-            if(pInput1 && y1)
-            {
-                document.getElementById("btnn1").disabled = true;
-            }
-            else if(!pInput1 && !y1)
-            {
-                document.getElementById("btnn1").disabled = true;
-            }
-            else
-            {
-                document.getElementById("btnn1").disabled = false;
-            }
-        };
-    });
+    //         if(pInput1 && y1)
+    //         {
+    //             document.getElementById("btnn1").disabled = true;
+    //         }
+    //         else if(!pInput1 && !y1)
+    //         {
+    //             document.getElementById("btnn1").disabled = true;
+    //         }
+    //         else
+    //         {
+    //             document.getElementById("btnn1").disabled = false;
+    //         }
+    //     };
+    // });
 
     document.getElementById('select_image1').style.display = 'none';
     function show2()

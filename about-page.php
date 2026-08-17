@@ -1,8 +1,8 @@
 <?php
 	error_reporting(0);
 	include "db.php";
-	$PageTitle = "Villatent: About Page";
 	include_once "common/header.php";
+	$PageTitle = "Villatent: About Page";
 
 	$query2 = mysqli_query($con, "SELECT * FROM about_seo");
 	$d = mysqli_fetch_assoc($query2);
@@ -165,6 +165,8 @@
 	}
 ?>
 
+<?php $PageTitle = "Villatent: About Page"; ?>
+<?php include_once('common/header.php'); ?>
 <div class="pcoded-content">
 	<div class="pcoded-inner-content">
 		<div class="main-body">
@@ -205,29 +207,30 @@
 											<div class="col-sm-12">
 												<div class="commonSection">
 													<label>Meta Title</label>
-													<textarea name="metaTitle" id="metaTitle" class="form-control" required placeholder="Enter Meta Title"><?php echo $d["title"]; ?></textarea>
+													<textarea name="metaTitle" id="metaTitle" class="form-control" required placeholder="Enter Meta Title"><?php echo $d['title']; ?></textarea>
 												</div>
 											</div>
 
 											<div class="col-sm-12">
 												<div class="commonSection">
 													<label>Meta Keyword</label>
-													<textarea name="keyword" id="metaKeyword" class="form-control" required placeholder="Enter Meta Keyword"><?php echo $d["keyword"]; ?></textarea>
+													<textarea name="keyword" id="metaKeyword" class="form-control" required placeholder="Enter Meta Keyword"><?php echo $d['keyword']; ?></textarea>
 												</div>
 											</div>
 
 											<div class="col-sm-12">
 												<div class="commonSection">
 													<label>Meta Description</label>
-													<textarea name="disc" id="metaDescription" class="form-control" required placeholder="Enter Meta Description"><?php echo $d["discription"]; ?></textarea>
+													<textarea name="disc" id="metaDescription" class="form-control" required placeholder="Enter Meta Description"><?php echo $d['discription']; ?></textarea>
 												</div>
 											</div>
 										</div>
-									</div>
+									</form>
 								</div>
 							</div>
+						</div>
 
-						<div class="col-lg-8 col-md-12">]
+						<div class="col-lg-8 col-md-12">
 							<div class="row">
 								<div class="col-lg-6 col-md-12">
 									<div class="card mb-30">
@@ -537,22 +540,6 @@
 		else
 		{
 			document.getElementById("btnn").disabled = true;
-		}
-	}
-
-	function res1()
-	{
-		document.getElementById('myFile1').value= "";
-		$('#filePreview1').attr('src', 'images/default-profile.png');
-		var p1 = document.getElementById("image1").value;
-
-		if(p1)
-		{
-			document.getElementById("btnn1").disabled = false;
-		}
-		else
-		{
-			document.getElementById("btnn1").disabled = true;
 		}
 	}
 </script>
