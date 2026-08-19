@@ -38,7 +38,7 @@
 		{
 			if ($myFile === '')
 			{
-				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', content='$editor1', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border'  WHERE id=$id");
+				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', content='$editor1', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border' WHERE id=$id");
 				$Updated = true;
 			}
 			elseif ($myFile != '' && (file_exists("uploads/pageimages/" . $myFile) || file_exists("uploads/pageimages/addgallery/" . $myFile) || file_exists("uploads/pageimages/addgallery/project/" . $myFile) || file_exists("uploads/pageimages/addgallery/resort/" . $myFile) || file_exists("uploads/pageimages/blogs/" . $myFile) || file_exists("uploads/pageimages/blogs/single/" . $myFile) || file_exists("uploads/pageimages/contact/" . $myFile) || file_exists("uploads/pageimages/nav/" . $myFile) || file_exists("uploads/pageimages/nav/category/" . $myFile) || file_exists("uploads/pageimages/nav/types/" . $myFile) || file_exists("uploads/pageimages/project/" . $myFile) || file_exists("uploads/pageimages/project/category/" . $myFile) || file_exists("uploads/pageimages/project/types/" . $myFile) || file_exists("uploads/pageimages/resort/" . $myFile) || file_exists("uploads/pageimages/resort/category/" . $myFile) || file_exists("uploads/pageimages/resort/types/" . $myFile) || file_exists("uploads/pageimages/slider/" . $myFile) || file_exists("uploads/pageimages/youtube/" . $myFile)))
@@ -60,7 +60,7 @@
 		}
 		else
 		{
-			mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', content='$editor1', image='$imageUrl', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border' WHERE id=$id");
+			mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', content='$editor1', image='$imageUrl', local_path='', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border' WHERE id=$id");
 			$Updated = true;
 		}
 
@@ -118,117 +118,6 @@
 	     	exit;
 		}
 	}
-
-	if (isset($_POST['update1']))
-	{
-		$Updated = false;
-		$page = "Update";
-		$metaTitle1 = $_POST['metaTitle1'];
-		$keyword1 = $_POST['keyword1'];
-		$disc1 = $_POST['disc1'];
-		$subtitle = $_POST['small_heading'];
-		$title1 = $_POST['title1'];
-		$cat1 = $_POST['cat1'];
-		$order1 = $_POST['order1'];
-		$editor12 = $_POST['editor12'];
-		$quote = $_POST['quote'];
-		$client_name = $_POST['client_name'];
-		$designation = $_POST['designation'];
-		$company = $_POST['company'];
-		$back_color = $_POST['back_color'];
-		$text_color = $_POST['text_color'];
-		$accent_color = $_POST['accent_color'];
-		$border = $_POST['border'];
-		$imageUrl1 = isset($_POST['image1']) ? trim($_POST['image1']) : '';
-		$myFile1 = isset($_FILES['myFile1']['name']) ? $_FILES['myFile1']['name'] : '';
-
-		$path2 = "uploads/pageimages/project/types/";
-		$path_original2 = "uploads/pageimages/project/types/";
-
-		if ($imageUrl1 === '')
-		{
-			if ($myFile1 === '')
-			{
-				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title1', content='$editor12', metatitle='$metaTitle1', keyword='$keyword1', discription='$disc1', category='$cat1', order_no='$order1', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border' WHERE id=$id");
-				$Updated = true;
-			}
-			elseif ($myFile1 != '' && (file_exists("uploads/pageimages/" . $myFile1) || file_exists("uploads/pageimages/addgallery/" . $myFile1) || file_exists("uploads/pageimages/addgallery/project/" . $myFile1) || file_exists("uploads/pageimages/addgallery/resort/" . $myFile1) || file_exists("uploads/pageimages/blogs/" . $myFile1) || file_exists("uploads/pageimages/blogs/single/" . $myFile1) || file_exists("uploads/pageimages/contact/" . $myFile1) || file_exists("uploads/pageimages/nav/" . $myFile1) || file_exists("uploads/pageimages/nav/category/" . $myFile1) || file_exists("uploads/pageimages/nav/types/" . $myFile1) || file_exists("uploads/pageimages/project/" . $myFile1) || file_exists("uploads/pageimages/project/category/" . $myFile1) || file_exists("uploads/pageimages/project/types/" . $myFile1) || file_exists("uploads/pageimages/resort/" . $myFile1) || file_exists("uploads/pageimages/resort/category/" . $myFile1) || file_exists("uploads/pageimages/resort/types/" . $myFile1) || file_exists("uploads/pageimages/slider/" . $myFile1) || file_exists("uploads/pageimages/youtube/" . $myFile1)))
-			{
-				$FileExists = true;
-		   	$_SESSION['BannerColor'] = "background-color:#FF0000;";
-		   	$_SESSION['Message'] = "Selected image already exists!";
-		   	echo "<script>window.location.href='edit-project.php?id=$id';</script>";
-			   exit;
-			}
-			else
-			{
-				move_uploaded_file($_FILES['myFile1']['tmp_name'], $path2 . $myFile1);
-				$path1 = $path_original2 . $myFile1;
-
-				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title1', content='$editor12', local_path='$path1', metatitle='$metaTitle1', keyword='$keyword1', discription='$disc1', category='$cat1', order_no='$order1', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border' WHERE id=$id");
-				$Updated = true;
-			}
-		}
-		else
-		{
-			mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title1', content='$editor12', image='$imageUrl1', local_path='', metatitle='$metaTitle1', keyword='$keyword1', discription='$disc1', category='$cat1', order_no='$order1', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border' WHERE id=$id");
-			$Updated = true;
-		}
-
-		if($Updated)
-		{
-			$CurrentDateTime = Date("Y-m-d H:i:s");
-			mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Project Info'");
-			mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Challenges'");
-			mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Solutions'");
-
-			if (isset($_POST['project_info']) && !empty($_POST['project_info']))
-			{
-				foreach ($_POST['project_info'] as $item) {
-					$icon = isset($item['icon']) ? trim($item['icon']) : '';
-				    $title = isset($item['title']) ? trim($item['title']) : '';
-				    $description = isset($item['description']) ? trim($item['description']) : '';
-
-				    if ($icon != '' && $title != '' && $description != '') {
-				      mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, created_at) VALUES ('$id', 'Project Info', '$title', '$description', '$icon', '$CurrentDateTime')");
-				    }
-				}
-			}
-
-			if (isset($_POST['challenges']) && !empty($_POST['challenges']))
-			{
-				foreach ($_POST['challenges'] as $item) {
-					$title = isset($item['title']) ? trim($item['title']) : '';
-				    $icon = isset($item['icon']) ? trim($item['icon']) : '';
-				    $description = isset($item['description']) ? trim($item['description']) : '';
-				    $orderNo = isset($item['order']) ? (int)$item['order'] : 0;
-
-				    if ($icon != '' && $title != '' && $description != '') {
-				      mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, sort_order, created_at) VALUES ('$id', 'Challenges', '$title', '$description', '$icon', '$orderNo', '$CurrentDateTime')");
-				    }
-				}
-			}
-
-			if (isset($_POST['solutions']) && !empty($_POST['solutions']))
-			{
-				foreach ($_POST['solutions'] as $item) {
-					$title = isset($item['title']) ? trim($item['title']) : '';
-				    $icon = isset($item['icon']) ? trim($item['icon']) : '';
-				    $description = isset($item['description']) ? trim($item['description']) : '';
-				    $orderNo = isset($item['order']) ? (int)$item['order'] : 0;
-
-				    if ($icon != '' && $title != '' && $description != '') {
-				        mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, sort_order, created_at) VALUES ('$id', 'Solutions', '$title', '$description', '$icon', '$orderNo', '$CurrentDateTime')");
-				    }
-				}
-			}
-
-			$_SESSION['BannerColor'] = "background-color:#4BB543;";
-      	$_SESSION['Message'] = "Updated Successfully!";
-      	echo "<script>window.location.href='edit-project.php?id=$id';</script>";
-	     	exit;
-		}
-	}
 ?>
 
 <div class="pcoded-content">
@@ -246,11 +135,7 @@
 							</div>
 							<div class="listing-cta">
 								<a href="projects-listing.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
-								<?php if(!$b['local_path']){ ?>
 								<input type="submit" class="btn btn-success btn-sm" id="btnn" name="update" value="Save" form="editProjectTypesForm">
-								<?php }else{ ?>
-								<input type="submit" class="btn btn-success btn-sm" id="btnn1" name="update1" value="Save" form="editProjectTypesForm">
-								<?php } ?>
 							</div>
 						</div>
 
@@ -269,31 +154,19 @@
 									<div class="col-md-4">
 										<div class="commonSection">
 											<label>Meta Title</label>
-											<?php if(!$b['local_path']){ ?>
-												<textarea name="metaTitle" id="metaTitle" class="form-control" placeholder="Enter Meta Title"><?php echo $b['metatitle']; ?></textarea>
-											<?php }else{ ?>
-												<textarea name="metaTitle1" id="metaTitle" class="form-control" placeholder="Enter Meta Title"><?php echo $b['metatitle']; ?></textarea>
-											<?php } ?>
+											<textarea name="metaTitle" id="metaTitle" class="form-control" placeholder="Enter Meta Title"><?php echo $b['metatitle']; ?></textarea>
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="commonSection">
 											<label>Meta Keyword</label>
-											<?php if(!$b['local_path']){ ?>
-												<textarea name="keyword" id="metaKeyword" class="form-control" placeholder="Enter Meta Keyword"><?php echo $b['keyword']; ?></textarea>
-											<?php }else{ ?>
-												<textarea name="keyword1" id="metaKeyword" class="form-control" placeholder="Enter Meta Keyword"><?php echo $b['keyword']; ?></textarea>
-											<?php } ?>
+											<textarea name="keyword" id="metaKeyword" class="form-control" placeholder="Enter Meta Keyword"><?php echo $b['keyword']; ?></textarea>
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="commonSection">
 											<label>Meta Description</label>
-											<?php if(!$b['local_path']){ ?>
-												<textarea name="disc" id="metaDescription" class="form-control" placeholder="Enter Meta Description"><?php echo $b['discription']; ?></textarea>
-											<?php }else{ ?>
-												<textarea name="disc1" id="metaDescription" class="form-control" placeholder="Enter Meta Description"><?php echo $b['discription']; ?></textarea>
-											<?php } ?>
+											<textarea name="disc" id="metaDescription" class="form-control" placeholder="Enter Meta Description"><?php echo $b['discription']; ?></textarea>
 										</div>
 									</div>
 								</div>
@@ -313,11 +186,7 @@
 									<div class="col-lg-5 col-md-6">
 										<div class="commonSection">
 											<label>Main Heading</label>
-											<?php if(!$b['local_path']){ ?>
-												<input class="form-control" type="text" required name="title" id="title" value="<?php echo $b['title']; ?>" placeholder="Enter main heading">
-											<?php }else{ ?>
-												<input class="form-control" type="text" required name="title1" id="title" value="<?php echo $b['title']; ?>" placeholder="Enter main heading">
-											<?php } ?>
+											<input class="form-control" type="text" required name="title" id="title" value="<?php echo $b['title']; ?>" placeholder="Enter main heading">
 										</div>
 									</div>
 									<div class="col-lg-2 col-md-6">
@@ -343,11 +212,7 @@
 									<div class="col-md-12">
 										<div class="commonSection mb-0">
 											<label>Description</label>
-											<?php if(!$b['local_path']){ ?>
-												<textarea name="editor1" id="editor1" class="form-control" rows="5" required placeholder="Enter description"><?php echo $b['content']; ?></textarea>
-											<?php }else{ ?>
-												<textarea name="editor12" id="editor12" class="form-control" rows="5" required placeholder="Enter description"><?php echo $b['content']; ?></textarea>
-											<?php } ?>
+											<textarea name="editor1" id="editor1" class="form-control" rows="5" required placeholder="Enter description"><?php echo $b['content']; ?></textarea>
 										</div>
 									</div>
 								</div>
@@ -377,7 +242,7 @@
 												while($Row = mysqli_fetch_assoc($Result)) {
 											?>
 												<tr>
-													<td><input type="text" class="form-control form-control-sm" name="project_info[<?php echo $i; ?>][icon]" value="<?php echo $Row['icon']; ?>"></td>
+													<td><span class="material-icons"><?php echo $Row['icon']; ?></span></td>
 													<td><input type="text" class="form-control form-control-sm" name="project_info[<?php echo $i; ?>][title]" value="<?php echo $Row['title']; ?>"></td>
 													<td><input type="text" class="form-control form-control-sm" name="project_info[<?php echo $i; ?>][description]" value="<?php echo $Row['description']; ?>"></td>
 													<td>
@@ -406,8 +271,8 @@
 											<table class="table table-bordered table-sm mb-0 listing-table">
 												<thead>
 													<tr>
-														<th>Title</th>
 														<th>Icon</th>
+														<th>Title</th>
 														<th>Description</th>
 														<th>Order</th>
 														<th style="width:140px;">Actions</th>
@@ -420,7 +285,7 @@
 														while($Row = mysqli_fetch_assoc($Result)) {
 													?>
 														<tr>
-															<td><input type="text" class="form-control form-control-sm" name="challenges[<?php echo $i; ?>][icon]" value="<?php echo $Row['icon']; ?>"></td>
+															<td><span class="material-icons"><?php echo $Row['icon']; ?></span></td>
 															<td><input type="text" class="form-control form-control-sm" name="challenges[<?php echo $i; ?>][title]" value="<?php echo $Row['title']; ?>"></td>
 															<td><input type="text" class="form-control form-control-sm" name="challenges[<?php echo $i; ?>][description]" value="<?php echo $Row['description']; ?>"></td>
 															<td><input type="number" class="form-control form-control-sm" name="challenges[<?php echo $i; ?>][order]" value="<?php echo $Row['sort_order']; ?>"></td>
@@ -450,8 +315,8 @@
 											<table class="table table-bordered table-sm mb-0 listing-table">
 												<thead>
 													<tr>
-														<th>Title</th>
 														<th>Icon</th>
+														<th>Title</th>
 														<th>Description</th>
 														<th>Order</th>
 														<th style="width:140px;">Actions</th>
@@ -464,7 +329,7 @@
 														while($Row = mysqli_fetch_assoc($Result)) {
 													?>
 														<tr>
-															<td><input type="text" class="form-control form-control-sm" name="solutions[<?php echo $i; ?>][icon]" value="<?php echo $Row['icon']; ?>"></td>
+															<td><span class="material-icons"><?php echo $Row['icon']; ?></span></td>
 															<td><input type="text" class="form-control form-control-sm" name="solutions[<?php echo $i; ?>][title]" value="<?php echo $Row['title']; ?>"></td>
 															<td><input type="text" class="form-control form-control-sm" name="solutions[<?php echo $i; ?>][description]" value="<?php echo $Row['description']; ?>"></td>
 															<td><input type="number" class="form-control form-control-sm" name="solutions[<?php echo $i; ?>][order]" value="<?php echo $Row['sort_order']; ?>"></td>
@@ -534,6 +399,48 @@
 										<div class="commonSection mb-0">
 											<label>Border Radius</label>
 											<input class="form-control" type="number" name="border" value="<?php echo $b['border']; ?>" placeholder="12">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-6 col-md-12">
+							<div class="card mb-30">
+								<div class="card-header">Banner Image</div>
+								<div class="card-body">
+									<div class="banner-image-upload">
+										<?php
+											$imagePath = "images/default-profile.png";
+											if(isset($b['local_path']) && $b['local_path'] != '')
+											{
+												$imagePath = $b['local_path'];
+											}
+											else if (isset($b['image']) && $b['image'] != '')
+											{
+												$imagePath = $b['image'];
+											}
+										?>
+										<img src="<?php echo $imagePath; ?>" class="banner-image-preview" id="imgPreview" alt="Banner Image" onerror="this.src='images/default-profile.png';">
+										<div class="banner-recommended-size">Recommended size: 1920x800px</div>
+										<div class="radio-inline-group" style="margin-top: 12px;">
+											<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();" <?php echo ($b['image'] != '') ? 'checked' : ''; ?>>Image URL</label>
+											<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();" <?php echo ($b['local_path'] != '') ? 'checked' : ''; ?>>Select New Image</label>
+										</div>
+
+										<div id="image_url" style="margin-top: 12px; display: <?php echo ($b['image'] != '') ? 'block' : 'none'; ?>;">
+											<input class="form-control banner-form-control" type="text" name="image" id="image" placeholder="Enter image URL" value="<?php echo $b['image']; ?>">
+										</div>
+
+										<div id="select_image" style="margin-top: 12px; display: <?php echo ($b['local_path'] != '') ? 'block' : 'none'; ?>">
+											<input type="hidden" name="banner_image" value="<?php echo $b['local_path']; ?>">
+											<input type="file" name="myFile" id="myFile" style="display: none;" accept="image/*">
+											<div class="banner-upload-actions">
+												<button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('myFile').click();">
+													<i class="feather icon-upload"></i> Change Image
+												</button>
+												<!-- <button type="button" class="btn btn-sm btn-danger" onclick="reset('myFile', 'imgPreview');">Reset Image</button> -->
+											</div>
 										</div>
 									</div>
 								</div>
@@ -1452,4 +1359,37 @@
 	document.getElementById('projectInternalsForm').addEventListener('submit', function() {
 	    updateDynamicFormInputs();
 	});
+</script>
+
+<script type="text/javascript">
+	(function() {
+		var fileInput = document.getElementById('myFile');
+		var filePreview = document.getElementById('imgPreview');
+		if (!fileInput || !filePreview) {
+			return;
+		}
+
+		fileInput.addEventListener('change', function() {
+			if (this.files && this.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					filePreview.src = e.target.result;
+				};
+				reader.readAsDataURL(this.files[0]);
+			}
+		});
+
+	})();
+
+	function show2()
+	{
+		document.getElementById('select_image').style.display = 'block';
+		document.getElementById('image_url').style.display = 'none';
+	}
+
+	function show1()
+	{
+		document.getElementById('select_image').style.display = 'none';
+		document.getElementById('image_url').style.display = 'block';
+	}
 </script>

@@ -33,7 +33,7 @@
 		{
 			if ($myFile === '')
 			{
-				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, content, image, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$editor1', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
+				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$editor1', '', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
 				$LastInsertID = mysqli_insert_id($con);
 			}
 			elseif ($myFile != '' && (file_exists("uploads/pageimages/" . $myFile) || file_exists("uploads/pageimages/addgallery/" . $myFile) || file_exists("uploads/pageimages/addgallery/project/" . $myFile) || file_exists("uploads/pageimages/addgallery/resort/" . $myFile) || file_exists("uploads/pageimages/blogs/" . $myFile) || file_exists("uploads/pageimages/blogs/single/" . $myFile) || file_exists("uploads/pageimages/contact/" . $myFile) || file_exists("uploads/pageimages/nav/" . $myFile) || file_exists("uploads/pageimages/nav/category/" . $myFile) || file_exists("uploads/pageimages/nav/types/" . $myFile) || file_exists("uploads/pageimages/project/" . $myFile) || file_exists("uploads/pageimages/project/category/" . $myFile) || file_exists("uploads/pageimages/project/types/" . $myFile) || file_exists("uploads/pageimages/resort/" . $myFile) || file_exists("uploads/pageimages/resort/category/" . $myFile) || file_exists("uploads/pageimages/resort/types/" . $myFile) || file_exists("uploads/pageimages/slider/" . $myFile) || file_exists("uploads/pageimages/youtube/" . $myFile))) {
@@ -45,16 +45,20 @@
 			}
 			else
 			{
-				move_uploaded_file($_FILES['myFile']['tmp_name'], $path . $myFile);
-				$path = $path_original . $myFile;
+				$ImagePath = "";
+				if(isset($_FILES['myFile']['name']) && $_FILES['myFile']['name'] != '')
+				{
+					move_uploaded_file($_FILES['myFile']['tmp_name'], $path.$myFile);
+					$ImagePath = $path_original.$myFile;
+				}
 
-				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, content, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$editor1', '$path', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
+				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$editor1', '', '$ImagePath', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
 				$LastInsertID = mysqli_insert_id($con);
 			}
 		}
 		else
 		{
-			mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, content, image, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$editor1', '$imageUrl', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
+			mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$editor1', '$imageUrl', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
 			$LastInsertID = mysqli_insert_id($con);
 		}
 
@@ -334,6 +338,36 @@
 										<div class="commonSection mb-0">
 											<label>Border Radius</label>
 											<input class="form-control" type="number" name="border" placeholder="12">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-6 col-md-12">
+							<div class="card mb-30">
+								<div class="card-header">Banner Image</div>
+								<div class="card-body">
+									<div class="banner-image-upload">
+										<img src="images/default-profile.png" class="banner-image-preview" id="imgPreview" alt="Banner Image" onerror="this.src='images/default-profile.png';">
+										<div class="banner-recommended-size">Recommended size: 1920x800px</div>
+										<div class="radio-inline-group" style="margin-top: 12px;">
+											<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();" checked="">Image URL</label>
+											<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();">Select New Image</label>
+										</div>
+
+										<div id="image_url" style="margin-top: 12px;">
+											<input class="form-control banner-form-control" type="text" name="image" id="image" placeholder="Enter image URL">
+										</div>
+
+										<div id="select_image" style="display: none; margin-top: 12px;">
+											<input type="file" name="myFile" id="myFile" style="display: none;" accept="image/*">
+											<div class="banner-upload-actions">
+												<button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('myFile').click();">
+													<i class="feather icon-upload"></i> Change Image
+												</button>
+												<!-- <button type="button" class="btn btn-sm btn-danger" onclick="reset('myFile', 'imgPreview');">Reset Image</button> -->
+											</div>
 										</div>
 									</div>
 								</div>
@@ -1046,3 +1080,36 @@
 	</div>
 </div>
 <?php include_once('common/footer.php'); ?>
+
+<script type="text/javascript">
+	(function() {
+		var fileInput = document.getElementById('myFile');
+		var filePreview = document.getElementById('imgPreview');
+		if (!fileInput || !filePreview) {
+			return;
+		}
+
+		fileInput.addEventListener('change', function() {
+			if (this.files && this.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					filePreview.src = e.target.result;
+				};
+				reader.readAsDataURL(this.files[0]);
+			}
+		});
+
+	})();
+
+	function show2()
+	{
+		document.getElementById('select_image').style.display = 'block';
+		document.getElementById('image_url').style.display = 'none';
+	}
+
+	function show1()
+	{
+		document.getElementById('select_image').style.display = 'none';
+		document.getElementById('image_url').style.display = 'block';
+	}
+</script>

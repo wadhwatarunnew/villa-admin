@@ -22,12 +22,21 @@
 		$editor1 = mysqli_real_escape_string($con, $_POST['editor1']);
 		$y_url = $_POST['y_url'];
 		$imageUrl = $_POST['image'];
-		$myFile = $_FILES['floor_plan_image']['name'];
+		$myFile = isset($_FILES['myFile']['name']) ? $_FILES['myFile']['name'] : '';
+		$FloorImage = isset($_FILES['floor_plan_image']['name']) ? $_FILES['floor_plan_image']['name'] : '';
 
 		$path = "uploads/pageimages/resort/types/";
 		$path_original = "uploads/pageimages/resort/types/";
 
-		if (!$imageUrl)
+		$BannerImagePath = $_POST['banner_image'];
+		$FloorImagePath = $_POST['floor_image'];
+		if(isset($_FILES['floor_plan_image']['name']) && $_FILES['floor_plan_image']['name'] != '')
+		{
+			move_uploaded_file($_FILES['floor_plan_image']['tmp_name'], $path.$FloorImage);
+			$FloorImagePath = $path_original.$FloorImage;
+		}
+
+		if ($_FILES['myFile']['name'] != '')
 		{
 			if ($myFile != '' && (file_exists("uploads/pageimages/" . $myFile) || file_exists("uploads/pageimages/addgallery/" . $myFile) || file_exists("uploads/pageimages/addgallery/project/" . $myFile) || file_exists("uploads/pageimages/addgallery/resort/" . $myFile) || file_exists("uploads/pageimages/blogs/" . $myFile) || file_exists("uploads/pageimages/blogs/single/" . $myFile) || file_exists("uploads/pageimages/contact/" . $myFile) || file_exists("uploads/pageimages/nav/" . $myFile) || file_exists("uploads/pageimages/nav/category/" . $myFile) || file_exists("uploads/pageimages/nav/types/" . $myFile) || file_exists("uploads/pageimages/project/" . $myFile) || file_exists("uploads/pageimages/project/category/" . $myFile) || file_exists("uploads/pageimages/project/types/" . $myFile) || file_exists("uploads/pageimages/resort/" . $myFile) || file_exists("uploads/pageimages/resort/category/" . $myFile) || file_exists("uploads/pageimages/resort/types/" . $myFile) || file_exists("uploads/pageimages/slider/" . $myFile) || file_exists("uploads/pageimages/youtube/" . $myFile)))
 			{
@@ -39,16 +48,25 @@
 			}
 			else
 			{
-				move_uploaded_file($_FILES['floor_plan_image']['tmp_name'], $path . $myFile);
-				$path = $path_original . $myFile;
+				if(isset($_FILES['myFile']['name']) && $_FILES['myFile']['name'] != '')
+				{
+					move_uploaded_file($_FILES['myFile']['tmp_name'], $path . $myFile);
+					$BannerImagePath = $path_original . $myFile;
+				}
 
-				mysqli_query($con, "UPDATE resort_types SET title='$title', content='$editor1', image='', local_path='$path', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
+				mysqli_query($con, "UPDATE resort_types SET title='$title', content='$editor1', image='', local_path='$BannerImagePath', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
 				$Updated = true;
 			}
 		}
 		else
 		{
-			mysqli_query($con, "UPDATE resort_types SET title='$title', content='$editor1', image='$imageUrl', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
+			if($imageUrl != '')
+			{
+				mysqli_query($con, "UPDATE resort_types SET title='$title', content='$editor1', image='$imageUrl', local_path='', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
+			}
+			{
+				mysqli_query($con, "UPDATE resort_types SET title='$title', content='$editor1', image='', local_path='$BannerImagePath', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
+			}
 			$Updated = true;
 		}
 
@@ -65,13 +83,15 @@
 			{
 				$titles = $_POST['quick_info']['title'];
 	 			$descriptions = $_POST['quick_info']['description'];
+	 			$icons = $_POST['quick_info']['icon'];
 
 	 			foreach ($titles as $key => $specTitle)
 			   {
 					$title = mysqli_real_escape_string($con, $titles[$key]);
 			      $description = mysqli_real_escape_string($con, $descriptions[$key]);
+			      $icon = $icons[$key];
 
-			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, description, created_at) VALUES ('$id', 'Quick Info', '$title', '$description', '$CurrentDateTime')");
+			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, description, icon, created_at) VALUES ('$id', 'Quick Info', '$title', '$description', '$icon', '$CurrentDateTime')");
 			   }
 			}
 
@@ -79,13 +99,15 @@
 			{
 				$titles = $_POST['features']['title'];
 	 			$descriptions = $_POST['features']['description'];
+	 			$icons = $_POST['features']['icon'];
 
 	 			foreach ($titles as $key => $specTitle)
 			   {
 					$title = mysqli_real_escape_string($con, $titles[$key]);
 			      $description = mysqli_real_escape_string($con, $descriptions[$key]);
+			      $icon = $icons[$key];
 
-			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, description, created_at) VALUES ('$id', 'Features', '$title', '$description', '$CurrentDateTime')");
+			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, description, icon, created_at) VALUES ('$id', 'Features', '$title', '$description', '$icon', '$CurrentDateTime')");
 			   }
 			}
 
@@ -93,137 +115,15 @@
 			{
 				$titles = $_POST['materials']['title'];
 	 			$descriptions = $_POST['materials']['description'];
+	 			$icons = $_POST['materials']['icon'];
 
 	 			foreach ($titles as $key => $specTitle)
 			   {
 					$title = mysqli_real_escape_string($con, $titles[$key]);
 			      $description = mysqli_real_escape_string($con, $descriptions[$key]);
+			      $icon = $icons[$key];
 
-			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, description, created_at) VALUES ('$id', 'Materials', '$title', '$description', '$CurrentDateTime')");
-			   }
-			}
-
-			if (isset($_POST['specifications']) && !empty($_POST['specifications']))
-			{
-			   $titles = $_POST['specifications']['title'];
-			   $feet = $_POST['specifications']['feet'];
-			   $meters = $_POST['specifications']['meters'];
-
-			   foreach ($titles as $key => $specTitle)
-			   {
-			      $specTitle = mysqli_real_escape_string($con, $specTitle);
-					$specFeet = mysqli_real_escape_string($con, $feet[$key]);
-			      $specMeters = mysqli_real_escape_string($con, $meters[$key]);
-
-			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, feet, meters, created_at) VALUES ('$id', 'Specifications', '$specTitle', '$specFeet', '$specMeters', '$CurrentDateTime')");
-			   }
-			}
-
-			$_SESSION['BannerColor'] = "background-color:#4BB543;";
-      	$_SESSION['Message'] = "Updated Successfully!";
-      	echo "<script>window.location.href='edit-tent.php?id=$id';</script>";
-	     	exit;
-		}
-	}
-
-	if (isset($_POST['update1']))
-	{
-		$Updated = false;
-		$page = "Update";
-		$metaTitle1 = $_POST['metaTitle1'];
-		$keyword1 = $_POST['keyword1'];
-		$disc1 = $_POST['disc1'];
-		$title1 = $_POST['title1'];
-		$cat1 = $_POST['cat1'];
-		$order1 = $_POST['order1'];
-		$status = $_POST['status'];
-		$editor12 =  mysqli_real_escape_string($con, $_POST['editor12']);
-		$y_url1 = $_POST['y_url1'];
-		$imageUrl1 = $_POST['image1'];
-		$myFile1 = $_FILES['floor_plan_image']['name'];
-
-		$path2 = "uploads/pageimages/resort/types/";
-		$path_original2 = "uploads/pageimages/resort/types/";
-
-		if (!$imageUrl1)
-		{
-			if ($myFile1 != '' && (file_exists("uploads/pageimages/" . $myFile1) || file_exists("uploads/pageimages/addgallery/" . $myFile1) || file_exists("uploads/pageimages/addgallery/project/" . $myFile1) || file_exists("uploads/pageimages/addgallery/resort/" . $myFile1) || file_exists("uploads/pageimages/blogs/" . $myFile1) || file_exists("uploads/pageimages/blogs/single/" . $myFile1) || file_exists("uploads/pageimages/contact/" . $myFile1) || file_exists("uploads/pageimages/nav/" . $myFile1) || file_exists("uploads/pageimages/nav/category/" . $myFile1) || file_exists("uploads/pageimages/nav/types/" . $myFile1) || file_exists("uploads/pageimages/project/" . $myFile1) || file_exists("uploads/pageimages/project/category/" . $myFile1) || file_exists("uploads/pageimages/project/types/" . $myFile1) || file_exists("uploads/pageimages/resort/" . $myFile1) || file_exists("uploads/pageimages/resort/category/" . $myFile1) || file_exists("uploads/pageimages/resort/types/" . $myFile1) || file_exists("uploads/pageimages/slider/" . $myFile1) || file_exists("uploads/pageimages/youtube/" . $myFile1))) {
-				$FileExists = true;
-		   	$_SESSION['BannerColor'] = "background-color:#FF0000;";
-		   	$_SESSION['Message'] = "Selected image already exists!";
-		   	echo "<script>window.location.href='edit-tent.php?id=$id';</script>";
-		   	exit;
-			}
-			else
-			{
-				move_uploaded_file($_FILES['floor_plan_image']['tmp_name'], $path2 . $myFile1);
-				$path1 = $path_original2 . $myFile1;
-
-				if (!$_FILES['floor_plan_image']['name'])
-				{
-					mysqli_query($con, "UPDATE resort_types SET title='$title1', content='$editor12', metatitle='$metaTitle1', keyword='$keyword1', discription='$disc1', y_url='$y_url1', category='$cat1', order_no='$order1', status='$status' WHERE id=$id");
-					$Updated = true;
-				}
-				else
-				{
-					mysqli_query($con,  "UPDATE resort_types SET title='$title1', content='$editor12', local_path='$path1', metatitle='$metaTitle1', keyword='$keyword1', discription='$disc1', y_url='$y_url1', category='$cat1', order_no='$order1', status='$status' WHERE id=$id");
-					$Updated = true;
-				}
-			}
-		}
-		else
-		{
-			mysqli_query($con, "UPDATE resort_types SET title='$title1', content='$editor12', image='$imageUrl1', local_path='', metatitle='$metaTitle1', keyword='$keyword1', discription='$disc1', y_url='$y_url1', category='$cat1', order_no='$order1', status='$status' WHERE id=$id");
-			$Updated = true;
-		}
-
-		if($Updated)
-		{
-			$CurrentDateTime = Date("Y-m-d H:i:s");
-	 		mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Quick Info'");
-	 		mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Features'");
-	 		mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Materials'");
-	 		mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Specifications'");
-
-			if (isset($_POST['quick_info']) && !empty($_POST['quick_info']))
-			{
-				$titles = $_POST['quick_info']['title'];
-	 			$descriptions = $_POST['quick_info']['description'];
-
-			   foreach ($titles as $key => $specTitle)
-			   {
-					$title = mysqli_real_escape_string($con, $titles[$key]);
-			      $description = mysqli_real_escape_string($con, $descriptions[$key]);
-
-			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, description, created_at) VALUES ('$id', 'Quick Info', '$title', '$description', '$CurrentDateTime')");
-			   }
-			}
-
-			if (isset($_POST['features']) && !empty($_POST['features']))
-			{
-				$titles = $_POST['features']['title'];
-	 			$descriptions = $_POST['features']['description'];
-
-	 			foreach ($titles as $key => $specTitle)
-			   {
-					$title = mysqli_real_escape_string($con, $titles[$key]);
-			      $description = mysqli_real_escape_string($con, $descriptions[$key]);
-
-			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, description, created_at) VALUES ('$id', 'Features', '$title', '$description', '$CurrentDateTime')");
-			   }
-			}
-
-			if (isset($_POST['materials']) && !empty($_POST['materials']))
-			{
-				$titles = $_POST['materials']['title'];
-	 			$descriptions = $_POST['materials']['description'];
-
-	 			foreach ($titles as $key => $specTitle)
-			   {
-					$title = mysqli_real_escape_string($con, $titles[$key]);
-			      $description = mysqli_real_escape_string($con, $descriptions[$key]);
-
-			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, description, created_at) VALUES ('$id', 'Materials', '$title', '$description', '$CurrentDateTime')");
+			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, description, icon, created_at) VALUES ('$id', 'Materials', '$title', '$description', '$icon', '$CurrentDateTime')");
 			   }
 			}
 
@@ -267,11 +167,7 @@
 
 							<div class="listing-cta">
 								<a href="tents-listing.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
-								<?php if(!$b['local_path']){ ?>
-									<input type="submit" class="btn btn-success btn-sm" id="btnn" name="update" value="Save" form="editTentTypeForm">
-								<?php }else{ ?>
-									<input type="submit" class="btn btn-success btn-sm" id="btnn1" name="update1" value="Save" form="editTentTypeForm">
-								<?php } ?>
+								<input type="submit" class="btn btn-success btn-sm" id="btnn" name="update" value="Save" form="editTentTypeForm">
 							</div>
 						</div>
 
@@ -290,33 +186,21 @@
 									<div class="col-md-4">
 										<div class="commonSection">
 											<label>Meta Title</label>
-											<?php if(!$b['local_path']){ ?>
-												<textarea name="metaTitle" id="metaTitle" class="form-control" placeholder="Enter Meta Title"><?php echo $b['metatitle']; ?></textarea>
-											<?php }else{ ?>
-												<textarea name="metaTitle1" id="metaTitle" class="form-control" placeholder="Enter Meta Title"><?php echo $b['metatitle']; ?></textarea>
-											<?php } ?>
+											<textarea name="metaTitle" id="metaTitle" class="form-control" placeholder="Enter Meta Title"><?php echo $b['metatitle']; ?></textarea>
 										</div>
 									</div>
 
 									<div class="col-md-4">
 										<div class="commonSection">
 											<label>Meta Keyword</label>
-											<?php if(!$b['local_path']){ ?>
-												<textarea name="keyword" id="metaKeyword" class="form-control" placeholder="Enter Meta Keyword"><?php echo $b['keyword']; ?></textarea>
-											<?php }else{ ?>
-												<textarea name="keyword1" id="metaKeyword" class="form-control" placeholder="Enter Meta Keyword"><?php echo $b['keyword']; ?></textarea>
-											<?php } ?>
+											<textarea name="keyword" id="metaKeyword" class="form-control" placeholder="Enter Meta Keyword"><?php echo $b['keyword']; ?></textarea>
 										</div>
 									</div>
 
 									<div class="col-md-4">
 										<div class="commonSection">
 											<label>Meta Description</label>
-											<?php if(!$b['local_path']){ ?>
-												<textarea name="disc" id="metaDescription" class="form-control" placeholder="Enter Meta Description"><?php echo $b['discription']; ?></textarea>
-											<?php }else{ ?>
-												<textarea name="disc1" id="metaDescription" class="form-control" placeholder="Enter Meta Description"><?php echo $b['discription']; ?></textarea>
-											<?php } ?>
+											<textarea name="disc" id="metaDescription" class="form-control" placeholder="Enter Meta Description"><?php echo $b['discription']; ?></textarea>
 										</div>
 									</div>
 								</div>
@@ -330,10 +214,10 @@
 									<div class="col-md-4">
 										<div class="commonSection">
 											<label>Collection/Category Label</label>
-											<select class="form-control" name="<?php echo !$b['local_path'] ? 'cat' : 'cat1'; ?>" required>
+											<select class="form-control" name="cat" required>
 												<option value="<?php echo $b['category']; ?>"><?php echo $b['category']; ?></option>
 												<?php
-													$queryl = mysqli_query($con,"SELECT * from resort_category group by title");
+													$queryl = mysqli_query($con,"SELECT * FROM resort_category GROUP BY title ORDER BY title ASC");
 													while($l = mysqli_fetch_assoc($queryl)) {
 												?>
 													<option value="<?php echo $l['title']; ?>"><?php echo $l['title']; ?></option>
@@ -345,21 +229,21 @@
 									<div class="col-md-4">
 										<div class="commonSection">
 											<label>Tent Name</label>
-											<input class="form-control" type="text" required name="<?php echo !$b['local_path'] ? 'title' : 'title1'; ?>" id="title" value="<?php echo $b['title']; ?>" placeholder="Enter tent name">
+											<input class="form-control" type="text" required name="title" id="title" value="<?php echo $b['title']; ?>" placeholder="Enter tent name">
 										</div>
 									</div>
 
 									<div class="col-md-4">
 										<div class="commonSection">
 											<label>Order No.</label>
-											<input class="form-control" type="number" name="<?php echo !$b['local_path'] ? 'order' : 'order1'; ?>" id="order" value="<?php echo $b['order_no']; ?>" placeholder="Enter order number">
+											<input class="form-control" type="number" name="order" id="order" value="<?php echo $b['order_no']; ?>" placeholder="Enter order number">
 										</div>
 									</div>
 
 									<div class="col-md-8">
 										<div class="commonSection">
 											<label>Short Description</label>
-											<textarea class="form-control" name="<?php echo !$b['local_path'] ? 'editor1' : 'editor12'; ?>" id="editor1" rows="4" required placeholder="Enter short description"><?php echo $b['content']; ?></textarea>
+											<textarea class="form-control" name="editor1" id="editor1" rows="4" required placeholder="Enter short description"><?php echo $b['content']; ?></textarea>
 										</div>
 									</div>
 
@@ -388,6 +272,7 @@
 											<table class="table table-bordered table-sm mb-0 listing-table">
 												<thead>
 													<tr>
+														<th>Icon</th>
 														<th>Title</th>
 														<th>Description</th>
 														<th style="width:120px;">Actions</th>
@@ -400,6 +285,18 @@
 														while($MatRow = mysqli_fetch_assoc($MatResult)) {
 													?>
 														<tr>
+															<td>
+																<div class="input-group input-group-sm">
+																	<span class="material-icons dynamic-icon-preview">
+														            <?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>
+														        	</span>
+														        	<input type="hidden"
+														               class="form-control form-control-sm dynamic-icon-input"
+														               name="quick_info[icon][]"
+														               value="<?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>">
+														        	<button type="button" class="btn btn-outline-secondary dynamic-icon-picker" title="Choose Icon">Change Icon </button>
+														    	</div>
+															</td>
 															<td><input type="text" class="form-control form-control-sm" name="quick_info[title][]" value="<?php echo $MatRow['title']; ?>"></td>
 															<td><input type="text" class="form-control form-control-sm" name="quick_info[description][]" value="<?php echo $MatRow['description']; ?>"></td>
 															<td>
@@ -427,6 +324,7 @@
 											<table class="table table-bordered table-sm mb-0 listing-table">
 												<thead>
 													<tr>
+														<th>Icon</th>
 														<th>Title</th>
 														<th>Description</th>
 														<th style="width:120px;">Actions</th>
@@ -438,6 +336,18 @@
 														while($MatRow = mysqli_fetch_assoc($MatResult)) {
 													?>
 														<tr>
+															<td>
+															   <div class="input-group input-group-sm">
+																	<span class="material-icons dynamic-icon-preview">
+														            <?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>
+														        	</span>
+															      <input type="hidden"
+															               class="form-control form-control-sm dynamic-icon-input"
+															               name="features[icon][]"
+															               value="<?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>">
+															      <button type="button" class="btn btn-outline-secondary dynamic-icon-picker" title="Choose Icon">Change Icon </button>
+															   </div>
+															</td>
 															<td><input type="text" class="form-control form-control-sm" name="features[title][]" value="<?php echo $MatRow['title']; ?>"></td>
 															<td><input type="text" class="form-control form-control-sm" name="features[description][]" value="<?php echo $MatRow['description']; ?>"></td>
 															<td>
@@ -465,6 +375,7 @@
 											<table class="table table-bordered table-sm mb-0 listing-table">
 												<thead>
 													<tr>
+														<th>Icon</th>
 														<th>Title</th>
 														<th>Description</th>
 														<th style="width:120px;">Actions</th>
@@ -476,6 +387,18 @@
 														while($MatRow = mysqli_fetch_assoc($MatResult)) {
 													?>
 														<tr>
+															<td>
+															   <div class="input-group input-group-sm">
+															    	<span class="material-icons dynamic-icon-preview">
+														            <?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>
+														        	</span>
+															      <input type="hidden"
+														               class="form-control form-control-sm dynamic-icon-input"
+														               name="materials[icon][]"
+														               value="<?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>">
+														        	<button type="button" class="btn btn-outline-secondary dynamic-icon-picker" title="Choose Icon">Change Icon </button>
+															   </div>
+															</td>
 															<td><input type="text" class="form-control form-control-sm" name="materials[title][]" value="<?php echo $MatRow['title']; ?>"></td>
 															<td><input type="text" class="form-control form-control-sm" name="materials[description][]" value="<?php echo $MatRow['description']; ?>"></td>
 															<td>
@@ -535,9 +458,8 @@
 
 							<div class="col-lg-6 col-md-12">
 								<div class="card mb-30">
-									<div class="card-header">Floor Plan</div>
+									<div class="card-header">Banner Image</div>
 									<div class="card-body">
-										<label class="banner-form-label">Floor Plan Image <span class="required">*</span></label>
 										<div class="banner-image-upload">
 											<?php
 												$imagePath = "images/default-profile.png";
@@ -545,10 +467,54 @@
 												{
 													$imagePath = $b['local_path'];
 												}
+												else if (isset($b['image']) && $b['image'] != '')
+												{
+													$imagePath = $b['image'];
+												}
+											?>
+											<img src="<?php echo $imagePath; ?>" class="banner-image-preview" id="imgPreview" alt="Banner Image" onerror="this.src='images/default-profile.png';">
+											<div class="banner-recommended-size">Recommended size: 1920x800px</div>
+											<div class="radio-inline-group" style="margin-top: 12px;">
+												<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();" <?php echo ($b['image'] != '') ? 'checked' : ''; ?>>Image URL</label>
+												<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();" <?php echo ($b['local_path'] != '') ? 'checked' : ''; ?>>Select New Image</label>
+											</div>
+
+											<div id="image_url" style="margin-top: 12px; display: <?php echo ($b['image'] != '') ? 'block' : 'none'; ?>;">
+												<input class="form-control banner-form-control" type="text" name="image" id="image" placeholder="Enter image URL" value="<?php echo $b['image']; ?>">
+											</div>
+
+											<div id="select_image" style="margin-top: 12px; display: <?php echo ($b['local_path'] != '') ? 'block' : 'none'; ?>">
+												<input type="hidden" name="banner_image" value="<?php echo $b['local_path']; ?>">
+												<input type="file" name="myFile" id="myFile" style="display: none;" accept="image/*">
+												<div class="banner-upload-actions">
+													<button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('myFile').click();">
+														<i class="feather icon-upload"></i> Change Image
+													</button>
+													<!-- <button type="button" class="btn btn-sm btn-danger" onclick="reset('myFile', 'imgPreview');">Reset Image</button> -->
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-lg-6 col-md-12">
+								<div class="card mb-30">
+									<div class="card-header">Floor Plan</div>
+									<div class="card-body">
+										<label class="banner-form-label">Floor Plan Image <span class="required">*</span></label>
+										<div class="banner-image-upload">
+											<?php
+												$imagePath = "images/default-profile.png";
+												if(isset($b['floor_image']) && $b['floor_image'] != '')
+												{
+													$imagePath = $b['floor_image'];
+												}
 											?>
 
 											<img src="<?php echo $imagePath; ?>" class="banner-image-preview" id="floorPlanPreview" alt="Floor Plan Image">
 											<div class="banner-recommended-size">Recommended size: 1200x800px</div>
+											<input type="hidden" name="floor_image" value="<?php echo $b['floor_image']; ?>">
 											<input type="file" name="floor_plan_image" id="floorPlanFile" style="display:none;" accept="image/*">
 											<button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('floorPlanFile').click();">
 												<i class="feather icon-upload"></i> Change Image
@@ -569,6 +535,38 @@
 		<div class="modal-content">
 			<div class="modal-header"><h5 class="modal-title">Add Quick Info Item</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
 			<div class="modal-body">
+				<div class="commonSection">
+					<label>Icon</label>
+					<div class="counter-icon-box">
+				        <div class="counter-icon-preview" style="margin-bottom:8px;">
+				            <span class="material-icons" id="quickItemIconUiPreview">home</span>
+				        </div>
+
+				        <div class="d-flex align-items-center justify-content-between"
+				             style="gap:10px; margin-bottom:8px;">
+
+				            <button type="button"
+				                    class="btn btn-outline-secondary btn-sm"
+				                    onclick="openQuickInfoIconModal('quickInfo')">
+				                Open Material Icons
+				            </button>
+
+				            <span class="counter-icon-help" style="margin:0;">
+				                Choose any icon name
+				            </span>
+				        </div>
+
+				        <input type="text"
+				               class="form-control"
+				               id="quickItemIconUiOnly"
+				               value="home"
+				               placeholder="Ex: home, verified, location_on">
+
+				        <div class="counter-icon-help">
+				            UI only (not saved yet)
+				        </div>
+				    </div>
+				</div>
 				<div class="commonSection"><label>Title</label><input type="text" class="form-control" id="quickItemTitle" placeholder="Enter title"></div>
 				<div class="commonSection"><label>Description</label><textarea class="form-control" id="quickItemDescription" rows="3" placeholder="Enter description"></textarea></div>
 			</div>
@@ -582,6 +580,38 @@
 		<div class="modal-content">
 			<div class="modal-header"><h5 class="modal-title">Add Feature</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
 			<div class="modal-body">
+				<div class="commonSection">
+				    <label>Icon</label>
+				    <div class="counter-icon-box">
+				        <div class="counter-icon-preview" style="margin-bottom:8px;">
+				            <span class="material-icons" id="featureIconUiPreview">home</span>
+				        </div>
+
+				        <div class="d-flex align-items-center justify-content-between"
+				             style="gap:10px; margin-bottom:8px;">
+
+				            <button type="button"
+				                    class="btn btn-outline-secondary btn-sm"
+				                    onclick="openQuickInfoIconModal('feature')">
+				                Open Material Icons
+				            </button>
+
+				            <span class="counter-icon-help" style="margin:0;">
+				                Choose any icon name
+				            </span>
+				        </div>
+
+				        <input type="text"
+				               class="form-control"
+				               id="featureIconUiOnly"
+				               value="home"
+				               placeholder="Ex: home, verified, location_on">
+
+				        <div class="counter-icon-help">
+				            UI only (not saved yet)
+				        </div>
+				    </div>
+				</div>
 				<div class="commonSection"><label>Title</label><input type="text" class="form-control" id="featureTitle" placeholder="Enter title"></div>
 				<div class="commonSection"><label>Description</label><textarea class="form-control" id="featureDescription" rows="3" placeholder="Enter description"></textarea></div>
 			</div>
@@ -595,6 +625,38 @@
 		<div class="modal-content">
 			<div class="modal-header"><h5 class="modal-title">Add Material</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
 			<div class="modal-body">
+				<div class="commonSection">
+				    <label>Icon</label>
+				    <div class="counter-icon-box">
+				        <div class="counter-icon-preview" style="margin-bottom:8px;">
+				            <span class="material-icons" id="materialIconUiPreview">home</span>
+				        </div>
+
+				        <div class="d-flex align-items-center justify-content-between"
+				             style="gap:10px; margin-bottom:8px;">
+
+				            <button type="button"
+				                    class="btn btn-outline-secondary btn-sm"
+				                    onclick="openQuickInfoIconModal('material')">
+				                Open Material Icons
+				            </button>
+
+				            <span class="counter-icon-help" style="margin:0;">
+				                Choose any icon name
+				            </span>
+				        </div>
+
+				        <input type="text"
+				               class="form-control"
+				               id="materialIconUiOnly"
+				               value="home"
+				               placeholder="Ex: home, verified, location_on">
+
+				        <div class="counter-icon-help">
+				            UI only (not saved yet)
+				        </div>
+				    </div>
+				</div>
 				<div class="commonSection"><label>Title</label><input type="text" class="form-control" id="materialTitle" placeholder="Enter title"></div>
 				<div class="commonSection"><label>Description</label><textarea class="form-control" id="materialDescription" rows="3" placeholder="Enter description"></textarea></div>
 			</div>
@@ -640,6 +702,21 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="quickInfoMaterialIconModal" tabindex="-1" aria-labelledby="quickInfoMaterialIconModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="quickInfoMaterialIconModalLabel">Select Material Icon</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<input type="text" class="form-control mb-3" id="quickInfoIconSearch" placeholder="Search icons...">
+				<div class="icon-picker-grid" id="quickInfoIconGrid"></div>
+			</div>
+		</div>
+	</div>
+</div>
 <?php include_once('common/footer.php'); ?>
 
 <script>
@@ -660,11 +737,28 @@
 			}
 		});
 
+		var fileInput = document.getElementById('myFile');
+		var filePreview = document.getElementById('imgPreview');
+		if (!fileInput || !filePreview) {
+			return;
+		}
+
+		fileInput.addEventListener('change', function() {
+			if (this.files && this.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					filePreview.src = e.target.result;
+				};
+				reader.readAsDataURL(this.files[0]);
+			}
+		});
+
 	})();
 
 	(function() {
 		var editingRowByModal = {};
 		var rowToDelete = null;
+		var quickInfoIconList = ['home','apartment','cottage','house','hotel','groups','people','person','person_outline','face','verified','badge','workspace_premium','emoji_events','star','public','language','location_on','map','place','construction','foundation','build','architecture','engineering','trending_up','show_chart','timeline','insights','analytics','favorite','thumb_up','mood','support_agent','handshake','calendar_today','schedule','access_time','history','event','warning','task_alt','check_circle','gpp_good','bolt'];
 
 		var modalConfig = {
 			addItemModal: {
@@ -733,9 +827,9 @@
 	    	return input;
 		}
 
-		function appendRow(tbodyId, title, description) {
+		function appendRow(tbodyId, icon, title, description) {
 	    	var tbody = document.getElementById(tbodyId);
-	    	if (!tbody || !title || !description) {
+	    	if (!tbody || !icon || !title || !description) {
 	        	return;
 	    	}
 
@@ -755,6 +849,16 @@
 	        	prefix = 'materials';
 	    	}
 
+	    	var iconTd = document.createElement('td');
+			var iconSpan = document.createElement('span');
+			iconSpan.className = 'material-icons';
+			iconSpan.textContent = icon;
+
+			var iconHidden = createHiddenInput(prefix + '[icon][]', icon);
+
+			iconTd.appendChild(iconSpan);
+			iconTd.appendChild(iconHidden);
+
 	    	var row = document.createElement('tr');
 	    	var titleTd = document.createElement('td');
 	    	titleTd.textContent = title;
@@ -773,6 +877,7 @@
 	        createHiddenInput(prefix + '[description][]', description)
 	    	);
 
+	    	row.appendChild(iconTd);
 	    	row.appendChild(titleTd);
 	    	row.appendChild(descriptionTd);
 	    	row.appendChild(actionTd);
@@ -930,28 +1035,35 @@
 				document.getElementById('specFeet').value = '';
 				document.getElementById('specMeters').value = '';
 			} else if (modalId === 'addItemModal') {
+				document.getElementById('quickItemIconUiOnly').value = 'home';
+				document.getElementById('quickItemIconUiPreview').textContent = 'home';
 				document.getElementById('quickItemTitle').value = '';
 				document.getElementById('quickItemDescription').value = '';
 			} else if (modalId === 'addFeatureModal') {
+				document.getElementById('featureIconUiOnly').value = 'home';
+				document.getElementById('featureIconUiPreview').textContent = 'home';
 				document.getElementById('featureTitle').value = '';
 				document.getElementById('featureDescription').value = '';
 			} else if (modalId === 'addMaterialModal') {
+				document.getElementById('materialIconUiOnly').value = 'home';
+				document.getElementById('materialIconUiPreview').textContent = 'home';
 				document.getElementById('materialTitle').value = '';
 				document.getElementById('materialDescription').value = '';
 			}
 			editingRowByModal[modalId] = null;
 		}
 
-		function handleSimpleSave(modalId, title, description) {
+		function handleSimpleSave(modalId, icon, title, description) {
 			var editingRow = editingRowByModal[modalId];
-			if (!title || !description) {
+			if (!icon || !title || !description) {
 				return;
 			}
 			if (editingRow) {
-				editingRow.cells[0].textContent = title;
-				editingRow.cells[1].textContent = description;
+				editingRow.cells[0].textContent = icon;
+				editingRow.cells[1].textContent = title;
+				editingRow.cells[2].textContent = description;
 			} else {
-				appendRow(modalConfig[modalId].tbodyId, title, description);
+				appendRow(modalConfig[modalId].tbodyId, icon, title, description);
 			}
 			closeModal(modalId);
 			clearAndResetModal(modalId);
@@ -973,76 +1085,89 @@
 		   }
 
 		   if (editingRow) {
+			   var iconInput = editingRow.cells[0].querySelector(
+			        '.dynamic-icon-input'
+			   );
 
-		   // Update Title
-		   editingRow.cells[0].childNodes[0].textContent = title;
+			   var iconPreview = editingRow.cells[0].querySelector(
+			        '.dynamic-icon-preview'
+			   );
 
-		   var titleHidden = editingRow.cells[0].querySelector(
-		      'input[type="hidden"]'
-		   );
+			   var titleInput = editingRow.cells[1].querySelector(
+			        'input[type="hidden"]'
+			   );
 
-		   if (titleHidden) {
-		      titleHidden.value = title;
-		   }
+			   var descriptionInput = editingRow.cells[2].querySelector(
+			        'input[type="hidden"]'
+			   );
 
-		   // Update Feet
-		   var feetInput = editingRow.cells[1].querySelector(
-		      'input.form-control'
-		   );
+			   if (iconInput) {
+			        iconInput.value = icon;
+			   }
 
-		   var feetHidden = editingRow.cells[1].querySelector(
-		      'input[type="hidden"]'
-		   );
+			   if (iconPreview) {
+			        iconPreview.textContent = icon;
+			   }
 
-		   if (feetInput) {
-		      feetInput.value = feet;
-		   }
+			   if (titleInput) {
+			        titleInput.value = title;
+			   }
 
-		   if (feetHidden) {
-		      feetHidden.value = feet;
-		   }
+			   if (descriptionInput) {
+			        descriptionInput.value = description;
+			   }
 
-		   // Update Meters
-		   var metersInput = editingRow.cells[2].querySelector(
-		      'input.form-control'
-		   );
+			    // Keep visible values
+			   var titleText = editingRow.cells[1].childNodes[0];
 
-		   var metersHidden = editingRow.cells[2].querySelector(
-		      'input[type="hidden"]'
-		   );
+			   if (titleText) {
+			        titleText.textContent = title;
+			   }
 
-		   if (metersInput) {
-		      metersInput.value = meters;
-		   }
+			   var descriptionText = editingRow.cells[2].childNodes[0];
 
-		   if (metersHidden) {
-		      metersHidden.value = meters;
-		   }
+			   if (descriptionText) {
+			        descriptionText.textContent = description;
+			   }
 
-		   } else {
-
-		   appendSpecificationRow(
-		      'specificationTableBody',
-		      title,
-		      feet,
-		      meters
-		   );
-		   }
+			} else {
+			    appendRow(
+			        modalConfig[modalId].tbodyId,
+			        icon,
+			        title,
+			        description
+			   );
+			}
 
 		   closeModal(modalId);
 		   clearAndResetModal(modalId);
 		}
 
 		document.getElementById('saveQuickItem').addEventListener('click', function() {
-			handleSimpleSave('addItemModal', document.getElementById('quickItemTitle').value.trim(), document.getElementById('quickItemDescription').value.trim());
+		    handleSimpleSave(
+		        'addItemModal',
+		        document.getElementById('quickItemIconUiOnly').value.trim(),
+		        document.getElementById('quickItemTitle').value.trim(),
+		        document.getElementById('quickItemDescription').value.trim()
+		    );
 		});
 
 		document.getElementById('saveFeature').addEventListener('click', function() {
-			handleSimpleSave('addFeatureModal', document.getElementById('featureTitle').value.trim(), document.getElementById('featureDescription').value.trim());
+		    handleSimpleSave(
+		        'addFeatureModal',
+		        document.getElementById('featureIconUiOnly').value.trim(),
+		        document.getElementById('featureTitle').value.trim(),
+		        document.getElementById('featureDescription').value.trim()
+		    );
 		});
 
 		document.getElementById('saveMaterial').addEventListener('click', function() {
-			handleSimpleSave('addMaterialModal', document.getElementById('materialTitle').value.trim(), document.getElementById('materialDescription').value.trim());
+		    handleSimpleSave(
+		        'addMaterialModal',
+		        document.getElementById('materialIconUiOnly').value.trim(),
+		        document.getElementById('materialTitle').value.trim(),
+		        document.getElementById('materialDescription').value.trim()
+		    );
 		});
 
 		document.getElementById('saveSpecification').addEventListener('click', function() {
@@ -1060,24 +1185,27 @@
 
 				if (tbody.id === 'quickInfoTableBody') {
 					editingRowByModal.addItemModal = editRow;
-					document.getElementById('quickItemTitle').value = editRow.cells[0].textContent.trim();
-					document.getElementById('quickItemDescription').value = editRow.cells[1].textContent.trim();
+					document.getElementById('quickItemIconUiOnly').value = editRow.cells[0].querySelector('input')?.value || 'home';
+					document.getElementById('quickItemTitle').value = editRow.cells[1].textContent.trim();
+					document.getElementById('quickItemDescription').value = editRow.cells[2].textContent.trim();
 					setModalHeading('addItemModal', true);
 					openModal('addItemModal');
 				}
 
 				if (tbody.id === 'featureTableBody') {
 					editingRowByModal.addFeatureModal = editRow;
-					document.getElementById('featureTitle').value = editRow.cells[0].textContent.trim();
-					document.getElementById('featureDescription').value = editRow.cells[1].textContent.trim();
+					document.getElementById('featureIconUiOnly').value = editRow.cells[0].querySelector('input')?.value || 'home';
+					document.getElementById('featureTitle').value = editRow.cells[1].textContent.trim();
+					document.getElementById('featureDescription').value = editRow.cells[2].textContent.trim();
 					setModalHeading('addFeatureModal', true);
 					openModal('addFeatureModal');
 				}
 
 				if (tbody.id === 'materialTableBody') {
 					editingRowByModal.addMaterialModal = editRow;
-					document.getElementById('materialTitle').value = editRow.cells[0].textContent.trim();
-					document.getElementById('materialDescription').value = editRow.cells[1].textContent.trim();
+					document.getElementById('materialIconUiOnly').value = editRow.cells[0].querySelector('input')?.value || 'home';
+					document.getElementById('materialTitle').value = editRow.cells[1].textContent.trim();
+					document.getElementById('materialDescription').value = editRow.cells[2].textContent.trim();
 					setModalHeading('addMaterialModal', true);
 					openModal('addMaterialModal');
 				}
@@ -1146,6 +1274,409 @@
 
 		['quickInfoTableBody', 'featureTableBody', 'materialTableBody', 'specificationTableBody'].forEach(function(tbodyId) {
 			ensureEmptyState(tbodyId);
+		});
+
+		var iconModalEl = document.getElementById('quickInfoMaterialIconModal');
+		var iconGridEl = document.getElementById('quickInfoIconGrid');
+		var iconSearchEl = document.getElementById('quickInfoIconSearch');
+
+		var currentIconTarget = 'quickInfo';
+
+		var iconTargets = {
+		    quickInfo: {
+		        input: 'quickItemIconUiOnly',
+		        preview: 'quickItemIconUiPreview',
+		        modal: 'addItemModal'
+		    },
+
+		    feature: {
+		        input: 'featureIconUiOnly',
+		        preview: 'featureIconUiPreview',
+		        modal: 'addFeatureModal'
+		    },
+
+		    material: {
+		        input: 'materialIconUiOnly',
+		        preview: 'materialIconUiPreview',
+		        modal: 'addMaterialModal'
+		    }
+		};
+
+		var activeDynamicIconInput = null;
+
+		/*
+		 * Open picker for ANY dynamic icon input
+		 */
+		document.addEventListener('click', function (event) {
+
+		    var button = event.target.closest('.dynamic-icon-picker');
+
+		    if (!button) {
+		        return;
+		    }
+
+		    /*
+		     * Find the input belonging to this button.
+		     */
+		    var wrapper = button.closest('.input-group');
+
+		    if (!wrapper) {
+		        return;
+		    }
+
+		    var input = wrapper.querySelector('.dynamic-icon-input');
+
+		    if (!input) {
+		        return;
+		    }
+
+		    /*
+		     * Remember this exact input.
+		     *
+		     * It can be:
+		     * quick_info[icon][]
+		     * features[icon][]
+		     * materials[icon][]
+		     */
+		    activeDynamicIconInput = input;
+
+		    var currentIcon = input.value.trim() || 'home';
+
+		    /*
+		     * Reset search.
+		     */
+		    if (iconSearchEl) {
+		        iconSearchEl.value = '';
+		    }
+
+		    /*
+		     * Show all icons.
+		     */
+		    var pickerItems = document.querySelectorAll(
+		        '#quickInfoIconGrid .icon-picker-item'
+		    );
+
+		    Array.prototype.forEach.call(
+		        pickerItems,
+		        function (item) {
+
+		            item.style.display = 'inline-flex';
+		            item.classList.remove('selected');
+
+		        }
+		    );
+
+		    /*
+		     * Select current icon.
+		     */
+		    var selectedItem = document.querySelector(
+		        '#quickInfoIconGrid .icon-picker-item[data-icon="' +
+		        CSS.escape(currentIcon) +
+		        '"]'
+		    );
+
+		    if (selectedItem) {
+		        selectedItem.classList.add('selected');
+		    }
+
+		    /*
+		     * Open icon picker.
+		     */
+		    if (iconModalEl) {
+
+		        bootstrap.Modal
+		            .getOrCreateInstance(iconModalEl)
+		            .show();
+
+		    }
+
+		});
+
+		if (iconGridEl) {
+
+		    quickInfoIconList.forEach(function(name) {
+
+		        var btn = document.createElement('button');
+
+		        btn.type = 'button';
+		        btn.className = 'icon-picker-item';
+		        btn.setAttribute('data-icon', name);
+		        btn.setAttribute('title', name);
+
+		        btn.innerHTML =
+		            '<span class="material-icons">' + name + '</span>' +
+		            '<span class="icon-picker-label">' + name + '</span>';
+
+		        iconGridEl.appendChild(btn);
+		    });
+		}
+
+		if (iconSearchEl) {
+
+		    iconSearchEl.addEventListener('input', function() {
+
+		        var term = this.value.toLowerCase();
+
+		        var pickerItems =
+		            document.querySelectorAll(
+		                '#quickInfoIconGrid .icon-picker-item'
+		            );
+
+		        Array.prototype.forEach.call(
+		            pickerItems,
+		            function(item) {
+
+		                var name =
+		                    item.getAttribute('data-icon').toLowerCase();
+
+		                item.style.display =
+		                    name.indexOf(term) !== -1
+		                        ? 'inline-flex'
+		                        : 'none';
+		            }
+		        );
+		    });
+		}
+
+		/* --------------------------------
+		   OPEN ICON MODAL
+		-------------------------------- */
+
+		window.openQuickInfoIconModal = function(target) {
+
+		    currentIconTarget = target || 'quickInfo';
+
+		    if (!iconTargets[currentIconTarget]) {
+		        currentIconTarget = 'quickInfo';
+		    }
+
+		    var targetConfig = iconTargets[currentIconTarget];
+
+		    // Reset search
+		    if (iconSearchEl) {
+		        iconSearchEl.value = '';
+		    }
+
+		    var pickerItems = document.querySelectorAll(
+		        '#quickInfoIconGrid .icon-picker-item'
+		    );
+
+		    // Show all icons and remove previous selection
+		    Array.prototype.forEach.call(
+		        pickerItems,
+		        function(item) {
+		            item.style.display = 'inline-flex';
+		            item.classList.remove('selected');
+		        }
+		    );
+
+		    // Get current icon from the input.
+		    // If empty, use home.
+		    var input = document.getElementById(targetConfig.input);
+		    var preview = document.getElementById(targetConfig.preview);
+
+		    var currentIcon = input && input.value.trim()
+		        ? input.value.trim()
+		        : 'home';
+
+		    // Make sure input + preview have the icon
+		    if (input) {
+		        input.value = currentIcon;
+		    }
+
+		    if (preview) {
+		        preview.textContent = currentIcon;
+		    }
+
+		    // Select the current icon in the picker
+		    var selectedItem = document.querySelector(
+		        '#quickInfoIconGrid .icon-picker-item[data-icon="' +
+		        CSS.escape(currentIcon) +
+		        '"]'
+		    );
+
+		    // If current icon isn't in the list, select home
+		    if (!selectedItem) {
+		        currentIcon = 'home';
+
+		        if (input) {
+		            input.value = 'home';
+		        }
+
+		        if (preview) {
+		            preview.textContent = 'home';
+		        }
+
+		        selectedItem = document.querySelector(
+		            '#quickInfoIconGrid .icon-picker-item[data-icon="home"]'
+		        );
+		    }
+
+		    if (selectedItem) {
+		        selectedItem.classList.add('selected');
+		    }
+
+		    // Show icon modal ON TOP of the current modal
+		    if (iconModalEl) {
+		        bootstrap.Modal
+		            .getOrCreateInstance(iconModalEl, {
+		                backdrop: true,
+		                focus: true
+		            })
+		            .show();
+		    }
+		};
+		
+		/* --------------------------------
+		   SELECT ICON
+		-------------------------------- */
+
+		if (iconGridEl) {
+		    iconGridEl.addEventListener('click', function (event) {
+
+		        var iconItem = event.target.closest('.icon-picker-item');
+
+		        if (!iconItem) {
+		            return;
+		        }
+
+		        var iconName = iconItem.getAttribute('data-icon');
+
+		        /* --------------------------------
+		           DYNAMIC TABLE ICON
+		        -------------------------------- */
+		        if (activeDynamicIconInput) {
+
+		            // Update hidden input
+		            activeDynamicIconInput.value = iconName;
+
+		            // Find the visible icon preview in the same input-group
+		            var wrapper = activeDynamicIconInput.closest('.input-group');
+
+		            if (wrapper) {
+
+		                var preview = wrapper.querySelector(
+		                    '.dynamic-icon-preview'
+		                );
+
+		                if (preview) {
+		                    preview.textContent = iconName;
+		                }
+		            }
+
+		            // Mark selected icon
+		            var pickerItems = iconGridEl.querySelectorAll(
+		                '.icon-picker-item'
+		            );
+
+		            Array.prototype.forEach.call(
+		                pickerItems,
+		                function (item) {
+		                    item.classList.remove('selected');
+		                }
+		            );
+
+		            iconItem.classList.add('selected');
+
+		            // Clear active target
+		            activeDynamicIconInput = null;
+		        }
+
+		        /* --------------------------------
+		           QUICK INFO / FEATURE / MATERIAL
+		        -------------------------------- */
+		        else {
+
+		            var targetConfig = iconTargets[currentIconTarget];
+
+		            if (targetConfig) {
+
+		                var input = document.getElementById(
+		                    targetConfig.input
+		                );
+
+		                var preview = document.getElementById(
+		                    targetConfig.preview
+		                );
+
+		                if (input) {
+		                    input.value = iconName;
+		                }
+
+		                if (preview) {
+		                    preview.textContent = iconName;
+		                }
+		            }
+		        }
+
+		        /* --------------------------------
+		           CLOSE ICON PICKER
+		        -------------------------------- */
+		        if (iconModalEl) {
+
+		            var modal =
+		                bootstrap.Modal.getInstance(iconModalEl);
+
+		            if (modal) {
+		                modal.hide();
+		            }
+		        }
+
+		    });
+		}
+
+		if (iconModalEl) {
+
+		    iconModalEl.addEventListener(
+		        'hidden.bs.modal',
+		        function() {
+
+		            var backdrop =
+		                document.querySelector(
+		                    '.modal-backdrop.icon-picker-backdrop'
+		                );
+
+		            if (backdrop) {
+		                backdrop.classList.remove('icon-picker-backdrop');
+		            }
+
+		        }
+		    );
+		}
+
+		/* --------------------------------
+		   MANUAL ICON INPUT
+		-------------------------------- */
+
+		[
+		    {
+		        input: 'quickItemIconUiOnly',
+		        preview: 'quickItemIconUiPreview'
+		    },
+		    {
+		        input: 'featureIconUiOnly',
+		        preview: 'featureIconUiPreview'
+		    },
+		    {
+		        input: 'materialIconUiOnly',
+		        preview: 'materialIconUiPreview'
+		    }
+		].forEach(function(item) {
+
+		    var input =
+		        document.getElementById(item.input);
+
+		    var preview =
+		        document.getElementById(item.preview);
+
+		    if (input && preview) {
+
+		        input.addEventListener('input', function() {
+
+		            preview.textContent =
+		                this.value.trim() || 'home';
+		        });
+		    }
 		});
 	})();
 
@@ -1223,83 +1754,67 @@
 		});
 	})();
 
-	function res(){
-		document.getElementById('myFile').value = "";
-		var p = document.getElementById("image").value;
-		if (document.getElementById("btnn")) {
-			document.getElementById("btnn").disabled = !p;
-		}
-	}
+	// function res(){
+	// 	document.getElementById('myFile').value = "";
+	// 	var p = document.getElementById("image").value;
+	// 	if (document.getElementById("btnn")) {
+	// 		document.getElementById("btnn").disabled = !p;
+	// 	}
+	// }
 
-	function res1(){
-		document.getElementById('myFile1').value = "";
-		var p1 = document.getElementById("image1").value;
-		if (document.getElementById("btnn1")) {
-			document.getElementById("btnn1").disabled = !p1;
-		}
-	}
+	// function res1(){
+	// 	document.getElementById('myFile1').value = "";
+	// 	var p1 = document.getElementById("image1").value;
+	// 	if (document.getElementById("btnn1")) {
+	// 		document.getElementById("btnn1").disabled = !p1;
+	// 	}
+	// }
 
-	$(document).ready(function() {
-		if (document.getElementById('myFile') && document.getElementById('image') && document.getElementById('btnn')) {
-			var x = document.getElementById("myFile").value;
-			var x1 = document.getElementById("image").value;
-			document.getElementById("btnn").disabled = (x1 && x) || (!x1 && !x);
+	// $(document).ready(function() {
+	// 	if (document.getElementById('myFile') && document.getElementById('image') && document.getElementById('btnn')) {
+	// 		var x = document.getElementById("myFile").value;
+	// 		var x1 = document.getElementById("image").value;
+	// 		document.getElementById("btnn").disabled = (x1 && x) || (!x1 && !x);
 
-			$('#image').keyup(function() {
-				var dInput = this.value;
-				var xf = document.getElementById("myFile").value;
-				document.getElementById("btnn").disabled = (dInput && xf) || (!dInput && !xf);
-			});
+	// 		$('#image').keyup(function() {
+	// 			var dInput = this.value;
+	// 			var xf = document.getElementById("myFile").value;
+	// 			document.getElementById("btnn").disabled = (dInput && xf) || (!dInput && !xf);
+	// 		});
 
-			document.getElementById('myFile').onchange = function () {
-				var pInput = this.value;
-				var y = document.getElementById("image").value;
-				document.getElementById("btnn").disabled = (pInput && y) || (!pInput && !y);
-			};
-		}
+	// 		document.getElementById('myFile').onchange = function () {
+	// 			var pInput = this.value;
+	// 			var y = document.getElementById("image").value;
+	// 			document.getElementById("btnn").disabled = (pInput && y) || (!pInput && !y);
+	// 		};
+	// 	}
 
-		if (document.getElementById('myFile1') && document.getElementById('image1') && document.getElementById('btnn1')) {
-			var f = document.getElementById("myFile1").value;
-			var f1 = document.getElementById("image1").value;
-			document.getElementById("btnn1").disabled = (f1 && f) || (!f1 && !f);
+	// 	if (document.getElementById('myFile1') && document.getElementById('image1') && document.getElementById('btnn1')) {
+	// 		var f = document.getElementById("myFile1").value;
+	// 		var f1 = document.getElementById("image1").value;
+	// 		document.getElementById("btnn1").disabled = (f1 && f) || (!f1 && !f);
 
-			$('#image1').keyup(function() {
-				var dInput1 = this.value;
-				var x2 = document.getElementById("myFile1").value;
-				document.getElementById("btnn1").disabled = (dInput1 && x2) || (!dInput1 && !x2);
-			});
+	// 		$('#image1').keyup(function() {
+	// 			var dInput1 = this.value;
+	// 			var x2 = document.getElementById("myFile1").value;
+	// 			document.getElementById("btnn1").disabled = (dInput1 && x2) || (!dInput1 && !x2);
+	// 		});
 
-			document.getElementById('myFile1').onchange = function () {
-				var pInput1 = this.value;
-				var y1 = document.getElementById("image1").value;
-				document.getElementById("btnn1").disabled = (pInput1 && y1) || (!pInput1 && !y1);
-			};
-		}
-	});
+	// 		document.getElementById('myFile1').onchange = function () {
+	// 			var pInput1 = this.value;
+	// 			var y1 = document.getElementById("image1").value;
+	// 			document.getElementById("btnn1").disabled = (pInput1 && y1) || (!pInput1 && !y1);
+	// 		};
+	// 	}
+	// });
 
-	if (document.getElementById('select_image1')) {
-		document.getElementById('select_image1').style.display = 'none';
-	}
 	function show2(){
 		document.getElementById('image_url').style.display = 'none';
-		document.getElementById('select_image1').style.display = 'block';
+		document.getElementById('select_image').style.display = 'block';
 	}
 
 	function show1(){
-		document.getElementById('select_image1').style.display = 'none';
-		document.getElementById('image_url').style.display = 'block';
-	}
-
-	if (document.getElementById('image_url1')) {
-		document.getElementById('image_url1').style.display = 'none';
-	}
-	function show3(){
-		document.getElementById('image_url1').style.display = 'block';
 		document.getElementById('select_image').style.display = 'none';
-	}
-
-	function show4(){
-		document.getElementById('select_image').style.display = 'block';
-		document.getElementById('image_url1').style.display = 'none';
+		document.getElementById('image_url').style.display = 'block';
 	}
 </script>

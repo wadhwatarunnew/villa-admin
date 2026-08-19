@@ -64,8 +64,8 @@
 		$metaTitle 	= $_POST['metaTitle'];
 		$keyword 	= $_POST['keyword'];
 		$disc 		= $_POST['disc'];
-		$title1 		= $_POST['title1'];
-		$order1 		= $_POST['order1'];
+		$title1 	= $_POST['title1'];
+		$order1 	= $_POST['order1'];
 		$editor2 	= $_POST['editor2'];
 		$imageUrl1 	= $_POST['image1'];
 		$color 		= $_POST['color'];
@@ -90,7 +90,7 @@
 		
 				if(!$_FILES['myFile1']['name'])
 				{	
-					mysqli_query($con,"UPDATE resort_category SET title='$title1', order_no='$order1', content='$editor2', metatitle='$metaTitle1', keyword='$keyword1', discription='$disc1', color='$color' WHERE id=$id");
+					mysqli_query($con,"UPDATE resort_category SET title='$title1', order_no='$order1', content='$editor2', metatitle='$metaTitle', keyword='$keyword', discription='$disc', color='$color' WHERE id=$id");
 					$_SESSION['BannerColor'] = "background-color:#4BB543;";
 			   	$_SESSION['Message'] = "Updated Successfully!";
 			   	echo "<script>window.location.href='edit-resort-category.php?id=$id';</script>";
@@ -98,7 +98,7 @@
 				}
 				else
 				{	
-					mysqli_query($con, "UPDATE resort_category SET title='$title1', order_no='$order1', content='$editor2', local_path='$path1', metatitle='$metaTitle1', keyword='$keyword1', discription='$disc1', color='$color' WHERE id=$id");	
+					mysqli_query($con, "UPDATE resort_category SET title='$title1', order_no='$order1', content='$editor2', local_path='$path1', metatitle='$metaTitle', keyword='$keyword', discription='$disc', color='$color' WHERE id=$id");	
 		        	$_SESSION['BannerColor'] = "background-color:#4BB543;";
 			   	$_SESSION['Message'] = "Updated Successfully!";
 			   	echo "<script>window.location.href='edit-resort-category.php?id=$id';</script>";
@@ -109,7 +109,7 @@
 		}
 		else
 		{
-			mysqli_query($con,"UPDATE resort_category SET title='$title1',order_no='$order1',content='$editor2',image='$imageUrl1',local_path='',metatitle='$metaTitle1',keyword='$keyword1',discription='$disc1' WHERE id=$id");
+			mysqli_query($con,"UPDATE resort_category SET title='$title1',order_no='$order1',content='$editor2',image='$imageUrl1',local_path='',metatitle='$metaTitle',keyword='$keyword',discription='$disc' WHERE id=$id");
 			$_SESSION['BannerColor'] = "background-color:#4BB543;";
 	   	$_SESSION['Message'] = "Updated Successfully!";
 	   	echo "<script>window.location.href='edit-resort-category.php?id=$id';</script>";

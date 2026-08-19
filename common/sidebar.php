@@ -17,13 +17,14 @@
                </ul>
             </li>
 
-            <li class="menu-link">
+            <li class="menu-link"><a href="contact-page.php"><i class="feather icon-chevron-right"></i> Contact Us</a></li>
+            <!-- <li class="menu-link">
                <a href="#" class="br-menu-link"><i class="feather icon-chevron-right"></i> Contact Us</a>
                <ul class="br-menu-sub">
                   <li><a href="contact-page.php"><i class="feather icon-chevron-right"></i> Contact Page</a></li>
                   <li><a href="contact-cards-page.php"><i class="feather icon-chevron-right"></i> Contact Cards</a></li>
                </ul>
-            </li>
+            </li> -->
 
    			<li><a href="get-quote-page.php"><i class="feather icon-chevron-right"></i> Get Quote</a></li>
    			<li><a href="leads-list.php"><i class="feather icon-chevron-right"></i>Leads</a></li>
@@ -76,7 +77,7 @@
       <li class="menu-link"><a href="brands-list-page.php"><i class="feather icon-aperture"></i> Brands</a></li>
       <li class="menu-link"><a href="#" class="br-menu-link"><i class="feather icon-layers"></i>General Settings</a>
          <ul class="br-menu-sub">
-            <li><a href="header.php"><i class="feather icon-chevron-right"></i> Header</a>
+            <li><a href="header.php"><i class="feather icon-chevron-right"></i> Manage Logos</a>
    		   <li><a href="nav-listing.php"><i class="feather icon-chevron-right"></i> Navigation Listing</a>
             <li><a href="footer.php"><i class="feather icon-chevron-right"></i> Footer</a>
             <!-- <li><a href="footer-listing.php"><i class="feather icon-chevron-right"></i> Footer Listing</a></li> -->

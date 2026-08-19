@@ -47,6 +47,7 @@
                                     <thead>
                                        <tr>
                                           <th>Sr. No</th>
+                                          <th>Type</th>
                                           <th>Date</th>
                                           <th>Name</th>
                                           <th>Email</th>
@@ -96,6 +97,7 @@
                                     
                                           <tr role="row">
                                              <td><?php echo $i; ?></td>
+                                             <td style="text-transform: capitalize;"><?php echo $b['type']; ?></td>
                                              <td><?php echo ($b['date'] != '0000-00-00' && $b['date'] != '') ? date("d-m-Y", strtotime($b['date'])) : '-'; ?></td>
                                              <td><?php echo $b['name']; ?></td>
                                              <td><?php echo $b['email']; ?></td>
