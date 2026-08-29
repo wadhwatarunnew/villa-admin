@@ -25,10 +25,10 @@ body {
 }
 
 .login-shell {
-    min-height: 100vh;
     min-height: 100dvh;
     display: flex;
     align-items: stretch;
+    width: 100%;
 }
 
 .brand-panel {
