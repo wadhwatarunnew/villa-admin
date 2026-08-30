@@ -2,7 +2,7 @@
    <ul>
       <!-- <li class="menu-link"><a href="index.php"><i class="feather icon-home"></i> Dashboard</a></li> -->
       <li><a href="index.php"><i class="feather icon-grid"></i> Dashboard</a></li>
-      <li><a href="home-slider.php"><i class="feather icon-home"></i> Home Slider </a></li>
+      <!-- <li><a href="home-slider.php"><i class="feather icon-home"></i> Home Slider </a></li> -->
       <li><a href="banner-listing.php"><i class="feather icon-image"></i> Banners </a></li>
       <li class="menu-link"><a href="JavaScript:Void(0);" class="br-menu-link"><i class="feather icon-file-text"></i>Pages </a>
          <ul class="br-menu-sub"> 

@@ -94,9 +94,9 @@
 					<div class="page-body">
 						<div class="listing-page-head">
 							<div class="listing-title-wrap">
-								<h1>Edit Home Slider</h1>
+								<h1>Edit Banner</h1>
 								<div class="listing-breadcrumb">
-									<span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Home Slider</span><span class="crumb-sep">&gt;</span><span>Edit</span>
+									<span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Banners</span><span class="crumb-sep">&gt;</span><span>Edit</span>
 								</div>
 							</div>
 
