@@ -192,7 +192,7 @@
 									<div class="col-lg-2 col-md-6">
 										<div class="commonSection">
 											<label>Category</label>
-											<select class="form-control" name="<?php echo !$b['local_path'] ? 'cat' : 'cat1'; ?>" required>
+											<select class="form-control" name="cat" required>
 												<option value="<?php echo $b['category']; ?>"><?php echo $b['category']; ?></option>
 												<?php
 													$queryl = mysqli_query($con, "SELECT * FROM project_category GROUP BY title");
@@ -206,7 +206,7 @@
 									<div class="col-lg-2 col-md-6">
 										<div class="commonSection">
 											<label>Order No.</label>
-											<input class="form-control" type="number" name="<?php echo !$b['local_path'] ? 'order' : 'order1'; ?>" id="order" value="<?php echo $b['order_no']; ?>" placeholder="1">
+											<input class="form-control" type="number" name="order" id="order" value="<?php echo $b['order_no']; ?>" placeholder="1">
 										</div>
 									</div>
 									<div class="col-md-12">

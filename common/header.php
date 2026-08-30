@@ -15,6 +15,7 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
+      <meta name="robots" content="noindex, nofollow">
       <title><?php echo $PageTitle; ?></title>
       <?php include_once('common/head-assets.php'); ?>
    </head>

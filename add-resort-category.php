@@ -141,14 +141,6 @@
 													<button type="button" class="btn btn-sm btn-danger" onclick="rese();">Reset Image</button><br>
 												</div>
 											</div>
-										
-											<div class="col-sm-6">
-		    									<div class="commonSection">
-		    										<label>Color</label>
-		    										<input class="form-control" type="text" name="color" id="color">
-		    										<input type="color" id="colorPicker" style='width: 10%;'>
-		    									</div>
-		    								</div>
 										</div>
 									</div>
 
@@ -225,7 +217,7 @@
 	};
 	CKEDITOR.replace('editor1');
 
-	document.getElementById("btnn").disabled = true;				
+	// document.getElementById("btnn").disabled = true;				
 	$(document).ready(function() {
 		$('#image').keyup(function() {
 			var dInput = this.value;

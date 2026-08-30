@@ -27,6 +27,7 @@
             </li> -->
 
    			<li><a href="get-quote-page.php"><i class="feather icon-chevron-right"></i> Get Quote</a></li>
+            <li><a href="quotes-list.php"><i class="feather icon-chevron-right"></i> Quotes List </a></li>
    			<li><a href="leads-list.php"><i class="feather icon-chevron-right"></i>Leads</a></li>
          </ul>
       </li>
