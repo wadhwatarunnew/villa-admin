@@ -131,6 +131,7 @@
                                                 <option value="Contact Us" <?php echo ($b["page"] == 'Contact Us') ? 'selected' : ''; ?>>Contact Us</option>    
                                                 <option value="Brochure" <?php echo ($b["page"] == 'Brochure') ? 'selected' : ''; ?>>Brochure</option>
                                                 <option value="Quote" <?php echo ($b["page"] == 'Quote') ? 'selected' : ''; ?>>Quote</option>
+                                                <option value="Terms" <?php echo ($b["page"] == 'Terms') ? 'selected' : ''; ?>>Terms & Conditions</option>
                                             </select>
                                         </div>
 

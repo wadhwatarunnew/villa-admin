@@ -18,6 +18,8 @@
       $LogoPath      = $_POST['logo_image'];
       $FavPath       = $_POST['fav_image'];
       $BrochurePath  = $_POST['brochure_path'];
+      $Title         = $_POST['title'];
+      $Description   = $_POST['description'];
    	
       $LogoFile      = $_FILES['logo_file']['name'];
       $FavFile       = $_FILES['fav_file']['name'];
@@ -104,8 +106,8 @@
             $BrochurePath = "uploads/".$BrochureFile;
          }
       }
-
-      mysqli_query($con, "UPDATE logo SET path='$LogoPath', favicon='$FavPath', brochure='$BrochurePath', meta_title='$MetaTitle', meta_keyword='$MetaKeyword', meta_desc='$MetaDesc'");
+   
+      mysqli_query($con, "UPDATE logo SET title='$Title', description='$Description', path='$LogoPath', favicon='$FavPath', brochure='$BrochurePath', bro_meta='$MetaTitle', bro_keyword='$MetaKeyword', bro_desc='$MetaDesc'");
       $_SESSION['BannerColor'] = "background-color:#4BB543;";
       $_SESSION['Message'] = "Updated Successfully!";
       echo "<script>window.location.href='header.php';</script>";
@@ -256,25 +258,49 @@
                   <div class="row">
                      <div class="col-sm-12">
                         <div class="card mb-30">
+                           <div class="card-header">Logo Info</div>
+                           <div class="card-body">
+                              <div class="row">
+                                 <div class="col-md-4">
+                                    <div class="commonSection">
+                                       <label>Title</label>
+                                       <input type="text" name="title" id="title" class="form-control" placeholder="Enter Logo Title" value="<?php echo $b['title']; ?>">
+                                    </div>
+                                 </div>
+                                 <div class="col-md-4">
+                                    <div class="commonSection">
+                                       <label>Description</label>
+                                       <input type="text" name="description" id="description" class="form-control" placeholder="Enter Logo Description" value="<?php echo $b['description']; ?>">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <div class="card mb-30">
                            <div class="card-header">Brochure Seo Meta Tags</div>
                            <div class="card-body">
                               <div class="row">
                                  <div class="col-md-4">
                                     <div class="commonSection">
                                        <label>Meta Title</label>
-                                       <textarea name="metaTitle" id="metaTitle" class="form-control" placeholder="Enter Meta Title"><?php echo $b['meta_title']; ?></textarea>
+                                       <textarea name="metaTitle" id="metaTitle" class="form-control" placeholder="Enter Meta Title"><?php echo $b['bro_meta']; ?></textarea>
                                     </div>
                                  </div>
                                  <div class="col-md-4">
                                     <div class="commonSection">
                                        <label>Meta Keyword</label>
-                                       <textarea name="keyword" id="metaKeyword" class="form-control" placeholder="Enter Meta Keyword"><?php echo $b['meta_keyword']; ?></textarea>
+                                       <textarea name="keyword" id="metaKeyword" class="form-control" placeholder="Enter Meta Keyword"><?php echo $b['bro_keyword']; ?></textarea>
                                     </div>
                                  </div>
                                  <div class="col-md-4">
                                     <div class="commonSection">
                                        <label>Meta Description</label>
-                                       <textarea name="desc" id="metaDescription" class="form-control" placeholder="Enter Meta Description"><?php echo $b['meta_desc']; ?></textarea>
+                                       <textarea name="desc" id="metaDescription" class="form-control" placeholder="Enter Meta Description"><?php echo $b['bro_desc']; ?></textarea>
                                     </div>
                                  </div>
                               </div>

@@ -13,22 +13,12 @@
 	{	
 		$toptitle = $_POST['toptitle'];
 		$editor1 = $_POST['editor1'];
-		
-		mysqli_query($con, "UPDATE footer_about_us SET title='$toptitle',content='$editor1' ");
-		
-		$_SESSION['BannerColor'] = "background-color:#4BB543;";
-	  	$_SESSION['Message'] = "Updated Successfully!";
-	  	echo "<script>window.location.href='footer.php';</script>";
-	  	exit;
-	};
-
-	if (isset($_POST['save3']))
-	{	
 		$title   = $_POST['title'];
 		$address = $_POST['address'];
 		$mobile  = $_POST['mobile'];
 		$email   = $_POST['email'];
 		
+		mysqli_query($con, "UPDATE footer_about_us SET title='$toptitle',content='$editor1' ");
 		mysqli_query($con, "UPDATE footer_get_in_touch SET title='$title', address='$address', mobile='$mobile', email='$email'");
 		
 		$_SESSION['BannerColor'] = "background-color:#4BB543;";
@@ -43,35 +33,39 @@
 		<div class="main-body">
 			<div class="page-wrapper">
 				<div class="page-body">
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="listing-page-head">
-								<div class="listing-title-wrap">
-									<h1>Footer Settings</h1>
-									<div class="listing-breadcrumb">
-										<span>Home</span><span class="crumb-sep">&gt;</span><span>Footer</span>
+					<form action ="" method="post">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="listing-page-head">
+									<div class="listing-title-wrap">
+										<h1>Footer Settings</h1>
+										<div class="listing-breadcrumb">
+											<span>Home</span><span class="crumb-sep">&gt;</span><span>Footer</span>
+										</div>
 									</div>
+
+									<div class="listing-cta">
+				                     	<button type="submit" class="btn btn-success btn-sm" name="save"><i class="feather icon-save"></i> Save Banner</button>
+				                  	</div>
 								</div>
 							</div>
 						</div>
-					</div>
 
-					<?php if (!empty($_SESSION['Message'])) {
-	                  echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
-	                           . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
-	                           . "</div>";
+						<?php if (!empty($_SESSION['Message'])) {
+		                  echo "<div class='alert' id='mydiv' style='" . $_SESSION['BannerColor'] . "'>"
+		                           . "<p style='color:white;'>" . htmlspecialchars($_SESSION['Message']) . "</p>"
+		                           . "</div>";
 
-	                  unset($_SESSION['Message']);
-	                  unset($_SESSION['BannerColor']);
-	               	} ?>
-					<div class="row">
-						<div class="col-sm-6">
-							<?php
-								$query = mysqli_query($con,"SELECT * FROM footer_about_us");
-								$a = mysqli_fetch_assoc($query);
-							?>
-							
-							<form action ="" method="post">
+		                  unset($_SESSION['Message']);
+		                  unset($_SESSION['BannerColor']);
+		               	} ?>
+						<div class="row">
+							<div class="col-sm-6">
+								<?php
+									$query = mysqli_query($con,"SELECT * FROM footer_about_us");
+									$a = mysqli_fetch_assoc($query);
+								?>
+								
 								<div class="card mb-30">
 									<div class="card-header">About us</div>
 									<div class="card-body">
@@ -90,18 +84,16 @@
 												</div>
 											</div>
 										</div>
-										<input type="submit" class="btn btn-success btn-lg" name="save" value="Save">
+										
 									</div>
 								</div>
-							</form>
-						</div>
-					
-						<div class="col-sm-6">
-							<?php
-								$query3= mysqli_query($con,"SELECT * FROM footer_get_in_touch");
-								$d=mysqli_fetch_assoc($query3);
-							?>
-							<form action ="" method="post">
+							</div>
+						
+							<div class="col-sm-6">
+								<?php
+									$query3 = mysqli_query($con,"SELECT * FROM footer_get_in_touch");
+									$d = mysqli_fetch_assoc($query3);
+								?>
 								<div class="card mb-30">
 									<div class="card-header">Get In Touch</div>
 									<div class="card-body">
@@ -134,13 +126,11 @@
 												</div>
 											</div>
 										</div>
-
-										<input type="submit" class="btn btn-success btn-lg" name="save3" value="Save">
 									</div>
 								</div>
-							</form>
+							</div>
 						</div>
-					</div>
+					</form>
                   </div>
                </div>
             </div>

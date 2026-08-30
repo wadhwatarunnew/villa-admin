@@ -260,11 +260,6 @@
 													</div>
 
 													<div class="commonSection">
-														<label>Short Description</label>
-														<textarea class="form-control" name="short_description" id="short_description" rows="3" placeholder="Enter short description"></textarea>
-													</div>
-
-													<div class="commonSection">
 														<label>Content</label>
 														<textarea name="editor1" id="editor1" rows="10" cols="80" required><?php echo $e['content']; ?></textarea>
 													</div>
@@ -272,10 +267,6 @@
 													<div class="commonSection">
 														<label>Title</label>
 														<input class="form-control" type="text" name="title1" id="title1" required value="<?php echo $e['title']; ?>" placeholder="Enter Heading">
-													</div>
-													<div class="commonSection">
-														<label>Short Description</label>
-														<textarea class="form-control" name="short_description1" id="short_description1" rows="3" placeholder="Enter short description"></textarea>
 													</div>
 													<div class="commonSection">
 														<label>Content</label>

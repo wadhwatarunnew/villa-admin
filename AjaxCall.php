@@ -188,8 +188,10 @@
 	   	$FinalArray['TermsInfo']['name'] 	= $Row['name'];
 	   	$FinalArray['TermsInfo']['link'] 	= $Row['link'];
 
-	   	$LogoResult = mysqli_query($con, "SELECT path FROM logo");
+	   	$LogoResult = mysqli_query($con, "SELECT title, description, path FROM logo");
 		$LogoRow 	= mysqli_fetch_assoc($LogoResult);
+		$FinalArray['HeaderInfo']['title'] 			= $LogoRow['title'];
+		$FinalArray['HeaderInfo']['description'] 	= $LogoRow['description'];
 		$FinalArray['HeaderInfo']['logo'] = "http://localhost/villadashboard/".$LogoRow['path'];
 
 		$Response['success'] = true; 
@@ -276,7 +278,7 @@
 
         // Testimonials
         $i = 0;
-        $Result = mysqli_query($con, "SELECT name, brandname, designation, rating, discription FROM home_testimonials ORDER BY id DESC LIMIT 3");
+        $Result = mysqli_query($con, "SELECT name, brandname, designation, rating, discription FROM home_testimonials ORDER BY id DESC");
 		while($Row = mysqli_fetch_assoc($Result))
 		{
 			$FinalArray['Testimonials'][$i]['name'] 	= $Row['name'];
@@ -306,7 +308,7 @@
 
 		// Featured Projects
 		$i = 0;
-        $Result = mysqli_query($con, "SELECT category, title, image, local_path FROM project_types ORDER BY id DESC");
+        $Result = mysqli_query($con, "SELECT category, title, image, local_path FROM project_types ORDER BY id DESC LIMIT 4");
         $TotalProjectsCount = mysqli_num_rows($Result);
 		while($Row = mysqli_fetch_assoc($Result))
 		{
@@ -322,6 +324,8 @@
 		}
 
 		$i=0;
+		$Result = mysqli_query($con, "SELECT category, title, image, local_path FROM project_types ORDER BY id DESC");
+        $TotalProjectsCount = mysqli_num_rows($Result);
 		$FinalArray['RewardStats'][$i]['label'] 	= "Projects Completed";
 		$FinalArray['RewardStats'][$i]['target'] 	= $TotalProjectsCount;
 		$FinalArray['RewardStats'][$i]['display']  	= $TotalProjectsCount."+";
@@ -1103,7 +1107,7 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
 		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p1'];
 		   			$i++;
 	   			}
@@ -1112,7 +1116,7 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
 		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p2'];
 		   			$i++;
 	   			}
@@ -1121,7 +1125,7 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
 		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p3'];
 		   			$i++;
 	   			}
@@ -1130,7 +1134,7 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
 		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p4'];
 		   			$i++;
 	   			}
@@ -1139,7 +1143,7 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
 		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p5'];
 		   			$i++;
 	   			}
@@ -1148,7 +1152,7 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types'])); 
 		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p6'];
 		   			$i++;
 	   			}
@@ -1157,7 +1161,7 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
 		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p7'];
 		   			$i++;
 	   			}
@@ -1166,7 +1170,7 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
 		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p8'];
 		   			$i++;
 	   			}
@@ -1175,7 +1179,7 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
 		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p9'];
 		   			$i++;
 	   			}
@@ -1184,7 +1188,7 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
 		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p10'];
 		   			$i++;
 	   			}
@@ -1525,11 +1529,11 @@
        	}
 
        	// SEO Info
-       	$Result = mysqli_query($con, "SELECT meta_title, meta_keyword, meta_desc FROM logo");					
+       	$Result = mysqli_query($con, "SELECT bro_meta, bro_keyword, bro_desc FROM logo");					
 	   	$Row = mysqli_fetch_assoc($Result);
-	   	$FinalArray['SEOInfo']['title']   = $Row['meta_title'];
-	   	$FinalArray['SEOInfo']['keyword'] = $Row['meta_keyword'];
-	   	$FinalArray['SEOInfo']['content'] = $Row['meta_desc'];
+	   	$FinalArray['SEOInfo']['title']   = $Row['bro_meta'];
+	   	$FinalArray['SEOInfo']['keyword'] = $Row['bro_keyword'];
+	   	$FinalArray['SEOInfo']['content'] = $Row['bro_desc'];
 
 	   	$Response['Status'] = 1; 
 		$Response['Data'] 	= $FinalArray; 

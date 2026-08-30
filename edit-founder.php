@@ -31,7 +31,7 @@
          }
          else
          {
-            move_uploaded_file($_FILES['photo']['tmp_name'],$path.$ImageFile) ;
+            move_uploaded_file($_FILES['photo']['tmp_name'], $path.$ImageFile);
             $path = $path_original.$ImageFile;
             
             mysqli_query($con, "UPDATE founders SET name='$Name', designation='$Designation', bio='$Bio', image='$path', display_order='$DisplayOrder', status='$Status' WHERE id='$id'");
