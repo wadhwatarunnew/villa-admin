@@ -12,8 +12,8 @@
 	if (isset($_POST['update']))
 	{	
 		$page = "Update";
-		$title = $_POST['title'];
-		$editor1 = $_POST['editor1'];
+		$title = mysqli_real_escape_string($con, $_POST['title']);
+		$editor1 = mysqli_real_escape_string($con, $_POST['editor1']);
 		$imageUrl = $_POST['image'];
 		$myFile=$_FILES['myFile']['name'];
 

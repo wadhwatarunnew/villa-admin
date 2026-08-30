@@ -14,12 +14,13 @@
 		$metaTitle  = $_POST['metaTitle'];
 		$keyword 	= $_POST['keyword'];
 		$disc 		= $_POST['disc'];
-		$title 		= $_POST['title'];
+		$title 		= mysqli_real_escape_string($con, $_POST['title']);
 		$order 		= $_POST['order'];
-		$editor1 	= $_POST['editor1'];
+		$ShortDesc  = mysqli_real_escape_string($con, $_POST['short_description']);
+		$editor1 	= mysqli_real_escape_string($con, $_POST['editor1']);
 		$imageUrl 	= $_POST['image'];
 		$color 		= $_POST['color'];
-		$myFile 		= $_FILES['myFile']['name'];
+		$myFile 	= $_FILES['myFile']['name'];
 		
 		$path="uploads/pageimages/project/category/";
 		$path_original="uploads/pageimages/project/category/";
@@ -39,7 +40,7 @@
 				move_uploaded_file($_FILES['myFile']['tmp_name'],$path.$myFile) ;
 				$path = $path_original.$myFile;
 				
-				mysqli_query($con,"UPDATE project_category SET title='$title', order_no='$order', content='$editor1', image='', local_path='$path', metatitle='$metaTitle', keyword='$keyword', discription='$disc', color='$color' WHERE id=$id");
+				mysqli_query($con,"UPDATE project_category SET title='$title', order_no='$order', short_desc='$ShortDesc', content='$editor1', image='', local_path='$path', metatitle='$metaTitle', keyword='$keyword', discription='$disc', color='$color' WHERE id=$id");
 	        	$_SESSION['BannerColor'] = "background-color:#4BB543;";
 	      	$_SESSION['Message'] = "Updated Successfully!";
 	      	echo "<script>window.location.href='edit-project-category.php?id=$id';</script>";
@@ -48,7 +49,7 @@
 		}
 		else
 		{
-			mysqli_query($con, "UPDATE project_category SET title='$title', order_no='$order', content='$editor1', image='$imageUrl', metatitle='$metaTitle', keyword='$keyword', discription='$disc', color='$color' WHERE id=$id");
+			mysqli_query($con, "UPDATE project_category SET title='$title', order_no='$order', short_desc='$ShortDesc', content='$editor1', image='$imageUrl', metatitle='$metaTitle', keyword='$keyword', discription='$disc', color='$color' WHERE id=$id");
         	$_SESSION['BannerColor'] = "background-color:#4BB543;";
       	$_SESSION['Message'] = "Updated Successfully!";
       	echo "<script>window.location.href='edit-project-category.php?id=$id';</script>";
@@ -62,8 +63,9 @@
 		$metaTitle1 = $_POST['metaTitle1'];
 		$keyword1 	= $_POST['keyword1'];
 		$disc1 		= $_POST['disc1'];
-		$title1 		= $_POST['title1'];
-		$order1 		= $_POST['order1'];
+		$title1 	= $_POST['title1'];
+		$order1 	= $_POST['order1'];
+		$ShortDesc  = $_POST['short_description1'];
 		$editor2 	= $_POST['editor2'];
 		$imageUrl1 	= $_POST['image1'];
 		$color 		= $_POST['color'];
@@ -90,7 +92,7 @@
 				
 				if(!$_FILES['myFile1']['name'])
 				{	
-					mysqli_query($con,"update project_category SET title='$title1',order_no='$order1',content='$editor2',metatitle='$metaTitle1',keyword='$keyword1',discription='$disc1',color='$color' where id=$id");
+					mysqli_query($con,"update project_category SET title='$title1', order_no='$order1', short_desc='$ShortDesc', content='$editor2', metatitle='$metaTitle1', keyword='$keyword1', discription='$disc1', color='$color' where id=$id");
 		        	$_SESSION['BannerColor'] = "background-color:#4BB543;";
 		      	$_SESSION['Message'] = "Updated Successfully!";
 		      	echo "<script>window.location.href='edit-project-category.php?id=$id';</script>";
@@ -98,7 +100,7 @@
 				}
 				else
 				{
-					mysqli_query($con,"update project_category SET title='$title1',order_no='$order1',content='$editor2',local_path='$path1',metatitle='$metaTitle1',keyword='$keyword1',discription='$disc1',color='$color' where id=$id");
+					mysqli_query($con, "update project_category SET title='$title1', order_no='$order1', short_desc='$ShortDesc', content='$editor2', local_path='$path1', metatitle='$metaTitle1', keyword='$keyword1', discription='$disc1', color='$color' where id=$id");
 		        	$_SESSION['BannerColor'] = "background-color:#4BB543;";
 		      	$_SESSION['Message'] = "Updated Successfully!";
 		      	echo "<script>window.location.href='edit-project-category.php?id=$id';</script>";
@@ -108,7 +110,7 @@
 		}
 		else
 		{
-			mysqli_query($con,"update project_category SET title='$title1',order_no='$order1',content='$editor2',image='$imageUrl1',local_path='',metatitle='$metaTitle1',keyword='$keyword1',discription='$disc1',color='$color' where id=$id");
+			mysqli_query($con,"update project_category SET title='$title1',order_no='$order1', short_desc='$ShortDesc',content='$editor2',image='$imageUrl1',local_path='',metatitle='$metaTitle1',keyword='$keyword1',discription='$disc1',color='$color' where id=$id");
         	$_SESSION['BannerColor'] = "background-color:#4BB543;";
       	$_SESSION['Message'] = "Updated Successfully!";
       	echo "<script>window.location.href='edit-project-category.php?id=$id';</script>";
@@ -259,6 +261,11 @@
 															</div>
 														</div>
 
+														<div class="commonSection">
+															<label>Short Description</label>
+															<textarea class="form-control" name="short_description" id="short_description" rows="3" placeholder="Enter short description"><?php echo $b['short_desc']; ?></textarea>
+														</div>
+
 														<div class="col-sm-12">
 															<div class="commonSection">
 																<label>Content</label>
@@ -289,6 +296,11 @@
 															<label>Order No.</label>
 															<input class="form-control" type="number" name="order1" id="order1" value="<?php echo $b['order_no']; ?>" placeholder="Page Order no">
 														</div>
+													</div>
+
+													<div class="commonSection">
+														<label>Short Description</label>
+														<textarea class="form-control" name="short_description1" id="short_description1" rows="3" placeholder="Enter short description"><?php echo $b['short_desc']; ?></textarea>
 													</div>
 
 													<div class="col-sm-12">

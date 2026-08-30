@@ -14,16 +14,16 @@
 		$keyword = $_POST['keyword'];
 		$disc = $_POST['disc'];
 		$logo_url = $_POST['logo_url'];
-		$main_heading = $_POST['main_heading'];
-		$description = $_POST['description'];
-		$help_title = $_POST['help_title'];
-		$help_phone = $_POST['help_phone'];
-		$email_title = $_POST['email_title'];
-		$email_address = $_POST['email_address'];
-		$hours_title = $_POST['hours_title'];
-		$hours_text = $_POST['hours_text'];
-		$location_title = $_POST['location_title'];
-		$location_text = $_POST['location_text'];
+		$main_heading = mysqli_real_escape_string($con, $_POST['main_heading']);
+		$description = mysqli_real_escape_string($con, $_POST['description']);
+		$help_title = mysqli_real_escape_string($con, $_POST['help_title']);
+		$help_phone = mysqli_real_escape_string($con, $_POST['help_phone']);
+		$email_title = mysqli_real_escape_string($con, $_POST['email_title']);
+		$email_address = mysqli_real_escape_string($con, $_POST['email_address']);
+		$hours_title = mysqli_real_escape_string($con, $_POST['hours_title']);
+		$hours_text = mysqli_real_escape_string($con, $_POST['hours_text']);
+		$location_title = mysqli_real_escape_string($con, $_POST['location_title']);
+		$location_text = mysqli_real_escape_string($con, $_POST['location_text']);
 		$contentId = (int)$contentRow['id'];
 
 		if($metaTitle != '' && $keyword != '' && $disc != '')

@@ -9,10 +9,10 @@
    if (isset($_POST['submit']))
    {
    	$page    = "Update";	
-   	$fname   = $_POST['fname'];
-   	$desig   = $_POST['desig'];
-   	$rating  = $_POST['rating'];
-   	$editor1 = $_POST['editor1'];
+   	$fname   = mysqli_real_escape_string($con, $_POST['fname']);
+   	$desig   = mysqli_real_escape_string($con, $_POST['desig']);
+   	$rating  = mysqli_real_escape_string($con, $_POST['rating']);
+   	$editor1 = mysqli_real_escape_string($con, $_POST['editor1']);
    	$myFile  = $_FILES['myFile']['name'];
 
    	$path="uploads/review/";

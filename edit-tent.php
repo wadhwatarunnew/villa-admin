@@ -15,7 +15,7 @@
 		$metaTitle = $_POST['metaTitle'];
 		$keyword = $_POST['keyword'];
 		$disc = $_POST['disc'];
-		$title = $_POST['title'];
+		$title = mysqli_real_escape_string($con, $_POST['title']);
 		$cat = $_POST['cat'];
 		$order = $_POST['order'];
 		$status = $_POST['status'];
@@ -159,7 +159,7 @@
 					<form action="" enctype="multipart/form-data" method="post" id="editTentTypeForm">
 						<div class="listing-page-head">
 							<div class="listing-title-wrap">
-								<h1>Edit Tents</h1>
+								<h1>Edit Tent</h1>
 								<div class="listing-breadcrumb">
 									<span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Tents</span><span class="crumb-sep">&gt;</span><span>Edit</span>
 								</div>
@@ -1070,78 +1070,84 @@
 		}
 
 		function handleSpecSave() {
+	    var modalId = 'addSpecificationModal';
 
-		   var modalId = 'addSpecificationModal';
+	    var title = document.getElementById('specTitle').value.trim();
+	    var feet = document.getElementById('specFeet').value.trim();
+	    var meters = document.getElementById('specMeters').value.trim();
 
-		   var title = document.getElementById('specTitle').value.trim();
-		   var feet = document.getElementById('specFeet').value.trim();
-		   var meters = document.getElementById('specMeters').value.trim();
+	    var editingRow = editingRowByModal[modalId];
 
-		   var editingRow = editingRowByModal[modalId];
+	    if (!title || !feet || !meters) {
+	        alert('Please fill all specification fields.');
+	        return;
+	    }
 
-		   if (!title || !feet || !meters) {
-		   alert('Please fill all specification fields.');
-		   return;
-		   }
+	    if (editingRow) {
+	        // Update visible Title
+	        var titleText = editingRow.cells[0].childNodes[0];
 
-		   if (editingRow) {
-			   var iconInput = editingRow.cells[0].querySelector(
-			        '.dynamic-icon-input'
-			   );
+	        if (titleText) {
+	            titleText.textContent = title;
+	        }
 
-			   var iconPreview = editingRow.cells[0].querySelector(
-			        '.dynamic-icon-preview'
-			   );
+	        // Update hidden title value
+	        var titleHidden = editingRow.cells[0].querySelector(
+	            'input[name="specifications[title][]"]'
+	        );
 
-			   var titleInput = editingRow.cells[1].querySelector(
-			        'input[type="hidden"]'
-			   );
+	        if (titleHidden) {
+	            titleHidden.value = title;
+	        }
 
-			   var descriptionInput = editingRow.cells[2].querySelector(
-			        'input[type="hidden"]'
-			   );
+	        // Update visible Feet input
+	        var feetInput = editingRow.cells[1].querySelector(
+	            'input.form-control'
+	        );
 
-			   if (iconInput) {
-			        iconInput.value = icon;
-			   }
+	        if (feetInput) {
+	            feetInput.value = feet;
+	        }
 
-			   if (iconPreview) {
-			        iconPreview.textContent = icon;
-			   }
+	        // Update hidden Feet value
+	        var feetHidden = editingRow.cells[1].querySelector(
+	            'input[name="specifications[feet][]"]'
+	        );
 
-			   if (titleInput) {
-			        titleInput.value = title;
-			   }
+	        if (feetHidden) {
+	            feetHidden.value = feet;
+	        }
 
-			   if (descriptionInput) {
-			        descriptionInput.value = description;
-			   }
+	        // Update visible Meters input
+	        var metersInput = editingRow.cells[2].querySelector(
+	            'input.form-control'
+	        );
 
-			    // Keep visible values
-			   var titleText = editingRow.cells[1].childNodes[0];
+	        if (metersInput) {
+	            metersInput.value = meters;
+	        }
 
-			   if (titleText) {
-			        titleText.textContent = title;
-			   }
+	        // Update hidden Meters value
+	        var metersHidden = editingRow.cells[2].querySelector(
+	            'input[name="specifications[meters][]"]'
+	        );
 
-			   var descriptionText = editingRow.cells[2].childNodes[0];
+	        if (metersHidden) {
+	            metersHidden.value = meters;
+	        }
 
-			   if (descriptionText) {
-			        descriptionText.textContent = description;
-			   }
+	    } else {
+	        appendSpecificationRow(
+	            modalConfig[modalId].tbodyId,
+	            title,
+	            feet,
+	            meters
+	        );
+	    }
 
-			} else {
-			    appendRow(
-			        modalConfig[modalId].tbodyId,
-			        icon,
-			        title,
-			        description
-			   );
-			}
-
-		   closeModal(modalId);
-		   clearAndResetModal(modalId);
-		}
+	    closeModal(modalId);
+	    clearAndResetModal(modalId);
+	}
 
 		document.getElementById('saveQuickItem').addEventListener('click', function() {
 		    handleSimpleSave(

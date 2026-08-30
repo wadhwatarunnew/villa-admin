@@ -16,9 +16,9 @@
 		$metaTitle = $_POST['metaTitle'];
 		$keyword   = $_POST['keyword'];
 		$disc      = $_POST['disc'];
-		$title     = $_POST['title'];
+		$title     = mysqli_real_escape_string($con, $_POST['title']);
 		$date      = $_POST['date'];
-		$editor1   = $_POST['editor1'];
+		$editor1   = mysqli_real_escape_string($con, $_POST['editor1']);
 		$imageUrl = $_POST['image'];
 		$myFile=$_FILES['myFile']['name'];
 

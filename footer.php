@@ -11,12 +11,12 @@
 
 	if (isset($_POST['save']))
 	{	
-		$toptitle = $_POST['toptitle'];
-		$editor1 = $_POST['editor1'];
-		$title   = $_POST['title'];
-		$address = $_POST['address'];
-		$mobile  = $_POST['mobile'];
-		$email   = $_POST['email'];
+		$toptitle = mysqli_real_escape_string($con, $_POST['toptitle']);
+		$editor1 = mysqli_real_escape_string($con, $_POST['editor1']);
+		$title   = mysqli_real_escape_string($con, $_POST['title']);
+		$address = mysqli_real_escape_string($con, $_POST['address']);
+		$mobile  = mysqli_real_escape_string($con, $_POST['mobile']);
+		$email   = mysqli_real_escape_string($con, $_POST['email']);
 		
 		mysqli_query($con, "UPDATE footer_about_us SET title='$toptitle',content='$editor1' ");
 		mysqli_query($con, "UPDATE footer_get_in_touch SET title='$title', address='$address', mobile='$mobile', email='$email'");

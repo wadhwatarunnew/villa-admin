@@ -11,8 +11,8 @@
 		$keyword = $_POST['keyword'];
 		$disc = $_POST['disc'];
 		$cat = $_POST['cat'];
-		$title = $_POST['title'];
-		$editor1 = $_POST['editor1'];
+		$title = mysqli_real_escape_string($con, $_POST['title']);
+		$editor1 = mysqli_real_escape_string($con, $_POST['editor1']);
 		$order = $_POST['order'];
 		$status = $_POST['status'];
 		$y_url = isset($_POST['y_url']) ? $_POST['y_url'] : '';

@@ -16,8 +16,8 @@
 		$metaTitle 	= $_POST['metaTitle'];
 		$keyword 	= $_POST['keyword'];
 		$disc 		= $_POST['disc'];
-		$title 		= $_POST['title'];
-		$editor1 	= $_POST['editor1'];
+		$title 		= mysqli_real_escape_string($con, $_POST['title']);
+		$editor1 	= mysqli_real_escape_string($con, $_POST['editor1']);
 		$imageUrl 	= $_POST['image'];
 		$myFile 		= $_FILES['myFile']['name'];
 		
@@ -260,26 +260,36 @@
 													</div>
 
 													<div class="commonSection">
-														<label>Short Description</label>
-														<textarea class="form-control" name="short_description" id="short_description" rows="3" placeholder="Enter short description"></textarea>
-													</div>
-
-													<div class="commonSection">
 														<label>Content</label>
 														<textarea name="editor1" id="editor1" rows="10" cols="80" required><?php echo $e['content']; ?></textarea>
+														<script type="text/javascript">
+														CKEDITOR.editorConfig = function (config) {
+															config.language = 'es';
+															config.uiColor = '#F7B42C';
+															config.height = 300;
+															config.toolbarCanCollapse = true;
+														};
+														CKEDITOR.replace('editor1');
+													</script>
 													</div>
 												<?php } else { ?>
 													<div class="commonSection">
 														<label>Title</label>
 														<input class="form-control" type="text" name="title1" id="title1" required value="<?php echo $e['title']; ?>" placeholder="Enter Heading">
 													</div>
-													<div class="commonSection">
-														<label>Short Description</label>
-														<textarea class="form-control" name="short_description1" id="short_description1" rows="3" placeholder="Enter short description"></textarea>
-													</div>
+													
 													<div class="commonSection">
 														<label>Content</label>
 														<textarea name="editor2" id="editor2" rows="10" cols="80" required><?php echo $e['content']; ?></textarea>
+														<script type="text/javascript">
+														CKEDITOR.editorConfig = function (config) {
+															config.language = 'es';
+															config.uiColor = '#F7B42C';
+															config.height = 300;
+															config.toolbarCanCollapse = true;
+														};
+														CKEDITOR.replace('editor2');
+													</script>
 													</div>
 												<?php } ?>
 

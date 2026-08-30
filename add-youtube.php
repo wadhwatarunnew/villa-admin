@@ -6,10 +6,10 @@
 	if (isset($_POST['update']))
 	{	
 		$page 	 = "Update";
-		$title 	 = $_POST['title'];
-		$url  	 = $_POST['url'];
+		$title 	 = mysqli_real_escape_string($con, $_POST['title']);
+		$url  	 = mysqli_real_escape_string($con, $_POST['url']);
 		$imageUrl = $_POST['image'];
-		$myFile 	 = $_FILES['myFile']['name'];
+		$myFile = $_FILES['myFile']['name'];
 
 		$path="uploads/pageimages/youtube/";
 		$path_original="uploads/pageimages/youtube/";

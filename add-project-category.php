@@ -10,8 +10,9 @@
 		$keyword 	= $_POST['keyword'];
 		$disc 		= $_POST['disc'];
 		$order 		= $_POST['order'];
-		$title 		= $_POST['title'];
-		$editor1 	= $_POST['editor1'];
+		$title 		= mysqli_real_escape_string($con, $_POST['title']);
+		$ShortDesc  = mysqli_real_escape_string($con, $_POST['short_description']);
+		$editor1 	= mysqli_real_escape_string($con, $_POST['editor1']);
 		$imageUrl 	= $_POST['image'];
 		$color 		= $_POST['color'];
 		$myFile 		= $_FILES['myFile']['name'];
@@ -34,7 +35,7 @@
 	        	move_uploaded_file($_FILES['myFile']['tmp_name'],$path.$myFile) ;
 	        	$path = $path_original.$myFile;
 	        	
-	        	mysqli_query($con, "INSERT INTO project_category (metatitle, keyword, discription, title, order_no, content, local_path, color) values ('$metaTitle', '$keyword', '$disc', '$title', '$order', '$editor1', '$path', '$color') ");
+	        	mysqli_query($con, "INSERT INTO project_category (metatitle, keyword, discription, title, order_no, short_desc, content, local_path, color) values ('$metaTitle', '$keyword', '$disc', '$title', '$order', '$ShortDesc', '$editor1', '$path', '$color') ");
 	        	$_SESSION['BannerColor'] = "background-color:#4BB543;";
 	      	$_SESSION['Message'] = "Added Successfully!";
 	      	echo "<script>window.location.href='add-project-category.php';</script>";
@@ -43,7 +44,7 @@
 		}
 		else
 		{
-			mysqli_query($con, "INSERT INTO project_category (metatitle, keyword, discription, title, order_no, content, image, color) values ('$metaTitle', '$keyword', '$disc', '$title', '$order', '$editor1', '$imageUrl', '$color') ");
+			mysqli_query($con, "INSERT INTO project_category (metatitle, keyword, discription, title, order_no, short_desc, content, image, color) values ('$metaTitle', '$keyword', '$disc', '$title', '$order', '$ShortDesc', '$editor1', '$imageUrl', '$color') ");
 	     	$_SESSION['BannerColor'] = "background-color:#4BB543;";
 	   	$_SESSION['Message'] = "Added Successfully!";
 	   	echo "<script>window.location.href='add-project-category.php';</script>";
@@ -153,6 +154,11 @@
 														</div>
 													</div>
 
+													<div class="commonSection">
+														<label>Short Description</label>
+														<textarea class="form-control" name="short_description" id="short_description" rows="3" placeholder="Enter short description"></textarea>
+													</div>
+
 													<div class="col-sm-12">
 														<div class="commonSection">
 															<label>Content</label>
@@ -196,8 +202,7 @@
       var selectedColor = $(this).val();
       $('#color').val(selectedColor);
    });
-
-   document.getElementById("btnn").disabled = true;			
+		
 	$(document).ready(function() {
 	 	$('#image').keyup(function() {
 			var dInput = this.value;
