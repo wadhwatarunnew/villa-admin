@@ -20,6 +20,7 @@
       $BrochurePath  = $_POST['brochure_path'];
       $Title         = $_POST['title'];
       $Description   = $_POST['description'];
+      $BrochureStatus = isset($_POST['bro_status']) ? 1 : 0;
    	
       $LogoFile      = $_FILES['logo_file']['name'];
       $FavFile       = $_FILES['fav_file']['name'];
@@ -107,7 +108,7 @@
          }
       }
 
-      mysqli_query($con, "UPDATE logo SET title='$Title', description='$Description', path='$LogoPath', favicon='$FavPath', brochure='$BrochurePath', bro_meta='$MetaTitle', bro_keyword='$MetaKeyword', bro_desc='$MetaDesc'");
+      mysqli_query($con, "UPDATE logo SET title='$Title', description='$Description', path='$LogoPath', favicon='$FavPath', brochure='$BrochurePath', bro_meta='$MetaTitle', bro_keyword='$MetaKeyword', bro_desc='$MetaDesc', bro_status='$BrochureStatus'");
       $_SESSION['BannerColor'] = "background-color:#4BB543;";
       $_SESSION['Message'] = "Updated Successfully!";
       echo "<script>window.location.href='header.php';</script>";
@@ -282,7 +283,29 @@
                   <div class="row">
                      <div class="col-sm-12">
                         <div class="card mb-30">
-                           <div class="card-header">Brochure Seo Meta Tags</div>
+                           <div class="card-header">
+                              <div class="card-header brochure-seo-header">
+                                 <span>Brochure Seo Meta Tags</span>
+
+                                 <div class="brochure-toggle-wrap">
+                                    <span id="brochureStatus" class="brochure-status">
+                                       <?php echo ($b['bro_status'] == 1) ? 'Enabled' : 'Disabled'; ?>
+                                    </span>
+
+                                    <label class="toggle-switch">
+                                       <input
+                                          type="checkbox"
+                                          id="brochure_enabled"
+                                          name="bro_status"
+                                          value="1"
+                                          <?php echo ($b['bro_status'] == 1) ? 'checked' : ''; ?>
+                                       >
+                                       <span class="toggle-slider"></span>
+                                    </label>
+                                 </div>
+                              </div>
+                           </div>
+
                            <div class="card-body">
                               <div class="row">
                                  <div class="col-md-4">
@@ -317,8 +340,83 @@
 <!---->
 <?php include_once('common/footer.php'); ?>
 
+<style type="text/css">
+   .brochure-seo-header {
+      display: flex !important;
+      align-items: center !important;
+      width: 100% !important;
+   }
+
+   .brochure-toggle-wrap {
+      margin-left: auto !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px;
+   }
+
+   .brochure-status {
+      font-size: 13px;
+      color: #6c757d;
+      white-space: nowrap;
+   }
+
+   /* Toggle */
+   .toggle-switch {
+      position: relative;
+      display: block;
+      width: 46px;
+      height: 24px;
+      margin: 0 !important;
+      flex-shrink: 0;
+      cursor: pointer;
+   }
+
+   .toggle-switch input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+   }
+
+   .toggle-slider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #ccc;
+      border-radius: 24px;
+      transition: 0.25s;
+   }
+
+   .toggle-slider:before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: 0.25s;
+      box-shadow: 0 1px 3px rgba(0,0,0,.25);
+   }
+
+   .toggle-switch input:checked + .toggle-slider {
+      background: #28a745;
+   }
+
+   .toggle-switch input:checked + .toggle-slider:before {
+      transform: translateX(22px);
+   }
+</style>
+
 <script type="text/javascript">
    $(document).ready(function() {
+      $('#brochure_enabled').on('change', function () {
+         $('#brochureStatus').text(this.checked ? 'Enabled' : 'Disabled');
+      });
+            
       $(".br-menu-link11").click(function(){
          alert('sss');
          $(".br-menu-sub").toggleClass('show')

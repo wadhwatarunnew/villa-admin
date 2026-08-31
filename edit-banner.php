@@ -26,53 +26,22 @@
 
         if (!$imageUrl)
         {
-            if (
-                $myFile != "" &&
-                (file_exists("uploads/pageimages/" . $myFile) ||
-                    file_exists("uploads/pageimages/addgallery/" . $myFile) ||
-                    file_exists("uploads/pageimages/addgallery/project/" . $myFile) ||
-                    file_exists("uploads/pageimages/addgallery/resort/" . $myFile) ||
-                    file_exists("uploads/pageimages/blogs/" . $myFile) ||
-                    file_exists("uploads/pageimages/blogs/single/" . $myFile) ||
-                    file_exists("uploads/pageimages/contact/" . $myFile) ||
-                    file_exists("uploads/pageimages/nav/" . $myFile) ||
-                    file_exists("uploads/pageimages/nav/category/" . $myFile) ||
-                    file_exists("uploads/pageimages/nav/types/" . $myFile) ||
-                    file_exists("uploads/pageimages/project/" . $myFile) ||
-                    file_exists("uploads/pageimages/project/category/" . $myFile) ||
-                    file_exists("uploads/pageimages/project/types/" . $myFile) ||
-                    file_exists("uploads/pageimages/resort/" . $myFile) ||
-                    file_exists("uploads/pageimages/resort/category/" . $myFile) ||
-                    file_exists("uploads/pageimages/resort/types/" . $myFile) ||
-                    file_exists("uploads/pageimages/slider/" . $myFile) ||
-                    file_exists("uploads/pageimages/youtube/" . $myFile))
-            )
+            if(isset($_FILES["myFile"]["name"]) && $_FILES["myFile"]["name"] != '')
             {
-                $FileExists = true;
-                $_SESSION['BannerColor'] = "background-color:#FF0000;";
-                $_SESSION['Message'] = "Selected image already exists!";
-                echo "<script>window.location.href='edit-banner.php?id=$id';</script>";
-                exit;
+                move_uploaded_file($_FILES["myFile"]["tmp_name"], $path . $myFile);
+                $path = $path_original . $myFile;
+
+                mysqli_query($con, "UPDATE top_banner SET page='$page_name', title='$banner_title', subtitle='$banner_subtitle', description='$banner_description', btn_txt='$button_text', btn_url='$button_url', order_number='$order', image='', local_path='$path', status='$status' WHERE id=$id");
             }
             else
             {
-                if(isset($_FILES["myFile"]["name"]) && $_FILES["myFile"]["name"] != '')
-                {
-                    move_uploaded_file($_FILES["myFile"]["tmp_name"], $path . $myFile);
-                    $path = $path_original . $myFile;
-
-                    mysqli_query($con, "UPDATE top_banner SET page='$page_name', title='$banner_title', subtitle='$banner_subtitle', description='$banner_description', btn_txt='$button_text', btn_url='$button_url', order_number='$order', image='', local_path='$path', status='$status' WHERE id=$id");
-                }
-                else
-                {
-                    mysqli_query($con, "UPDATE top_banner SET page='$page_name', title='$banner_title', subtitle='$banner_subtitle', description='$banner_description', btn_txt='$button_text', btn_url='$button_url', order_number='$order', status='$status' WHERE id=$id");
-                }
-                
-                $_SESSION['BannerColor'] = "background-color:#4BB543;";
-                $_SESSION['Message'] = "Updated Successfully!";
-                echo "<script>window.location.href='edit-banner.php?id=$id';</script>";
-                exit;
+                mysqli_query($con, "UPDATE top_banner SET page='$page_name', title='$banner_title', subtitle='$banner_subtitle', description='$banner_description', btn_txt='$button_text', btn_url='$button_url', order_number='$order', status='$status' WHERE id=$id");
             }
+            
+            $_SESSION['BannerColor'] = "background-color:#4BB543;";
+            $_SESSION['Message'] = "Updated Successfully!";
+            echo "<script>window.location.href='edit-banner.php?id=$id';</script>";
+            exit;
         }
         else
         {
