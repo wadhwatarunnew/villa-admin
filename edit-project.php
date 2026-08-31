@@ -195,7 +195,7 @@
 											<select class="form-control" name="cat" required>
 												<option value="<?php echo $b['category']; ?>"><?php echo $b['category']; ?></option>
 												<?php
-													$queryl = mysqli_query($con, "SELECT * FROM project_category GROUP BY title");
+													$queryl = mysqli_query($con, "SELECT * FROM project_category");
 													while($l = mysqli_fetch_assoc($queryl)) {
 												?>
 													<option value="<?php echo $l['title']; ?>"><?php echo $l['title']; ?></option>

@@ -64,6 +64,7 @@
 			{
 				mysqli_query($con, "UPDATE resort_types SET title='$title', content='$editor1', image='$imageUrl', local_path='', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
 			}
+			else
 			{
 				mysqli_query($con, "UPDATE resort_types SET title='$title', content='$editor1', image='', local_path='$BannerImagePath', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
 			}
@@ -217,7 +218,7 @@
 											<select class="form-control" name="cat" required>
 												<option value="<?php echo $b['category']; ?>"><?php echo $b['category']; ?></option>
 												<?php
-													$queryl = mysqli_query($con,"SELECT * FROM resort_category GROUP BY title ORDER BY title ASC");
+													$queryl = mysqli_query($con,"SELECT * FROM resort_category ORDER BY title ASC");
 													while($l = mysqli_fetch_assoc($queryl)) {
 												?>
 													<option value="<?php echo $l['title']; ?>"><?php echo $l['title']; ?></option>

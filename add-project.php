@@ -190,7 +190,7 @@
 												<option value="">--Select--</option>
 												<?php
 												include "db.php";
-												$queryl = mysqli_query($con, "select * from project_category group by title");
+												$queryl = mysqli_query($con, "select * from project_category");
 												while($l = mysqli_fetch_assoc($queryl)) {
 												?>
 												<option value="<?php echo $l['title']; ?>"><?php echo $l['title']; ?></option>

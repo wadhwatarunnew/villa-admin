@@ -226,7 +226,7 @@
 											<select class="form-control" name="cat" required>
 												<option value="">--Select--</option>
 												<?php
-													$queryl = mysqli_query($con,"SELECT * FROM resort_category GROUP BY title ORDER BY title ASC");
+													$queryl = mysqli_query($con,"SELECT * FROM resort_category ORDER BY title ASC");
 													while($l = mysqli_fetch_assoc($queryl)) {
 												?>
 													<option value="<?php echo $l['title']; ?>"><?php echo $l['title']; ?></option>
