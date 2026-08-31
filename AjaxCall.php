@@ -188,9 +188,11 @@
 	   	$FinalArray['TermsInfo']['name'] 	= $Row['name'];
 	   	$FinalArray['TermsInfo']['link'] 	= $Row['link'];
 
-	   	$LogoResult = mysqli_query($con, "SELECT path FROM logo");
+	   	$LogoResult = mysqli_query($con, "SELECT title, description, path FROM logo");
 		$LogoRow 	= mysqli_fetch_assoc($LogoResult);
-		$FinalArray['HeaderInfo']['logo'] = "../villadashboard/".$LogoRow['path'];
+		$FinalArray['HeaderInfo']['title'] 			= $LogoRow['title'];
+		$FinalArray['HeaderInfo']['description'] 	= $LogoRow['description'];
+		$FinalArray['HeaderInfo']['logo'] = "http://localhost/villadashboard/".$LogoRow['path'];
 
 		$Response['success'] = true; 
 		$Response['data'] 	= $FinalArray; 
@@ -225,10 +227,10 @@
 		$FinalArray['TopSection']['description'] 	= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 		= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 		= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] = "../villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] = "http://localhost/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "../villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "http://localhost/villadashboard/".$Row['local_path'];
        	}
 
 		// About Section
@@ -276,7 +278,7 @@
 
         // Testimonials
         $i = 0;
-        $Result = mysqli_query($con, "SELECT name, brandname, designation, rating, discription FROM home_testimonials ORDER BY id DESC LIMIT 3");
+        $Result = mysqli_query($con, "SELECT name, brandname, designation, rating, discription FROM home_testimonials ORDER BY id DESC");
 		while($Row = mysqli_fetch_assoc($Result))
 		{
 			$FinalArray['Testimonials'][$i]['name'] 	= $Row['name'];
@@ -296,40 +298,41 @@
 			$FinalArray['TentsCollection'][$i]['title'] 		= $Row['title'];
 			$FinalArray['TentsCollection'][$i]['description'] 	= $Row['content'];
 
-			$FinalArray['TentsCollection'][$i]['image'] = "../villadashboard/".$Row['local_path'];
+			$FinalArray['TentsCollection'][$i]['image'] = "http://localhost/villadashboard/".$Row['local_path'];
 		   	if(isset($Row['image']) && $Row['image'] != '')
 		   	{
-		   		$FinalArray['TentsCollection'][$i]['image'] = "../villadashboard/".$Row['image'];
+		   		$FinalArray['TentsCollection'][$i]['image'] = "http://localhost/villadashboard/".$Row['image'];
 		   	}
 			$i++;
 		}
 
 		// Featured Projects
 		$i = 0;
-        $Result = mysqli_query($con, "SELECT category, title, image, local_path FROM project_types ORDER BY id DESC");
+        $Result = mysqli_query($con, "SELECT category, title, image, local_path FROM project_types ORDER BY id DESC LIMIT 4");
         $TotalProjectsCount = mysqli_num_rows($Result);
 		while($Row = mysqli_fetch_assoc($Result))
 		{
 			$FinalArray['FeaturedProjects'][$i]['title'] 		= $Row['category'];
 			$FinalArray['FeaturedProjects'][$i]['location'] 	= $Row['title'];
 
-			$FinalArray['FeaturedProjects'][$i]['image'] = "../villadashboard/".$Row['local_path'];
+			$FinalArray['FeaturedProjects'][$i]['image'] = "http://localhost/villadashboard/".$Row['local_path'];
 		   	if(isset($Row['image']) && $Row['image'] != '')
 		   	{
-		   		$FinalArray['FeaturedProjects'][$i]['image'] = "../villadashboard/".$Row['image'];
+		   		$FinalArray['FeaturedProjects'][$i]['image'] = "http://localhost/villadashboard/".$Row['image'];
 		   	}
 			$i++;
 		}
 
-		// Site Settings
-		// $i = 0;
-		// $FinalArray['RewardStats'][$i]['label'] 	= "Projects Completed";
-		// $FinalArray['RewardStats'][$i]['target'] 	= $TotalProjectsCount;
-		// $FinalArray['RewardStats'][$i]['display']  	= '0+';
-		// $FinalArray['RewardStats'][$i]['suffix']   	= "+";
-		// $FinalArray['RewardStats'][$i]['iconName'] 	= 'work';
-
 		$i=0;
+		$Result = mysqli_query($con, "SELECT category, title, image, local_path FROM project_types ORDER BY id DESC");
+        $TotalProjectsCount = mysqli_num_rows($Result);
+		$FinalArray['RewardStats'][$i]['label'] 	= "Projects Completed";
+		$FinalArray['RewardStats'][$i]['target'] 	= $TotalProjectsCount;
+		$FinalArray['RewardStats'][$i]['display']  	= $TotalProjectsCount."+";
+		$FinalArray['RewardStats'][$i]['suffix']   	= "+";
+		$FinalArray['RewardStats'][$i]['iconName'] 	= 'work';
+
+		$i++;
 		$Result = mysqli_query($con, "SELECT title, suffix, number, icon FROM counters WHERE status='Active' ORDER BY display_order ASC");
 		while($Row = mysqli_fetch_assoc($Result))
 		{
@@ -367,10 +370,10 @@
 		// $Row 	= mysqli_fetch_assoc($Result);
 		// $FinalArray['TopSection']['title'] 		= $Row['title'];
 		// $FinalArray['TopSection']['content'] 	= $Row['content'];
-		// $FinalArray['TopSection']['image'] = "../villadashboard/".$Row['local_path'];
+		// $FinalArray['TopSection']['image'] = "http://localhost/villadashboard/".$Row['local_path'];
 	   	// if(isset($Row['image']) && $Row['image'] != '')
 	   	// {
-	   	// 	$FinalArray['TopSection']['image'] = "../villadashboard/".$Row['image'];
+	   	// 	$FinalArray['TopSection']['image'] = "http://localhost/villadashboard/".$Row['image'];
 	   	// }
 
 	   	$Result = mysqli_query($con, "SELECT title, subtitle, description, btn_txt, btn_url, image, local_path FROM top_banner WHERE page='About Us' AND status='Published'");
@@ -380,10 +383,10 @@
 		$FinalArray['TopSection']['content'] 	= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 		= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 		= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] = "../villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] = "http://localhost/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "../villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "http://localhost/villadashboard/".$Row['local_path'];
        	}
 
 		// Page Content
@@ -392,10 +395,10 @@
 	   	$FinalArray['AboutInfo']['title'] 	= $AboutRow['title'];
 	   	$FinalArray['AboutInfo']['content'] = $AboutRow['content'];
 	   	
-	   	$FinalArray['AboutInfo']['image'] = "../villadashboard/".$AboutRow['local_path'];
+	   	$FinalArray['AboutInfo']['image'] = "http://localhost/villadashboard/".$AboutRow['local_path'];
 	   	if(isset($AboutRow['image']) && $AboutRow['image'] != '')
 	   	{
-	   		$FinalArray['AboutInfo']['image'] = "../villadashboard/".$AboutRow['image'];
+	   		$FinalArray['AboutInfo']['image'] = "http://localhost/villadashboard/".$AboutRow['image'];
 	   	}
 
 	   	// SEO Info
@@ -412,7 +415,7 @@
 		{
 			$FinalArray['Founders'][$i]['name'] 	 	= $Row['name'];
 			$FinalArray['Founders'][$i]['designation'] 	= $Row['designation'];
-			$FinalArray['Founders'][$i]['image'] 	 	= "../villadashboard/".$Row['image'];
+			$FinalArray['Founders'][$i]['image'] 	 	= "http://localhost/villadashboard/".$Row['image'];
 			$FinalArray['Founders'][$i]['bio'] 	 		= $Row['bio'];
 			$i++;
 		}
@@ -450,7 +453,7 @@
 			$FinalArray['MissionVision']['vision_title'] = $Row['vision_title'];
 			$FinalArray['MissionVision']['vision_heading'] = $Row['vision_heading'];
 			$FinalArray['MissionVision']['vision_desc'] = $Row['vision_desc'];
-			$FinalArray['MissionVision']['image'] = "../villadashboard/".$Row['image'];
+			$FinalArray['MissionVision']['image'] = "http://localhost/villadashboard/".$Row['image'];
 		}
 
 	   	$Response['Status'] = 1; 
@@ -470,10 +473,10 @@
 		$FinalArray['TopSection']['content'] 	= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 	= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 	= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] 	= "../villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] 	= "http://localhost/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "../villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "http://localhost/villadashboard/".$Row['local_path'];
        	}
 
 		// Resort Tent Content
@@ -483,10 +486,10 @@
 		$FinalArray['ResortInfo']['title'] 		= $ResortRow['title'];
 	   	$FinalArray['ResortInfo']['content'] 	= $ResortRow['content'];
 	   	
-	   	// $FinalArray['ResortInfo']['image'] = "../villadashboard/".$ResortRow['local_path'];
+	   	// $FinalArray['ResortInfo']['image'] = "http://localhost/villadashboard/".$ResortRow['local_path'];
 	   	// if(isset($ResortRow['image']) && $ResortRow['image'] != '')
 	   	// {
-	   	// 	$FinalArray['ResortInfo']['image'] = "../villadashboard/".$ResortRow['image'];
+	   	// 	$FinalArray['ResortInfo']['image'] = "http://localhost/villadashboard/".$ResortRow['image'];
 	   	// }
    											
 	   	// SEO Info
@@ -507,10 +510,10 @@
 			$FinalArray['Categories'][$i]['name'] 	= $CategoryRow['category'];
 		   	$FinalArray['Categories'][$i]['slug'] 	= $CategoryTitle;
 		   	$FinalArray['Categories'][$i]['total'] 	= $CategoryRow['TotalCount'];
-		   	$FinalArray['Categories'][$i]['image'] 	= "../villadashboard/".$CategoryRow['local_path'];
+		   	$FinalArray['Categories'][$i]['image'] 	= "http://localhost/villadashboard/".$CategoryRow['local_path'];
 		   	if(isset($CategoryRow['image']) && $CategoryRow['image'] != '')
 		   	{
-		   		$FinalArray['Categories'][$i]['image'] = "../villadashboard/".$CategoryRow['image'];
+		   		$FinalArray['Categories'][$i]['image'] = "http://localhost/villadashboard/".$CategoryRow['image'];
 		   	}
 		   	$i++;
 		}
@@ -594,10 +597,10 @@
 	   	$FinalArray['Data']['content'] 		= $ResortRow['content'];
 	   	$FinalArray['Data']['order_no'] 	= $ResortRow['order_no'];
 	   	
-	   	$FinalArray['Data']['image'] = "../villadashboard/".$ResortRow['local_path'];
+	   	$FinalArray['Data']['image'] = "http://localhost/villadashboard/".$ResortRow['local_path'];
 	   	if(isset($ResortRow['image']) && $ResortRow['image'] != '')
 	   	{
-	   		$FinalArray['Data']['image'] = "../villadashboard/".$ResortRow['image'];
+	   		$FinalArray['Data']['image'] = "http://localhost/villadashboard/".$ResortRow['image'];
 	   	}
 
 	   	$FinalArray['SEOInfo']['title'] 	= $ResortRow['metatitle'];
@@ -617,10 +620,10 @@
 			$FinalArray['Tents'][$i]['slug'] 		= $CategoryTitle;
 			$FinalArray['Tents'][$i]['content'] 	= $Row['content'];
 			$FinalArray['Tents'][$i]['category'] 	= $Row['category'];
-			$FinalArray['Tents'][$i]['image'] = "../villadashboard/".$Row['local_path'];
+			$FinalArray['Tents'][$i]['image'] = "http://localhost/villadashboard/".$Row['local_path'];
 		   	if(isset($Row['image']) && $Row['image'] != '')
 		   	{
-		   		$FinalArray['Tents'][$i]['image'] = "../villadashboard/".$Row['image'];
+		   		$FinalArray['Tents'][$i]['image'] = "http://localhost/villadashboard/".$Row['image'];
 		   	}
 			$i++;
 		}
@@ -706,9 +709,9 @@
 	   	$FinalArray['Data']['order_no'] 	= $ResortRow['order_no'];
 	   	$FinalArray['Data']['y_url'] 		= $ResortRow['y_url'];
 	   	$FinalArray['Data']['dimension'] 	= $ResortRow['dimension'];
-	   	$FinalArray['Data']['floor_image'] 	= "../villadashboard/".$ResortRow['floor_image'];
+	   	$FinalArray['Data']['floor_image'] 	= "http://localhost/villadashboard/".$ResortRow['floor_image'];
 	   	
-	   	$FinalArray['Data']['image'] = "../villadashboard/".$ResortRow['local_path'];
+	   	$FinalArray['Data']['image'] = "http://localhost/villadashboard/".$ResortRow['local_path'];
 	   	if(isset($ResortRow['image']) && $ResortRow['image'] != '')
 	   	{
 	   		$FinalArray['Data']['image'] = "villadashboard/".$ResortRow['image'];
@@ -729,52 +732,52 @@
 
 		   		if(isset($GalleryRow['p1']) && $GalleryRow['p1'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "../villadashboard/".$GalleryRow['p1'];
+	   				$FinalArray['GalleryInfo']['images'][] = "http://localhost/villadashboard/".$GalleryRow['p1'];
 	   			}
 
 	   			if(isset($GalleryRow['p2']) && $GalleryRow['p2'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "../villadashboard/".$GalleryRow['p2'];
+	   				$FinalArray['GalleryInfo']['images'][] = "http://localhost/villadashboard/".$GalleryRow['p2'];
 	   			}
 
 	   			if(isset($GalleryRow['p3']) && $GalleryRow['p3'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "../villadashboard/".$GalleryRow['p3'];
+	   				$FinalArray['GalleryInfo']['images'][] = "http://localhost/villadashboard/".$GalleryRow['p3'];
 	   			}
 
 	   			if(isset($GalleryRow['p4']) && $GalleryRow['p4'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "../villadashboard/".$GalleryRow['p4'];
+	   				$FinalArray['GalleryInfo']['images'][] = "http://localhost/villadashboard/".$GalleryRow['p4'];
 	   			}
 
 	   			if(isset($GalleryRow['p5']) && $GalleryRow['p5'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "../villadashboard/".$GalleryRow['p5'];
+	   				$FinalArray['GalleryInfo']['images'][] = "http://localhost/villadashboard/".$GalleryRow['p5'];
 	   			}
 
 	   			if(isset($GalleryRow['p6']) && $GalleryRow['p6'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "../villadashboard/".$GalleryRow['p6'];
+	   				$FinalArray['GalleryInfo']['images'][] = "http://localhost/villadashboard/".$GalleryRow['p6'];
 	   			}
 
 	   			if(isset($GalleryRow['p7']) && $GalleryRow['p7'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "../villadashboard/".$GalleryRow['p7'];
+	   				$FinalArray['GalleryInfo']['images'][] = "http://localhost/villadashboard/".$GalleryRow['p7'];
 	   			}
 
 	   			if(isset($GalleryRow['p8']) && $GalleryRow['p8'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "../villadashboard/".$GalleryRow['p8'];
+	   				$FinalArray['GalleryInfo']['images'][] = "http://localhost/villadashboard/".$GalleryRow['p8'];
 	   			}
 
 	   			if(isset($GalleryRow['p9']) && $GalleryRow['p9'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "../villadashboard/".$GalleryRow['p9'];
+	   				$FinalArray['GalleryInfo']['images'][] = "http://localhost/villadashboard/".$GalleryRow['p9'];
 	   			}
 
 	   			if(isset($GalleryRow['p10']) && $GalleryRow['p10'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "../villadashboard/".$GalleryRow['p10'];
+	   				$FinalArray['GalleryInfo']['images'][] = "http://localhost/villadashboard/".$GalleryRow['p10'];
 	   			}
 	   		}
 	   	}
@@ -791,10 +794,10 @@
 			$FinalArray['OtherTents'][$i]['slug'] 		= $CategoryTitle;
 		   	$FinalArray['OtherTents'][$i]['category'] 	= $ResortRow['category'];
 		   	
-		   	$FinalArray['OtherTents'][$i]['image'] = "../villadashboard/".$ResortRow['local_path'];
+		   	$FinalArray['OtherTents'][$i]['image'] = "http://localhost/villadashboard/".$ResortRow['local_path'];
 		   	if(isset($ResortRow['image']) && $ResortRow['image'] != '')
 		   	{
-		   		$FinalArray['OtherTents'][$i]['image'] = "../villadashboard/".$ResortRow['image'];
+		   		$FinalArray['OtherTents'][$i]['image'] = "http://localhost/villadashboard/".$ResortRow['image'];
 		   	}
 		   	$i++;
 		}
@@ -834,10 +837,10 @@
 		$FinalArray['TopSection']['content'] 	= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 	= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 	= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] 	= "../villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] 	= "http://localhost/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "../villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "http://localhost/villadashboard/".$Row['local_path'];
        	}
 
 		// Projects Content
@@ -864,10 +867,10 @@
 			$FinalArray['Categories'][$i]['name'] 	= $CategoryRow['category'];
 		   	$FinalArray['Categories'][$i]['slug'] 	= $CategoryTitle;
 		   	$FinalArray['Categories'][$i]['total'] 	= $CategoryRow['TotalCount'];
-		   	$FinalArray['Categories'][$i]['image'] 	= "../villadashboard/".$CategoryRow['local_path'];
+		   	$FinalArray['Categories'][$i]['image'] 	= "http://localhost/villadashboard/".$CategoryRow['local_path'];
 		   	if(isset($CategoryRow['image']) && $CategoryRow['image'] != '')
 		   	{
-		   		$FinalArray['Categories'][$i]['image'] = "../villadashboard/".$CategoryRow['image'];
+		   		$FinalArray['Categories'][$i]['image'] = "http://localhost/villadashboard/".$CategoryRow['image'];
 		   	}
 		   	$i++;
 		}
@@ -897,10 +900,10 @@
 	   	$FinalArray['Data']['content'] 		= $ProjectRow['content'];
 	   	$FinalArray['Data']['order_no'] 	= $ProjectRow['order_no'];
 	   	
-	   	$FinalArray['Data']['image'] = "../villadashboard/".$ProjectRow['local_path'];
+	   	$FinalArray['Data']['image'] = "http://localhost/villadashboard/".$ProjectRow['local_path'];
 	   	if(isset($ProjectRow['image']) && $ProjectRow['image'] != '')
 	   	{
-	   		$FinalArray['Data']['image'] = "../villadashboard/".$ProjectRow['image'];
+	   		$FinalArray['Data']['image'] = "http://localhost/villadashboard/".$ProjectRow['image'];
 	   	}
 
 	   	$FinalArray['SEOInfo']['title'] 	= $ProjectRow['metatitle'];
@@ -920,10 +923,10 @@
 			$FinalArray['Projects'][$i]['slug'] 	= $CategoryTitle;
 			$FinalArray['Projects'][$i]['content'] 	= $Row['content'];
 			$FinalArray['Projects'][$i]['category'] = $Row['category'];
-			$FinalArray['Projects'][$i]['image'] 	= "../villadashboard/".$Row['local_path'];
+			$FinalArray['Projects'][$i]['image'] 	= "http://localhost/villadashboard/".$Row['local_path'];
 		   	if(isset($Row['image']) && $Row['image'] != '')
 		   	{
-		   		$FinalArray['Projects'][$i]['image'] = "../villadashboard/".$Row['image'];
+		   		$FinalArray['Projects'][$i]['image'] = "http://localhost/villadashboard/".$Row['image'];
 		   	}
 			$i++;
 		}
@@ -956,10 +959,10 @@
 	   	$FinalArray['Data']['accent_color'] = $ProjectRow['accent_color'];
 	   	$FinalArray['Data']['border'] 		= $ProjectRow['border'];
 	   	
-	   	$FinalArray['Data']['image'] = "../villadashboard/".$ProjectRow['local_path'];
+	   	$FinalArray['Data']['image'] = "http://localhost/villadashboard/".$ProjectRow['local_path'];
 	   	if(isset($ProjectRow['image']) && $ProjectRow['image'] != '')
 	   	{
-	   		$FinalArray['Data']['image'] = "../villadashboard/".$ProjectRow['image'];
+	   		$FinalArray['Data']['image'] = "http://localhost/villadashboard/".$ProjectRow['image'];
 	   	}
 
 	   	$FinalArray['SEOInfo']['title'] 	= $ProjectRow['metatitle'];
@@ -994,52 +997,52 @@
 
 		   		if(isset($GalleryRow['p1']) && $GalleryRow['p1'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "../villadashboard/".$GalleryRow['p1'];
+	   				$FinalArray['GalleryInfo']['content'][] = "http://localhost/villadashboard/".$GalleryRow['p1'];
 	   			}
 
 	   			if(isset($GalleryRow['p2']) && $GalleryRow['p2'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "../villadashboard/".$GalleryRow['p2'];
+	   				$FinalArray['GalleryInfo']['content'][] = "http://localhost/villadashboard/".$GalleryRow['p2'];
 	   			}
 
 	   			if(isset($GalleryRow['p3']) && $GalleryRow['p3'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "../villadashboard/".$GalleryRow['p3'];
+	   				$FinalArray['GalleryInfo']['content'][] = "http://localhost/villadashboard/".$GalleryRow['p3'];
 	   			}
 
 	   			if(isset($GalleryRow['p4']) && $GalleryRow['p4'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "../villadashboard/".$GalleryRow['p4'];
+	   				$FinalArray['GalleryInfo']['content'][] = "http://localhost/villadashboard/".$GalleryRow['p4'];
 	   			}
 
 	   			if(isset($GalleryRow['p5']) && $GalleryRow['p5'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "../villadashboard/".$GalleryRow['p5'];
+	   				$FinalArray['GalleryInfo']['content'][] = "http://localhost/villadashboard/".$GalleryRow['p5'];
 	   			}
 
 	   			if(isset($GalleryRow['p6']) && $GalleryRow['p6'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "../villadashboard/".$GalleryRow['p6'];
+	   				$FinalArray['GalleryInfo']['content'][] = "http://localhost/villadashboard/".$GalleryRow['p6'];
 	   			}
 
 	   			if(isset($GalleryRow['p7']) && $GalleryRow['p7'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "../villadashboard/".$GalleryRow['p7'];
+	   				$FinalArray['GalleryInfo']['content'][] = "http://localhost/villadashboard/".$GalleryRow['p7'];
 	   			}
 
 	   			if(isset($GalleryRow['p8']) && $GalleryRow['p8'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "../villadashboard/".$GalleryRow['p8'];
+	   				$FinalArray['GalleryInfo']['content'][] = "http://localhost/villadashboard/".$GalleryRow['p8'];
 	   			}
 
 	   			if(isset($GalleryRow['p9']) && $GalleryRow['p9'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "../villadashboard/".$GalleryRow['p9'];
+	   				$FinalArray['GalleryInfo']['content'][] = "http://localhost/villadashboard/".$GalleryRow['p9'];
 	   			}
 
 	   			if(isset($GalleryRow['p10']) && $GalleryRow['p10'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "../villadashboard/".$GalleryRow['p10'];
+	   				$FinalArray['GalleryInfo']['content'][] = "http://localhost/villadashboard/".$GalleryRow['p10'];
 	   			}
 	   		}
 	   	}
@@ -1056,10 +1059,10 @@
 			$FinalArray['OtherProjects'][$i]['slug'] 		= $CategoryTitle;
 		   	$FinalArray['OtherProjects'][$i]['category'] 	= $ProjectRow['category'];
 		   	
-		   	$FinalArray['OtherProjects'][$i]['image'] = "../villadashboard/".$ProjectRow['local_path'];
+		   	$FinalArray['OtherProjects'][$i]['image'] = "http://localhost/villadashboard/".$ProjectRow['local_path'];
 		   	if(isset($ProjectRow['image']) && $ProjectRow['image'] != '')
 		   	{
-		   		$FinalArray['OtherProjects'][$i]['image'] = "../villadashboard/".$ProjectRow['image'];
+		   		$FinalArray['OtherProjects'][$i]['image'] = "http://localhost/villadashboard/".$ProjectRow['image'];
 		   	}
 		   	$i++;
 		}
@@ -1081,10 +1084,10 @@
 		$Response['TopSection']['content'] 	= $Row['description'];
 		$Response['TopSection']['btn_txt'] 	= $Row['btn_txt'];
 		$Response['TopSection']['btn_url'] 	= $Row['btn_url'];
-       	$Response['TopSection']['image'] = "../villadashboard/".$Row['image'];
+       	$Response['TopSection']['image'] = "http://localhost/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$Response['TopSection']['image'] = "../villadashboard/".$Row['local_path'];
+       		$Response['TopSection']['image'] = "http://localhost/villadashboard/".$Row['local_path'];
        	}
 
 	   	// SEO Info
@@ -1104,8 +1107,8 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "../villadashboard/".$Row['p1'];
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
+		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p1'];
 		   			$i++;
 	   			}
 
@@ -1113,8 +1116,8 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "../villadashboard/".$Row['p2'];
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
+		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p2'];
 		   			$i++;
 	   			}
 
@@ -1122,8 +1125,8 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "../villadashboard/".$Row['p3'];
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
+		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p3'];
 		   			$i++;
 	   			}
 
@@ -1131,8 +1134,8 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "../villadashboard/".$Row['p4'];
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
+		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p4'];
 		   			$i++;
 	   			}
 
@@ -1140,8 +1143,8 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "../villadashboard/".$Row['p5'];
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
+		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p5'];
 		   			$i++;
 	   			}
 
@@ -1149,8 +1152,8 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "../villadashboard/".$Row['p6'];
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types'])); 
+		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p6'];
 		   			$i++;
 	   			}
 
@@ -1158,8 +1161,8 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "../villadashboard/".$Row['p7'];
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
+		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p7'];
 		   			$i++;
 	   			}
 
@@ -1167,8 +1170,8 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "../villadashboard/".$Row['p8'];
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
+		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p8'];
 		   			$i++;
 	   			}
 
@@ -1176,8 +1179,8 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "../villadashboard/".$Row['p9'];
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
+		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p9'];
 		   			$i++;
 	   			}
 
@@ -1185,8 +1188,8 @@
 	   			{
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
-		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "../villadashboard/".$Row['p10'];
+		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));
+		   			$FinalArray[$i]['image']	= "http://localhost/villadashboard/".$Row['p10'];
 		   			$i++;
 	   			}
 	   		}
@@ -1224,10 +1227,10 @@
 		$FinalArray['Info']['content'] 	= $Row['description'];
 		$FinalArray['Info']['btn_txt'] 	= $Row['btn_txt'];
 		$FinalArray['Info']['btn_url'] 	= $Row['btn_url'];
-       	$FinalArray['Info']['image'] = "../villadashboard/".$Row['image'];
+       	$FinalArray['Info']['image'] = "http://localhost/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['Info']['image'] = "../villadashboard/".$Row['local_path'];
+       		$FinalArray['Info']['image'] = "http://localhost/villadashboard/".$Row['local_path'];
        	}
 
 	   	// SEO Info
@@ -1272,10 +1275,10 @@
             $BlogDate = date_create($BlogRow['date']);
             $FinalArray['Blogs'][$i]['date'] =  date_format($BlogDate,"l, jS F Y");
 
-			$FinalArray['Blogs'][$i]['image'] = "../villadashboard/".$BlogRow['local_path'];
+			$FinalArray['Blogs'][$i]['image'] = "http://localhost/villadashboard/".$BlogRow['local_path'];
 		   	if(isset($BlogRow['image']) && $BlogRow['image'] != '')
 		   	{
-		   		$FinalArray['Blogs'][$i]['image'] = "../villadashboard/".$BlogRow['image'];
+		   		$FinalArray['Blogs'][$i]['image'] = "http://localhost/villadashboard/".$BlogRow['image'];
 		   	}
 		   	$i++;
 		}
@@ -1300,10 +1303,10 @@
         $FinalArray['BlogInfo']['date'] 	=  date_format($BlogDate,"l, jS F Y");
         $FinalArray['BlogInfo']['readTime'] = "";
 	   	
-	   	$FinalArray['BlogInfo']['image'] = "../villadashboard/".$Row['local_path'];
+	   	$FinalArray['BlogInfo']['image'] = "http://localhost/villadashboard/".$Row['local_path'];
 	   	if(isset($Row['image']) && $Row['image'] != '')
 	   	{
-	   		$FinalArray['BlogInfo']['image'] = "../villadashboard/".$Row['image'];
+	   		$FinalArray['BlogInfo']['image'] = "http://localhost/villadashboard/".$Row['image'];
 	   	}
 
 	   	// SEO Info
@@ -1342,10 +1345,10 @@
 			    $BlogURL = str_replace('--', '-', strtolower($BlogURL));
 			    $FinalArray['RecentPosts'][$i]['slug'] = trim($BlogURL, '-');
 			   	
-			   	$FinalArray['RecentPosts'][$i]['image'] = "../villadashboard/".$Row['local_path'];
+			   	$FinalArray['RecentPosts'][$i]['image'] = "http://localhost/villadashboard/".$Row['local_path'];
 			   	if(isset($Row['image']) && $Row['image'] != '')
 			   	{
-			   		$FinalArray['RecentPosts'][$i]['image'] = "../villadashboard/".$Row['image'];
+			   		$FinalArray['RecentPosts'][$i]['image'] = "http://localhost/villadashboard/".$Row['image'];
 			   	}
 			   	$i++;
 	   		}
@@ -1379,10 +1382,10 @@
 			    $BlogURL = str_replace('--', '-', strtolower($BlogURL));
 			    $FinalArray['RecentPosts'][$i]['slug'] = trim($BlogURL, '-');
 			   	
-			   	$FinalArray['RecentPosts'][$i]['image'] = "../villadashboard/".$Row['local_path'];
+			   	$FinalArray['RecentPosts'][$i]['image'] = "http://localhost/villadashboard/".$Row['local_path'];
 			   	if(isset($Row['image']) && $Row['image'] != '')
 			   	{
-			   		$FinalArray['RecentPosts'][$i]['image'] = "../villadashboard/".$Row['image'];
+			   		$FinalArray['RecentPosts'][$i]['image'] = "http://localhost/villadashboard/".$Row['image'];
 			   	}
 	   		}
 	   	}
@@ -1404,10 +1407,10 @@
 		$FinalArray['TopSection']['content'] 	= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 	= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 	= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] 	= "../villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] 	= "http://localhost/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "../villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "http://localhost/villadashboard/".$Row['local_path'];
        	}
 
 		// Page Content
@@ -1415,10 +1418,10 @@
 	   	$ContactRow = mysqli_fetch_assoc($ContactResult);
 	   	$FinalArray['ContactInfo']['title'] 	= $ContactRow['title'];
 	   	$FinalArray['ContactInfo']['content'] 	= $ContactRow['content'];
-	   	$FinalArray['ContactInfo']['image'] 	= "../villadashboard/".$ContactRow['local_path'];
+	   	$FinalArray['ContactInfo']['image'] 	= "http://localhost/villadashboard/".$ContactRow['local_path'];
 	   	if(isset($ContactRow['image']) && $ContactRow['image'] != '')
 	   	{
-	   		$FinalArray['ContactInfo']['image'] = "../villadashboard/".$ContactRow['image'];
+	   		$FinalArray['ContactInfo']['image'] = "http://localhost/villadashboard/".$ContactRow['image'];
 	   	}
 	   
 	    // SEO Info
@@ -1519,18 +1522,18 @@
 		$FinalArray['TopSection']['description'] 	= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 		= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 		= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] = "../villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] = "http://localhost/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "../villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "http://localhost/villadashboard/".$Row['local_path'];
        	}
 
        	// SEO Info
-       	$Result = mysqli_query($con, "SELECT meta_title, meta_keyword, meta_desc FROM logo");					
+       	$Result = mysqli_query($con, "SELECT bro_meta, bro_keyword, bro_desc FROM logo");					
 	   	$Row = mysqli_fetch_assoc($Result);
-	   	$FinalArray['SEOInfo']['title']   = $Row['meta_title'];
-	   	$FinalArray['SEOInfo']['keyword'] = $Row['meta_keyword'];
-	   	$FinalArray['SEOInfo']['content'] = $Row['meta_desc'];
+	   	$FinalArray['SEOInfo']['title']   = $Row['bro_meta'];
+	   	$FinalArray['SEOInfo']['keyword'] = $Row['bro_keyword'];
+	   	$FinalArray['SEOInfo']['content'] = $Row['bro_desc'];
 
 	   	$Response['Status'] = 1; 
 		$Response['Data'] 	= $FinalArray; 
@@ -1549,10 +1552,10 @@
 		$FinalArray['TopSection']['description'] 	= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 		= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 		= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] = "../villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] = "http://localhost/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "../villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "http://localhost/villadashboard/".$Row['local_path'];
        	}
 
        	// Other Page Info
@@ -1586,7 +1589,7 @@
 		$FinalArray['Data']['hours_text'] 		= $Row['hours_text'];
 		$FinalArray['Data']['location_title'] 	= $Row['location_title'];
 		$FinalArray['Data']['location_text'] 	= $Row['location_text'];
-		$FinalArray['Data']['logo_url'] 		= "../villadashboard/".$Row['logo_url'];
+		$FinalArray['Data']['logo_url'] 		= "http://localhost/villadashboard/".$Row['logo_url'];
 
 	   	// SEO Info
 	   	$Result = mysqli_query($con, "SELECT * FROM get_quote_seo ORDER BY id ASC LIMIT 1");					
@@ -1720,10 +1723,10 @@
 		$FinalArray['TopSection']['description'] 	= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 		= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 		= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] = "../villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] = "http://localhost/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "../villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "http://localhost/villadashboard/".$Row['local_path'];
        	}
 
        	// Page Info
@@ -1740,10 +1743,10 @@
 	   	$FinalArray['Data']['position'] = $Row['position'];
 	   	$FinalArray['Data']['title'] 	= $Row['title'];
 	   	$FinalArray['Data']['content'] 	= $Row['content'];
-	   	$FinalArray['Data']['image'] = "../villadashboard/".$Row['image'];
+	   	$FinalArray['Data']['image'] = "http://localhost/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['Data']['image'] = "../villadashboard/".$Row['local_path'];
+       		$FinalArray['Data']['image'] = "http://localhost/villadashboard/".$Row['local_path'];
        	}
 
        	$Response['Status'] = 1; 

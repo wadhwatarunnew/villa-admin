@@ -277,7 +277,7 @@
 														<label>Title</label>
 														<input class="form-control" type="text" name="title1" id="title1" required value="<?php echo $e['title']; ?>" placeholder="Enter Heading">
 													</div>
-													
+
 													<div class="commonSection">
 														<label>Content</label>
 														<textarea name="editor2" id="editor2" rows="10" cols="80" required><?php echo $e['content']; ?></textarea>
