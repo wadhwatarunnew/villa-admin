@@ -185,7 +185,7 @@
 														</div>
 													</div>
 
-													<div class="col-sm-12">
+													<div class="col-sm-12" style="display: none;">
 														<div class="commonSection">
 															<label>Color</label>
 															<input class="form-control" type="text" name="color" id="color">

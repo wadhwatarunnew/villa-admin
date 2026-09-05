@@ -14,6 +14,7 @@
 		$order = $_POST['order'];
 		$subtitle = mysqli_real_escape_string($con, $_POST['small_heading']);
 		$title = mysqli_real_escape_string($con, $_POST['title']);
+		$BannerDesc = mysqli_real_escape_string($con, $_POST['banner_desc']);
 		$editor1 = mysqli_real_escape_string($con, $_POST['editor1']);
 		$quote = mysqli_real_escape_string($con, $_POST['quote']);
 		$client_name = mysqli_real_escape_string($con, $_POST['client_name']);
@@ -33,7 +34,7 @@
 		{
 			if ($myFile === '')
 			{
-				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$editor1', '', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
+				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, banner_desc, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$BannerDesc', '$editor1', '', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
 				$LastInsertID = mysqli_insert_id($con);
 			}
 			elseif ($myFile != '' && (file_exists("uploads/pageimages/" . $myFile) || file_exists("uploads/pageimages/addgallery/" . $myFile) || file_exists("uploads/pageimages/addgallery/project/" . $myFile) || file_exists("uploads/pageimages/addgallery/resort/" . $myFile) || file_exists("uploads/pageimages/blogs/" . $myFile) || file_exists("uploads/pageimages/blogs/single/" . $myFile) || file_exists("uploads/pageimages/contact/" . $myFile) || file_exists("uploads/pageimages/nav/" . $myFile) || file_exists("uploads/pageimages/nav/category/" . $myFile) || file_exists("uploads/pageimages/nav/types/" . $myFile) || file_exists("uploads/pageimages/project/" . $myFile) || file_exists("uploads/pageimages/project/category/" . $myFile) || file_exists("uploads/pageimages/project/types/" . $myFile) || file_exists("uploads/pageimages/resort/" . $myFile) || file_exists("uploads/pageimages/resort/category/" . $myFile) || file_exists("uploads/pageimages/resort/types/" . $myFile) || file_exists("uploads/pageimages/slider/" . $myFile) || file_exists("uploads/pageimages/youtube/" . $myFile))) {
@@ -52,13 +53,13 @@
 					$ImagePath = $path_original.$myFile;
 				}
 
-				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$editor1', '', '$ImagePath', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
+				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, banner_desc, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$BannerDesc', '$editor1', '', '$ImagePath', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
 				$LastInsertID = mysqli_insert_id($con);
 			}
 		}
 		else
 		{
-			mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$editor1', '$imageUrl', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
+			mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, banner_desc, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$BannerDesc', '$editor1', '$imageUrl', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
 			$LastInsertID = mysqli_insert_id($con);
 		}
 
@@ -204,10 +205,25 @@
 											<input class="form-control" type="number" name="order" id="order" placeholder="1">
 										</div>
 									</div>
-									<div class="col-md-12">
+									<div class="col-md-8">
 										<div class="commonSection mb-0">
 											<label>Description</label>
 											<textarea name="editor1" id="editor1" class="form-control" rows="5" required placeholder="Enter description"></textarea>
+											<script type="text/javascript">
+												CKEDITOR.editorConfig = function (config) {
+													config.language = 'es';
+													config.uiColor = '#F7B42C';
+													config.height = 300;
+													config.toolbarCanCollapse = true;
+												};
+												CKEDITOR.replace('editor1');
+											</script>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="commonSection">
+											<label>Banner Description</label>
+											<textarea class="form-control" name="banner_desc" id="banner_desc" rows="5" required placeholder="Enter banner description"></textarea>
 										</div>
 									</div>
 								</div>
@@ -301,36 +317,36 @@
 										</div>
 									</div>
 									<div class="col-lg-3 col-md-6">
-										<div class="commonSection">
-											<label>Designation</label>
-											<input class="form-control" type="text" name="designation" placeholder="Designation">
-										</div>
-									</div>
-									<div class="col-lg-4 col-md-6">
 										<div class="commonSection mb-0">
 											<label>Company / Hotel Name</label>
 											<input class="form-control" type="text" name="company" placeholder="Company name">
 										</div>
 									</div>
-									<div class="col-lg-2 col-md-6">
+									<div class="col-lg-3 col-md-6" style="display: none;">
+										<div class="commonSection">
+											<label>Designation</label>
+											<input class="form-control" type="text" name="designation" placeholder="Designation">
+										</div>
+									</div>
+									<div class="col-lg-2 col-md-6" style="display: none;">
 										<div class="commonSection mb-0">
 											<label>Background Color</label>
 											<input class="form-control" type="text" name="back_color" placeholder="#0E3528">
 										</div>
 									</div>
-									<div class="col-lg-2 col-md-6">
+									<div class="col-lg-2 col-md-6" style="display: none;">
 										<div class="commonSection mb-0">
 											<label>Text Color</label>
 											<input class="form-control" type="text" name="text_color" placeholder="#FFFFFF">
 										</div>
 									</div>
-									<div class="col-lg-2 col-md-6">
+									<div class="col-lg-2 col-md-6" style="display: none;">
 										<div class="commonSection mb-0">
 											<label>Accent Color</label>
 											<input class="form-control" type="text" name="accent_color" placeholder="#C9A45A">
 										</div>
 									</div>
-									<div class="col-lg-2 col-md-6">
+									<div class="col-lg-2 col-md-6" style="display: none;">
 										<div class="commonSection mb-0">
 											<label>Border Radius</label>
 											<input class="form-control" type="number" name="border" placeholder="12">

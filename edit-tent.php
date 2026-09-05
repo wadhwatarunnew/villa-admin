@@ -16,6 +16,7 @@
 		$keyword = $_POST['keyword'];
 		$disc = $_POST['disc'];
 		$title = mysqli_real_escape_string($con, $_POST['title']);
+		$BannerDesc = mysqli_real_escape_string($con, $_POST['banner_desc']);
 		$cat = $_POST['cat'];
 		$order = $_POST['order'];
 		$status = $_POST['status'];
@@ -54,7 +55,7 @@
 					$BannerImagePath = $path_original . $myFile;
 				}
 
-				mysqli_query($con, "UPDATE resort_types SET title='$title', content='$editor1', image='', local_path='$BannerImagePath', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
+				mysqli_query($con, "UPDATE resort_types SET title='$title', banner_desc='$BannerDesc', content='$editor1', image='', local_path='$BannerImagePath', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
 				$Updated = true;
 			}
 		}
@@ -62,11 +63,11 @@
 		{
 			if($imageUrl != '')
 			{
-				mysqli_query($con, "UPDATE resort_types SET title='$title', content='$editor1', image='$imageUrl', local_path='', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
+				mysqli_query($con, "UPDATE resort_types SET title='$title', banner_desc='$BannerDesc', content='$editor1', image='$imageUrl', local_path='', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
 			}
 			else
 			{
-				mysqli_query($con, "UPDATE resort_types SET title='$title', content='$editor1', image='', local_path='$BannerImagePath', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
+				mysqli_query($con, "UPDATE resort_types SET title='$title', banner_desc='$BannerDesc', content='$editor1', image='', local_path='$BannerImagePath', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
 			}
 			$Updated = true;
 		}
@@ -74,9 +75,13 @@
 		if($Updated)
 		{
 			$CurrentDateTime = Date("Y-m-d H:i:s");
+ 			mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Quick Info'");
+ 			mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Features'");
+			mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Materials'");
+			mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Specifications'");
+			
 			if (isset($_POST['quick_info']) && !empty($_POST['quick_info']))
 			{
-	 			mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Quick Info'");
 				$titles = $_POST['quick_info']['title'];
 	 			$descriptions = $_POST['quick_info']['description'];
 	 			$icons = $_POST['quick_info']['icon'];
@@ -93,7 +98,6 @@
 
 			if (isset($_POST['features']) && !empty($_POST['features']))
 			{
-	 			mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Features'");
 				$titles = $_POST['features']['title'];
 	 			$descriptions = $_POST['features']['description'];
 	 			$icons = $_POST['features']['icon'];
@@ -110,7 +114,6 @@
 
 			if (isset($_POST['materials']) && !empty($_POST['materials']))
 			{
-				mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Materials'");
 				$titles = $_POST['materials']['title'];
 	 			$descriptions = $_POST['materials']['description'];
 	 			$icons = $_POST['materials']['icon'];
@@ -127,7 +130,6 @@
 
 			if (isset($_POST['specifications']) && !empty($_POST['specifications']))
 			{
-				mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Specifications'");
 			   $titles = $_POST['specifications']['title'];
 			   $feet = $_POST['specifications']['feet'];
 			   $meters = $_POST['specifications']['meters'];
@@ -243,6 +245,22 @@
 										<div class="commonSection">
 											<label>Short Description</label>
 											<textarea class="form-control" name="editor1" id="editor1" rows="4" required placeholder="Enter short description"><?php echo $b['content']; ?></textarea>
+											<script type="text/javascript">
+												CKEDITOR.editorConfig = function (config) {
+													config.language = 'es';
+													config.uiColor = '#F7B42C';
+													config.height = 300;
+													config.toolbarCanCollapse = true;
+												};
+												CKEDITOR.replace('editor1');
+											</script>
+										</div>
+									</div>
+
+									<div class="col-md-4">
+										<div class="commonSection">
+											<label>Banner Description</label>
+											<textarea class="form-control" name="banner_desc" id="banner_desc" rows="4" required placeholder="Enter banner description"><?php echo $b['banner_desc']; ?></textarea>
 										</div>
 									</div>
 

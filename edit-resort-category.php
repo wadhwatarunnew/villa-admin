@@ -319,7 +319,7 @@
 												</div>
 												<?php } ?>
 
-												<div class="commonSection">
+												<div class="commonSection" style="display: none;">
 													<label>Color</label>
 													<input class="form-control" type="text" name="color" id="color" value="<?php echo $b['color']; ?>">
 													<input type="color" id="colorPicker" style="width: 20%; margin-top: 10px;">

@@ -17,23 +17,20 @@
 
       if($ImageFile != '')
       {
-         if((file_exists("uploads/pageimages/".$ImageFile) || file_exists("uploads/pageimages/addgallery/".$ImageFile) || file_exists("uploads/pageimages/addgallery/project/".$ImageFile) || file_exists("uploads/pageimages/addgallery/resort/".$ImageFile) || file_exists("uploads/pageimages/blogs/".$ImageFile) || file_exists("uploads/pageimages/blogs/single/".$ImageFile)  || file_exists("uploads/pageimages/contact/".$ImageFile) || file_exists("uploads/pageimages/nav/".$ImageFile) || file_exists("uploads/pageimages/nav/category/".$ImageFile) || file_exists("uploads/pageimages/nav/types/".$ImageFile) || file_exists("uploads/pageimages/project/".$ImageFile) || file_exists("uploads/pageimages/project/category/".$ImageFile) || file_exists("uploads/pageimages/project/types/".$ImageFile) || file_exists("uploads/pageimages/resort/".$ImageFile) || file_exists("uploads/pageimages/resort/category/".$ImageFile) || file_exists("uploads/pageimages/resort/types/".$ImageFile) || file_exists("uploads/pageimages/slider/".$ImageFile) || file_exists("uploads/pageimages/youtube/".$ImageFile)))
+         if(isset($_FILES["photo"]["name"]) && $_FILES["photo"]["name"] != '' && move_uploaded_file($_FILES['photo']['tmp_name'], $path.$ImageFile))
          {
-            $FileExists = true;
-            $_SESSION['BannerColor'] = "background-color:#FF0000;";
-            $_SESSION['Message'] = "Selected image already exists!";
+            $path = $path_original.$ImageFile;
+            mysqli_query($con, "INSERT INTO founders (name, designation, bio, image, display_order, status) VALUES ('$Name', '$Designation', '$Bio', '$path', '$DisplayOrder', '$Status')");
+
+            $_SESSION['BannerColor'] = "background-color:#4BB543;";
+            $_SESSION['Message'] = "Added Successfully!";
             echo "<script>window.location.href='add-founder.php';</script>";
             exit;
          }
          else
          {
-            move_uploaded_file($_FILES['photo']['tmp_name'],$path.$ImageFile) ;
-            $path = $path_original.$ImageFile;
-            
-            mysqli_query($con, "INSERT INTO founders (name, designation, bio, image, display_order, status) VALUES ('$Name', '$Designation', '$Bio', '$path', '$DisplayOrder', '$Status')");
-
-            $_SESSION['BannerColor'] = "background-color:#4BB543;";
-            $_SESSION['Message'] = "Added Successfully!";
+            $_SESSION['BannerColor'] = "background-color:#FF0000;";
+            $_SESSION['Message'] = "Unable to update image!";
             echo "<script>window.location.href='add-founder.php';</script>";
             exit;
          }

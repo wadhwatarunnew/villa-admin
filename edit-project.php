@@ -17,6 +17,7 @@
 		$disc = $_POST['disc'];
 		$subtitle = mysqli_real_escape_string($con, $_POST['small_heading']);
 		$title = mysqli_real_escape_string($con, $_POST['title']);
+		$BannerDesc = mysqli_real_escape_string($con, $_POST['banner_desc']);
 		$cat = $_POST['cat'];
 		$order = $_POST['order'];
 		$editor1 = mysqli_real_escape_string($con, $_POST['editor1']);
@@ -38,7 +39,7 @@
 		{
 			if ($myFile === '')
 			{
-				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', content='$editor1', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border' WHERE id=$id");
+				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', banner_desc='$BannerDesc', content='$editor1', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border' WHERE id=$id");
 				$Updated = true;
 			}
 			elseif ($myFile != '' && (file_exists("uploads/pageimages/" . $myFile) || file_exists("uploads/pageimages/addgallery/" . $myFile) || file_exists("uploads/pageimages/addgallery/project/" . $myFile) || file_exists("uploads/pageimages/addgallery/resort/" . $myFile) || file_exists("uploads/pageimages/blogs/" . $myFile) || file_exists("uploads/pageimages/blogs/single/" . $myFile) || file_exists("uploads/pageimages/contact/" . $myFile) || file_exists("uploads/pageimages/nav/" . $myFile) || file_exists("uploads/pageimages/nav/category/" . $myFile) || file_exists("uploads/pageimages/nav/types/" . $myFile) || file_exists("uploads/pageimages/project/" . $myFile) || file_exists("uploads/pageimages/project/category/" . $myFile) || file_exists("uploads/pageimages/project/types/" . $myFile) || file_exists("uploads/pageimages/resort/" . $myFile) || file_exists("uploads/pageimages/resort/category/" . $myFile) || file_exists("uploads/pageimages/resort/types/" . $myFile) || file_exists("uploads/pageimages/slider/" . $myFile) || file_exists("uploads/pageimages/youtube/" . $myFile)))
@@ -54,23 +55,25 @@
 				move_uploaded_file($_FILES['myFile']['tmp_name'], $path . $myFile);
 				$path = $path_original . $myFile;
 
-				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', content='$editor1', image='', local_path='$path', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border' WHERE id=$id");
+				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', banner_desc='$BannerDesc', content='$editor1', image='', local_path='$path', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border' WHERE id=$id");
 				$Updated = true;
 			}
 		}
 		else
 		{
-			mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', content='$editor1', image='$imageUrl', local_path='', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border' WHERE id=$id");
+			mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', banner_desc='$BannerDesc', content='$editor1', image='$imageUrl', local_path='', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border' WHERE id=$id");
 			$Updated = true;
 		}
 
 		if($Updated)
 		{
 			$CurrentDateTime = Date("Y-m-d H:i:s");
+			mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Project Info'");
+			mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Challenges'");
+			mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Solutions'");
 
 			if (isset($_POST['project_info']) && !empty($_POST['project_info']))
 			{
-				mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Project Info'");
 				foreach ($_POST['project_info'] as $item) {
 					$icon = isset($item['icon']) ? trim($item['icon']) : '';
 				   $title = isset($item['title']) ? trim($item['title']) : '';
@@ -84,7 +87,6 @@
 
 			if (isset($_POST['challenges']) && !empty($_POST['challenges']))
 			{
-				mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Challenges'");
 				foreach ($_POST['challenges'] as $item) {
 					$title = "Challenges";
 				   $icon = "task_alt";
@@ -99,7 +101,6 @@
 
 			if (isset($_POST['solutions']) && !empty($_POST['solutions']))
 			{
-				mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Solutions'");
 				foreach ($_POST['solutions'] as $item) {
 					$title = "Solutions";
 				   $icon = "check_circle";
@@ -209,10 +210,25 @@
 											<input class="form-control" type="number" name="order" id="order" value="<?php echo $b['order_no']; ?>" placeholder="1">
 										</div>
 									</div>
-									<div class="col-md-12">
+									<div class="col-md-8">
 										<div class="commonSection mb-0">
 											<label>Description</label>
 											<textarea name="editor1" id="editor1" class="form-control" rows="5" required placeholder="Enter description"><?php echo $b['content']; ?></textarea>
+											<script type="text/javascript">
+												CKEDITOR.editorConfig = function (config) {
+													config.language = 'es';
+													config.uiColor = '#F7B42C';
+													config.height = 300;
+													config.toolbarCanCollapse = true;
+												};
+												CKEDITOR.replace('editor1');
+											</script>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="commonSection">
+											<label>Banner Description</label>
+											<textarea class="form-control" name="banner_desc" id="banner_desc" rows="5" required placeholder="Enter banner description"><?php echo $b['banner_desc']; ?></textarea>
 										</div>
 									</div>
 								</div>
@@ -358,36 +374,36 @@
 										</div>
 									</div>
 									<div class="col-lg-3 col-md-6">
-										<div class="commonSection">
-											<label>Designation</label>
-											<input class="form-control" type="text" name="designation" value="<?php echo $b['designation']; ?>" placeholder="Designation">
-										</div>
-									</div>
-									<div class="col-lg-4 col-md-6">
 										<div class="commonSection mb-0">
 											<label>Company / Hotel Name</label>
 											<input class="form-control" type="text" name="company" value="<?php echo $b['company']; ?>" placeholder="Company name">
 										</div>
 									</div>
-									<div class="col-lg-2 col-md-6">
+									<div class="col-lg-3 col-md-6" style="display: none;">
+										<div class="commonSection">
+											<label>Designation</label>
+											<input class="form-control" type="text" name="designation" value="<?php echo $b['designation']; ?>" placeholder="Designation">
+										</div>
+									</div>
+									<div class="col-lg-2 col-md-6" style="display: none;">
 										<div class="commonSection mb-0">
 											<label>Background Color</label>
 											<input class="form-control" type="text" name="back_color" value="<?php echo $b['back_color']; ?>" placeholder="#0E3528">
 										</div>
 									</div>
-									<div class="col-lg-2 col-md-6">
+									<div class="col-lg-2 col-md-6" style="display: none;">
 										<div class="commonSection mb-0">
 											<label>Text Color</label>
 											<input class="form-control" type="text" name="text_color" value="<?php echo $b['text_color']; ?>" placeholder="#FFFFFF">
 										</div>
 									</div>
-									<div class="col-lg-2 col-md-6">
+									<div class="col-lg-2 col-md-6" style="display: none;">
 										<div class="commonSection mb-0">
 											<label>Accent Color</label>
 											<input class="form-control" type="text" name="accent_color" value="<?php echo $b['accent_color']; ?>" placeholder="#C9A45A">
 										</div>
 									</div>
-									<div class="col-lg-2 col-md-6">
+									<div class="col-lg-2 col-md-6" style="display: none;">
 										<div class="commonSection mb-0">
 											<label>Border Radius</label>
 											<input class="form-control" type="number" name="border" value="<?php echo $b['border']; ?>" placeholder="12">

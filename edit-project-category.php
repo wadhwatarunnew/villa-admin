@@ -5,15 +5,15 @@
 	include_once('common/header.php');
 
 	$id=$_GET['id'];
-	$query3= mysqli_query($con, "SELECT * FROM project_category WHERE id=$id");
-	$b=mysqli_fetch_assoc($query3);
+	$query3 = mysqli_query($con, "SELECT * FROM project_category WHERE id=$id");
+	$b = mysqli_fetch_assoc($query3);
 
 	if (isset($_POST['update']))
 	{
 		$page 		= "Update";
-		$metaTitle  = $_POST['metaTitle'];
-		$keyword 	= $_POST['keyword'];
-		$disc 		= $_POST['disc'];
+		$metaTitle  = mysqli_real_escape_string($con, $_POST['metaTitle']);
+		$keyword 	= mysqli_real_escape_string($con, $_POST['keyword']);
+		$disc 		= mysqli_real_escape_string($con, $_POST['disc']);
 		$title 		= mysqli_real_escape_string($con, $_POST['title']);
 		$order 		= $_POST['order'];
 		$ShortDesc  = mysqli_real_escape_string($con, $_POST['short_description']);
@@ -60,13 +60,13 @@
 	if (isset($_POST['update1']))
 	{
 		$page 		= "Update";
-		$metaTitle1 = $_POST['metaTitle1'];
-		$keyword1 	= $_POST['keyword1'];
-		$disc1 		= $_POST['disc1'];
-		$title1 	= $_POST['title1'];
-		$order1 	= $_POST['order1'];
-		$ShortDesc  = $_POST['short_description1'];
-		$editor2 	= $_POST['editor2'];
+		$metaTitle1 = mysqli_real_escape_string($con, $_POST['metaTitle']);
+		$keyword1 	= mysqli_real_escape_string($con, $_POST['keyword']);
+		$disc1 		= mysqli_real_escape_string($con, $_POST['disc']);
+		$title1 		= mysqli_real_escape_string($con, $_POST['title1']);
+		$order1 		= $_POST['order1'];
+		$ShortDesc  = mysqli_real_escape_string($con, $_POST['short_description1']);
+		$editor2 	= mysqli_real_escape_string($con, $_POST['editor2']);
 		$imageUrl1 	= $_POST['image1'];
 		$color 		= $_POST['color'];
 		$myFile1 	= $_FILES['myFile1']['name'];
@@ -92,7 +92,7 @@
 				
 				if(!$_FILES['myFile1']['name'])
 				{	
-					mysqli_query($con,"update project_category SET title='$title1', order_no='$order1', short_desc='$ShortDesc', content='$editor2', metatitle='$metaTitle1', keyword='$keyword1', discription='$disc1', color='$color' where id=$id");
+					mysqli_query($con,"UPDATE project_category SET title='$title1', order_no='$order1', short_desc='$ShortDesc', content='$editor2', metatitle='$metaTitle1', keyword='$keyword1', discription='$disc1', color='$color' WHERE id=$id");
 		        	$_SESSION['BannerColor'] = "background-color:#4BB543;";
 		      	$_SESSION['Message'] = "Updated Successfully!";
 		      	echo "<script>window.location.href='edit-project-category.php?id=$id';</script>";
@@ -100,7 +100,7 @@
 				}
 				else
 				{
-					mysqli_query($con, "update project_category SET title='$title1', order_no='$order1', short_desc='$ShortDesc', content='$editor2', local_path='$path1', metatitle='$metaTitle1', keyword='$keyword1', discription='$disc1', color='$color' where id=$id");
+					mysqli_query($con, "UPDATE project_category SET title='$title1', order_no='$order1', short_desc='$ShortDesc', content='$editor2', local_path='$path1', metatitle='$metaTitle1', keyword='$keyword1', discription='$disc1', color='$color' WHERE id=$id");
 		        	$_SESSION['BannerColor'] = "background-color:#4BB543;";
 		      	$_SESSION['Message'] = "Updated Successfully!";
 		      	echo "<script>window.location.href='edit-project-category.php?id=$id';</script>";
@@ -110,7 +110,7 @@
 		}
 		else
 		{
-			mysqli_query($con,"update project_category SET title='$title1',order_no='$order1', short_desc='$ShortDesc',content='$editor2',image='$imageUrl1',local_path='',metatitle='$metaTitle1',keyword='$keyword1',discription='$disc1',color='$color' where id=$id");
+			mysqli_query($con, "UPDATE project_category SET title='$title1',order_no='$order1', short_desc='$ShortDesc',content='$editor2',image='$imageUrl1',local_path='',metatitle='$metaTitle1',keyword='$keyword1',discription='$disc1',color='$color' WHERE id=$id");
         	$_SESSION['BannerColor'] = "background-color:#4BB543;";
       	$_SESSION['Message'] = "Updated Successfully!";
       	echo "<script>window.location.href='edit-project-category.php?id=$id';</script>";

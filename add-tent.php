@@ -12,6 +12,7 @@
 		$disc = $_POST['disc'];
 		$cat = $_POST['cat'];
 		$title = mysqli_real_escape_string($con, $_POST['title']);
+		$BannerDesc = mysqli_real_escape_string($con, $_POST['banner_desc']);
 		$editor1 = mysqli_real_escape_string($con, $_POST['editor1']);
 		$order = $_POST['order'];
 		$status = $_POST['status'];
@@ -35,7 +36,7 @@
 		{
 			if($myFile == '')
 			{
-				mysqli_query($con,"INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, content, y_url, dimension, image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$editor1', '$y_url', '$editor2', '', '$status') ");
+				mysqli_query($con,"INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, banner_desc, content, y_url, dimension, image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$BannerDesc', '$editor1', '$y_url', '$editor2', '', '$status') ");
 				$LastInsertID = mysqli_insert_id($con);
 			}
 			elseif($myFile != '' && (file_exists("uploads/pageimages/".$myFile) || file_exists("uploads/pageimages/addgallery/".$myFile) || file_exists("uploads/pageimages/addgallery/project/".$myFile) || file_exists("uploads/pageimages/addgallery/resort/".$myFile) || file_exists("uploads/pageimages/blogs/".$myFile) || file_exists("uploads/pageimages/blogs/single/".$myFile) || file_exists("uploads/pageimages/contact/".$myFile) || file_exists("uploads/pageimages/nav/".$myFile) || file_exists("uploads/pageimages/nav/category/".$myFile) || file_exists("uploads/pageimages/nav/types/".$myFile) || file_exists("uploads/pageimages/project/".$myFile) || file_exists("uploads/pageimages/project/category/".$myFile) || file_exists("uploads/pageimages/project/types/".$myFile) || file_exists("uploads/pageimages/resort/".$myFile) || file_exists("uploads/pageimages/resort/category/".$myFile) || file_exists("uploads/pageimages/resort/types/".$myFile) || file_exists("uploads/pageimages/slider/".$myFile) || file_exists("uploads/pageimages/youtube/".$myFile)))
@@ -55,13 +56,13 @@
 					$ImagePath = $path_original.$myFile;
 				}
 
-				mysqli_query($con,"INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, content, y_url, dimension, local_path, image, floor_image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$editor1', '$y_url', '$editor2', '$ImagePath', '', '$FloorPath', '$status') ");
+				mysqli_query($con,"INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, banner_desc, content, y_url, dimension, local_path, image, floor_image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$BannerDesc', '$editor1', '$y_url', '$editor2', '$ImagePath', '', '$FloorPath', '$status') ");
 				$LastInsertID = mysqli_insert_id($con);
 			}
 		}
 		else
 		{
-			mysqli_query($con, "INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, content, y_url, dimension, local_path, image, floor_image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$editor1', '$y_url', '$editor2', '', '$imageUrl', '$FloorPath', '$status')");
+			mysqli_query($con, "INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, banner_desc, content, y_url, dimension, local_path, image, floor_image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$BannerDesc', '$editor1', '$y_url', '$editor2', '', '$imageUrl', '$FloorPath', '$status')");
 			$LastInsertID = mysqli_insert_id($con);
 		}
 
@@ -246,10 +247,27 @@
 											<input class="form-control" type="number" name="order" id="order" placeholder="Enter order number">
 										</div>
 									</div>
+
 									<div class="col-md-8">
 										<div class="commonSection">
 											<label>Short Description</label>
 											<textarea class="form-control" name="editor1" id="editor1" rows="4" required placeholder="Enter short description"></textarea>
+											<script type="text/javascript">
+												CKEDITOR.editorConfig = function (config) {
+													config.language = 'es';
+													config.uiColor = '#F7B42C';
+													config.height = 300;
+													config.toolbarCanCollapse = true;
+												};
+												CKEDITOR.replace('editor1');
+											</script>
+										</div>
+									</div>
+									
+									<div class="col-md-4">
+										<div class="commonSection">
+											<label>Banner Description</label>
+											<textarea class="form-control" name="banner_desc" id="banner_desc" rows="4" required placeholder="Enter banner description"></textarea>
 										</div>
 									</div>
 

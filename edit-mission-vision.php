@@ -25,23 +25,20 @@
 
       if($ImageFile != '')
       {
-         if((file_exists("uploads/pageimages/".$ImageFile) || file_exists("uploads/pageimages/addgallery/".$ImageFile) || file_exists("uploads/pageimages/addgallery/project/".$ImageFile) || file_exists("uploads/pageimages/addgallery/resort/".$ImageFile) || file_exists("uploads/pageimages/blogs/".$ImageFile) || file_exists("uploads/pageimages/blogs/single/".$ImageFile)  || file_exists("uploads/pageimages/contact/".$ImageFile) || file_exists("uploads/pageimages/nav/".$ImageFile) || file_exists("uploads/pageimages/nav/category/".$ImageFile) || file_exists("uploads/pageimages/nav/types/".$ImageFile) || file_exists("uploads/pageimages/project/".$ImageFile) || file_exists("uploads/pageimages/project/category/".$ImageFile) || file_exists("uploads/pageimages/project/types/".$ImageFile) || file_exists("uploads/pageimages/resort/".$ImageFile) || file_exists("uploads/pageimages/resort/category/".$ImageFile) || file_exists("uploads/pageimages/resort/types/".$ImageFile) || file_exists("uploads/pageimages/slider/".$ImageFile) || file_exists("uploads/pageimages/youtube/".$ImageFile)))
+         if(isset($_FILES["background_image"]["name"]) && $_FILES["background_image"]["name"] != '' && move_uploaded_file($_FILES['background_image']['tmp_name'], $path.$ImageFile))
          {
-            $FileExists = true;
-            $_SESSION['BannerColor'] = "background-color:#FF0000;";
-            $_SESSION['Message'] = "Selected image already exists!";
+            $path = $path_original.$ImageFile;
+            mysqli_query($con, "UPDATE mission_vision SET mission_title='$MissionTitle', mission_heading='$MissionHeading', mission_desc='$MissionDesc', vision_title='$VisionTitle', vision_heading='$VisionHeading', vision_desc='$VisionDesc', image='$path', display_order='$DisplayOrder', status='$Status', updated_at='$CurrentDateTime' WHERE id='$id'");
+
+            $_SESSION['BannerColor'] = "background-color:#4BB543;";
+            $_SESSION['Message'] = "Updated Successfully!";
             echo "<script>window.location.href='edit-mission-vision.php?id=$id';</script>";
             exit;
          }
          else
          {
-            move_uploaded_file($_FILES['background_image']['tmp_name'],$path.$ImageFile) ;
-            $path = $path_original.$ImageFile;
-            
-            mysqli_query($con, "UPDATE mission_vision SET mission_title='$MissionTitle', mission_heading='$MissionHeading', mission_desc='$MissionDesc', vision_title='$VisionTitle', vision_heading='$VisionHeading', vision_desc='$VisionDesc', image='$path', display_order='$DisplayOrder', status='$Status', updated_at='$CurrentDateTime' WHERE id='$id'");
-
-            $_SESSION['BannerColor'] = "background-color:#4BB543;";
-            $_SESSION['Message'] = "Updated Successfully!";
+            $_SESSION['BannerColor'] = "background-color:#FF0000;";
+            $_SESSION['Message'] = "Unable to update image!";
             echo "<script>window.location.href='edit-mission-vision.php?id=$id';</script>";
             exit;
          }
@@ -121,13 +118,13 @@
 
                               <div class="form-group mb-20">
                                  <label class="banner-form-label">Heading <span class="required">*</span></label>
-                                 <input type="text" class="form-control banner-form-control" name="mission_heading" id="mission_heading" maxlength="100" value="<?php echo mysqli_real_escape_string($con, $MissionRow['mission_heading']); ?>" placeholder="Enter heading" required>
+                                 <input type="text" class="form-control banner-form-control" name="mission_heading" id="mission_heading" maxlength="100" value="<?php echo $MissionRow['mission_heading']; ?>" placeholder="Enter heading" required>
                                  <div class="counter-char-counter"><span id="mission_heading_char_count">57</span>/100</div>
                               </div>
 
                               <div class="form-group mb-0">
                                  <label class="banner-form-label">Description <span class="required">*</span></label>
-                                 <textarea name="mission_description" id="mission_description" class="form-control banner-form-control" rows="6" maxlength="300" placeholder="Enter description..." required><?php echo mysqli_real_escape_string($con, $MissionRow['mission_desc']); ?></textarea>
+                                 <textarea name="mission_description" id="mission_description" class="form-control banner-form-control" rows="6" maxlength="300" placeholder="Enter description..." required><?php echo $MissionRow['mission_desc']; ?></textarea>
                                  <div class="counter-char-counter"><span id="mission_desc_char_count">116</span>/300</div>
                               </div>
                            </div>
@@ -140,19 +137,19 @@
                            <div class="card-body">
                               <div class="form-group mb-20">
                                  <label class="banner-form-label">Sub Heading <span class="required">*</span></label>
-                                 <input type="text" class="form-control banner-form-control" name="vision_sub_heading" id="vision_sub_heading" maxlength="50" value="<?php echo mysqli_real_escape_string($con, $MissionRow['vision_title']); ?>" placeholder="Enter sub heading" required>
+                                 <input type="text" class="form-control banner-form-control" name="vision_sub_heading" id="vision_sub_heading" maxlength="50" value="<?php echo $MissionRow['vision_title']; ?>" placeholder="Enter sub heading" required>
                                  <div class="counter-char-counter"><span id="vision_sub_char_count">10</span>/50</div>
                               </div>
 
                               <div class="form-group mb-20">
                                  <label class="banner-form-label">Heading <span class="required">*</span></label>
-                                 <input type="text" class="form-control banner-form-control" name="vision_heading" id="vision_heading" maxlength="100" value="<?php echo mysqli_real_escape_string($con, $MissionRow['vision_heading']); ?>" placeholder="Enter heading" required>
+                                 <input type="text" class="form-control banner-form-control" name="vision_heading" id="vision_heading" maxlength="100" value="<?php echo $MissionRow['vision_heading']; ?>" placeholder="Enter heading" required>
                                  <div class="counter-char-counter"><span id="vision_heading_char_count">45</span>/100</div>
                               </div>
 
                               <div class="form-group mb-0">
                                  <label class="banner-form-label">Description <span class="required">*</span></label>
-                                 <textarea name="vision_description" id="vision_description" class="form-control banner-form-control" rows="6" maxlength="300" placeholder="Enter description..." required><?php echo mysqli_real_escape_string($con, $MissionRow['vision_desc']); ?></textarea>
+                                 <textarea name="vision_description" id="vision_description" class="form-control banner-form-control" rows="6" maxlength="300" placeholder="Enter description..." required><?php echo $MissionRow['vision_desc']; ?></textarea>
                                  <div class="counter-char-counter"><span id="vision_desc_char_count">101</span>/300</div>
                               </div>
                            </div>
