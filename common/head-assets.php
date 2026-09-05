@@ -10,4 +10,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <script src="js/jquery.min.js"></script>
 <script src="js/common.js"></script>
+<script src="material-icons.php?format=js"></script>
+<script src="js/material-icon-catalog.js?v=2"></script>
 <script src="ckeditor/ckeditor.js?ver=1"></script>
