@@ -74,14 +74,9 @@
 		if($Updated)
 		{
 			$CurrentDateTime = Date("Y-m-d H:i:s");
-			$CurrentDateTime = Date("Y-m-d H:i:s");
-	 		mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Quick Info'");
-	 		mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Features'");
-	 		mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Materials'");
-	 		mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Specifications'");
-	 		
 			if (isset($_POST['quick_info']) && !empty($_POST['quick_info']))
 			{
+	 			mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Quick Info'");
 				$titles = $_POST['quick_info']['title'];
 	 			$descriptions = $_POST['quick_info']['description'];
 	 			$icons = $_POST['quick_info']['icon'];
@@ -98,6 +93,7 @@
 
 			if (isset($_POST['features']) && !empty($_POST['features']))
 			{
+	 			mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Features'");
 				$titles = $_POST['features']['title'];
 	 			$descriptions = $_POST['features']['description'];
 	 			$icons = $_POST['features']['icon'];
@@ -114,6 +110,7 @@
 
 			if (isset($_POST['materials']) && !empty($_POST['materials']))
 			{
+				mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Materials'");
 				$titles = $_POST['materials']['title'];
 	 			$descriptions = $_POST['materials']['description'];
 	 			$icons = $_POST['materials']['icon'];
@@ -130,6 +127,7 @@
 
 			if (isset($_POST['specifications']) && !empty($_POST['specifications']))
 			{
+				mysqli_query($con, "DELETE FROM tent_details WHERE tent_id=$id AND category='Specifications'");
 			   $titles = $_POST['specifications']['title'];
 			   $feet = $_POST['specifications']['feet'];
 			   $meters = $_POST['specifications']['meters'];
@@ -291,17 +289,13 @@
 																	<span class="material-icons dynamic-icon-preview">
 														            <?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>
 														        	</span>
-														        	<input type="hidden"
-														               class="form-control form-control-sm dynamic-icon-input"
-														               name="quick_info[icon][]"
-														               value="<?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>">
-														        	<button type="button" class="btn btn-outline-secondary dynamic-icon-picker" title="Choose Icon">Change Icon </button>
 														    	</div>
 															</td>
-															<td><input type="text" class="form-control form-control-sm" name="quick_info[title][]" value="<?php echo $MatRow['title']; ?>"></td>
-															<td><input type="text" class="form-control form-control-sm" name="quick_info[description][]" value="<?php echo $MatRow['description']; ?>"></td>
+															<td><?php echo $MatRow['title']; ?></td>
+															<td><?php echo $MatRow['description']; ?></td>
 															<td>
 																<div class="action-btn-group">
+																	<button type="button" class="btn btn-sm btn-outline-primary btn-action-edit" title="Edit"><i class="feather icon-edit-2"></i></button>
 																	<button type="button" class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete" title="Delete"><i class="feather icon-trash-2"></i></button>
 																</div>
 															</td>
@@ -342,17 +336,13 @@
 																	<span class="material-icons dynamic-icon-preview">
 														            <?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>
 														        	</span>
-															      <input type="hidden"
-															               class="form-control form-control-sm dynamic-icon-input"
-															               name="features[icon][]"
-															               value="<?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>">
-															      <button type="button" class="btn btn-outline-secondary dynamic-icon-picker" title="Choose Icon">Change Icon </button>
 															   </div>
 															</td>
-															<td><input type="text" class="form-control form-control-sm" name="features[title][]" value="<?php echo $MatRow['title']; ?>"></td>
-															<td><input type="text" class="form-control form-control-sm" name="features[description][]" value="<?php echo $MatRow['description']; ?>"></td>
+															<td><?php echo $MatRow['title']; ?></td>
+															<td><?php echo $MatRow['description']; ?></td>
 															<td>
 																<div class="action-btn-group">
+																	<button type="button" class="btn btn-sm btn-outline-primary btn-action-edit" title="Edit"><i class="feather icon-edit-2"></i></button>
 																	<button type="button" class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete" title="Delete"><i class="feather icon-trash-2"></i></button>
 																</div>
 															</td>
@@ -393,17 +383,13 @@
 															    	<span class="material-icons dynamic-icon-preview">
 														            <?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>
 														        	</span>
-															      <input type="hidden"
-														               class="form-control form-control-sm dynamic-icon-input"
-														               name="materials[icon][]"
-														               value="<?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>">
-														        	<button type="button" class="btn btn-outline-secondary dynamic-icon-picker" title="Choose Icon">Change Icon </button>
 															   </div>
 															</td>
-															<td><input type="text" class="form-control form-control-sm" name="materials[title][]" value="<?php echo $MatRow['title']; ?>"></td>
-															<td><input type="text" class="form-control form-control-sm" name="materials[description][]" value="<?php echo $MatRow['description']; ?>"></td>
+															<td><?php echo $MatRow['title']; ?></td>
+															<td><?php echo $MatRow['description']; ?></td>
 															<td>
 																<div class="action-btn-group">
+																	<button type="button" class="btn btn-sm btn-outline-primary btn-action-edit" title="Edit"><i class="feather icon-edit-2"></i></button>
 																	<button type="button" class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete" title="Delete"><i class="feather icon-trash-2"></i></button>
 																</div>
 															</td>
@@ -439,12 +425,12 @@
 														while($SpecsRow = mysqli_fetch_assoc($SpecsResult)) {
 													?>
 														<tr>
-															<td><input type="text" class="form-control form-control-sm" name="specifications[title][]" value="<?php echo $SpecsRow['title']; ?>"></td>
-															<td><input type="text" class="form-control form-control-sm" name="specifications[feet][]" value="<?php echo $SpecsRow['feet']; ?>"></td>
-															<td><input type="text" class="form-control form-control-sm" name="specifications[meters][]" value="<?php echo $SpecsRow['meters']; ?>"></td>
+															<td><?php echo $SpecsRow['title']; ?></td>
+															<td><?php echo $SpecsRow['feet']; ?></td>
+															<td><?php echo $SpecsRow['meters']; ?></td>
 															<td>
 																<div class="action-btn-group">
-																	<!-- <button type="button" class="btn btn-sm btn-outline-success js-edit-spec" title="Edit"><i class="feather icon-edit-2"></i></button> -->
+																	<button type="button" class="btn btn-sm btn-outline-primary btn-action-edit" title="Edit"><i class="feather icon-edit-2"></i></button>
 																	<button type="button" class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete" title="Delete"><i class="feather icon-trash-2"></i></button>
 																</div>
 															</td>
@@ -1071,84 +1057,75 @@
 		}
 
 		function handleSpecSave() {
-	    var modalId = 'addSpecificationModal';
+		    var modalId = 'addSpecificationModal';
 
-	    var title = document.getElementById('specTitle').value.trim();
-	    var feet = document.getElementById('specFeet').value.trim();
-	    var meters = document.getElementById('specMeters').value.trim();
+		    var title = document.getElementById('specTitle').value.trim();
+		    var feet = document.getElementById('specFeet').value.trim();
+		    var meters = document.getElementById('specMeters').value.trim();
 
-	    var editingRow = editingRowByModal[modalId];
+		    var editingRow = editingRowByModal[modalId];
 
-	    if (!title || !feet || !meters) {
-	        alert('Please fill all specification fields.');
-	        return;
-	    }
+		    if (!title || !feet || !meters) {
+		        alert('Please fill all specification fields.');
+		        return;
+		    }
 
-	    if (editingRow) {
-	        // Update visible Title
-	        var titleText = editingRow.cells[0].childNodes[0];
+		    if (editingRow) {
 
-	        if (titleText) {
-	            titleText.textContent = title;
-	        }
+		        /*
+		         * TITLE
+		         */
+		        editingRow.cells[0].textContent = title;
 
-	        // Update hidden title value
-	        var titleHidden = editingRow.cells[0].querySelector(
-	            'input[name="specifications[title][]"]'
-	        );
+		        var titleHidden = document.createElement('input');
+		        titleHidden.type = 'hidden';
+		        titleHidden.name = 'specifications[title][]';
+		        titleHidden.value = title;
 
-	        if (titleHidden) {
-	            titleHidden.value = title;
-	        }
+		        editingRow.cells[0].appendChild(titleHidden);
 
-	        // Update visible Feet input
-	        var feetInput = editingRow.cells[1].querySelector(
-	            'input.form-control'
-	        );
 
-	        if (feetInput) {
-	            feetInput.value = feet;
-	        }
+		        /*
+		         * FEET
+		         */
+		        editingRow.cells[1].textContent = feet;
 
-	        // Update hidden Feet value
-	        var feetHidden = editingRow.cells[1].querySelector(
-	            'input[name="specifications[feet][]"]'
-	        );
+		        var feetHidden = document.createElement('input');
+		        feetHidden.type = 'hidden';
+		        feetHidden.name = 'specifications[feet][]';
+		        feetHidden.value = feet;
 
-	        if (feetHidden) {
-	            feetHidden.value = feet;
-	        }
+		        editingRow.cells[1].appendChild(feetHidden);
 
-	        // Update visible Meters input
-	        var metersInput = editingRow.cells[2].querySelector(
-	            'input.form-control'
-	        );
 
-	        if (metersInput) {
-	            metersInput.value = meters;
-	        }
+		        /*
+		         * METERS
+		         */
+		        editingRow.cells[2].textContent = meters;
 
-	        // Update hidden Meters value
-	        var metersHidden = editingRow.cells[2].querySelector(
-	            'input[name="specifications[meters][]"]'
-	        );
+		        var metersHidden = document.createElement('input');
+		        metersHidden.type = 'hidden';
+		        metersHidden.name = 'specifications[meters][]';
+		        metersHidden.value = meters;
 
-	        if (metersHidden) {
-	            metersHidden.value = meters;
-	        }
+		        editingRow.cells[2].appendChild(metersHidden);
 
-	    } else {
-	        appendSpecificationRow(
-	            modalConfig[modalId].tbodyId,
-	            title,
-	            feet,
-	            meters
-	        );
-	    }
+		    } else {
 
-	    closeModal(modalId);
-	    clearAndResetModal(modalId);
-	}
+		        /*
+		         * ADD NEW ROW
+		         */
+		        appendSpecificationRow(
+		            modalConfig[modalId].tbodyId,
+		            title,
+		            feet,
+		            meters
+		        );
+		    }
+
+		    closeModal(modalId);
+		    clearAndResetModal(modalId);
+		}
 
 		document.getElementById('saveQuickItem').addEventListener('click', function() {
 		    handleSimpleSave(
@@ -1218,31 +1195,34 @@
 				}
 
 				if (tbody.id === 'specificationTableBody') {
-				   editingRowByModal.addSpecificationModal = editRow;
+				    editingRowByModal.addSpecificationModal = editRow;
 
-				   var title = editRow.cells[0].childNodes[0]
-				     ? editRow.cells[0].childNodes[0].textContent.trim()
-				     : '';
+				    var titleCell = editRow.cells[0];
+				    var feetCell = editRow.cells[1];
+				    var metersCell = editRow.cells[2];
 
-				   var feetInput = editRow.cells[1].querySelector(
-				     'input.form-control'
-				   );
+				    // If an input exists, get its value; otherwise get cell text
+				    var titleInput = titleCell.querySelector('input');
+				    var feetInput = feetCell.querySelector('input.form-control');
+				    var metersInput = metersCell.querySelector('input.form-control');
 
-				   var metersInput = editRow.cells[2].querySelector(
-				     'input.form-control'
-				   );
+				    document.getElementById('specTitle').value =
+				        titleInput
+				            ? titleInput.value.trim()
+				            : titleCell.textContent.trim();
 
-				   document.getElementById('specTitle').value = title;
+				    document.getElementById('specFeet').value =
+				        feetInput
+				            ? feetInput.value.trim()
+				            : feetCell.textContent.trim();
 
-				   document.getElementById('specFeet').value =
-				     feetInput ? feetInput.value.trim() : '';
+				    document.getElementById('specMeters').value =
+				        metersInput
+				            ? metersInput.value.trim()
+				            : metersCell.textContent.trim();
 
-				   document.getElementById('specMeters').value =
-				     metersInput ? metersInput.value.trim() : '';
-
-				   setModalHeading('addSpecificationModal', true);
-
-				   openModal('addSpecificationModal');
+				    setModalHeading('addSpecificationModal', true);
+				    openModal('addSpecificationModal');
 				}
 			}
 

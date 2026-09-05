@@ -67,12 +67,10 @@
 		if($Updated)
 		{
 			$CurrentDateTime = Date("Y-m-d H:i:s");
-			mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Project Info'");
-			mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Challenges'");
-			mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Solutions'");
 
 			if (isset($_POST['project_info']) && !empty($_POST['project_info']))
 			{
+				mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Project Info'");
 				foreach ($_POST['project_info'] as $item) {
 					$icon = isset($item['icon']) ? trim($item['icon']) : '';
 				   $title = isset($item['title']) ? trim($item['title']) : '';
@@ -86,9 +84,10 @@
 
 			if (isset($_POST['challenges']) && !empty($_POST['challenges']))
 			{
+				mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Challenges'");
 				foreach ($_POST['challenges'] as $item) {
-					$title = isset($item['title']) ? trim($item['title']) : '';
-				   $icon = isset($item['icon']) ? trim($item['icon']) : '';
+					$title = "Challenges";
+				   $icon = "task_alt";
 				   $description = isset($item['description']) ? trim($item['description']) : '';
 				   $orderNo = isset($item['order']) ? (int)$item['order'] : 0;
 
@@ -100,9 +99,10 @@
 
 			if (isset($_POST['solutions']) && !empty($_POST['solutions']))
 			{
+				mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Solutions'");
 				foreach ($_POST['solutions'] as $item) {
-					$title = isset($item['title']) ? trim($item['title']) : '';
-				   $icon = isset($item['icon']) ? trim($item['icon']) : '';
+					$title = "Solutions";
+				   $icon = "check_circle";
 				   $description = isset($item['description']) ? trim($item['description']) : '';
 				   $orderNo = isset($item['order']) ? (int)$item['order'] : 0;
 
@@ -242,12 +242,12 @@
 												while($Row = mysqli_fetch_assoc($Result)) {
 											?>
 												<tr>
-													<td><span class="material-icons"><?php echo $Row['icon']; ?></span></td>
-													<td><input type="text" class="form-control form-control-sm" name="project_info[<?php echo $i; ?>][title]" value="<?php echo $Row['title']; ?>"></td>
-													<td><input type="text" class="form-control form-control-sm" name="project_info[<?php echo $i; ?>][description]" value="<?php echo $Row['description']; ?>"></td>
+													<td data-icon="<?php echo $Row['icon']; ?>"><span class="material-icons"><?php echo $Row['icon']; ?></span></td>
+													<td><?php echo $Row['title']; ?></td>
+													<td><?php echo $Row['description']; ?></td>
 													<td>
 														<div class="action-btn-group">
-															<!-- <button type="button" class="btn btn-sm btn-outline-success js-row-edit" title="Edit"><i class="feather icon-edit-2"></i></button> -->
+															<button type="button" class="btn btn-sm btn-outline-success js-edit-row" title="Edit"><i class="feather icon-edit-2"></i></button>
 															<button type="button" class="btn btn-sm btn-outline-danger js-delete-row" title="Delete"><i class="feather icon-trash-2"></i></button>
 														</div>
 													</td>
@@ -271,8 +271,6 @@
 											<table class="table table-bordered table-sm mb-0 listing-table">
 												<thead>
 													<tr>
-														<th>Icon</th>
-														<th>Title</th>
 														<th>Description</th>
 														<th>Order</th>
 														<th style="width:140px;">Actions</th>
@@ -285,13 +283,11 @@
 														while($Row = mysqli_fetch_assoc($Result)) {
 													?>
 														<tr>
-															<td><span class="material-icons"><?php echo $Row['icon']; ?></span></td>
-															<td><input type="text" class="form-control form-control-sm" name="challenges[<?php echo $i; ?>][title]" value="<?php echo $Row['title']; ?>"></td>
-															<td><input type="text" class="form-control form-control-sm" name="challenges[<?php echo $i; ?>][description]" value="<?php echo $Row['description']; ?>"></td>
-															<td><input type="number" class="form-control form-control-sm" name="challenges[<?php echo $i; ?>][order]" value="<?php echo $Row['sort_order']; ?>"></td>
+															<td><?php echo $Row['description']; ?></td>
+															<td><?php echo $Row['sort_order']; ?></td>
 															<td>
 																<div class="action-btn-group">
-																	<!-- <button type="button" class="btn btn-sm btn-outline-success js-row-edit" title="Edit"><i class="feather icon-edit-2"></i></button> -->
+																	<button type="button" class="btn btn-sm btn-outline-success js-edit-row" title="Edit"><i class="feather icon-edit-2"></i></button>
 																	<button type="button" class="btn btn-sm btn-outline-danger js-delete-row" title="Delete"><i class="feather icon-trash-2"></i></button>
 																</div>
 															</td>
@@ -315,8 +311,6 @@
 											<table class="table table-bordered table-sm mb-0 listing-table">
 												<thead>
 													<tr>
-														<th>Icon</th>
-														<th>Title</th>
 														<th>Description</th>
 														<th>Order</th>
 														<th style="width:140px;">Actions</th>
@@ -329,13 +323,11 @@
 														while($Row = mysqli_fetch_assoc($Result)) {
 													?>
 														<tr>
-															<td><span class="material-icons"><?php echo $Row['icon']; ?></span></td>
-															<td><input type="text" class="form-control form-control-sm" name="solutions[<?php echo $i; ?>][title]" value="<?php echo $Row['title']; ?>"></td>
-															<td><input type="text" class="form-control form-control-sm" name="solutions[<?php echo $i; ?>][description]" value="<?php echo $Row['description']; ?>"></td>
-															<td><input type="number" class="form-control form-control-sm" name="solutions[<?php echo $i; ?>][order]" value="<?php echo $Row['sort_order']; ?>"></td>
+															<td><?php echo $Row['description']; ?></td>
+															<td><?php echo $Row['sort_order']; ?></td>
 															<td>
 																<div class="action-btn-group">
-																	<!-- <button type="button" class="btn btn-sm btn-outline-success js-row-edit" title="Edit"><i class="feather icon-edit-2"></i></button> -->
+																	<button type="button" class="btn btn-sm btn-outline-success js-edit-row" title="Edit"><i class="feather icon-edit-2"></i></button>
 																	<button type="button" class="btn btn-sm btn-outline-danger js-delete-row" title="Delete"><i class="feather icon-trash-2"></i></button>
 																</div>
 															</td>
@@ -497,18 +489,6 @@
 									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 								</div>
 								<div class="modal-body">
-									<div class="commonSection"><label>Title</label><input type="text" class="form-control" id="challengeTitle" placeholder="Extreme weather conditions"></div>
-									<div class="commonSection">
-										<label>Icon</label>
-										<div class="counter-icon-box">
-											<div class="counter-icon-preview">
-												<span class="material-icons" id="challengeIconPreview">warning</span>
-											</div>
-											<input type="hidden" id="challengeIcon" value="warning">
-											<button type="button" class="btn btn-success btn-sm" data-icon-target="challenge" onclick="openProjectIconPicker('challenge')"><i class="feather icon-edit"></i> Change Icon</button>
-											<div class="counter-icon-help" id="challengeSelectedIconName">Selected: warning</div>
-										</div>
-									</div>
 									<div class="commonSection"><label>Description</label><textarea class="form-control" id="challengeDescription" rows="3" placeholder="Enter description"></textarea></div>
 									<div class="commonSection mb-0"><label>Order</label><input type="number" class="form-control" id="challengeOrder" placeholder="1"></div>
 								</div>
@@ -528,18 +508,6 @@
 									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 								</div>
 								<div class="modal-body">
-									<div class="commonSection"><label>Title</label><input type="text" class="form-control" id="solutionTitle" placeholder="High-quality all-weather fabrics"></div>
-									<div class="commonSection">
-										<label>Icon</label>
-										<div class="counter-icon-box">
-											<div class="counter-icon-preview">
-												<span class="material-icons" id="solutionIconPreview">verified</span>
-											</div>
-											<input type="hidden" id="solutionIcon" value="verified">
-											<button type="button" class="btn btn-success btn-sm" data-icon-target="solution" onclick="openProjectIconPicker('solution')"><i class="feather icon-edit"></i> Change Icon</button>
-											<div class="counter-icon-help" id="solutionSelectedIconName">Selected: verified</div>
-										</div>
-									</div>
 									<div class="commonSection"><label>Description</label><textarea class="form-control" id="solutionDescription" rows="3" placeholder="Enter description"></textarea></div>
 									<div class="commonSection mb-0"><label>Order</label><input type="number" class="form-control" id="solutionOrder" placeholder="1"></div>
 								</div>
@@ -592,773 +560,1288 @@
 <?php include_once('common/footer.php'); ?>
 
 <script>
-	(function() {
+	(function () {
+
 		var rowToDelete = null;
 
-		function ensureEmptyState(tbodyId) {
-			var tbody = document.getElementById(tbodyId);
-			if (!tbody) {
-				return;
-			}
-			var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr')).filter(function(row) {
-				return !row.classList.contains('no-record-row');
-			});
-			var emptyRow = tbody.querySelector('.no-record-row');
-			if (rows.length === 0) {
-				if (!emptyRow) {
-					emptyRow = document.createElement('tr');
-					emptyRow.className = 'no-record-row';
-					emptyRow.innerHTML = '<td colspan="' + (tbody.getAttribute('data-empty-cols') || '4') + '">No record found. Click on Add.</td>';
-					tbody.appendChild(emptyRow);
-				}
-			} else if (emptyRow) {
-				emptyRow.remove();
-			}
-		}
-
-		function openModal(id) {
-			var modalEl = document.getElementById(id);
-			if (!modalEl) {
-				return;
-			}
-			bootstrap.Modal.getOrCreateInstance(modalEl).show();
-		}
-
-		function closeModal(id) {
-			var modalEl = document.getElementById(id);
-			if (!modalEl) {
-				return;
-			}
-			var modal = bootstrap.Modal.getInstance(modalEl);
-			if (modal) {
-				modal.hide();
-			}
-		}
-
-		document.addEventListener('click', function(event) {
-			var editBtn = event.target.closest('.js-row-edit');
-			if (editBtn) {
-				var row = editBtn.closest('tr');
-				if (!row) {
-					return;
-				}
-				var rowInputs = row.querySelectorAll('input');
-				if (!rowInputs.length) {
-					return;
-				}
-				var isLocked = rowInputs[0].hasAttribute('readonly');
-				Array.prototype.forEach.call(rowInputs, function(input) {
-					if (isLocked) {
-						input.removeAttribute('readonly');
-					} else {
-						input.setAttribute('readonly', 'readonly');
-					}
-				});
-				if (isLocked) {
-					editBtn.classList.remove('btn-outline-success');
-					editBtn.classList.add('btn-success');
-					editBtn.setAttribute('title', 'Save');
-					var iconEdit = editBtn.querySelector('i');
-					if (iconEdit) {
-						iconEdit.className = 'feather icon-check';
-					}
-					rowInputs[0].focus();
-				} else {
-					editBtn.classList.remove('btn-success');
-					editBtn.classList.add('btn-outline-success');
-					editBtn.setAttribute('title', 'Edit');
-					var iconSave = editBtn.querySelector('i');
-					if (iconSave) {
-						iconSave.className = 'feather icon-edit-2';
-					}
-				}
-				return;
-			}
-		});
-
-		['projectInfoTableBody', 'challengeTableBody', 'solutionTableBody'].forEach(function(tbodyId) {
-			ensureEmptyState(tbodyId);
-		});
-	})();
-
-	(function() {
-		var rowToDelete = null;
-		var activeIconTarget = null;
 		var editingState = {
 			projectInfo: null,
 			challenge: null,
 			solution: null
 		};
 
-		var iconList = [
-			'home', 'apartment', 'cottage', 'house', 'hotel',
-			'groups', 'people', 'person', 'person_outline', 'face',
-			'verified', 'badge', 'workspace_premium', 'emoji_events', 'star',
-			'public', 'language', 'location_on', 'map', 'place',
-			'construction', 'foundation', 'build', 'architecture', 'engineering',
-			'trending_up', 'show_chart', 'timeline', 'insights', 'analytics',
-			'favorite', 'thumb_up', 'mood', 'support_agent', 'handshake',
-			'calendar_today', 'schedule', 'access_time', 'history', 'event',
-			'warning', 'task_alt', 'check_circle', 'gpp_good', 'bolt'
-		];
+		var activeIconTarget = null;
 
-		function actionButtons() {
-			return '<div class="action-btn-group"><button type="button" class="btn btn-sm btn-outline-success js-edit-row" title="Edit"><i class="feather icon-edit-2"></i></button><button type="button" class="btn btn-sm btn-outline-danger js-delete-row" title="Delete"><i class="feather icon-trash-2"></i></button></div>';
-		}
-
-		function iconCell(iconName) {
-			return '<span class="material-icons">' + iconName + '</span><div class="counter-icon-help">' + iconName + '</div>';
-		}
-
-		function ensureEmptyState(tbodyId) {
-			var tbody = document.getElementById(tbodyId);
-			if (!tbody) {
-				return;
-			}
-			var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr')).filter(function(row) {
-				return !row.classList.contains('no-record-row');
-			});
-			var emptyRow = tbody.querySelector('.no-record-row');
-			if (rows.length === 0) {
-				if (!emptyRow) {
-					emptyRow = document.createElement('tr');
-					emptyRow.className = 'no-record-row';
-					emptyRow.innerHTML = '<td colspan="' + (tbody.getAttribute('data-empty-cols') || '4') + '">No record found. Click on Add.</td>';
-					tbody.appendChild(emptyRow);
-				}
-			} else if (emptyRow) {
-				emptyRow.remove();
-			}
-		}
+		/* =========================================================
+		   HELPERS
+		========================================================= */
 
 		function openModal(id) {
 			var modalEl = document.getElementById(id);
+
 			if (!modalEl) {
 				return;
 			}
-			bootstrap.Modal.getOrCreateInstance(modalEl).show();
+
+			bootstrap.Modal
+				.getOrCreateInstance(modalEl)
+				.show();
 		}
 
 		function closeModal(id) {
 			var modalEl = document.getElementById(id);
+
 			if (!modalEl) {
 				return;
 			}
+
 			var modal = bootstrap.Modal.getInstance(modalEl);
+
 			if (modal) {
 				modal.hide();
 			}
 		}
 
-		function appendProjectInfoRow(icon, title, description) {
-		    var tbody = document.getElementById('projectInfoTableBody');
-
-		    if (!tbody) {
-		        return;
-		    }
-
-		    var emptyRow = tbody.querySelector('.no-record-row');
-
-		    if (emptyRow) {
-		        emptyRow.remove();
-		    }
-
-		    var row = document.createElement('tr');
-
-		    var iconCell = document.createElement('td');
-		    iconCell.setAttribute('data-icon', icon);
-
-		    var iconSpan = document.createElement('span');
-		    iconSpan.className = 'material-icons';
-		    iconSpan.textContent = icon;
-
-		    var iconHelp = document.createElement('div');
-		    iconHelp.className = 'counter-icon-help';
-		    iconHelp.textContent = icon;
-
-		    iconCell.appendChild(iconSpan);
-		    iconCell.appendChild(iconHelp);
-
-		    var titleCell = document.createElement('td');
-		    titleCell.textContent = title;
-
-		    var descriptionCell = document.createElement('td');
-		    descriptionCell.textContent = description;
-
-		    var actionCell = document.createElement('td');
-		    actionCell.innerHTML = actionButtons();
-
-		    row.appendChild(iconCell);
-		    row.appendChild(titleCell);
-		    row.appendChild(descriptionCell);
-		    row.appendChild(actionCell);
-
-		    tbody.appendChild(row);
-
-		    updateDynamicFormInputs();
-		}
-
 		function escapeHtml(value) {
-		    var div = document.createElement('div');
-		    div.textContent = value || '';
-		    return div.innerHTML;
+			var div = document.createElement('div');
+
+			div.textContent = value || '';
+
+			return div.innerHTML;
 		}
 
-		function appendChallengeRow(title, icon, description, order) {
-			var tbody = document.getElementById('challengeTableBody');
+		function ensureEmptyState(tbodyId) {
+
+			var tbody = document.getElementById(tbodyId);
+
 			if (!tbody) {
 				return;
 			}
-			ensureEmptyState('challengeTableBody');
-			var row = document.createElement('tr');
-			row.innerHTML = '<td>' + title + '</td><td data-icon="' + icon + '">' + iconCell(icon) + '</td><td>' + description + '</td><td>' + order + '</td><td>' + actionButtons() + '</td>';
-			tbody.appendChild(row);
-			ensureEmptyState('challengeTableBody');
+
+			var rows = Array.prototype.slice.call(
+				tbody.querySelectorAll('tr')
+			).filter(function (row) {
+				return !row.classList.contains('no-record-row');
+			});
+
+			var emptyRow = tbody.querySelector('.no-record-row');
+
+			if (rows.length === 0) {
+
+				if (!emptyRow) {
+
+					emptyRow = document.createElement('tr');
+
+					emptyRow.className = 'no-record-row';
+
+					emptyRow.innerHTML =
+						'<td colspan="' +
+						(tbody.getAttribute('data-empty-cols') || '4') +
+						'">' +
+						'No record found. Click on Add.' +
+						'</td>';
+
+					tbody.appendChild(emptyRow);
+				}
+
+			} else if (emptyRow) {
+
+				emptyRow.remove();
+			}
 		}
 
-		function appendSolutionRow(title, icon, description, order) {
-			var tbody = document.getElementById('solutionTableBody');
+		function actionButtons() {
+
+			return `
+				<div class="action-btn-group">
+
+					<button
+						type="button"
+						class="btn btn-sm btn-outline-success js-edit-row"
+						title="Edit">
+						<i class="feather icon-edit-2"></i>
+					</button>
+
+					<button
+						type="button"
+						class="btn btn-sm btn-outline-danger js-delete-row"
+						title="Delete">
+						<i class="feather icon-trash-2"></i>
+					</button>
+
+				</div>
+			`;
+		}
+
+
+		/* =========================================================
+		   ADD PROJECT INFO
+		========================================================= */
+
+		function appendProjectInfoRow(icon, title, description) {
+
+			var tbody =
+				document.getElementById('projectInfoTableBody');
+
 			if (!tbody) {
 				return;
 			}
-			ensureEmptyState('solutionTableBody');
-			var row = document.createElement('tr');
-			row.innerHTML = '<td>' + title + '</td><td data-icon="' + icon + '">' + iconCell(icon) + '</td><td>' + description + '</td><td>' + order + '</td><td>' + actionButtons() + '</td>';
+
+			var emptyRow =
+				tbody.querySelector('.no-record-row');
+
+			if (emptyRow) {
+				emptyRow.remove();
+			}
+
+			var row =
+				document.createElement('tr');
+
+			row.innerHTML = `
+
+				<td data-icon="${escapeHtml(icon)}">
+
+					<span class="material-icons">
+						${escapeHtml(icon)}
+					</span>
+
+					<div class="counter-icon-help">
+						${escapeHtml(icon)}
+					</div>
+
+				</td>
+
+				<td>
+					${escapeHtml(title)}
+				</td>
+
+				<td>
+					${escapeHtml(description)}
+				</td>
+
+				<td>
+					${actionButtons()}
+				</td>
+			`;
+
 			tbody.appendChild(row);
-			ensureEmptyState('solutionTableBody');
+
+			updateDynamicFormInputs();
 		}
 
-		function resetProjectInfoModal() {
-			document.getElementById('piIcon').value = 'home';
-			document.getElementById('piIconPreview').textContent = 'home';
-			document.getElementById('piSelectedIconName').textContent = 'Selected: home';
-			document.getElementById('piTitle').value = '';
-			document.getElementById('piDescription').value = '';
-			document.getElementById('saveProjectInfo').textContent = 'Add Item';
-			document.querySelector('#projectInfoModal .modal-title').textContent = 'Add Project Information';
-			editingState.projectInfo = null;
+
+		/* =========================================================
+		   ADD CHALLENGE
+		========================================================= */
+
+		function appendChallengeRow(description, order) {
+
+			var tbody =
+				document.getElementById('challengeTableBody');
+
+			if (!tbody) {
+				return;
+			}
+
+			var emptyRow =
+				tbody.querySelector('.no-record-row');
+
+			if (emptyRow) {
+				emptyRow.remove();
+			}
+
+			var row =
+				document.createElement('tr');
+
+			row.innerHTML = `
+
+				<td>
+					${escapeHtml(description)}
+				</td>
+
+				<td>
+					${escapeHtml(order)}
+				</td>
+
+				<td>
+					${actionButtons()}
+				</td>
+			`;
+
+			tbody.appendChild(row);
+
+			updateDynamicFormInputs();
 		}
 
-		function resetChallengeModal() {
-			document.getElementById('challengeTitle').value = '';
-			document.getElementById('challengeIcon').value = 'warning';
-			document.getElementById('challengeIconPreview').textContent = 'warning';
-			document.getElementById('challengeSelectedIconName').textContent = 'Selected: warning';
-			document.getElementById('challengeDescription').value = '';
-			document.getElementById('challengeOrder').value = '';
-			document.getElementById('saveChallenge').textContent = 'Add Challenge';
-			document.querySelector('#challengeModal .modal-title').textContent = 'Add Challenge';
-			editingState.challenge = null;
+
+		/* =========================================================
+		   ADD SOLUTION
+		========================================================= */
+
+		function appendSolutionRow(description, order) {
+
+			var tbody =
+				document.getElementById('solutionTableBody');
+
+			if (!tbody) {
+				return;
+			}
+
+			var emptyRow =
+				tbody.querySelector('.no-record-row');
+
+			if (emptyRow) {
+				emptyRow.remove();
+			}
+
+			var row =
+				document.createElement('tr');
+
+			row.innerHTML = `
+
+				<td>
+					${escapeHtml(description)}
+				</td>
+
+				<td>
+					${escapeHtml(order)}
+				</td>
+
+				<td>
+					${actionButtons()}
+				</td>
+			`;
+
+			tbody.appendChild(row);
+
+			updateDynamicFormInputs();
 		}
 
-		function resetSolutionModal() {
-			document.getElementById('solutionTitle').value = '';
-			document.getElementById('solutionIcon').value = 'verified';
-			document.getElementById('solutionIconPreview').textContent = 'verified';
-			document.getElementById('solutionSelectedIconName').textContent = 'Selected: verified';
-			document.getElementById('solutionDescription').value = '';
-			document.getElementById('solutionOrder').value = '';
-			document.getElementById('saveSolution').textContent = 'Add Solution';
-			document.querySelector('#solutionModal .modal-title').textContent = 'Add Solution';
-			editingState.solution = null;
-		}
 
-		document.getElementById('saveProjectInfo').addEventListener('click', function() {
-		    var icon = document.getElementById('piIcon').value.trim();
-		    var title = document.getElementById('piTitle').value.trim();
-		    var description = document.getElementById('piDescription').value.trim();
+		/* =========================================================
+		   PROJECT INFO SAVE / UPDATE
+		========================================================= */
 
-		    if (!icon || !title || !description) {
-		        alert('Please fill all Project Information fields.');
-		        return;
-		    }
+		document
+			.getElementById('saveProjectInfo')
+			.addEventListener('click', function () {
 
-		    if (editingState.projectInfo) {
+				var icon =
+					document.getElementById('piIcon').value.trim();
 
-		        var row = editingState.projectInfo;
+				var title =
+					document.getElementById('piTitle').value.trim();
 
-		        row.cells[0].setAttribute('data-icon', icon);
-
-		        row.cells[0].innerHTML =
-		            '<span class="material-icons">' + escapeHtml(icon) + '</span>' +
-		            '<div class="counter-icon-help">' + escapeHtml(icon) + '</div>';
-
-		        row.cells[1].textContent = title;
-		        row.cells[2].textContent = description;
-
-		    } else {
-
-		        appendProjectInfoRow(
-		            icon,
-		            title,
-		            description
-		        );
-		    }
-
-		    updateDynamicFormInputs();
-
-		    closeModal('projectInfoModal');
-
-		    resetProjectInfoModal();
-		});
-
-		document.getElementById('saveChallenge').addEventListener('click', function() {
-		    var title = document.getElementById('challengeTitle').value.trim();
-		    var icon = document.getElementById('challengeIcon').value.trim();
-		    var description = document.getElementById('challengeDescription').value.trim();
-		    var order = document.getElementById('challengeOrder').value.trim();
-
-		    if (!title || !icon || !description || !order) {
-		        alert('Please fill all Challenge fields.');
-		        return;
-		    }
-
-		    if (editingState.challenge) {
-		        editingState.challenge.cells[0].textContent =
-		            title;
-
-		        editingState.challenge.cells[1].setAttribute(
-		            'data-icon',
-		            icon
-		        );
-
-		        editingState.challenge.cells[1].innerHTML =
-		            iconCell(icon);
-
-		        editingState.challenge.cells[2].textContent =
-		            description;
-
-		        editingState.challenge.cells[3].textContent =
-		            order;
-		    } else {
-		        appendChallengeRow(
-		            title,
-		            icon,
-		            description,
-		            order
-		        );
-		    }
-
-		    updateDynamicFormInputs();
-		    closeModal('challengeModal');
-		    resetChallengeModal();
-		});
-
-		document.getElementById('saveSolution').addEventListener('click', function() {
-
-		    var title = document.getElementById('solutionTitle').value.trim();
-		    var icon = document.getElementById('solutionIcon').value.trim();
-		    var description = document.getElementById('solutionDescription').value.trim();
-		    var order = document.getElementById('solutionOrder').value.trim();
+				var description =
+					document.getElementById('piDescription').value.trim();
 
 
-		    if (!title || !icon || !description || !order) {
-		        alert('Please fill all Solution fields.');
-		        return;
-		    }
+				if (!icon || !title || !description) {
 
+					alert(
+						'Please fill all Project Information fields.'
+					);
 
-		    if (editingState.solution) {
-		        editingState.solution.cells[0].textContent =
-		            title;
-
-		        editingState.solution.cells[1].setAttribute(
-		            'data-icon',
-		            icon
-		        );
-
-		        editingState.solution.cells[1].innerHTML =
-		            iconCell(icon);
-
-		        editingState.solution.cells[2].textContent =
-		            description;
-
-		        editingState.solution.cells[3].textContent =
-		            order;
-		    } else {
-		        appendSolutionRow(
-		            title,
-		            icon,
-		            description,
-		            order
-		        );
-		    }
-
-		    updateDynamicFormInputs();
-		    closeModal('solutionModal');
-		    resetSolutionModal();
-		});
-
-		document.addEventListener('click', function(event) {
-			var editBtn = event.target.closest('.js-edit-row');
-			if (editBtn) {
-				var editRow = editBtn.closest('tr');
-				var tbody = editRow ? editRow.closest('tbody') : null;
-				if (!editRow || !tbody) {
 					return;
 				}
 
-				if (tbody.id === 'projectInfoTableBody') {
-					editingState.projectInfo = editRow;
-					var piIcon = editRow.cells[0].getAttribute('data-icon') || 'home';
-					document.getElementById('piIcon').value = piIcon;
-					document.getElementById('piIconPreview').textContent = piIcon;
-					document.getElementById('piSelectedIconName').textContent = 'Selected: ' + piIcon;
-					document.getElementById('piTitle').value = editRow.cells[1].textContent.trim();
-					document.getElementById('piDescription').value = editRow.cells[2].textContent.trim();
-					document.getElementById('saveProjectInfo').textContent = 'Update';
-					document.querySelector('#projectInfoModal .modal-title').textContent = 'Edit Project Information';
-					openModal('projectInfoModal');
+
+				/* EDIT */
+
+				if (editingState.projectInfo) {
+
+					var row =
+						editingState.projectInfo;
+
+					row.cells[0]
+						.setAttribute('data-icon', icon);
+
+					row.cells[0].innerHTML =
+
+						'<span class="material-icons">' +
+						escapeHtml(icon) +
+						'</span>' +
+
+						'<div class="counter-icon-help">' +
+						escapeHtml(icon) +
+						'</div>';
+
+					row.cells[1].textContent =
+						title;
+
+					row.cells[2].textContent =
+						description;
+
 				}
 
-				if (tbody.id === 'challengeTableBody') {
-					editingState.challenge = editRow;
-					document.getElementById('challengeTitle').value = editRow.cells[0].textContent.trim();
-					var challengeIcon = editRow.cells[1].getAttribute('data-icon') || 'warning';
-					document.getElementById('challengeIcon').value = challengeIcon;
-					document.getElementById('challengeIconPreview').textContent = challengeIcon;
-					document.getElementById('challengeSelectedIconName').textContent = 'Selected: ' + challengeIcon;
-					document.getElementById('challengeDescription').value = editRow.cells[2].textContent.trim();
-					document.getElementById('challengeOrder').value = editRow.cells[3].textContent.trim();
-					document.getElementById('saveChallenge').textContent = 'Update';
-					document.querySelector('#challengeModal .modal-title').textContent = 'Edit Challenge';
-					openModal('challengeModal');
+				/* ADD */
+
+				else {
+
+					appendProjectInfoRow(
+						icon,
+						title,
+						description
+					);
 				}
 
-				if (tbody.id === 'solutionTableBody') {
-					editingState.solution = editRow;
-					document.getElementById('solutionTitle').value = editRow.cells[0].textContent.trim();
-					var solutionIcon = editRow.cells[1].getAttribute('data-icon') || 'verified';
-					document.getElementById('solutionIcon').value = solutionIcon;
-					document.getElementById('solutionIconPreview').textContent = solutionIcon;
-					document.getElementById('solutionSelectedIconName').textContent = 'Selected: ' + solutionIcon;
-					document.getElementById('solutionDescription').value = editRow.cells[2].textContent.trim();
-					document.getElementById('solutionOrder').value = editRow.cells[3].textContent.trim();
-					document.getElementById('saveSolution').textContent = 'Update';
-					document.querySelector('#solutionModal .modal-title').textContent = 'Edit Solution';
-					openModal('solutionModal');
-				}
-				return;
-			}
 
-			var deleteBtn = event.target.closest('.js-delete-row');
-			if (deleteBtn) {
-				rowToDelete = deleteBtn.closest('tr');
-				openModal('confirmDeleteModal');
-			}
-		});
+				updateDynamicFormInputs();
 
-		document.getElementById('confirmDeleteYes').addEventListener('click', function() {
+				closeModal('projectInfoModal');
 
-		    if (!rowToDelete) {
-		        return;
-		    }
-
-		    var parentTbody = rowToDelete.closest('tbody');
-
-		    /*
-		     * Remove the actual table row.
-		     */
-		    rowToDelete.remove();
-
-		    /*
-		     * Rebuild hidden inputs from the remaining rows.
-		     * This automatically fixes indexes.
-		     */
-		    updateDynamicFormInputs();
-
-		    /*
-		     * Update empty state.
-		     */
-		    if (parentTbody && parentTbody.id) {
-		        ensureEmptyState(parentTbody.id);
-		    }
-
-		    rowToDelete = null;
-
-		    closeModal('confirmDeleteModal');
-		});
-
-		document.getElementById('confirmDeleteModal').addEventListener('hidden.bs.modal', function() {
-			rowToDelete = null;
-		});
-
-		document.getElementById('projectInfoModal').addEventListener('hidden.bs.modal', resetProjectInfoModal);
-		document.getElementById('challengeModal').addEventListener('hidden.bs.modal', resetChallengeModal);
-		document.getElementById('solutionModal').addEventListener('hidden.bs.modal', resetSolutionModal);
-
-		function openIconPicker(target) {
-			activeIconTarget = target;
-			document.getElementById('project_icon_search').value = '';
-			var pickerItems = document.querySelectorAll('#project_icon_grid .icon-picker-item');
-			Array.prototype.forEach.call(pickerItems, function(item) {
-				item.style.display = '';
+				resetProjectInfoModal();
 			});
-			openModal('projectIconPickerModal');
+
+
+		/* =========================================================
+		   CHALLENGE SAVE / UPDATE
+		========================================================= */
+
+		document
+			.getElementById('saveChallenge')
+			.addEventListener('click', function () {
+
+				var description =
+					document
+						.getElementById('challengeDescription')
+						.value
+						.trim();
+
+				var order =
+					document
+						.getElementById('challengeOrder')
+						.value
+						.trim();
+
+
+				if (!description || !order) {
+
+					alert(
+						'Please fill all Challenge fields.'
+					);
+
+					return;
+				}
+
+
+				/* EDIT */
+
+				if (editingState.challenge) {
+
+					var row =
+						editingState.challenge;
+
+					row.cells[0].textContent =
+						description;
+
+					row.cells[1].textContent =
+						order;
+
+				}
+
+				/* ADD */
+
+				else {
+
+					appendChallengeRow(
+						description,
+						order
+					);
+				}
+
+
+				updateDynamicFormInputs();
+
+				closeModal('challengeModal');
+
+				resetChallengeModal();
+			});
+
+
+		/* =========================================================
+		   SOLUTION SAVE / UPDATE
+		========================================================= */
+
+		document
+			.getElementById('saveSolution')
+			.addEventListener('click', function () {
+
+				var description =
+					document
+						.getElementById('solutionDescription')
+						.value
+						.trim();
+
+				var order =
+					document
+						.getElementById('solutionOrder')
+						.value
+						.trim();
+
+
+				if (!description || !order) {
+
+					alert(
+						'Please fill all Solution fields.'
+					);
+
+					return;
+				}
+
+
+				/* EDIT */
+
+				if (editingState.solution) {
+
+					var row =
+						editingState.solution;
+
+					row.cells[0].textContent =
+						description;
+
+					row.cells[1].textContent =
+						order;
+
+				}
+
+				/* ADD */
+
+				else {
+
+					appendSolutionRow(
+						description,
+						order
+					);
+				}
+
+
+				updateDynamicFormInputs();
+
+				closeModal('solutionModal');
+
+				resetSolutionModal();
+			});
+
+
+		/* =========================================================
+		   EDIT / DELETE BUTTONS
+		========================================================= */
+
+		document.addEventListener(
+			'click',
+			function (event) {
+
+				/* =====================
+				   EDIT
+				===================== */
+
+				var editBtn =
+					event.target.closest('.js-edit-row');
+
+				if (editBtn) {
+
+					var row =
+						editBtn.closest('tr');
+
+					var tbody =
+						row ? row.closest('tbody') : null;
+
+					if (!row || !tbody) {
+						return;
+					}
+
+
+					/* PROJECT INFO */
+
+					if (
+						tbody.id ===
+						'projectInfoTableBody'
+					) {
+
+						editingState.projectInfo =
+							row;
+
+						var icon =
+							row.cells[0]
+								.getAttribute('data-icon') ||
+							'home';
+
+						document
+							.getElementById('piIcon')
+							.value = icon;
+
+						document
+							.getElementById('piIconPreview')
+							.textContent = icon;
+
+						document
+							.getElementById('piSelectedIconName')
+							.textContent =
+							'Selected: ' + icon;
+
+						document
+							.getElementById('piTitle')
+							.value =
+							row.cells[1]
+								.textContent
+								.trim();
+
+						document
+							.getElementById('piDescription')
+							.value =
+							row.cells[2]
+								.textContent
+								.trim();
+
+						document
+							.getElementById('saveProjectInfo')
+							.textContent =
+							'Update';
+
+						document
+							.querySelector(
+								'#projectInfoModal .modal-title'
+							)
+							.textContent =
+							'Edit Project Information';
+
+						openModal(
+							'projectInfoModal'
+						);
+
+						return;
+					}
+
+
+					/* CHALLENGE */
+
+					if (
+						tbody.id ===
+						'challengeTableBody'
+					) {
+
+						editingState.challenge =
+							row;
+
+						document
+							.getElementById('challengeDescription')
+							.value =
+							row.cells[0]
+								.textContent
+								.trim();
+
+						document
+							.getElementById('challengeOrder')
+							.value =
+							row.cells[1]
+								.textContent
+								.trim();
+
+						document
+							.getElementById('saveChallenge')
+							.textContent =
+							'Update';
+
+						document
+							.querySelector(
+								'#challengeModal .modal-title'
+							)
+							.textContent =
+							'Edit Challenge';
+
+						openModal(
+							'challengeModal'
+						);
+
+						return;
+					}
+
+
+					/* SOLUTION */
+
+					if (
+						tbody.id ===
+						'solutionTableBody'
+					) {
+
+						editingState.solution =
+							row;
+
+						document
+							.getElementById('solutionDescription')
+							.value =
+							row.cells[0]
+								.textContent
+								.trim();
+
+						document
+							.getElementById('solutionOrder')
+							.value =
+							row.cells[1]
+								.textContent
+								.trim();
+
+						document
+							.getElementById('saveSolution')
+							.textContent =
+							'Update';
+
+						document
+							.querySelector(
+								'#solutionModal .modal-title'
+							)
+							.textContent =
+							'Edit Solution';
+
+						openModal(
+							'solutionModal'
+						);
+
+						return;
+					}
+				}
+
+
+				/* =====================
+				   DELETE
+				===================== */
+
+				var deleteBtn =
+					event.target.closest('.js-delete-row');
+
+				if (deleteBtn) {
+
+					rowToDelete =
+						deleteBtn.closest('tr');
+
+					openModal(
+						'confirmDeleteModal'
+					);
+				}
+			}
+		);
+
+
+		/* =========================================================
+		   CONFIRM DELETE
+		========================================================= */
+
+		document
+			.getElementById('confirmDeleteYes')
+			.addEventListener('click', function () {
+
+				if (!rowToDelete) {
+					return;
+				}
+
+				var tbody =
+					rowToDelete.closest('tbody');
+
+				rowToDelete.remove();
+
+				updateDynamicFormInputs();
+
+				if (tbody) {
+					ensureEmptyState(
+						tbody.id
+					);
+				}
+
+				rowToDelete = null;
+
+				closeModal(
+					'confirmDeleteModal'
+				);
+			});
+
+
+		document
+			.getElementById('confirmDeleteModal')
+			.addEventListener(
+				'hidden.bs.modal',
+				function () {
+
+					rowToDelete = null;
+				}
+			);
+
+
+		/* =========================================================
+		   RESET MODALS
+		========================================================= */
+
+		function resetProjectInfoModal() {
+
+			document
+				.getElementById('piIcon')
+				.value = 'home';
+
+			document
+				.getElementById('piIconPreview')
+				.textContent = 'home';
+
+			document
+				.getElementById('piSelectedIconName')
+				.textContent =
+				'Selected: home';
+
+			document
+				.getElementById('piTitle')
+				.value = '';
+
+			document
+				.getElementById('piDescription')
+				.value = '';
+
+			document
+				.getElementById('saveProjectInfo')
+				.textContent =
+				'Add Item';
+
+			document
+				.querySelector(
+					'#projectInfoModal .modal-title'
+				)
+				.textContent =
+				'Add Project Information';
+
+			editingState.projectInfo =
+				null;
 		}
 
-		window.openProjectIconPicker = openIconPicker;
 
-		var iconGrid = document.getElementById('project_icon_grid');
-		iconList.forEach(function(name) {
-			var btn = document.createElement('button');
+		function resetChallengeModal() {
+
+			document
+				.getElementById('challengeDescription')
+				.value = '';
+
+			document
+				.getElementById('challengeOrder')
+				.value = '';
+
+			document
+				.getElementById('saveChallenge')
+				.textContent =
+				'Add Challenge';
+
+			document
+				.querySelector(
+					'#challengeModal .modal-title'
+				)
+				.textContent =
+				'Add Challenge';
+
+			editingState.challenge =
+				null;
+		}
+
+
+		function resetSolutionModal() {
+
+			document
+				.getElementById('solutionDescription')
+				.value = '';
+
+			document
+				.getElementById('solutionOrder')
+				.value = '';
+
+			document
+				.getElementById('saveSolution')
+				.textContent =
+				'Add Solution';
+
+			document
+				.querySelector(
+					'#solutionModal .modal-title'
+				)
+				.textContent =
+				'Add Solution';
+
+			editingState.solution =
+				null;
+		}
+
+
+		document
+			.getElementById('projectInfoModal')
+			.addEventListener(
+				'hidden.bs.modal',
+				resetProjectInfoModal
+			);
+
+		document
+			.getElementById('challengeModal')
+			.addEventListener(
+				'hidden.bs.modal',
+				resetChallengeModal
+			);
+
+		document
+			.getElementById('solutionModal')
+			.addEventListener(
+				'hidden.bs.modal',
+				resetSolutionModal
+			);
+
+
+		/* =========================================================
+		   ICON PICKER
+		========================================================= */
+
+		var iconList = [
+			'home',
+			'apartment',
+			'cottage',
+			'house',
+			'hotel',
+			'groups',
+			'people',
+			'person',
+			'person_outline',
+			'face',
+			'verified',
+			'badge',
+			'workspace_premium',
+			'emoji_events',
+			'star',
+			'public',
+			'language',
+			'location_on',
+			'map',
+			'place',
+			'construction',
+			'foundation',
+			'build',
+			'architecture',
+			'engineering',
+			'trending_up',
+			'show_chart',
+			'timeline',
+			'insights',
+			'analytics',
+			'favorite',
+			'thumb_up',
+			'mood',
+			'support_agent',
+			'handshake',
+			'calendar_today',
+			'schedule',
+			'access_time',
+			'history',
+			'event',
+			'warning',
+			'task_alt',
+			'check_circle',
+			'gpp_good',
+			'bolt'
+		];
+
+
+		function openIconPicker(target) {
+
+			activeIconTarget =
+				target;
+
+			document
+				.getElementById('project_icon_search')
+				.value = '';
+
+			var items =
+				document.querySelectorAll(
+					'#project_icon_grid .icon-picker-item'
+				);
+
+			Array.prototype.forEach.call(
+				items,
+				function (item) {
+					item.style.display = '';
+				}
+			);
+
+			openModal(
+				'projectIconPickerModal'
+			);
+		}
+
+
+		window.openProjectIconPicker =
+			openIconPicker;
+
+
+		var iconGrid =
+			document.getElementById(
+				'project_icon_grid'
+			);
+
+
+		iconList.forEach(function (name) {
+
+			var btn =
+				document.createElement('button');
+
 			btn.type = 'button';
-			btn.className = 'icon-picker-item';
-			btn.setAttribute('data-icon', name);
-			btn.setAttribute('title', name);
-			btn.innerHTML = '<span class="material-icons">' + name + '</span><span class="icon-picker-label">' + name + '</span>';
+
+			btn.className =
+				'icon-picker-item';
+
+			btn.setAttribute(
+				'data-icon',
+				name
+			);
+
+			btn.setAttribute(
+				'title',
+				name
+			);
+
+			btn.innerHTML =
+				'<span class="material-icons">' +
+				name +
+				'</span>' +
+
+				'<span class="icon-picker-label">' +
+				name +
+				'</span>';
+
 			iconGrid.appendChild(btn);
 		});
 
-		document.getElementById('project_icon_search').addEventListener('input', function() {
-			var term = this.value.toLowerCase();
-			var pickerItems = document.querySelectorAll('#project_icon_grid .icon-picker-item');
-			Array.prototype.forEach.call(pickerItems, function(item) {
-				var name = item.getAttribute('data-icon').toLowerCase();
-				item.style.display = name.indexOf(term) !== -1 ? '' : 'none';
-			});
-		});
 
-		document.addEventListener('click', function(event) {
-			var iconItem = event.target.closest('#project_icon_grid .icon-picker-item');
-			if (!iconItem || !activeIconTarget) {
-				return;
-			}
-			var iconName = iconItem.getAttribute('data-icon');
-			if (activeIconTarget === 'pi') {
-				document.getElementById('piIcon').value = iconName;
-				document.getElementById('piIconPreview').textContent = iconName;
-				document.getElementById('piSelectedIconName').textContent = 'Selected: ' + iconName;
-			}
-			if (activeIconTarget === 'challenge') {
-				document.getElementById('challengeIcon').value = iconName;
-				document.getElementById('challengeIconPreview').textContent = iconName;
-				document.getElementById('challengeSelectedIconName').textContent = 'Selected: ' + iconName;
-			}
-			if (activeIconTarget === 'solution') {
-				document.getElementById('solutionIcon').value = iconName;
-				document.getElementById('solutionIconPreview').textContent = iconName;
-				document.getElementById('solutionSelectedIconName').textContent = 'Selected: ' + iconName;
-			}
-			closeModal('projectIconPickerModal');
-		});
+		document
+			.getElementById('project_icon_search')
+			.addEventListener(
+				'input',
+				function () {
 
-		['projectInfoTableBody', 'challengeTableBody', 'solutionTableBody'].forEach(function(tbodyId) {
-			ensureEmptyState(tbodyId);
-		});
+					var term =
+						this.value.toLowerCase();
 
-		function addHiddenInput(container, name, value) {
-		    var input = document.createElement('input');
-		    input.type = 'hidden';
-		    input.name = name;
-		    input.value = value || '';
-		    container.appendChild(input);
-		}
+					var items =
+						document.querySelectorAll(
+							'#project_icon_grid .icon-picker-item'
+						);
 
-		function updateDynamicFormInputs() {
-		    var projectContainer =
-		        document.getElementById('projectInfoHiddenInputs');
+					Array.prototype.forEach.call(
+						items,
+						function (item) {
 
-		    var challengeContainer =
-		        document.getElementById('challengeHiddenInputs');
+							var name =
+								item
+									.getAttribute(
+										'data-icon'
+									)
+									.toLowerCase();
 
-		    var solutionContainer =
-		        document.getElementById('solutionHiddenInputs');
-
-		    if (!projectContainer ||
-		        !challengeContainer ||
-		        !solutionContainer) {
-		        return;
-		    }
-
-		    projectContainer.innerHTML = '';
-		    challengeContainer.innerHTML = '';
-		    solutionContainer.innerHTML = '';
-
-
-		    /* ============================
-		       PROJECT INFO
-		    ============================ */
-
-		   var projectRows = document.querySelectorAll(
-			    '#projectInfoTableBody > tr:not(.no-record-row)'
+							item.style.display =
+								name.indexOf(term) !== -1
+									? ''
+									: 'none';
+						}
+					);
+				}
 			);
 
-			Array.prototype.forEach.call(projectRows, function(row, index) {
 
-			    var icon = '';
-			    var title = '';
-			    var description = '';
+		document.addEventListener(
+			'click',
+			function (event) {
 
-			    var inputs = row.querySelectorAll('input');
+				var iconItem =
+					event.target.closest(
+						'#project_icon_grid .icon-picker-item'
+					);
 
-			    if (inputs.length >= 3) {
+				if (
+					!iconItem ||
+					!activeIconTarget
+				) {
+					return;
+				}
 
-			        icon = (inputs[0].value || '').trim();
-			        title = (inputs[1].value || '').trim();
-			        description = (inputs[2].value || '').trim();
-
-			    } else {
-
-			        icon = (
-			            row.cells[0].getAttribute('data-icon') || ''
-			        ).trim();
-
-			        title = (
-			            row.cells[1].textContent || ''
-			        ).trim();
-
-			        description = (
-			            row.cells[2].textContent || ''
-			        ).trim();
-			    }
-
-			    addHiddenInput(
-			        projectContainer,
-			        'project_info[' + index + '][icon]',
-			        icon
-			    );
-
-			    addHiddenInput(
-			        projectContainer,
-			        'project_info[' + index + '][title]',
-			        title
-			    );
-
-			    addHiddenInput(
-			        projectContainer,
-			        'project_info[' + index + '][description]',
-			        description
-			    );
-			});
+				var iconName =
+					iconItem.getAttribute(
+						'data-icon'
+					);
 
 
-		    /* ============================
-		       CHALLENGES
-		    ============================ */
+				if (
+					activeIconTarget === 'pi'
+				) {
 
-		    var challengeRows = document.querySelectorAll(
-		        '#challengeTableBody > tr:not(.no-record-row)'
-		    );
+					document
+						.getElementById('piIcon')
+						.value =
+						iconName;
 
-		    Array.prototype.forEach.call(
-		        challengeRows,
-		        function(row, index) {
+					document
+						.getElementById('piIconPreview')
+						.textContent =
+						iconName;
 
-		            var inputs = row.querySelectorAll('input');
-
-		            var title = '';
-		            var icon = '';
-		            var description = '';
-		            var order = '';
-
-		            if (inputs.length >= 4) {
-
-		                icon = inputs[0].value.trim();
-		                title = inputs[1].value.trim();
-		                description = inputs[2].value.trim();
-		                order = inputs[3].value.trim();
-
-		            } else {
-
-		                title = row.cells[0].textContent.trim();
-		                icon = row.cells[1].getAttribute('data-icon') || '';
-		                description = row.cells[2].textContent.trim();
-		                order = row.cells[3].textContent.trim();
-		            }
-
-		            addHiddenInput(
-		                challengeContainer,
-		                'challenges[' + index + '][title]',
-		                title
-		            );
-
-		            addHiddenInput(
-		                challengeContainer,
-		                'challenges[' + index + '][icon]',
-		                icon
-		            );
-
-		            addHiddenInput(
-		                challengeContainer,
-		                'challenges[' + index + '][description]',
-		                description
-		            );
-
-		            addHiddenInput(
-		                challengeContainer,
-		                'challenges[' + index + '][order]',
-		                order
-		            );
-		        }
-		    );
+					document
+						.getElementById('piSelectedIconName')
+						.textContent =
+						'Selected: ' +
+						iconName;
+				}
 
 
-		    /* ============================
-		       SOLUTIONS
-		    ============================ */
+				closeModal(
+					'projectIconPickerModal'
+				);
+			}
+		);
 
-		    var solutionRows = document.querySelectorAll(
-		        '#solutionTableBody > tr:not(.no-record-row)'
-		    );
 
-		    Array.prototype.forEach.call(
-		        solutionRows,
-		        function(row, index) {
+		/* =========================================================
+		   HIDDEN INPUTS
+		========================================================= */
 
-		            var inputs = row.querySelectorAll('input');
+		function addHiddenInput(
+			container,
+			name,
+			value
+		) {
 
-		            var title = '';
-		            var icon = '';
-		            var description = '';
-		            var order = '';
+			var input =
+				document.createElement('input');
 
-		            if (inputs.length >= 4) {
+			input.type = 'hidden';
 
-		                icon = inputs[0].value.trim();
-		                title = inputs[1].value.trim();
-		                description = inputs[2].value.trim();
-		                order = inputs[3].value.trim();
+			input.name = name;
 
-		            } else {
+			input.value =
+				value || '';
 
-		                title = row.cells[0].textContent.trim();
-		                icon = row.cells[1].getAttribute('data-icon') || '';
-		                description = row.cells[2].textContent.trim();
-		                order = row.cells[3].textContent.trim();
-		            }
-
-		            addHiddenInput(
-		                solutionContainer,
-		                'solutions[' + index + '][title]',
-		                title
-		            );
-
-		            addHiddenInput(
-		                solutionContainer,
-		                'solutions[' + index + '][icon]',
-		                icon
-		            );
-
-		            addHiddenInput(
-		                solutionContainer,
-		                'solutions[' + index + '][description]',
-		                description
-		            );
-
-		            addHiddenInput(
-		                solutionContainer,
-		                'solutions[' + index + '][order]',
-		                order
-		            );
-		        }
-		    );
+			container.appendChild(
+				input
+			);
 		}
-	})();
 
-	document.getElementById('projectInternalsForm').addEventListener('submit', function() {
-	    updateDynamicFormInputs();
-	});
+
+		function updateDynamicFormInputs() {
+
+			var projectContainer =
+				document.getElementById(
+					'projectInfoHiddenInputs'
+				);
+
+			var challengeContainer =
+				document.getElementById(
+					'challengeHiddenInputs'
+				);
+
+			var solutionContainer =
+				document.getElementById(
+					'solutionHiddenInputs'
+				);
+
+
+			if (
+				!projectContainer ||
+				!challengeContainer ||
+				!solutionContainer
+			) {
+				return;
+			}
+
+
+			projectContainer.innerHTML = '';
+
+			challengeContainer.innerHTML = '';
+
+			solutionContainer.innerHTML = '';
+
+
+			/* =========================
+			   PROJECT INFO
+			========================= */
+
+			var projectRows =
+				document.querySelectorAll(
+					'#projectInfoTableBody > tr:not(.no-record-row)'
+				);
+
+
+			Array.prototype.forEach.call(
+				projectRows,
+				function (row, index) {
+
+					var icon =
+						(
+							row.cells[0]
+								.getAttribute('data-icon') ||
+							''
+						).trim();
+
+					var title =
+						row.cells[1]
+							.textContent
+							.trim();
+
+					var description =
+						row.cells[2]
+							.textContent
+							.trim();
+
+
+					addHiddenInput(
+						projectContainer,
+						'project_info[' +
+						index +
+						'][icon]',
+						icon
+					);
+
+					addHiddenInput(
+						projectContainer,
+						'project_info[' +
+						index +
+						'][title]',
+						title
+					);
+
+					addHiddenInput(
+						projectContainer,
+						'project_info[' +
+						index +
+						'][description]',
+						description
+					);
+				}
+			);
+
+
+			/* =========================
+			   CHALLENGES
+			========================= */
+
+			var challengeRows =
+				document.querySelectorAll(
+					'#challengeTableBody > tr:not(.no-record-row)'
+				);
+
+
+			Array.prototype.forEach.call(
+				challengeRows,
+				function (row, index) {
+
+					var description =
+						row.cells[0]
+							.textContent
+							.trim();
+
+					var order =
+						row.cells[1]
+							.textContent
+							.trim();
+
+
+					addHiddenInput(
+						challengeContainer,
+						'challenges[' +
+						index +
+						'][description]',
+						description
+					);
+
+					addHiddenInput(
+						challengeContainer,
+						'challenges[' +
+						index +
+						'][order]',
+						order
+					);
+				}
+			);
+
+
+			/* =========================
+			   SOLUTIONS
+			========================= */
+
+			var solutionRows =
+				document.querySelectorAll(
+					'#solutionTableBody > tr:not(.no-record-row)'
+				);
+
+
+			Array.prototype.forEach.call(
+				solutionRows,
+				function (row, index) {
+
+					var description =
+						row.cells[0]
+							.textContent
+							.trim();
+
+					var order =
+						row.cells[1]
+							.textContent
+							.trim();
+
+
+					addHiddenInput(
+						solutionContainer,
+						'solutions[' +
+						index +
+						'][description]',
+						description
+					);
+
+					addHiddenInput(
+						solutionContainer,
+						'solutions[' +
+						index +
+						'][order]',
+						order
+					);
+				}
+			);
+		}
+
+
+		/* =========================================================
+		   INITIALIZE
+		========================================================= */
+
+		[
+			'projectInfoTableBody',
+			'challengeTableBody',
+			'solutionTableBody'
+		].forEach(function (id) {
+
+			ensureEmptyState(id);
+		});
+
+
+		updateDynamicFormInputs();
+
+
+		/* =========================================================
+		   FORM SUBMIT
+		========================================================= */
+
+		var form =
+			document.getElementById(
+				'editProjectTypesForm'
+			);
+
+		if (form) {
+
+			form.addEventListener(
+				'submit',
+				function () {
+
+					updateDynamicFormInputs();
+				}
+			);
+		}
+
+	})();
 </script>
 
 <script type="text/javascript">

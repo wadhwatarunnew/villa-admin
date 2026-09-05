@@ -81,8 +81,8 @@
 			if (isset($_POST['challenges']) && !empty($_POST['challenges']))
 			{
 				foreach ($_POST['challenges'] as $item) {
-					$title = isset($item['title']) ? trim($item['title']) : '';
-				    $icon = isset($item['icon']) ? trim($item['icon']) : '';
+					$title = "Challenges";
+				    $icon = "task_alt";
 				    $description = isset($item['description']) ? trim($item['description']) : '';
 				    $orderNo = isset($item['order']) ? (int)$item['order'] : 0;
 
@@ -95,8 +95,8 @@
 			if (isset($_POST['solutions']) && !empty($_POST['solutions']))
 			{
 				foreach ($_POST['solutions'] as $item) {
-					$title = isset($item['title']) ? trim($item['title']) : '';
-				    $icon = isset($item['icon']) ? trim($item['icon']) : '';
+					$title = "Solutions";
+				    $icon = "check_circle";
 				    $description = isset($item['description']) ? trim($item['description']) : '';
 				    $orderNo = isset($item['order']) ? (int)$item['order'] : 0;
 
@@ -248,8 +248,6 @@
 											<table class="table table-bordered table-sm mb-0 listing-table">
 												<thead>
 													<tr>
-														<th>Title</th>
-														<th>Icon</th>
 														<th>Description</th>
 														<th>Order</th>
 														<th style="width:120px;">Actions</th>
@@ -273,8 +271,6 @@
 											<table class="table table-bordered table-sm mb-0 listing-table">
 												<thead>
 													<tr>
-														<th>Title</th>
-														<th>Icon</th>
 														<th>Description</th>
 														<th>Order</th>
 														<th style="width:120px;">Actions</th>
@@ -424,18 +420,6 @@
 									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 								</div>
 								<div class="modal-body">
-									<div class="commonSection"><label>Title</label><input type="text" class="form-control" id="challengeTitle" placeholder="Extreme weather conditions"></div>
-									<div class="commonSection">
-										<label>Icon</label>
-										<div class="counter-icon-box">
-											<div class="counter-icon-preview">
-												<span class="material-icons" id="challengeIconPreview">warning</span>
-											</div>
-											<input type="hidden" id="challengeIcon" value="warning">
-											<button type="button" class="btn btn-success btn-sm" data-icon-target="challenge" onclick="openProjectIconPicker('challenge')"><i class="feather icon-edit"></i> Change Icon</button>
-											<div class="counter-icon-help" id="challengeSelectedIconName">Selected: warning</div>
-										</div>
-									</div>
 									<div class="commonSection"><label>Description</label><textarea class="form-control" id="challengeDescription" rows="3" placeholder="Enter description"></textarea></div>
 									<div class="commonSection mb-0"><label>Order</label><input type="number" class="form-control" id="challengeOrder" placeholder="1"></div>
 								</div>
@@ -455,18 +439,6 @@
 									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 								</div>
 								<div class="modal-body">
-									<div class="commonSection"><label>Title</label><input type="text" class="form-control" id="solutionTitle" placeholder="High-quality all-weather fabrics"></div>
-									<div class="commonSection">
-										<label>Icon</label>
-										<div class="counter-icon-box">
-											<div class="counter-icon-preview">
-												<span class="material-icons" id="solutionIconPreview">verified</span>
-											</div>
-											<input type="hidden" id="solutionIcon" value="verified">
-											<button type="button" class="btn btn-success btn-sm" data-icon-target="solution" onclick="openProjectIconPicker('solution')"><i class="feather icon-edit"></i> Change Icon</button>
-											<div class="counter-icon-help" id="solutionSelectedIconName">Selected: verified</div>
-										</div>
-									</div>
 									<div class="commonSection"><label>Description</label><textarea class="form-control" id="solutionDescription" rows="3" placeholder="Enter description"></textarea></div>
 									<div class="commonSection mb-0"><label>Order</label><input type="number" class="form-control" id="solutionOrder" placeholder="1"></div>
 								</div>
@@ -594,28 +566,50 @@
 								ensureEmptyState('projectInfoTableBody');
 							}
 
-							function appendChallengeRow(title, icon, description, order) {
+							function appendChallengeRow(description, order) {
 								var tbody = document.getElementById('challengeTableBody');
 								if (!tbody) {
 									return;
 								}
+
 								ensureEmptyState('challengeTableBody');
+
 								var row = document.createElement('tr');
-								row.innerHTML = '<td>' + title + '</td><td data-icon="' + icon + '">' + iconCell(icon) + '</td><td>' + description + '</td><td>' + order + '</td><td>' + actionButtons() + '</td>';
+
+								row.innerHTML =
+									'<td>' + escapeHtml(description) + '</td>' +
+									'<td>' + escapeHtml(order) + '</td>' +
+									'<td>' + actionButtons() + '</td>';
+
 								tbody.appendChild(row);
+
 								ensureEmptyState('challengeTableBody');
 							}
 
-							function appendSolutionRow(title, icon, description, order) {
+							function appendSolutionRow(description, order) {
 								var tbody = document.getElementById('solutionTableBody');
 								if (!tbody) {
 									return;
 								}
+
 								ensureEmptyState('solutionTableBody');
+
 								var row = document.createElement('tr');
-								row.innerHTML = '<td>' + title + '</td><td data-icon="' + icon + '">' + iconCell(icon) + '</td><td>' + description + '</td><td>' + order + '</td><td>' + actionButtons() + '</td>';
+
+								row.innerHTML =
+									'<td>' + escapeHtml(description) + '</td>' +
+									'<td>' + escapeHtml(order) + '</td>' +
+									'<td>' + actionButtons() + '</td>';
+
 								tbody.appendChild(row);
+
 								ensureEmptyState('solutionTableBody');
+							}
+
+							function escapeHtml(value) {
+								var div = document.createElement('div');
+								div.textContent = value || '';
+								return div.innerHTML;
 							}
 
 							function resetProjectInfoModal() {
@@ -630,26 +624,27 @@
 							}
 
 							function resetChallengeModal() {
-								document.getElementById('challengeTitle').value = '';
-								document.getElementById('challengeIcon').value = 'warning';
-								document.getElementById('challengeIconPreview').textContent = 'warning';
-								document.getElementById('challengeSelectedIconName').textContent = 'Selected: warning';
 								document.getElementById('challengeDescription').value = '';
 								document.getElementById('challengeOrder').value = '';
+
 								document.getElementById('saveChallenge').textContent = 'Add Challenge';
-								document.querySelector('#challengeModal .modal-title').textContent = 'Add Challenge';
+
+								document.querySelector('#challengeModal .modal-title').textContent =
+									'Add Challenge';
+
 								editingState.challenge = null;
 							}
 
+
 							function resetSolutionModal() {
-								document.getElementById('solutionTitle').value = '';
-								document.getElementById('solutionIcon').value = 'verified';
-								document.getElementById('solutionIconPreview').textContent = 'verified';
-								document.getElementById('solutionSelectedIconName').textContent = 'Selected: verified';
 								document.getElementById('solutionDescription').value = '';
 								document.getElementById('solutionOrder').value = '';
+
 								document.getElementById('saveSolution').textContent = 'Add Solution';
-								document.querySelector('#solutionModal .modal-title').textContent = 'Add Solution';
+
+								document.querySelector('#solutionModal .modal-title').textContent =
+									'Add Solution';
+
 								editingState.solution = null;
 							}
 
@@ -693,90 +688,59 @@
 							});
 
 							document.getElementById('saveChallenge').addEventListener('click', function() {
-							    var title = document.getElementById('challengeTitle').value.trim();
-							    var icon = document.getElementById('challengeIcon').value.trim();
-							    var description = document.getElementById('challengeDescription').value.trim();
-							    var order = document.getElementById('challengeOrder').value.trim();
+								var description = document.getElementById('challengeDescription').value.trim();
+								var order = document.getElementById('challengeOrder').value.trim();
 
-							    if (!title || !icon || !description || !order) {
-							        alert('Please fill all Challenge fields.');
-							        return;
-							    }
+								if (!description || !order) {
+									alert('Please fill all Challenge fields.');
+									return;
+								}
 
-							    if (editingState.challenge) {
-							        editingState.challenge.cells[0].textContent =
-							            title;
+								if (editingState.challenge) {
 
-							        editingState.challenge.cells[1].setAttribute(
-							            'data-icon',
-							            icon
-							        );
+									editingState.challenge.cells[0].textContent = description;
+									editingState.challenge.cells[1].textContent = order;
 
-							        editingState.challenge.cells[1].innerHTML =
-							            iconCell(icon);
+								} else {
 
-							        editingState.challenge.cells[2].textContent =
-							            description;
+									appendChallengeRow(
+										description,
+										order
+									);
+								}
 
-							        editingState.challenge.cells[3].textContent =
-							            order;
-							    } else {
-							        appendChallengeRow(
-							            title,
-							            icon,
-							            description,
-							            order
-							        );
-							    }
+								updateDynamicFormInputs();
 
-							    updateDynamicFormInputs();
-							    closeModal('challengeModal');
-							    resetChallengeModal();
+								closeModal('challengeModal');
+								resetChallengeModal();
 							});
 
 							document.getElementById('saveSolution').addEventListener('click', function() {
+								var description = document.getElementById('solutionDescription').value.trim();
+								var order = document.getElementById('solutionOrder').value.trim();
 
-							    var title = document.getElementById('solutionTitle').value.trim();
-							    var icon = document.getElementById('solutionIcon').value.trim();
-							    var description = document.getElementById('solutionDescription').value.trim();
-							    var order = document.getElementById('solutionOrder').value.trim();
+								if (!description || !order) {
+									alert('Please fill all Solution fields.');
+									return;
+								}
 
+								if (editingState.solution) {
 
-							    if (!title || !icon || !description || !order) {
-							        alert('Please fill all Solution fields.');
-							        return;
-							    }
+									editingState.solution.cells[0].textContent = description;
+									editingState.solution.cells[1].textContent = order;
 
+								} else {
 
-							    if (editingState.solution) {
-							        editingState.solution.cells[0].textContent =
-							            title;
+									appendSolutionRow(
+										description,
+										order
+									);
+								}
 
-							        editingState.solution.cells[1].setAttribute(
-							            'data-icon',
-							            icon
-							        );
+								updateDynamicFormInputs();
 
-							        editingState.solution.cells[1].innerHTML =
-							            iconCell(icon);
-
-							        editingState.solution.cells[2].textContent =
-							            description;
-
-							        editingState.solution.cells[3].textContent =
-							            order;
-							    } else {
-							        appendSolutionRow(
-							            title,
-							            icon,
-							            description,
-							            order
-							        );
-							    }
-
-							    updateDynamicFormInputs();
-							    closeModal('solutionModal');
-							    resetSolutionModal();
+								closeModal('solutionModal');
+								resetSolutionModal();
 							});
 
 							document.addEventListener('click', function(event) {
@@ -802,30 +766,39 @@
 									}
 
 									if (tbody.id === 'challengeTableBody') {
+
 										editingState.challenge = editRow;
-										document.getElementById('challengeTitle').value = editRow.cells[0].textContent.trim();
-										var challengeIcon = editRow.cells[1].getAttribute('data-icon') || 'warning';
-										document.getElementById('challengeIcon').value = challengeIcon;
-										document.getElementById('challengeIconPreview').textContent = challengeIcon;
-										document.getElementById('challengeSelectedIconName').textContent = 'Selected: ' + challengeIcon;
-										document.getElementById('challengeDescription').value = editRow.cells[2].textContent.trim();
-										document.getElementById('challengeOrder').value = editRow.cells[3].textContent.trim();
+
+										document.getElementById('challengeDescription').value =
+											editRow.cells[0].textContent.trim();
+
+										document.getElementById('challengeOrder').value =
+											editRow.cells[1].textContent.trim();
+
 										document.getElementById('saveChallenge').textContent = 'Update';
-										document.querySelector('#challengeModal .modal-title').textContent = 'Edit Challenge';
+
+										document.querySelector('#challengeModal .modal-title').textContent =
+											'Edit Challenge';
+
 										openModal('challengeModal');
 									}
 
+
 									if (tbody.id === 'solutionTableBody') {
+
 										editingState.solution = editRow;
-										document.getElementById('solutionTitle').value = editRow.cells[0].textContent.trim();
-										var solutionIcon = editRow.cells[1].getAttribute('data-icon') || 'verified';
-										document.getElementById('solutionIcon').value = solutionIcon;
-										document.getElementById('solutionIconPreview').textContent = solutionIcon;
-										document.getElementById('solutionSelectedIconName').textContent = 'Selected: ' + solutionIcon;
-										document.getElementById('solutionDescription').value = editRow.cells[2].textContent.trim();
-										document.getElementById('solutionOrder').value = editRow.cells[3].textContent.trim();
+
+										document.getElementById('solutionDescription').value =
+											editRow.cells[0].textContent.trim();
+
+										document.getElementById('solutionOrder').value =
+											editRow.cells[1].textContent.trim();
+
 										document.getElementById('saveSolution').textContent = 'Update';
-										document.querySelector('#solutionModal .modal-title').textContent = 'Edit Solution';
+
+										document.querySelector('#solutionModal .modal-title').textContent =
+											'Edit Solution';
+
 										openModal('solutionModal');
 									}
 									return;
@@ -992,40 +965,26 @@
 							    ========================================================= */
 
 							    var challengeRows = document.querySelectorAll(
-							        '#challengeTableBody tr:not(.no-record-row)'
-							    );
+									'#challengeTableBody tr:not(.no-record-row)'
+								);
 
-							    Array.prototype.forEach.call(challengeRows, function(row, index) {
+								Array.prototype.forEach.call(challengeRows, function(row, index) {
 
-							        var title = row.cells[0].textContent.trim();
-							        var icon = row.cells[1].getAttribute('data-icon') || '';
-							        var description = row.cells[2].textContent.trim();
-							        var order = row.cells[3].textContent.trim();
+									var description = row.cells[0].textContent.trim();
+									var order = row.cells[1].textContent.trim();
 
-							        addHiddenInput(
-							            challengeContainer,
-							            'challenges[' + index + '][title]',
-							            title
-							        );
+									addHiddenInput(
+										challengeContainer,
+										'challenges[' + index + '][description]',
+										description
+									);
 
-							        addHiddenInput(
-							            challengeContainer,
-							            'challenges[' + index + '][icon]',
-							            icon
-							        );
-
-							        addHiddenInput(
-							            challengeContainer,
-							            'challenges[' + index + '][description]',
-							            description
-							        );
-
-							        addHiddenInput(
-							            challengeContainer,
-							            'challenges[' + index + '][order]',
-							            order
-							        );
-							    });
+									addHiddenInput(
+										challengeContainer,
+										'challenges[' + index + '][order]',
+										order
+									);
+								});
 
 
 							    /* =========================================================
@@ -1033,40 +992,26 @@
 							    ========================================================= */
 
 							    var solutionRows = document.querySelectorAll(
-							        '#solutionTableBody tr:not(.no-record-row)'
-							    );
+									'#solutionTableBody tr:not(.no-record-row)'
+								);
 
-							    Array.prototype.forEach.call(solutionRows, function(row, index) {
+								Array.prototype.forEach.call(solutionRows, function(row, index) {
 
-							        var title = row.cells[0].textContent.trim();
-							        var icon = row.cells[1].getAttribute('data-icon') || '';
-							        var description = row.cells[2].textContent.trim();
-							        var order = row.cells[3].textContent.trim();
+									var description = row.cells[0].textContent.trim();
+									var order = row.cells[1].textContent.trim();
 
-							        addHiddenInput(
-							            solutionContainer,
-							            'solutions[' + index + '][title]',
-							            title
-							        );
+									addHiddenInput(
+										solutionContainer,
+										'solutions[' + index + '][description]',
+										description
+									);
 
-							        addHiddenInput(
-							            solutionContainer,
-							            'solutions[' + index + '][icon]',
-							            icon
-							        );
-
-							        addHiddenInput(
-							            solutionContainer,
-							            'solutions[' + index + '][description]',
-							            description
-							        );
-
-							        addHiddenInput(
-							            solutionContainer,
-							            'solutions[' + index + '][order]',
-							            order
-							        );
-							    });
+									addHiddenInput(
+										solutionContainer,
+										'solutions[' + index + '][order]',
+										order
+									);
+								});
 							}
 						})();
 
