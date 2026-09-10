@@ -1,7 +1,7 @@
 <?php
    session_start();
    include "db.php";
-   date_default_timezone_set("Asia/Calcutta");
+   date_default_timezone_set('Asia/Kolkata');
 
    if(isset($_POST['sub']))
    {

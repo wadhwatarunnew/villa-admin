@@ -59,8 +59,9 @@
                            <tbody>
       							   <?php
                                  $i = 1;	 
-                                 $query4= mysqli_query($con, "SELECT * FROM project_types");
+                                 $query4= mysqli_query($con, "SELECT * FROM project_types ORDER BY id DESC");
                                  while($b=mysqli_fetch_assoc($query4)) {
+                                 $statusClass = ($b['status'] === 'Published') ? 'status-published' : 'status-draft';
                               ?>
                                  <tr role="row">
                                     <td><?php echo $i; ?></td>
@@ -70,13 +71,7 @@
                                     <td><?php echo $b['discription']; ?></td>
    									      <td><?php echo $b['title']; ?></td>     
                                     <td>
-                                       <?php
-                                          $hasTitle = trim((string)$b['title']) !== '';
-                                          $hasCategory = trim((string)$b['category']) !== '';
-                                          $statusLabel = ($hasTitle && $hasCategory) ? 'Published' : 'Draft';
-                                          $statusClass = ($statusLabel === 'Published') ? 'status-published' : 'status-draft';
-                                       ?>
-                                       <span class="status-badge <?php echo $statusClass; ?>"><?php echo $statusLabel; ?></span>
+                                       <span class="status-badge <?php echo $statusClass; ?>"><?php echo $b['status']; ?></span>
                                     </td>
                                     <td>
                                        <div class="actions">

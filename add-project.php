@@ -12,6 +12,7 @@
 		$disc = $_POST['disc'];
 		$cat = $_POST['cat'];
 		$order = $_POST['order'];
+		$status = $_POST['status'];
 		$subtitle = mysqli_real_escape_string($con, $_POST['small_heading']);
 		$title = mysqli_real_escape_string($con, $_POST['title']);
 		$BannerDesc = mysqli_real_escape_string($con, $_POST['banner_desc']);
@@ -34,10 +35,11 @@
 		{
 			if ($myFile === '')
 			{
-				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, banner_desc, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$BannerDesc', '$editor1', '', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
+				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, banner_desc, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$BannerDesc', '$editor1', '', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border', '$status')");
 				$LastInsertID = mysqli_insert_id($con);
 			}
-			elseif ($myFile != '' && (file_exists("uploads/pageimages/" . $myFile) || file_exists("uploads/pageimages/addgallery/" . $myFile) || file_exists("uploads/pageimages/addgallery/project/" . $myFile) || file_exists("uploads/pageimages/addgallery/resort/" . $myFile) || file_exists("uploads/pageimages/blogs/" . $myFile) || file_exists("uploads/pageimages/blogs/single/" . $myFile) || file_exists("uploads/pageimages/contact/" . $myFile) || file_exists("uploads/pageimages/nav/" . $myFile) || file_exists("uploads/pageimages/nav/category/" . $myFile) || file_exists("uploads/pageimages/nav/types/" . $myFile) || file_exists("uploads/pageimages/project/" . $myFile) || file_exists("uploads/pageimages/project/category/" . $myFile) || file_exists("uploads/pageimages/project/types/" . $myFile) || file_exists("uploads/pageimages/resort/" . $myFile) || file_exists("uploads/pageimages/resort/category/" . $myFile) || file_exists("uploads/pageimages/resort/types/" . $myFile) || file_exists("uploads/pageimages/slider/" . $myFile) || file_exists("uploads/pageimages/youtube/" . $myFile))) {
+			elseif ($myFile != '' && (file_exists("uploads/pageimages/" . $myFile) || file_exists("uploads/pageimages/addgallery/" . $myFile) || file_exists("uploads/pageimages/addgallery/project/" . $myFile) || file_exists("uploads/pageimages/addgallery/resort/" . $myFile) || file_exists("uploads/pageimages/blogs/" . $myFile) || file_exists("uploads/pageimages/blogs/single/" . $myFile) || file_exists("uploads/pageimages/contact/" . $myFile) || file_exists("uploads/pageimages/nav/" . $myFile) || file_exists("uploads/pageimages/nav/category/" . $myFile) || file_exists("uploads/pageimages/nav/types/" . $myFile) || file_exists("uploads/pageimages/project/" . $myFile) || file_exists("uploads/pageimages/project/category/" . $myFile) || file_exists("uploads/pageimages/project/types/" . $myFile) || file_exists("uploads/pageimages/resort/" . $myFile) || file_exists("uploads/pageimages/resort/category/" . $myFile) || file_exists("uploads/pageimages/resort/types/" . $myFile) || file_exists("uploads/pageimages/slider/" . $myFile) || file_exists("uploads/pageimages/youtube/" . $myFile)))
+			{
 				$FileExists = true;
 			   	$_SESSION['BannerColor'] = "background-color:#FF0000;";
 			   	$_SESSION['Message'] = "Selected image already exists!";
@@ -53,13 +55,13 @@
 					$ImagePath = $path_original.$myFile;
 				}
 
-				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, banner_desc, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$BannerDesc', '$editor1', '', '$ImagePath', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
+				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, banner_desc, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$BannerDesc', '$editor1', '', '$ImagePath', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border', '$status')");
 				$LastInsertID = mysqli_insert_id($con);
 			}
 		}
 		else
 		{
-			mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, banner_desc, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$BannerDesc', '$editor1', '$imageUrl', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border')");
+			mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, banner_desc, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$BannerDesc', '$editor1', '$imageUrl', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border', '$status')");
 			$LastInsertID = mysqli_insert_id($con);
 		}
 
@@ -68,42 +70,48 @@
 			$CurrentDateTime = Date("Y-m-d H:i:s");
 			if (isset($_POST['project_info']) && !empty($_POST['project_info']))
 			{
-				foreach ($_POST['project_info'] as $item) {
+				foreach ($_POST['project_info'] as $item)
+				{
 					$icon = isset($item['icon']) ? trim($item['icon']) : '';
-				    $title = isset($item['title']) ? trim($item['title']) : '';
-				    $description = isset($item['description']) ? trim($item['description']) : '';
+				   $title = isset($item['title']) ? trim($item['title']) : '';
+				   $description = isset($item['description']) ? trim($item['description']) : '';
 
-				    if ($icon != '' && $title != '' && $description != '') {
+				   if ($icon != '' && $title != '')
+				   {
 				      mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, created_at) VALUES ('$LastInsertID', 'Project Info', '$title', '$description', '$icon', '$CurrentDateTime')");
-				    }
+				   }
 				}
 			}
 
 			if (isset($_POST['challenges']) && !empty($_POST['challenges']))
 			{
-				foreach ($_POST['challenges'] as $item) {
+				foreach ($_POST['challenges'] as $item)
+				{
 					$title = "Challenges";
-				    $icon = "task_alt";
-				    $description = isset($item['description']) ? trim($item['description']) : '';
-				    $orderNo = isset($item['order']) ? (int)$item['order'] : 0;
+				  	$icon = "task_alt";
+				   $description = isset($item['description']) ? trim($item['description']) : '';
+				   $orderNo = isset($item['order']) ? (int)$item['order'] : 0;
 
-				    if ($icon != '' && $title != '' && $description != '') {
+				   if ($description != '')
+				   {
 				      mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, sort_order, created_at) VALUES ('$LastInsertID', 'Challenges', '$title', '$description', '$icon', '$orderNo', '$CurrentDateTime')");
-				    }
+				   }
 				}
 			}
 
 			if (isset($_POST['solutions']) && !empty($_POST['solutions']))
 			{
-				foreach ($_POST['solutions'] as $item) {
+				foreach ($_POST['solutions'] as $item)
+				{
 					$title = "Solutions";
-				    $icon = "check_circle";
-				    $description = isset($item['description']) ? trim($item['description']) : '';
-				    $orderNo = isset($item['order']) ? (int)$item['order'] : 0;
+				   $icon = "check_circle";
+				   $description = isset($item['description']) ? trim($item['description']) : '';
+				   $orderNo = isset($item['order']) ? (int)$item['order'] : 0;
 
-				    if ($icon != '' && $title != '' && $description != '') {
-				        mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, sort_order, created_at) VALUES ('$LastInsertID', 'Solutions', '$title', '$description', '$icon', '$orderNo', '$CurrentDateTime')");
-				    }
+				   if ($description != '')
+				   {
+				      mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, sort_order, created_at) VALUES ('$LastInsertID', 'Solutions', '$title', '$description', '$icon', '$orderNo', '$CurrentDateTime')");
+				   }
 				}
 			}
 
@@ -225,6 +233,14 @@
 											<label>Banner Description</label>
 											<textarea class="form-control" name="banner_desc" id="banner_desc" rows="5" required placeholder="Enter banner description"></textarea>
 										</div>
+
+										<div class="commonSection">
+											<label>Status</label>
+											<select class="form-control" name="status">
+												<option value="Published">Published</option>
+												<option value="Draft">Draft</option>
+											</select>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -246,7 +262,122 @@
 												<th style="width:120px;">Actions</th>
 											</tr>
 										</thead>
-										<tbody id="projectInfoTableBody" data-empty-cols="4"></tbody>
+										<tbody id="projectInfoTableBody" data-empty-cols="4">
+											<tr>
+												<td data-icon="business">
+													<span class="material-icons">business</span>
+													<div class="counter-icon-help">business</div>
+												</td>
+												<td>Client</td>
+												<td></td>
+												<td>
+													<div class="action-btn-group">
+														<button type="button" class="btn btn-sm btn-outline-success js-edit-row" title="Edit" fdprocessedid="rs6y7h">
+															<i class="feather icon-edit-2"></i>
+														</button>
+
+														<button type="button" class="btn btn-sm btn-outline-danger js-delete-row" title="Delete" fdprocessedid="7zb6g">
+															<i class="feather icon-trash-2"></i>
+														</button>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td data-icon="location_on">
+													<span class="material-icons">location_on</span>
+													<div class="counter-icon-help">location_on</div>
+												</td>
+												<td>Location</td>
+												<td></td>
+												<td>
+													<div class="action-btn-group">
+														<button type="button" class="btn btn-sm btn-outline-success js-edit-row" title="Edit" fdprocessedid="rs6y7h">
+															<i class="feather icon-edit-2"></i>
+														</button>
+
+														<button type="button" class="btn btn-sm btn-outline-danger js-delete-row" title="Delete" fdprocessedid="7zb6g">
+															<i class="feather icon-trash-2"></i>
+														</button>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td data-icon="calendar_month">
+													<span class="material-icons">calendar_month</span>
+													<div class="counter-icon-help">calendar_month</div>
+												</td>
+												<td>Year of Completion</td>
+												<td></td>
+												<td>
+													<div class="action-btn-group">
+														<button type="button" class="btn btn-sm btn-outline-success js-edit-row" title="Edit" fdprocessedid="rs6y7h">
+															<i class="feather icon-edit-2"></i>
+														</button>
+
+														<button type="button" class="btn btn-sm btn-outline-danger js-delete-row" title="Delete" fdprocessedid="7zb6g">
+															<i class="feather icon-trash-2"></i>
+														</button>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td data-icon="holiday_village">
+													<span class="material-icons">holiday_village</span>
+													<div class="counter-icon-help">holiday_village</div>
+												</td>
+												<td>Tent Category</td>
+												<td></td>
+												<td>
+													<div class="action-btn-group">
+														<button type="button" class="btn btn-sm btn-outline-success js-edit-row" title="Edit" fdprocessedid="rs6y7h">
+															<i class="feather icon-edit-2"></i>
+														</button>
+
+														<button type="button" class="btn btn-sm btn-outline-danger js-delete-row" title="Delete" fdprocessedid="7zb6g">
+															<i class="feather icon-trash-2"></i>
+														</button>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td data-icon="architecture">
+													<span class="material-icons">architecture</span>
+													<div class="counter-icon-help">architecture</div>
+												</td>
+												<td>Tent Design</td>
+												<td></td>
+												<td>
+													<div class="action-btn-group">
+														<button type="button" class="btn btn-sm btn-outline-success js-edit-row" title="Edit" fdprocessedid="rs6y7h">
+															<i class="feather icon-edit-2"></i>
+														</button>
+
+														<button type="button" class="btn btn-sm btn-outline-danger js-delete-row" title="Delete" fdprocessedid="7zb6g">
+															<i class="feather icon-trash-2"></i>
+														</button>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td data-icon="construction">
+													<span class="material-icons">construction</span>
+													<div class="counter-icon-help">construction</div>
+												</td>
+												<td>Scope of Work</td>
+												<td></td>
+												<td>
+													<div class="action-btn-group">
+														<button type="button" class="btn btn-sm btn-outline-success js-edit-row" title="Edit" fdprocessedid="rs6y7h">
+															<i class="feather icon-edit-2"></i>
+														</button>
+
+														<button type="button" class="btn btn-sm btn-outline-danger js-delete-row" title="Delete" fdprocessedid="7zb6g">
+															<i class="feather icon-trash-2"></i>
+														</button>
+													</div>
+												</td>
+											</tr>
+										</tbody>
 									</table>
 								</div>
 							</div>
@@ -318,8 +449,8 @@
 									</div>
 									<div class="col-lg-3 col-md-6">
 										<div class="commonSection mb-0">
-											<label>Company / Hotel Name</label>
-											<input class="form-control" type="text" name="company" placeholder="Company name">
+											<label>Location</label>
+											<input class="form-control" type="text" name="company" placeholder="Location">
 										</div>
 									</div>
 									<div class="col-lg-3 col-md-6" style="display: none;">
@@ -510,6 +641,8 @@
 								solution: null
 							};
 
+							updateDynamicFormInputs();
+
 							var iconList = [
 								'home', 'apartment', 'cottage', 'house', 'hotel',
 								'groups', 'people', 'person', 'person_outline', 'face',
@@ -669,7 +802,7 @@
 							    var title = document.getElementById('piTitle').value.trim();
 							    var description = document.getElementById('piDescription').value.trim();
 
-							    if (!icon || !title || !description) {
+							    if (!icon || !title) {
 							        alert('Please fill all Project Information fields.');
 							        return;
 							    }

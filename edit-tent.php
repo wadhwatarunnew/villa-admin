@@ -21,7 +21,7 @@
 		$order = $_POST['order'];
 		$status = $_POST['status'];
 		$editor1 = mysqli_real_escape_string($con, $_POST['editor1']);
-		$y_url = $_POST['y_url'];
+		$y_url = mysqli_real_escape_string($con, $_POST['y_url']);
 		$imageUrl = $_POST['image'];
 		$myFile = isset($_FILES['myFile']['name']) ? $_FILES['myFile']['name'] : '';
 		$FloorImage = isset($_FILES['floor_plan_image']['name']) ? $_FILES['floor_plan_image']['name'] : '';
@@ -262,9 +262,7 @@
 											<label>Banner Description</label>
 											<textarea class="form-control" name="banner_desc" id="banner_desc" rows="4" required placeholder="Enter banner description"><?php echo $b['banner_desc']; ?></textarea>
 										</div>
-									</div>
 
-									<div class="col-md-4">
 										<div class="commonSection">
 											<label>Status</label>
 											<select class="form-control" name="status">
@@ -302,22 +300,49 @@
 														while($MatRow = mysqli_fetch_assoc($MatResult)) {
 													?>
 														<tr>
-															<td>
-																<div class="input-group input-group-sm">
-																	<span class="material-icons dynamic-icon-preview">
+														    <td>
+														        <span class="material-icons dynamic-icon-preview">
 														            <?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>
-														        	</span>
-														    	</div>
-															</td>
-															<td><?php echo $MatRow['title']; ?></td>
-															<td><?php echo $MatRow['description']; ?></td>
-															<td>
-																<div class="action-btn-group">
-																	<button type="button" class="btn btn-sm btn-outline-primary btn-action-edit" title="Edit"><i class="feather icon-edit-2"></i></button>
-																	<button type="button" class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete" title="Delete"><i class="feather icon-trash-2"></i></button>
-																</div>
-															</td>
+														        </span>
+
+														        <input type="hidden"
+														               name="quick_info[icon][]"
+														               value="<?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>">
+														    </td>
+
+														    <td>
+														        <?php echo htmlspecialchars($MatRow['title']); ?>
+
+														        <input type="hidden"
+														               name="quick_info[title][]"
+														               value="<?php echo htmlspecialchars($MatRow['title']); ?>">
+														    </td>
+
+														    <td>
+														        <?php echo htmlspecialchars($MatRow['description']); ?>
+
+														        <input type="hidden"
+														               name="quick_info[description][]"
+														               value="<?php echo htmlspecialchars($MatRow['description']); ?>">
+														    </td>
+
+														    <td>
+														        <div class="action-btn-group">
+														            <button type="button"
+														                    class="btn btn-sm btn-outline-primary btn-action-edit"
+														                    title="Edit">
+														                <i class="feather icon-edit-2"></i>
+														            </button>
+
+														            <button type="button"
+														                    class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete"
+														                    title="Delete">
+														                <i class="feather icon-trash-2"></i>
+														            </button>
+														        </div>
+														    </td>
 														</tr>
+
 													<?php $i++; } ?>
 												</tbody>
 											</table>
@@ -349,22 +374,49 @@
 														while($MatRow = mysqli_fetch_assoc($MatResult)) {
 													?>
 														<tr>
-															<td>
-															   <div class="input-group input-group-sm">
-																	<span class="material-icons dynamic-icon-preview">
+														    <td>
+														        <span class="material-icons dynamic-icon-preview">
 														            <?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>
-														        	</span>
-															   </div>
-															</td>
-															<td><?php echo $MatRow['title']; ?></td>
-															<td><?php echo $MatRow['description']; ?></td>
-															<td>
-																<div class="action-btn-group">
-																	<button type="button" class="btn btn-sm btn-outline-primary btn-action-edit" title="Edit"><i class="feather icon-edit-2"></i></button>
-																	<button type="button" class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete" title="Delete"><i class="feather icon-trash-2"></i></button>
-																</div>
-															</td>
+														        </span>
+
+														        <input type="hidden"
+														               name="features[icon][]"
+														               value="<?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>">
+														    </td>
+
+														    <td>
+														        <?php echo htmlspecialchars($MatRow['title']); ?>
+
+														        <input type="hidden"
+														               name="features[title][]"
+														               value="<?php echo htmlspecialchars($MatRow['title']); ?>">
+														    </td>
+
+														    <td>
+														        <?php echo htmlspecialchars($MatRow['description']); ?>
+
+														        <input type="hidden"
+														               name="features[description][]"
+														               value="<?php echo htmlspecialchars($MatRow['description']); ?>">
+														    </td>
+
+														    <td>
+														        <div class="action-btn-group">
+														            <button type="button"
+														                    class="btn btn-sm btn-outline-primary btn-action-edit"
+														                    title="Edit">
+														                <i class="feather icon-edit-2"></i>
+														            </button>
+
+														            <button type="button"
+														                    class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete"
+														                    title="Delete">
+														                <i class="feather icon-trash-2"></i>
+														            </button>
+														        </div>
+														    </td>
 														</tr>
+
 													<?php $i++; } ?>
 												</tbody>
 											</table>
@@ -396,22 +448,49 @@
 														while($MatRow = mysqli_fetch_assoc($MatResult)) {
 													?>
 														<tr>
-															<td>
-															   <div class="input-group input-group-sm">
-															    	<span class="material-icons dynamic-icon-preview">
+														    <td>
+														        <span class="material-icons dynamic-icon-preview">
 														            <?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>
-														        	</span>
-															   </div>
-															</td>
-															<td><?php echo $MatRow['title']; ?></td>
-															<td><?php echo $MatRow['description']; ?></td>
-															<td>
-																<div class="action-btn-group">
-																	<button type="button" class="btn btn-sm btn-outline-primary btn-action-edit" title="Edit"><i class="feather icon-edit-2"></i></button>
-																	<button type="button" class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete" title="Delete"><i class="feather icon-trash-2"></i></button>
-																</div>
-															</td>
+														        </span>
+
+														        <input type="hidden"
+														               name="materials[icon][]"
+														               value="<?php echo htmlspecialchars($MatRow['icon'] ?? 'home'); ?>">
+														    </td>
+
+														    <td>
+														        <?php echo htmlspecialchars($MatRow['title']); ?>
+
+														        <input type="hidden"
+														               name="materials[title][]"
+														               value="<?php echo htmlspecialchars($MatRow['title']); ?>">
+														    </td>
+
+														    <td>
+														        <?php echo htmlspecialchars($MatRow['description']); ?>
+
+														        <input type="hidden"
+														               name="materials[description][]"
+														               value="<?php echo htmlspecialchars($MatRow['description']); ?>">
+														    </td>
+
+														    <td>
+														        <div class="action-btn-group">
+														            <button type="button"
+														                    class="btn btn-sm btn-outline-primary btn-action-edit"
+														                    title="Edit">
+														                <i class="feather icon-edit-2"></i>
+														            </button>
+
+														            <button type="button"
+														                    class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete"
+														                    title="Delete">
+														                <i class="feather icon-trash-2"></i>
+														            </button>
+														        </div>
+														    </td>
 														</tr>
+
 													<?php $i++; } ?>
 												</tbody>
 											</table>
@@ -443,16 +522,47 @@
 														while($SpecsRow = mysqli_fetch_assoc($SpecsResult)) {
 													?>
 														<tr>
-															<td><?php echo $SpecsRow['title']; ?></td>
-															<td><?php echo $SpecsRow['feet']; ?></td>
-															<td><?php echo $SpecsRow['meters']; ?></td>
-															<td>
-																<div class="action-btn-group">
-																	<button type="button" class="btn btn-sm btn-outline-primary btn-action-edit" title="Edit"><i class="feather icon-edit-2"></i></button>
-																	<button type="button" class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete" title="Delete"><i class="feather icon-trash-2"></i></button>
-																</div>
-															</td>
+														    <td>
+														        <?php echo htmlspecialchars($SpecsRow['title']); ?>
+
+														        <input type="hidden"
+														               name="specifications[title][]"
+														               value="<?php echo htmlspecialchars($SpecsRow['title']); ?>">
+														    </td>
+
+														    <td>
+														        <?php echo htmlspecialchars($SpecsRow['feet']); ?>
+
+														        <input type="hidden"
+														               name="specifications[feet][]"
+														               value="<?php echo htmlspecialchars($SpecsRow['feet']); ?>">
+														    </td>
+
+														    <td>
+														        <?php echo htmlspecialchars($SpecsRow['meters']); ?>
+
+														        <input type="hidden"
+														               name="specifications[meters][]"
+														               value="<?php echo htmlspecialchars($SpecsRow['meters']); ?>">
+														    </td>
+
+														    <td>
+														        <div class="action-btn-group">
+														            <button type="button"
+														                    class="btn btn-sm btn-outline-primary btn-action-edit"
+														                    title="Edit">
+														                <i class="feather icon-edit-2"></i>
+														            </button>
+
+														            <button type="button"
+														                    class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete"
+														                    title="Delete">
+														                <i class="feather icon-trash-2"></i>
+														            </button>
+														        </div>
+														    </td>
 														</tr>
+
 													<?php $i++; } ?>
 												</tbody>
 											</table>
@@ -634,32 +744,14 @@
 				    <label>Icon</label>
 				    <div class="counter-icon-box">
 				        <div class="counter-icon-preview" style="margin-bottom:8px;">
-				            <span class="material-icons" id="materialIconUiPreview">home</span>
+				            <span class="material-icons" id="materialIconUiPreview">layers</span>
 				        </div>
 
-				        <div class="d-flex align-items-center justify-content-between"
-				             style="gap:10px; margin-bottom:8px;">
-
-				            <button type="button"
-				                    class="btn btn-outline-secondary btn-sm"
-				                    onclick="openQuickInfoIconModal('material')">
-				                Open Material Icons
-				            </button>
-
-				            <span class="counter-icon-help" style="margin:0;">
-				                Choose any icon name
-				            </span>
-				        </div>
-
-				        <input type="text"
+				        <input type="hidden"
 				               class="form-control"
 				               id="materialIconUiOnly"
-				               value="home"
+				               value="layers"
 				               placeholder="Ex: home, verified, location_on">
-
-				        <div class="counter-icon-help">
-				            UI only (not saved yet)
-				        </div>
 				    </div>
 				</div>
 				<div class="commonSection"><label>Title</label><input type="text" class="form-control" id="materialTitle" placeholder="Enter title"></div>
@@ -1050,8 +1142,8 @@
 				document.getElementById('featureTitle').value = '';
 				document.getElementById('featureDescription').value = '';
 			} else if (modalId === 'addMaterialModal') {
-				document.getElementById('materialIconUiOnly').value = 'home';
-				document.getElementById('materialIconUiPreview').textContent = 'home';
+				document.getElementById('materialIconUiOnly').value = 'layers';
+				document.getElementById('materialIconUiPreview').textContent = 'layers';
 				document.getElementById('materialTitle').value = '';
 				document.getElementById('materialDescription').value = '';
 			}
@@ -1059,19 +1151,115 @@
 		}
 
 		function handleSimpleSave(modalId, icon, title, description) {
-			var editingRow = editingRowByModal[modalId];
-			if (!icon || !title || !description) {
-				return;
-			}
-			if (editingRow) {
-				editingRow.cells[0].textContent = icon;
-				editingRow.cells[1].textContent = title;
-				editingRow.cells[2].textContent = description;
-			} else {
-				appendRow(modalConfig[modalId].tbodyId, icon, title, description);
-			}
-			closeModal(modalId);
-			clearAndResetModal(modalId);
+		    var editingRow = editingRowByModal[modalId];
+
+		    if (!icon || !title || !description) {
+		        alert('Please fill all fields.');
+		        return;
+		    }
+
+		    if (editingRow) {
+		        var tbodyId = modalConfig[modalId].tbodyId;
+		        var prefix = '';
+
+		        if (tbodyId === 'quickInfoTableBody') {
+		            prefix = 'quick_info';
+		        } else if (tbodyId === 'featureTableBody') {
+		            prefix = 'features';
+		        } else if (tbodyId === 'materialTableBody') {
+		            prefix = 'materials';
+		        }
+
+		        /*
+		         * ICON
+		         */
+		        var iconCell = editingRow.cells[0];
+		        var iconPreview = iconCell.querySelector('.dynamic-icon-preview');
+		        var iconHidden = iconCell.querySelector(
+		            'input[name="' + prefix + '[icon][]"]'
+		        );
+
+		        if (iconPreview) {
+		            iconPreview.textContent = icon;
+		        }
+
+		        if (iconHidden) {
+		            iconHidden.value = icon;
+		        } else {
+		            iconCell.appendChild(
+		                createHiddenInput(prefix + '[icon][]', icon)
+		            );
+		        }
+
+		        /*
+		         * TITLE
+		         */
+		        var titleCell = editingRow.cells[1];
+		        var titleHidden = titleCell.querySelector(
+		            'input[name="' + prefix + '[title][]"]'
+		        );
+
+		        // Remove only visible text nodes
+		        Array.prototype.slice.call(titleCell.childNodes).forEach(function(node) {
+		            if (node.nodeType === Node.TEXT_NODE) {
+		                node.remove();
+		            }
+		        });
+
+		        titleCell.insertBefore(
+		            document.createTextNode(title),
+		            titleCell.firstChild
+		        );
+
+		        if (titleHidden) {
+		            titleHidden.value = title;
+		        } else {
+		            titleCell.appendChild(
+		                createHiddenInput(prefix + '[title][]', title)
+		            );
+		        }
+
+		        /*
+		         * DESCRIPTION
+		         */
+		        var descriptionCell = editingRow.cells[2];
+		        var descriptionHidden = descriptionCell.querySelector(
+		            'input[name="' + prefix + '[description][]"]'
+		        );
+
+		        Array.prototype.slice.call(descriptionCell.childNodes).forEach(function(node) {
+		            if (node.nodeType === Node.TEXT_NODE) {
+		                node.remove();
+		            }
+		        });
+
+		        descriptionCell.insertBefore(
+		            document.createTextNode(description),
+		            descriptionCell.firstChild
+		        );
+
+		        if (descriptionHidden) {
+		            descriptionHidden.value = description;
+		        } else {
+		            descriptionCell.appendChild(
+		                createHiddenInput(
+		                    prefix + '[description][]',
+		                    description
+		                )
+		            );
+		        }
+
+		    } else {
+		        appendRow(
+		            modalConfig[modalId].tbodyId,
+		            icon,
+		            title,
+		            description
+		        );
+		    }
+
+		    closeModal(modalId);
+		    clearAndResetModal(modalId);
 		}
 
 		function handleSpecSave() {
@@ -1093,46 +1281,90 @@
 		        /*
 		         * TITLE
 		         */
-		        editingRow.cells[0].textContent = title;
+		        var titleCell = editingRow.cells[0];
+		        var titleHidden = titleCell.querySelector(
+		            'input[name="specifications[title][]"]'
+		        );
 
-		        var titleHidden = document.createElement('input');
-		        titleHidden.type = 'hidden';
-		        titleHidden.name = 'specifications[title][]';
-		        titleHidden.value = title;
+		        // Preserve hidden input
+		        Array.prototype.slice.call(titleCell.childNodes).forEach(function(node) {
+		            if (node.nodeType === Node.TEXT_NODE) {
+		                node.remove();
+		            }
+		        });
 
-		        editingRow.cells[0].appendChild(titleHidden);
+		        titleCell.insertBefore(
+		            document.createTextNode(title),
+		            titleCell.firstChild
+		        );
+
+		        if (titleHidden) {
+		            titleHidden.value = title;
+		        } else {
+		            titleCell.appendChild(
+		                createHiddenInput(
+		                    'specifications[title][]',
+		                    title
+		                )
+		            );
+		        }
 
 
 		        /*
 		         * FEET
 		         */
-		        editingRow.cells[1].textContent = feet;
+		        var feetCell = editingRow.cells[1];
 
-		        var feetHidden = document.createElement('input');
-		        feetHidden.type = 'hidden';
-		        feetHidden.name = 'specifications[feet][]';
-		        feetHidden.value = feet;
+		        var feetInput = feetCell.querySelector('.form-control');
 
-		        editingRow.cells[1].appendChild(feetHidden);
+		        if (feetInput) {
+		            feetInput.value = feet;
+		        }
+
+		        var feetHidden = feetCell.querySelector(
+		            'input[name="specifications[feet][]"]'
+		        );
+
+		        if (feetHidden) {
+		            feetHidden.value = feet;
+		        } else {
+		            feetCell.appendChild(
+		                createHiddenInput(
+		                    'specifications[feet][]',
+		                    feet
+		                )
+		            );
+		        }
 
 
 		        /*
 		         * METERS
 		         */
-		        editingRow.cells[2].textContent = meters;
+		        var metersCell = editingRow.cells[2];
 
-		        var metersHidden = document.createElement('input');
-		        metersHidden.type = 'hidden';
-		        metersHidden.name = 'specifications[meters][]';
-		        metersHidden.value = meters;
+		        var metersInput = metersCell.querySelector('.form-control');
 
-		        editingRow.cells[2].appendChild(metersHidden);
+		        if (metersInput) {
+		            metersInput.value = meters;
+		        }
+
+		        var metersHidden = metersCell.querySelector(
+		            'input[name="specifications[meters][]"]'
+		        );
+
+		        if (metersHidden) {
+		            metersHidden.value = meters;
+		        } else {
+		            metersCell.appendChild(
+		                createHiddenInput(
+		                    'specifications[meters][]',
+		                    meters
+		                )
+		            );
+		        }
 
 		    } else {
 
-		        /*
-		         * ADD NEW ROW
-		         */
 		        appendSpecificationRow(
 		            modalConfig[modalId].tbodyId,
 		            title,
@@ -1186,12 +1418,47 @@
 				}
 
 				if (tbody.id === 'quickInfoTableBody') {
-					editingRowByModal.addItemModal = editRow;
-					document.getElementById('quickItemIconUiOnly').value = editRow.cells[0].querySelector('input')?.value || 'home';
-					document.getElementById('quickItemTitle').value = editRow.cells[1].textContent.trim();
-					document.getElementById('quickItemDescription').value = editRow.cells[2].textContent.trim();
-					setModalHeading('addItemModal', true);
-					openModal('addItemModal');
+				   editingRowByModal.addItemModal = editRow;
+
+				   // Get icon from data-icon first
+				   var icon = editRow.cells[0].getAttribute('data-icon');
+
+				   // Fallback to hidden input
+				   if (!icon) {
+				      var iconHidden = editRow.cells[0].querySelector(
+				         'input[name="quick_info[icon][]"]'
+				      );
+
+				      icon = iconHidden ? iconHidden.value.trim() : 'home';
+				   }
+
+				   // Get title
+				   var titleHidden = editRow.cells[1].querySelector(
+				     'input[name="quick_info[title][]"]'
+				   );
+
+				   var title = titleHidden
+				      ? titleHidden.value.trim()
+				      : '';
+
+				   // Get description
+				   var descriptionHidden = editRow.cells[2].querySelector(
+				      'input[name="quick_info[description][]"]'
+				   );
+
+				   var description = descriptionHidden
+				      ? descriptionHidden.value.trim()
+				      : '';
+
+				   // Populate modal
+				   document.getElementById('quickItemIconUiOnly').value = icon;
+				   document.getElementById('quickItemIconUiPreview').textContent = icon;
+
+				   document.getElementById('quickItemTitle').value = title;
+				   document.getElementById('quickItemDescription').value = description;
+
+				   setModalHeading('addItemModal', true);
+				   openModal('addItemModal');
 				}
 
 				if (tbody.id === 'featureTableBody') {

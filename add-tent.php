@@ -36,7 +36,7 @@
 		{
 			if($myFile == '')
 			{
-				mysqli_query($con,"INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, banner_desc, content, y_url, dimension, image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$BannerDesc', '$editor1', '$y_url', '$editor2', '', '$status') ");
+				mysqli_query($con,"INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, banner_desc, content, y_url, dimension, image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$BannerDesc', '$editor1', '$y_url', '$editor2', '', '$status')");
 				$LastInsertID = mysqli_insert_id($con);
 			}
 			elseif($myFile != '' && (file_exists("uploads/pageimages/".$myFile) || file_exists("uploads/pageimages/addgallery/".$myFile) || file_exists("uploads/pageimages/addgallery/project/".$myFile) || file_exists("uploads/pageimages/addgallery/resort/".$myFile) || file_exists("uploads/pageimages/blogs/".$myFile) || file_exists("uploads/pageimages/blogs/single/".$myFile) || file_exists("uploads/pageimages/contact/".$myFile) || file_exists("uploads/pageimages/nav/".$myFile) || file_exists("uploads/pageimages/nav/category/".$myFile) || file_exists("uploads/pageimages/nav/types/".$myFile) || file_exists("uploads/pageimages/project/".$myFile) || file_exists("uploads/pageimages/project/category/".$myFile) || file_exists("uploads/pageimages/project/types/".$myFile) || file_exists("uploads/pageimages/resort/".$myFile) || file_exists("uploads/pageimages/resort/category/".$myFile) || file_exists("uploads/pageimages/resort/types/".$myFile) || file_exists("uploads/pageimages/slider/".$myFile) || file_exists("uploads/pageimages/youtube/".$myFile)))
@@ -56,7 +56,7 @@
 					$ImagePath = $path_original.$myFile;
 				}
 
-				mysqli_query($con,"INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, banner_desc, content, y_url, dimension, local_path, image, floor_image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$BannerDesc', '$editor1', '$y_url', '$editor2', '$ImagePath', '', '$FloorPath', '$status') ");
+				mysqli_query($con,"INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, banner_desc, content, y_url, dimension, local_path, image, floor_image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$BannerDesc', '$editor1', '$y_url', '$editor2', '$ImagePath', '', '$FloorPath', '$status')");
 				$LastInsertID = mysqli_insert_id($con);
 			}
 		}
@@ -65,7 +65,7 @@
 			mysqli_query($con, "INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, banner_desc, content, y_url, dimension, local_path, image, floor_image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$BannerDesc', '$editor1', '$y_url', '$editor2', '', '$imageUrl', '$FloorPath', '$status')");
 			$LastInsertID = mysqli_insert_id($con);
 		}
-
+		
 		if($LastInsertID != '')
 		{
 			$CurrentDateTime = Date("Y-m-d H:i:s");
@@ -73,13 +73,15 @@
 			{
 				$titles = $_POST['quick_info']['title'];
 	 			$descriptions = $_POST['quick_info']['description'];
+	 			$icons = $_POST['quick_info']['icon'];
 
-			   foreach ($titles as $key => $specTitle)
+	 			foreach ($titles as $key => $specTitle)
 			   {
 					$title = mysqli_real_escape_string($con, $titles[$key]);
 			      $description = mysqli_real_escape_string($con, $descriptions[$key]);
+			      $icon = $icons[$key];
 
-			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, description, created_at) VALUES ('$LastInsertID', 'Quick Info', '$title', '$description', '$CurrentDateTime')");
+			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, description, icon, created_at) VALUES ('$LastInsertID', 'Quick Info', '$title', '$description', '$icon', '$CurrentDateTime')");
 			   }
 			}
 
@@ -87,13 +89,15 @@
 			{
 				$titles = $_POST['features']['title'];
 	 			$descriptions = $_POST['features']['description'];
+	 			$icons = $_POST['features']['icon'];
 
-			   foreach ($titles as $key => $specTitle)
+	 			foreach ($titles as $key => $specTitle)
 			   {
 					$title = mysqli_real_escape_string($con, $titles[$key]);
 			      $description = mysqli_real_escape_string($con, $descriptions[$key]);
+			      $icon = $icons[$key];
 
-			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, description, created_at) VALUES ('$LastInsertID', 'Features', '$title', '$description', '$CurrentDateTime')");
+			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, description, icon, created_at) VALUES ('$LastInsertID', 'Features', '$title', '$description', '$icon', '$CurrentDateTime')");
 			   }
 			}
 
@@ -102,12 +106,13 @@
 				$titles = $_POST['materials']['title'];
 	 			$descriptions = $_POST['materials']['description'];
 
-			   foreach ($titles as $key => $specTitle)
+	 			foreach ($titles as $key => $specTitle)
 			   {
 					$title = mysqli_real_escape_string($con, $titles[$key]);
 			      $description = mysqli_real_escape_string($con, $descriptions[$key]);
+			      $icon = $icons[$key];
 
-			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, description, created_at) VALUES ('$LastInsertID', 'Materials', '$title', '$description', '$CurrentDateTime')");
+			      mysqli_query($con, "INSERT INTO tent_details (tent_id, category, title, description, icon, created_at) VALUES ('$LastInsertID', 'Materials', '$title', '$description', 'layers', '$CurrentDateTime')");
 			   }
 			}
 
@@ -269,9 +274,7 @@
 											<label>Banner Description</label>
 											<textarea class="form-control" name="banner_desc" id="banner_desc" rows="4" required placeholder="Enter banner description"></textarea>
 										</div>
-									</div>
 
-									<div class="col-md-4">
 										<div class="commonSection">
 											<label>Status</label>
 											<select class="form-control" name="status">
@@ -302,7 +305,106 @@
 														<th style="width:120px;">Actions</th>
 													</tr>
 												</thead>
-												<tbody id="quickInfoTableBody" data-empty-cols="3">
+												<tbody id="quickInfoTableBody" data-empty-cols="4">
+												    <tr>
+												        <td data-icon="square_foot">
+												            <span class="material-icons">square_foot</span>
+												            <input type="hidden" name="quick_info[icon][]" value="square_foot">
+												        </td>
+												        <td>
+												            <span class="row-text">Size</span>
+												            <input type="hidden" name="quick_info[title][]" value="Size">
+												        </td>
+												        <td>
+												            <span class="row-text"></span>
+												            <input type="hidden" name="quick_info[description][]" value="">
+												        </td>
+												        <td>
+												            <div class="action-btn-group">
+												                <button type="button" class="btn btn-sm btn-outline-primary btn-action-edit" title="Edit">
+												                    <i class="feather icon-edit-2"></i>
+												                </button>
+												                <button type="button" class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete" title="Delete">
+												                    <i class="feather icon-trash-2"></i>
+												                </button>
+												            </div>
+												        </td>
+												    </tr>
+
+												    <tr>
+												        <td data-icon="group">
+												            <span class="material-icons">group</span>
+												            <input type="hidden" name="quick_info[icon][]" value="group">
+												        </td>
+												        <td>
+												            <span class="row-text">Capacity</span>
+												            <input type="hidden" name="quick_info[title][]" value="Capacity">
+												        </td>
+												        <td>
+												            <span class="row-text"></span>
+												            <input type="hidden" name="quick_info[description][]" value="">
+												        </td>
+												        <td>
+												            <div class="action-btn-group">
+												                <button type="button" class="btn btn-sm btn-outline-primary btn-action-edit" title="Edit">
+												                    <i class="feather icon-edit-2"></i>
+												                </button>
+												                <button type="button" class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete" title="Delete">
+												                    <i class="feather icon-trash-2"></i>
+												                </button>
+												            </div>
+												        </td>
+												    </tr>
+
+												    <tr>
+												        <td data-icon="bed">
+												            <span class="material-icons">bed</span>
+												            <input type="hidden" name="quick_info[icon][]" value="bed">
+												        </td>
+												        <td>
+												            <span class="row-text">Bedrooms</span>
+												            <input type="hidden" name="quick_info[title][]" value="Bedrooms">
+												        </td>
+												        <td>
+												            <span class="row-text"></span>
+												            <input type="hidden" name="quick_info[description][]" value="">
+												        </td>
+												        <td>
+												            <div class="action-btn-group">
+												                <button type="button" class="btn btn-sm btn-outline-primary btn-action-edit" title="Edit">
+												                    <i class="feather icon-edit-2"></i>
+												                </button>
+												                <button type="button" class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete" title="Delete">
+												                    <i class="feather icon-trash-2"></i>
+												                </button>
+												            </div>
+												        </td>
+												    </tr>
+
+												    <tr>
+												        <td data-icon="bathtub">
+												            <span class="material-icons">bathtub</span>
+												            <input type="hidden" name="quick_info[icon][]" value="bathtub">
+												        </td>
+												        <td>
+												            <span class="row-text">Bathrooms</span>
+												            <input type="hidden" name="quick_info[title][]" value="Bathrooms">
+												        </td>
+												        <td>
+												            <span class="row-text"></span>
+												            <input type="hidden" name="quick_info[description][]" value="">
+												        </td>
+												        <td>
+												            <div class="action-btn-group">
+												                <button type="button" class="btn btn-sm btn-outline-primary btn-action-edit" title="Edit">
+												                    <i class="feather icon-edit-2"></i>
+												                </button>
+												                <button type="button" class="btn btn-sm btn-outline-danger js-delete-row btn-action-delete" title="Delete">
+												                    <i class="feather icon-trash-2"></i>
+												                </button>
+												            </div>
+												        </td>
+												    </tr>
 												</tbody>
 											</table>
 										</div>
@@ -536,32 +638,14 @@
 									    <label>Icon</label>
 									    <div class="counter-icon-box">
 									        <div class="counter-icon-preview" style="margin-bottom:8px;">
-									            <span class="material-icons" id="materialIconUiPreview">home</span>
+									            <span class="material-icons" id="materialIconUiPreview">layers</span>
 									        </div>
 
-									        <div class="d-flex align-items-center justify-content-between"
-									             style="gap:10px; margin-bottom:8px;">
-
-									            <button type="button"
-									                    class="btn btn-outline-secondary btn-sm"
-									                    onclick="openQuickInfoIconModal('material')">
-									                Open Material Icons
-									            </button>
-
-									            <span class="counter-icon-help" style="margin:0;">
-									                Choose any icon name
-									            </span>
-									        </div>
-
-									        <input type="text"
+									        <input type="hidden"
 									               class="form-control"
 									               id="materialIconUiOnly"
-									               value="home"
+									               value="layers"
 									               placeholder="Ex: home, verified, location_on">
-
-									        <div class="counter-icon-help">
-									            UI only (not saved yet)
-									        </div>
 									    </div>
 									</div>
 									<div class="commonSection"><label>Title</label><input type="text" class="form-control" id="materialTitle" placeholder="Enter title"></div>
@@ -763,7 +847,7 @@
 
 		    var tbody = document.getElementById(tbodyId);
 
-		    if (!tbody || !icon || !title || !description) {
+		    if (!tbody) {
 		        return;
 		    }
 
@@ -777,11 +861,9 @@
 
 		    if (tbodyId === 'quickInfoTableBody') {
 		        prefix = 'quick_info';
-		    }
-		    else if (tbodyId === 'featureTableBody') {
+		    } else if (tbodyId === 'featureTableBody') {
 		        prefix = 'features';
-		    }
-		    else if (tbodyId === 'materialTableBody') {
+		    } else if (tbodyId === 'materialTableBody') {
 		        prefix = 'materials';
 		    }
 
@@ -789,29 +871,37 @@
 
 		    // ICON
 		    var iconTd = document.createElement('td');
+		    iconTd.setAttribute('data-icon', icon);
 
 		    var iconPreview = document.createElement('span');
 		    iconPreview.className = 'material-icons';
 		    iconPreview.textContent = icon;
 
 		    iconTd.appendChild(iconPreview);
-
 		    iconTd.appendChild(
 		        createHiddenInput(prefix + '[icon][]', icon)
 		    );
 
 		    // TITLE
 		    var titleTd = document.createElement('td');
-		    titleTd.textContent = title;
 
+		    var titleText = document.createElement('span');
+		    titleText.className = 'row-text';
+		    titleText.textContent = title;
+
+		    titleTd.appendChild(titleText);
 		    titleTd.appendChild(
 		        createHiddenInput(prefix + '[title][]', title)
 		    );
 
 		    // DESCRIPTION
 		    var descriptionTd = document.createElement('td');
-		    descriptionTd.textContent = description;
 
+		    var descriptionText = document.createElement('span');
+		    descriptionText.className = 'row-text';
+		    descriptionText.textContent = description;
+
+		    descriptionTd.appendChild(descriptionText);
 		    descriptionTd.appendChild(
 		        createHiddenInput(prefix + '[description][]', description)
 		    );
@@ -988,8 +1078,8 @@
 				document.getElementById('featureTitle').value = '';
 				document.getElementById('featureDescription').value = '';
 			} else if (modalId === 'addMaterialModal') {
-				document.getElementById('materialIconUiOnly').value = 'home';
-				document.getElementById('materialIconUiPreview').textContent = 'home';
+				document.getElementById('materialIconUiOnly').value = 'layers';
+				document.getElementById('materialIconUiPreview').textContent = 'layers';
 				document.getElementById('materialTitle').value = '';
 				document.getElementById('materialDescription').value = '';
 			}
@@ -1000,42 +1090,65 @@
 
 		    var editingRow = editingRowByModal[modalId];
 
-		    if (!icon || !title || !description) {
-		        alert('Please fill all fields.');
+		    icon = (icon || '').trim();
+		    title = (title || '').trim();
+		    description = (description || '').trim();
+
+		    if (!icon || !title) {
+		        alert('Please enter icon and title.');
 		        return;
 		    }
 
 		    if (editingRow) {
 
-		        var iconSpan = editingRow.cells[0].querySelector('.material-icons');
+		        // -------------------------
+		        // ICON
+		        // -------------------------
+		        var iconSpan = editingRow.cells[0]
+		            .querySelector('.material-icons');
+
+		        var iconHidden = editingRow.cells[0]
+		            .querySelector('input[type="hidden"]');
 
 		        if (iconSpan) {
 		            iconSpan.textContent = icon;
 		        }
 
-		        var iconHidden = editingRow.cells[0].querySelector(
-		            'input[type="hidden"]'
-		        );
+		        editingRow.cells[0].setAttribute('data-icon', icon);
 
 		        if (iconHidden) {
 		            iconHidden.value = icon;
 		        }
 
-		        editingRow.cells[1].childNodes[0].textContent = title;
+		        // -------------------------
+		        // TITLE
+		        // -------------------------
+		        var titleText = editingRow.cells[1]
+		            .querySelector('.row-text');
 
-		        var titleHidden = editingRow.cells[1].querySelector(
-		            'input[type="hidden"]'
-		        );
+		        var titleHidden = editingRow.cells[1]
+		            .querySelector('input[type="hidden"]');
+
+		        if (titleText) {
+		            titleText.textContent = title;
+		        }
 
 		        if (titleHidden) {
 		            titleHidden.value = title;
 		        }
 
-		        editingRow.cells[2].childNodes[0].textContent = description;
+		        // -------------------------
+		        // DESCRIPTION
+		        // -------------------------
+		        var descriptionText = editingRow.cells[2]
+		            .querySelector('.row-text');
 
-		        var descriptionHidden = editingRow.cells[2].querySelector(
-		            'input[type="hidden"]'
-		        );
+		        var descriptionHidden = editingRow.cells[2]
+		            .querySelector('input[type="hidden"]');
+
+		        if (descriptionText) {
+		            descriptionText.textContent = description;
+		        }
 
 		        if (descriptionHidden) {
 		            descriptionHidden.value = description;
@@ -1052,6 +1165,7 @@
 		    }
 
 		    closeModal(modalId);
+
 		    clearAndResetModal(modalId);
 		}
 
@@ -1172,33 +1286,49 @@
 				}
 
 				if (tbody.id === 'quickInfoTableBody') {
-				    editingRowByModal.addItemModal = editRow;
+				   editingRowByModal.addItemModal = editRow;
 
-				    var icon = editRow.cells[0]
-				        .querySelector('.material-icons');
+				   // Get icon from data-icon first
+				   var icon = editRow.cells[0].getAttribute('data-icon');
 
-				    var title = editRow.cells[1]
-				        .childNodes[0]
-				        .textContent
-				        .trim();
+				   // Fallback to hidden input
+				   if (!icon) {
+				      var iconHidden = editRow.cells[0].querySelector(
+				         'input[name="quick_info[icon][]"]'
+				      );
 
-				    var description = editRow.cells[2]
-				        .childNodes[0]
-				        .textContent
-				        .trim();
+				      icon = iconHidden ? iconHidden.value.trim() : 'home';
+				   }
 
-				    document.getElementById('quickItemIconUiOnly').value =
-				        icon ? icon.textContent.trim() : 'home';
+				   // Get title
+				   var titleHidden = editRow.cells[1].querySelector(
+				     'input[name="quick_info[title][]"]'
+				   );
 
-				    document.getElementById('quickItemIconUiPreview').textContent =
-				        icon ? icon.textContent.trim() : 'home';
+				   var title = titleHidden
+				      ? titleHidden.value.trim()
+				      : '';
 
-				    document.getElementById('quickItemTitle').value = title;
-				    document.getElementById('quickItemDescription').value = description;
+				   // Get description
+				   var descriptionHidden = editRow.cells[2].querySelector(
+				      'input[name="quick_info[description][]"]'
+				   );
 
-				    setModalHeading('addItemModal', true);
-				    openModal('addItemModal');
+				   var description = descriptionHidden
+				      ? descriptionHidden.value.trim()
+				      : '';
+
+				   // Populate modal
+				   document.getElementById('quickItemIconUiOnly').value = icon;
+				   document.getElementById('quickItemIconUiPreview').textContent = icon;
+
+				   document.getElementById('quickItemTitle').value = title;
+				   document.getElementById('quickItemDescription').value = description;
+
+				   setModalHeading('addItemModal', true);
+				   openModal('addItemModal');
 				}
+
 
 				if (tbody.id === 'featureTableBody') {
 				    editingRowByModal.addFeatureModal = editRow;

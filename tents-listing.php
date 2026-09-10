@@ -60,7 +60,7 @@
                            </thead>
                            <tbody>
                               <?php $i = 1;	 
-                                 $query4 = mysqli_query($con,"SELECT * FROM resort_types");
+                                 $query4 = mysqli_query($con,"SELECT * FROM resort_types ORDER BY id DESC");
                                  while($b = mysqli_fetch_assoc($query4)) {
                                  $statusClass = ($b['status'] === 'Published') ? 'status-published' : 'status-draft';
                               ?>

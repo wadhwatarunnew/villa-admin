@@ -20,9 +20,10 @@
 		$BannerDesc = mysqli_real_escape_string($con, $_POST['banner_desc']);
 		$cat = $_POST['cat'];
 		$order = $_POST['order'];
+		$status = $_POST['status'];
 		$editor1 = mysqli_real_escape_string($con, $_POST['editor1']);
 		$quote = mysqli_real_escape_string($con, $_POST['quote']);
-		$client_name = $_POST['client_name'];
+		$client_name = mysqli_real_escape_string($con, $_POST['client_name']);
 		$designation = mysqli_real_escape_string($con, $_POST['designation']);
 		$company = mysqli_real_escape_string($con, $_POST['company']);
 		$back_color = $_POST['back_color'];
@@ -39,7 +40,7 @@
 		{
 			if ($myFile === '')
 			{
-				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', banner_desc='$BannerDesc', content='$editor1', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border' WHERE id=$id");
+				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', banner_desc='$BannerDesc', content='$editor1', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border', status='$status' WHERE id=$id");
 				$Updated = true;
 			}
 			elseif ($myFile != '' && (file_exists("uploads/pageimages/" . $myFile) || file_exists("uploads/pageimages/addgallery/" . $myFile) || file_exists("uploads/pageimages/addgallery/project/" . $myFile) || file_exists("uploads/pageimages/addgallery/resort/" . $myFile) || file_exists("uploads/pageimages/blogs/" . $myFile) || file_exists("uploads/pageimages/blogs/single/" . $myFile) || file_exists("uploads/pageimages/contact/" . $myFile) || file_exists("uploads/pageimages/nav/" . $myFile) || file_exists("uploads/pageimages/nav/category/" . $myFile) || file_exists("uploads/pageimages/nav/types/" . $myFile) || file_exists("uploads/pageimages/project/" . $myFile) || file_exists("uploads/pageimages/project/category/" . $myFile) || file_exists("uploads/pageimages/project/types/" . $myFile) || file_exists("uploads/pageimages/resort/" . $myFile) || file_exists("uploads/pageimages/resort/category/" . $myFile) || file_exists("uploads/pageimages/resort/types/" . $myFile) || file_exists("uploads/pageimages/slider/" . $myFile) || file_exists("uploads/pageimages/youtube/" . $myFile)))
@@ -55,13 +56,13 @@
 				move_uploaded_file($_FILES['myFile']['tmp_name'], $path . $myFile);
 				$path = $path_original . $myFile;
 
-				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', banner_desc='$BannerDesc', content='$editor1', image='', local_path='$path', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border' WHERE id=$id");
+				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', banner_desc='$BannerDesc', content='$editor1', image='', local_path='$path', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border', status='$status' WHERE id=$id");
 				$Updated = true;
 			}
 		}
 		else
 		{
-			mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', banner_desc='$BannerDesc', content='$editor1', image='$imageUrl', local_path='', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border' WHERE id=$id");
+			mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', banner_desc='$BannerDesc', content='$editor1', image='$imageUrl', local_path='', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border', status='$status' WHERE id=$id");
 			$Updated = true;
 		}
 
@@ -74,42 +75,56 @@
 
 			if (isset($_POST['project_info']) && !empty($_POST['project_info']))
 			{
-				foreach ($_POST['project_info'] as $item) {
+				foreach ($_POST['project_info'] as $item)
+				{
 					$icon = isset($item['icon']) ? trim($item['icon']) : '';
-				   $title = isset($item['title']) ? trim($item['title']) : '';
-				   $description = isset($item['description']) ? trim($item['description']) : '';
+			   	$title = isset($item['title']) ? trim($item['title']) : '';
+			   	$description = isset($item['description']) ? trim($item['description']) : '';
 
-				   if ($icon != '' && $title != '' && $description != '') {
-				      mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, created_at) VALUES ('$id', 'Project Info', '$title', '$description', '$icon', '$CurrentDateTime')");
-				   }
+			   	if ($icon != '' && $title != '')
+			   	{
+			   		$title = mysqli_real_escape_string($con, $title);
+			   		$description = mysqli_real_escape_string($con, $description);
+			   		$subtitle = mysqli_real_escape_string($con, $_POST['small_heading']);
+			        	mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, created_at) VALUES ('$id', 'Project Info', '$title', '$description', '$icon', '$CurrentDateTime')");
+			   	}
 				}
 			}
 
 			if (isset($_POST['challenges']) && !empty($_POST['challenges']))
 			{
-				foreach ($_POST['challenges'] as $item) {
+				foreach ($_POST['challenges'] as $item)
+				{
 					$title = "Challenges";
-				   $icon = "task_alt";
-				   $description = isset($item['description']) ? trim($item['description']) : '';
-				   $orderNo = isset($item['order']) ? (int)$item['order'] : 0;
+			   	$icon = "task_alt";
+			   	$description = isset($item['description']) ? trim($item['description']) : '';
+			   	$orderNo = isset($item['order']) ? (int)$item['order'] : 0;
 
-				   if ($icon != '' && $title != '' && $description != '') {
-				      mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, sort_order, created_at) VALUES ('$id', 'Challenges', '$title', '$description', '$icon', '$orderNo', '$CurrentDateTime')");
-				   }
+			    	if ($description != '')
+			    	{
+			    		$title = mysqli_real_escape_string($con, $title);
+			    		$description = mysqli_real_escape_string($con, $description);
+			   		$subtitle = mysqli_real_escape_string($con, $_POST['small_heading']);
+			      	mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, sort_order, created_at) VALUES ('$id', 'Challenges', '$title', '$description', '$icon', '$orderNo', '$CurrentDateTime')");
+			   	}
 				}
 			}
 
 			if (isset($_POST['solutions']) && !empty($_POST['solutions']))
 			{
-				foreach ($_POST['solutions'] as $item) {
+				foreach ($_POST['solutions'] as $item)
+				{
 					$title = "Solutions";
 				   $icon = "check_circle";
 				   $description = isset($item['description']) ? trim($item['description']) : '';
 				   $orderNo = isset($item['order']) ? (int)$item['order'] : 0;
 
-				   if ($icon != '' && $title != '' && $description != '') {
-				      mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, sort_order, created_at) VALUES ('$id', 'Solutions', '$title', '$description', '$icon', '$orderNo', '$CurrentDateTime')");
-				   }
+			   	if ($description != '')
+			   	{
+			   		$title = mysqli_real_escape_string($con, $title);
+			   		$description = mysqli_real_escape_string($con, $description);
+			      	mysqli_query($con, "INSERT INTO project_details (project_id, category, title, description, icon, sort_order, created_at) VALUES ('$id', 'Solutions', '$title', '$description', '$icon', '$orderNo', '$CurrentDateTime')");
+			   	}
 				}
 			}
 
@@ -229,6 +244,14 @@
 										<div class="commonSection">
 											<label>Banner Description</label>
 											<textarea class="form-control" name="banner_desc" id="banner_desc" rows="5" required placeholder="Enter banner description"><?php echo $b['banner_desc']; ?></textarea>
+										</div>
+
+										<div class="commonSection">
+											<label>Status</label>
+											<select class="form-control" name="status">
+												<option value="Published" <?php echo ($b['status'] == "Published") ? "selected" : ''; ?>>Published</option>
+												<option value="Draft" <?php echo ($b['status'] == "Draft") ? "selected" : ''; ?>>Draft</option>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -375,8 +398,8 @@
 									</div>
 									<div class="col-lg-3 col-md-6">
 										<div class="commonSection mb-0">
-											<label>Company / Hotel Name</label>
-											<input class="form-control" type="text" name="company" value="<?php echo $b['company']; ?>" placeholder="Company name">
+											<label>Location</label>
+											<input class="form-control" type="text" name="company" value="<?php echo $b['company']; ?>" placeholder="Location">
 										</div>
 									</div>
 									<div class="col-lg-3 col-md-6" style="display: none;">
