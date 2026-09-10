@@ -21,7 +21,7 @@
 
    function dashboard_fetch_category_counts($con, $tableName) {
       $counts = array();
-      $sql = "SELECT category, COUNT(*) AS total_count FROM {$tableName} WHERE TRIM(IFNULL(title,'')) <> '' AND TRIM(IFNULL(category,'')) <> '' GROUP BY category";
+      $sql = "SELECT category, COUNT(*) AS total_count FROM {$tableName} WHERE TRIM(IFNULL(title,'')) <> '' AND TRIM(IFNULL(category,'')) <> '' AND status='Published' GROUP BY category";
       $result = mysqli_query($con, $sql);
 
       if ($result) {

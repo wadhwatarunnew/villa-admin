@@ -1,5 +1,5 @@
 <?php
-	header("Access-Control-Allow-Origin: http://localhost:4200");
+	header("Access-Control-Allow-Origin: http://localhost:4000");
 	header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 	header("Access-Control-Allow-Headers: Content-Type, Authorization");
 	header("Content-Type: application/json");
@@ -635,7 +635,7 @@
 	   	// Resort Tents
 	   	$i=0;
 	   	$TitleToSearch = $ResortRow['title'];
-	   	$Result = mysqli_query($con, "SELECT * FROM resort_types WHERE category='$TitleToSearch' ORDER BY order_no ASC");
+	   	$Result = mysqli_query($con, "SELECT * FROM resort_types WHERE category='$TitleToSearch' AND status='Published' ORDER BY order_no ASC");
 		while($Row = mysqli_fetch_assoc($Result))
 		{
 			$CategoryTitle = preg_replace('/[^a-z]/', '-', strtolower($Row['title']));
@@ -944,7 +944,7 @@
 	   	// Projects
 	   	$i=0;
 	   	$TitleToSearch = $ProjectRow['title'];
-	   	$Result = mysqli_query($con, "SELECT * FROM project_types WHERE category='$TitleToSearch' ORDER BY order_no ASC");
+	   	$Result = mysqli_query($con, "SELECT * FROM project_types WHERE category='$TitleToSearch' AND status='Published' ORDER BY order_no ASC");
 		while($Row = mysqli_fetch_assoc($Result))
 		{
 			$CategoryTitle = preg_replace('/[^a-z]/', '-', strtolower($Row['title']));
@@ -1129,7 +1129,7 @@
 	   	$Response['SEOInfo']['keyword'] = $Row['meta_keyword'];
 	   	$Response['SEOInfo']['content'] = $Row['meta_desc'];
 
-		$Result = mysqli_query($con, "SELECT * FROM add_gallery");
+		$Result = mysqli_query($con, "SELECT * FROM add_gallery ORDER BY dateTime DESC");
 		if(mysqli_num_rows($Result) > 0)
 		{
 			$i=0;
