@@ -353,6 +353,64 @@ select {
     color: var(--color-text-subtle);
 }
 
+.listing-filter-form {
+    width: 100%;
+    margin: 0 0 18px;
+    padding: 14px 16px;
+    border: 1px solid #e4eceb;
+    border-radius: 8px;
+    background: linear-gradient(110deg, #f8fbfb 0%, #eef8f5 100%);
+    box-shadow: 0 3px 12px rgba(26, 62, 74, .08);
+}
+
+.listing-filter-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 1.15fr) minmax(240px, .9fr) auto;
+    align-items: end;
+    gap: 22px;
+}
+
+.listing-filter-field label {
+    display: block;
+    margin: 0 0 6px;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-ui-xs);
+    font-weight: 600;
+}
+
+.listing-input-wrap {
+    position: relative;
+}
+
+.listing-input-wrap>.feather {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 13px;
+    color: var(--color-text-muted);
+    transform: translateY(-50%);
+}
+
+.listing-input-wrap>.form-control {
+    padding-left: 39px;
+}
+
+.listing-filter-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    min-height: 42px;
+}
+
+.listing-filter-actions .btn {
+    min-width: 144px;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .listing-cta {
     display: inline-flex;
     align-items: center;
@@ -456,6 +514,16 @@ select {
     .listing-page-head {
         flex-direction: column;
         align-items: stretch;
+    }
+    .listing-filter-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+    .listing-filter-actions {
+        justify-content: stretch;
+    }
+    .listing-filter-actions .btn {
+        flex: 1;
     }
 }
 
@@ -739,9 +807,8 @@ input[type="radio"] {
 }
 
 #pagination {
-    margin-top: 20px;
-    padding-top: 30px;
-    border-top: var(--color-table-border) 0px solid;
+    text-align: right;
+    padding: 20px 0 0 0;
 }
 
 .dot {
