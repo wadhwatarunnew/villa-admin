@@ -1,7 +1,53 @@
 <?php
    include "db.php";
    include_once('common/header.php');
+   require_once('common/pagination.class.php');
    $PageTitle = "Villatent: Resorts Listing";
+
+   $search = $_GET['search'];
+   $category = $_GET['category'];
+
+   $perPage = new PerPage();
+   $sql = "SELECT * FROM resort_types";
+   $paginationlink = "tents-listing.php?search=$search&category=$category&page=";    
+   $pagination_setting = "all-links";
+                   
+   $page = 1;
+   if(!empty($_GET["page"]))
+   {
+      $page = $_GET["page"];
+   }
+
+   if($search != '' && $category != '' && $category != 'All')
+   {
+      $sql = $sql . " WHERE title LIKE '%$search%' AND category = '$category'";
+   }
+   else if($search != '')
+   {
+      $sql = $sql . " WHERE title LIKE '%$search%'";
+   }
+   else if($category != '' && $category != 'All')
+   {
+      $sql = $sql . " WHERE category = '$category'";
+   }
+   $start = ($page-1)*$perPage->perpage;
+   if($start < 0) $start = 0;
+
+   $query =  $sql . " ORDER BY id DESC limit " . $start . "," . $perPage->perpage;
+   $totalCount = mysqli_query($con, $sql);
+   $query2 = mysqli_query($con, $query);
+
+   if(empty($_GET["rowcount"]))
+   {
+      $_GET["rowcount"] = mysqli_num_rows($totalCount);
+   }
+
+   $perpageresult = $perPage->getAllPageLinks($_GET["rowcount"], $paginationlink,$pagination_setting);
+   $i = 1;   
+   if($page > 1)
+   {
+      $i = 10*($page - 1) + 1;
+   }
 
    if(isset($_GET["id"]) && $_GET["id"] != '')
    {
@@ -28,6 +74,40 @@
                         <span>Dashboard</span><span class="crumb-sep">&gt;</span><span>Tents Listings</span>
                      </div>
                   </div>
+
+                  <form method="GET" action="tents-listing.php" class="listing-filter-form">
+                     <div class="row">
+                        <div class="col-lg-3">
+                           <input type="text" name="search" class="form-control" placeholder="Search tent..." value="<?php echo htmlspecialchars($search); ?>">
+                        </div>
+
+                        <div class="col-lg-3">
+                           <select class="form-control" name="category" id="mySelector">
+                              <option value="" >--Select Category--</option>
+                              <option value="All" <?php echo ($category == 'All') ? "selected" : ""; ?>>All</option>
+                              <?php
+                                 $queryl= mysqli_query($con,"SELECT * FROM resort_types GROUP BY category");
+                                 while($l=mysqli_fetch_assoc($queryl)) { ?>
+                                    <option value="<?php echo $l['category']; ?>" <?php echo ($category == $l['category']) ? "selected" : ""; ?>><?php echo $l['category']; ?></option>
+                                 <?php  }  ?>
+                           </select>
+                       </div>
+
+                        <div class="col-lg-3">
+                           <button type="submit" class="btn btn-primary btn-sm">
+                              <i class="feather icon-search"></i>Search
+                           </button>
+                        </div>
+
+                        <div class="col-lg-3">
+                           <?php if ($search != '' || $category != '') { ?>
+                             <a href="tents-listing.php" class="btn btn-danger btn-sm">
+                                Clear
+                              </a>
+                          <?php } ?>
+                       </div>
+                     </div>
+                  </form>
 
                   <div class="listing-cta">
                      <a href="add-tent.php" class="btn btn-success btn-sm"><i class="feather icon-plus"></i> Add Tent</a>
@@ -59,9 +139,10 @@
                               </tr>
                            </thead>
                            <tbody>
-                              <?php $i = 1;	 
-                                 $query4 = mysqli_query($con,"SELECT * FROM resort_types ORDER BY id DESC");
-                                 while($b = mysqli_fetch_assoc($query4)) {
+                              <?php
+                                 // $query4 = mysqli_query($con,"SELECT * FROM resort_types ORDER BY id DESC");
+                                 if(mysqli_num_rows($query2) > 0) {
+                                 while($b = mysqli_fetch_assoc($query2)) {
                                  $statusClass = ($b['status'] === 'Published') ? 'status-published' : 'status-draft';
                               ?>
                                  <tr role="row">
@@ -89,9 +170,16 @@
                                        </div>
                                     </td>
                                  </tr>
-                              <?php $i++; }  ?>
+                              <?php $i++; }
+                              } else { ?>
+                                 <tr role="row"><td colspan="8"><center>No Tent Found.</center></td></tr>
+                              <?php } ?>
                            </tbody>
                         </table>
+                        <input type="hidden" name="rowcount" id="rowcount" value="<?php echo $_GET["rowcount"]; ?>" />         
+                        <?php if(!empty($perpageresult) && $_GET["rowcount"] > 10) { ?>
+                            <div id="pagination"><?php print_r($perpageresult); ?> </div>
+                        <?php } ?>
                      </div>
                   </div>
                </div>
@@ -102,3 +190,10 @@
 </div>
 
 <?php include_once('common/footer.php'); ?>
+
+<script>
+   function getresult(url)
+   {
+      window.location.href = url;
+   }
+</script>
