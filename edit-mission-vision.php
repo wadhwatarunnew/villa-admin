@@ -125,6 +125,15 @@
                               <div class="form-group mb-0">
                                  <label class="banner-form-label">Description <span class="required">*</span></label>
                                  <textarea name="mission_description" id="mission_description" class="form-control banner-form-control" rows="6" maxlength="300" placeholder="Enter description..." required><?php echo $MissionRow['mission_desc']; ?></textarea>
+                                 <script type="text/javascript">
+                                    CKEDITOR.editorConfig = function (config) {
+                                       config.language = 'es';
+                                       config.uiColor = '#F7B42C';
+                                       config.height = 300;
+                                       config.toolbarCanCollapse = true;
+                                    };
+                                    CKEDITOR.replace('mission_description');
+                                 </script>
                                  <div class="counter-char-counter"><span id="mission_desc_char_count">116</span>/300</div>
                               </div>
                            </div>
@@ -150,6 +159,15 @@
                               <div class="form-group mb-0">
                                  <label class="banner-form-label">Description <span class="required">*</span></label>
                                  <textarea name="vision_description" id="vision_description" class="form-control banner-form-control" rows="6" maxlength="300" placeholder="Enter description..." required><?php echo $MissionRow['vision_desc']; ?></textarea>
+                                 <script type="text/javascript">
+                                    CKEDITOR.editorConfig = function (config) {
+                                       config.language = 'es';
+                                       config.uiColor = '#F7B42C';
+                                       config.height = 300;
+                                       config.toolbarCanCollapse = true;
+                                    };
+                                    CKEDITOR.replace('vision_description');
+                                 </script>
                                  <div class="counter-char-counter"><span id="vision_desc_char_count">101</span>/300</div>
                               </div>
                            </div>

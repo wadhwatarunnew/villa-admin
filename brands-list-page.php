@@ -64,7 +64,7 @@
                                  ?>
                                  <tr role="row">
                                     <td><?php echo $i;?></td>
-                                    <td><img src="uploads/brands/taj-logo.png" alt="Taj Hotels" class="brand-logo-thumb"></td>
+                                    <td><img src="<?php echo $Row['logo'];?>" alt="Taj Hotels" class="brand-logo-thumb"></td>
                                     <td><?php echo $Row['name'];?></td>
                                     <td><a href="<?php echo $Row['link'];?>" target="_blank" class="brand-link"><?php echo $Row['link'];?></a></td>
                                     <td><?php echo $Row['display_order'];?></td>

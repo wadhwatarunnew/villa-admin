@@ -10,10 +10,10 @@
       $Status      = $_POST['status'];
       $myFile      = $_FILES['logo']['name'];
 
-      $path          = "uploads/pageimages/logo/";
-      $path_original = "uploads/pageimages/logo/";
+      $path          = "uploads/logo/";
+      $path_original = "uploads/logo/";
       
-      $CheckDuplicate = mysqli_query($con, "SELECT * FROM brands WHERE link='$BrandLink'");
+      $CheckDuplicate = mysqli_query($con, "SELECT * FROM brands WHERE name='$BrandName'");
       if(mysqli_num_rows($CheckDuplicate) > 0)
       {
          $_SESSION['BannerColor'] = "background-color:#FF0000;";
@@ -22,15 +22,23 @@
          exit;
       }
 
-      move_uploaded_file($_FILES['logo']['tmp_name'],$path.$myFile) ;
-      $path = $path_original.$myFile;
-
-      mysqli_query($con, "INSERT INTO brands (name, link, logo, display_order, status) values ('$BrandName', '$BrandLink', '$path', '$Order', '$Status') ");
-          
-      $_SESSION['BannerColor'] = "background-color:#4BB543;";
-      $_SESSION['Message'] = "Added Successfully!";
-      echo "<script>window.location.href='add-brand.php';</script>";
-      exit;
+      if (move_uploaded_file($_FILES['logo']['tmp_name'],$path.$myFile))
+      {
+         $path = $path_original.$myFile;
+         mysqli_query($con, "INSERT INTO brands (name, link, logo, display_order, status) values ('$BrandName', '$BrandLink', '$path', '$Order', '$Status')");
+             
+         $_SESSION['BannerColor'] = "background-color:#4BB543;";
+         $_SESSION['Message'] = "Added Successfully!";
+         echo "<script>window.location.href='add-brand.php';</script>";
+         exit;
+      }
+      else
+      {
+         $_SESSION['BannerColor'] = "background-color:#FF0000;";
+         $_SESSION['Message'] = "Brand already exists!";
+         echo "<script>window.location.href='add-brand.php';</script>";
+         exit;
+      }
    }
 ?>
 

@@ -115,6 +115,21 @@
                                        <input type="text" class="form-control banner-form-control" name="designation" id="designation" maxlength="100" placeholder="e.g. Founder & CEO" required>
                                        <div class="counter-char-counter text-end"><span id="designation_char_count">0</span>/100</div>
                                     </div>
+
+                                    <div class="form-group mb-0">
+                                       <label class="banner-form-label">Display Order <span class="required">*</span></label>
+                                       <input type="number" class="form-control banner-form-control" name="display_order" id="display_order" value="1" min="0" required>
+                                       <div class="counter-help-text">Lower numbers will display first</div>
+                                    </div>
+
+                                    <div class="form-group mb-0">
+                                       <label class="banner-form-label">Status <span class="required">*</span></label>
+                                       <select class="form-control banner-form-control" name="status" id="status" required>
+                                          <option value="Active" selected>Active</option>
+                                          <option value="Inactive">Inactive</option>
+                                       </select>
+                                       <div class="counter-help-text">Show or hide this member on the website</div>
+                                    </div>
                                  </div>
                               </div>
                            </div>
@@ -125,34 +140,16 @@
                                     <div class="form-group mb-20">
                                        <label class="banner-form-label">Short Description <span class="required">*</span></label>
                                        <textarea name="short_description" id="short_description" class="form-control banner-form-control" rows="6" maxlength="300" placeholder="Write short description..." required></textarea>
+                                       <script type="text/javascript">
+                                          CKEDITOR.editorConfig = function (config) {
+                                             config.language = 'es';
+                                             config.uiColor = '#F7B42C';
+                                             config.height = 300;
+                                             config.toolbarCanCollapse = true;
+                                          };
+                                          CKEDITOR.replace('short_description');
+                                       </script>
                                        <div class="counter-char-counter text-end"><span id="desc_char_count">0</span>/300</div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-
-                           <div class="col-lg-6 col-md-12 mb-20">
-                              <div class="card">
-                                 <div class="card-body">
-                                    <div class="form-group mb-0">
-                                       <label class="banner-form-label">Display Order <span class="required">*</span></label>
-                                       <input type="number" class="form-control banner-form-control" name="display_order" id="display_order" value="1" min="0" required>
-                                       <div class="counter-help-text">Lower numbers will display first</div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-
-                           <div class="col-lg-6 col-md-12 mb-20">
-                              <div class="card">
-                                 <div class="card-body">
-                                    <div class="form-group mb-0">
-                                       <label class="banner-form-label">Status <span class="required">*</span></label>
-                                       <select class="form-control banner-form-control" name="status" id="status" required>
-                                          <option value="Active" selected>Active</option>
-                                          <option value="Inactive">Inactive</option>
-                                       </select>
-                                       <div class="counter-help-text">Show or hide this member on the website</div>
                                     </div>
                                  </div>
                               </div>

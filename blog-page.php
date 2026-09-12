@@ -144,7 +144,7 @@
 							</div>
 							
 							<div class="listing-cta">
-								<a href="blog-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
+								<a href="blogs-listing.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
 								<?php if(!$e['local_path']){ ?>
 									<input type="submit" class="btn btn-success btn-sm" id="btnn" name="update" value="Save" form="blogContentForm">
 								<?php } else { ?>

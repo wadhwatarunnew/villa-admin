@@ -14,10 +14,10 @@
       $Status      = $_POST['status'];
       $myFile      = $_FILES['logo']['name'];
 
-      $path          = "uploads/pageimages/logo/";
-      $path_original = "uploads/pageimages/logo/";
+      $path          = "uploads/logo/";
+      $path_original = "uploads/logo/";
       
-      $CheckDuplicate = mysqli_query($con, "SELECT * FROM brands WHERE link='$BrandLink' AND id != '$id'");
+      $CheckDuplicate = mysqli_query($con, "SELECT * FROM brands WHERE name='$BrandName' AND id != '$id'");
       if(mysqli_num_rows($CheckDuplicate) > 0)
       {
          $_SESSION['BannerColor'] = "background-color:#FF0000;";
@@ -26,11 +26,9 @@
          exit;
       }
 
-      if (isset($_FILES['logo']) && $_FILES['logo']['error'] == UPLOAD_ERR_OK)
+      if (move_uploaded_file($_FILES['logo']['tmp_name'],$path.$myFile))
       {
-         move_uploaded_file($_FILES['logo']['tmp_name'],$path.$myFile) ;
          $path = $path_original.$myFile;
-
          mysqli_query($con, "UPDATE brands SET name='$BrandName', link='$BrandLink', logo='$path', display_order='$Order', status='$Status' WHERE id=$id");
       }
       else
@@ -87,8 +85,8 @@
                                        <div class="brand-upload-hint">Only image files allowed (SVG, PNG, JPG, GIF, WEBP)</div>
                                        <button type="button" class="btn btn-outline-secondary btn-sm mt-2" onclick="document.getElementById('brand_logo_input').click();">Choose File</button>
                                     </div>
-                                    <div class="brand-logo-preview" id="brand_logo_preview" style="display: none;">
-                                       <img src="" alt="Brand Logo Preview" id="brand_logo_img">
+                                    <div class="brand-logo-preview" id="brand_logo_preview">
+                                       <img src="<?php echo $Row['logo']; ?>" alt="Brand Logo Preview" id="brand_logo_img">
                                        <button type="button" class="btn btn-sm btn-danger" onclick="resetBrandLogo();">Remove</button>
                                     </div>
                                  </div>

@@ -116,6 +116,15 @@
 												<div class="commonSection">
 													<label>Description</label>
 													<textarea class="form-control" name="description" id="description" rows="4" placeholder="Enter section description" required><?php echo $contentRow['description']; ?></textarea>
+					                                <script type="text/javascript">
+					                                    CKEDITOR.editorConfig = function (config) {
+					                                       config.language = 'es';
+					                                       config.uiColor = '#F7B42C';
+					                                       config.height = 300;
+					                                       config.toolbarCanCollapse = true;
+					                                    };
+					                                    CKEDITOR.replace('description');
+					                                </script>
 												</div>
 											</div>
 

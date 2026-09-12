@@ -53,7 +53,7 @@
                         <div class="card">
                            <div class="card-header">Feature Information</div>
                            <div class="card-body">
-                              <div class="row align-items-start">
+                              <div class="row">
                                  <div class="col-lg-3 col-md-6">
                                     <div class="form-group">
                                        <label class="banner-form-label">Icon <span class="required">*</span></label>
@@ -78,6 +78,15 @@
                                     <div class="form-group">
                                        <label class="banner-form-label">Description <span class="required">*</span></label>
                                        <textarea name="description" id="description" class="form-control banner-form-control" rows="3" maxlength="150" placeholder="Enter description..." required></textarea>
+                                       <script type="text/javascript">
+                                          CKEDITOR.editorConfig = function (config) {
+                                             config.language = 'es';
+                                             config.uiColor = '#F7B42C';
+                                             config.height = 300;
+                                             config.toolbarCanCollapse = true;
+                                          };
+                                          CKEDITOR.replace('description');
+                                       </script>
                                        <div class="counter-char-counter"><span id="desc_char_count">0</span>/150</div>
                                     </div>
                                  </div>
