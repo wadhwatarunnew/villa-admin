@@ -367,7 +367,7 @@
 		{
 			$FinalArray['Brands'][$i]['name'] 	= $Row['name'];
 			$FinalArray['Brands'][$i]['link'] 	= $Row['link'];
-			$FinalArray['Brands'][$i]['logo'] 	= $Row['logo'];
+			$FinalArray['Brands'][$i]['logo'] 	= "http://app.thevillatent.com/villadashboard/".$Row['logo'];
 			$i++;
 		}
 
@@ -735,7 +735,12 @@
 	   	$FinalArray['Data']['order_no'] 	= $ResortRow['order_no'];
 	   	$FinalArray['Data']['y_url'] 		= $ResortRow['y_url'];
 	   	$FinalArray['Data']['dimension'] 	= $ResortRow['dimension'];
-	   	$FinalArray['Data']['floor_image'] 	= "http://app.thevillatent.com/villadashboard/".$ResortRow['floor_image'];
+
+	   	$FinalArray['Data']['floor_image'] = "";
+	   	if($ResortRow['floor_image'] != '')
+	   	{
+	   		$FinalArray['Data']['floor_image'] 	= "http://app.thevillatent.com/villadashboard/".$ResortRow['floor_image'];
+	   	}
 
 	   	$LogoResult = mysqli_query($con, "SELECT bro_status FROM logo");
 		$LogoRow 	= mysqli_fetch_assoc($LogoResult);
@@ -752,6 +757,7 @@
 	   	$FinalArray['SEOInfo']['content'] 	= $ResortRow['discription'];
 
 	   	// Resort Gallery
+	   	$FinalArray['GalleryInfo'] = array();
 	   	$GalleryResult = mysqli_query($con, "SELECT * FROM add_gallery where title='".$ResortRow['title']."' ORDER BY dateTime DESC");
 	   	if(mysqli_num_rows($GalleryResult))
 	   	{
