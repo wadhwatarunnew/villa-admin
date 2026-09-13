@@ -88,7 +88,7 @@
                               </div>
                            </div>
 
-                           <div class="listing-filter-actions">
+                           <div class="listing-filter-actions" style="justify-content: flex-start !important;">
                               <button type="submit" class="btn btn-success btn-sm">
                                  <i class="feather icon-filter"></i>Apply Filters
                               </button>
