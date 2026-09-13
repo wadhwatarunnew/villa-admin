@@ -89,44 +89,45 @@
                   unset($_SESSION['BannerColor']);
                } ?>
                <div class="row">
-                   <div class="col-sm-12">
-                  <form method="GET" action="tents-listing.php" class="listing-filter-form">
-                     <div class="listing-filter-grid">
-                        <div class="listing-filter-field listing-filter-search">
-                           <label for="tent-search">Search</label>
-                           <div class="listing-input-wrap">
-                              <i class="feather icon-search"></i>
-                              <input type="text" name="search" id="tent-search" class="form-control" placeholder="Search by tent title, keyword, description..." value="<?php echo htmlspecialchars($search); ?>">
+                  <div class="col-sm-12">
+                     <form method="GET" action="tents-listing.php" class="listing-filter-form">
+                        <div class="listing-filter-grid">
+                           <div class="listing-filter-field listing-filter-search">
+                              <label for="tent-search">Search</label>
+                              <div class="listing-input-wrap">
+                                 <i class="feather icon-search"></i>
+                                 <input type="text" name="search" id="tent-search" class="form-control" placeholder="Search by tent title..." value="<?php echo htmlspecialchars($search); ?>">
+                              </div>
+                           </div>
+
+                           <div class="listing-filter-field listing-filter-category">
+                              <label for="mySelector">Tent Category</label>
+                              <div class="listing-input-wrap">
+                                 <i class="feather icon-folder"></i>
+                                 <select class="form-control" name="category" id="mySelector">
+                                    <option value="">--Select Category--</option>
+                                    <option value="All" <?php echo ($category == 'All') ? "selected" : ""; ?>>All</option>
+                                    <?php
+                                       $queryl= mysqli_query($con,"SELECT * FROM resort_types GROUP BY category");
+                                       while($l=mysqli_fetch_assoc($queryl)) { ?>
+                                          <option value="<?php echo $l['category']; ?>" <?php echo ($category == $l['category']) ? "selected" : ""; ?>><?php echo $l['category']; ?></option>
+                                       <?php  }  ?>
+                                 </select>
+                              </div>
+                           </div>
+
+                           <div class="listing-filter-actions">
+                              <button type="submit" class="btn btn-success btn-sm">
+                                 <i class="feather icon-filter"></i>Apply Filters
+                              </button>
+                              <a href="tents-listing.php" class="btn btn-primary btn-sm">
+                                 <i class="feather icon-refresh-cw"></i>Reset
+                              </a>
                            </div>
                         </div>
+                     </form>
+                  </div>
 
-                        <div class="listing-filter-field listing-filter-category">
-                           <label for="mySelector">Tent Category</label>
-                           <div class="listing-input-wrap">
-                              <i class="feather icon-folder"></i>
-                              <select class="form-control" name="category" id="mySelector">
-                                 <option value="">--Select Category--</option>
-                                 <option value="All" <?php echo ($category == 'All') ? "selected" : ""; ?>>All</option>
-                                 <?php
-                                    $queryl= mysqli_query($con,"SELECT * FROM resort_types GROUP BY category");
-                                    while($l=mysqli_fetch_assoc($queryl)) { ?>
-                                       <option value="<?php echo $l['category']; ?>" <?php echo ($category == $l['category']) ? "selected" : ""; ?>><?php echo $l['category']; ?></option>
-                                    <?php  }  ?>
-                              </select>
-                           </div>
-                        </div>
-
-                        <div class="listing-filter-actions">
-                           <button type="submit" class="btn btn-success btn-sm">
-                              <i class="feather icon-filter"></i>Apply Filters
-                           </button>
-                           <a href="tents-listing.php" class="btn btn-primary btn-sm">
-                              <i class="feather icon-refresh-cw"></i>Reset
-                           </a>
-                        </div>
-                     </div>
-                  </form>
-</div>
                   <div class="col-sm-12">
                      <div class="table-responsive">
                         <table class="table table-bordered table-fixed listing-table" id='myTable'>

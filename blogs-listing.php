@@ -15,8 +15,9 @@
       exit;
    }
 
-   $sql = "SELECT * FROM blog_inner_content ORDER BY id DESC";
-   $paginationlink = "blogs-listing.php?page=";    
+   $search = $_GET['search'];
+   $sql = "SELECT * FROM blog_inner_content";
+   $paginationlink = "blogs-listing.php?search=$search&page=";    
    $pagination_setting = "all-links";
                    
    $page = 1;
@@ -25,9 +26,14 @@
       $page = $_GET["page"];
    }
 
+   if($search != '')
+   {
+      $sql = $sql . " WHERE title LIKE '%$search%'";
+   }
+
    $start = ($page-1)*$perPage->perpage;
    if($start < 0) $start = 0;
-   $query =  $sql . " limit " . $start . "," . $perPage->perpage;
+   $query =  $sql . " ORDER BY id DESC LIMIT " . $start . "," . $perPage->perpage;
    $totalCount = mysqli_query($con,$sql);
    $query4 = mysqli_query($con,$query);
 
@@ -72,6 +78,29 @@
                } ?>
                <div class="row">
                   <div class="col-sm-12">
+                     <form method="GET" action="blogs-listing.php" class="listing-filter-form">
+                        <div class="listing-filter-grid">
+                           <div class="listing-filter-field listing-filter-search">
+                              <label for="project-search">Search</label>
+                              <div class="listing-input-wrap">
+                                 <i class="feather icon-search"></i>
+                                 <input type="text" name="search" id="project-search" class="form-control" placeholder="Search by blog title" value="<?php echo htmlspecialchars($search); ?>">
+                              </div>
+                           </div>
+
+                           <div class="listing-filter-actions">
+                              <button type="submit" class="btn btn-success btn-sm">
+                                 <i class="feather icon-filter"></i>Apply Filters
+                              </button>
+                              <a href="blogs-listing.php" class="btn btn-primary btn-sm">
+                                 <i class="feather icon-refresh-cw"></i>Reset
+                              </a>
+                           </div>
+                        </div>
+                     </form>
+                  </div>
+
+                  <div class="col-sm-12">
                      <div class="table-responsive">
                         <table class="table table-bordered listing-table">
                            <thead>
@@ -85,7 +114,10 @@
                               </tr>
                            </thead>
                            <tbody>
-							         <?php while($b=mysqli_fetch_assoc($query4)) { ?>
+							         <?php 
+                                 if(mysqli_num_rows($query4) > 0) {
+                                 while($b=mysqli_fetch_assoc($query4)) {
+                              ?>
                                  <tr role="row">
                                     <td><?php echo $i; ?></td>
                                     <td><?php echo $b['title']; ?></td>
@@ -119,7 +151,10 @@
                                        </div>
                                     </td>
                                  </tr>
-			                     <?php $i++; }  ?>
+			                     <?php $i++; }
+                              } else { ?>
+                                 <tr role="row"><td colspan="6"><center>No Blog Found.</center></td></tr>
+                              <?php } ?>
                            </tbody>
                         </table>
                         <input type="hidden" name="rowcount" id="rowcount" value="<?php echo $_GET["rowcount"]; ?>" />
