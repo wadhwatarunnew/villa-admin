@@ -16,6 +16,7 @@
 		$editor1 = mysqli_real_escape_string($con, $_POST['editor1']);
 		$order = $_POST['order'];
 		$status = $_POST['status'];
+		$favourite = isset($_POST['favourite']) ? 1 : 0;
 		$y_url = isset($_POST['y_url']) ? $_POST['y_url'] : '';
 		$editor2 = isset($_POST['editor2']) ? $_POST['editor2'] : '';
 		$imageUrl = isset($_POST['image']) ? $_POST['image'] : '';
@@ -36,7 +37,7 @@
 		{
 			if($myFile == '')
 			{
-				mysqli_query($con,"INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, banner_desc, content, y_url, dimension, image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$BannerDesc', '$editor1', '$y_url', '$editor2', '', '$status')");
+				mysqli_query($con,"INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, banner_desc, content, favourite, y_url, dimension, image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$BannerDesc', '$editor1', '$favourite', '$y_url', '$editor2', '', '$status')");
 				$LastInsertID = mysqli_insert_id($con);
 			}
 			elseif($myFile != '' && (file_exists("uploads/pageimages/".$myFile) || file_exists("uploads/pageimages/addgallery/".$myFile) || file_exists("uploads/pageimages/addgallery/project/".$myFile) || file_exists("uploads/pageimages/addgallery/resort/".$myFile) || file_exists("uploads/pageimages/blogs/".$myFile) || file_exists("uploads/pageimages/blogs/single/".$myFile) || file_exists("uploads/pageimages/contact/".$myFile) || file_exists("uploads/pageimages/nav/".$myFile) || file_exists("uploads/pageimages/nav/category/".$myFile) || file_exists("uploads/pageimages/nav/types/".$myFile) || file_exists("uploads/pageimages/project/".$myFile) || file_exists("uploads/pageimages/project/category/".$myFile) || file_exists("uploads/pageimages/project/types/".$myFile) || file_exists("uploads/pageimages/resort/".$myFile) || file_exists("uploads/pageimages/resort/category/".$myFile) || file_exists("uploads/pageimages/resort/types/".$myFile) || file_exists("uploads/pageimages/slider/".$myFile) || file_exists("uploads/pageimages/youtube/".$myFile)))
@@ -56,13 +57,13 @@
 					$ImagePath = $path_original.$myFile;
 				}
 
-				mysqli_query($con,"INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, banner_desc, content, y_url, dimension, local_path, image, floor_image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$BannerDesc', '$editor1', '$y_url', '$editor2', '$ImagePath', '', '$FloorPath', '$status')");
+				mysqli_query($con,"INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, banner_desc, content, favourite, y_url, dimension, local_path, image, floor_image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$BannerDesc', '$editor1', '$favourite', '$y_url', '$editor2', '$ImagePath', '', '$FloorPath', '$status')");
 				$LastInsertID = mysqli_insert_id($con);
 			}
 		}
 		else
 		{
-			mysqli_query($con, "INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, banner_desc, content, y_url, dimension, local_path, image, floor_image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$BannerDesc', '$editor1', '$y_url', '$editor2', '', '$imageUrl', '$FloorPath', '$status')");
+			mysqli_query($con, "INSERT INTO resort_types (metatitle, keyword, discription, category, order_no, title, banner_desc, content, favourite, y_url, dimension, local_path, image, floor_image, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$title', '$BannerDesc', '$editor1', '$favourite', '$y_url', '$editor2', '', '$imageUrl', '$FloorPath', '$status')");
 			$LastInsertID = mysqli_insert_id($con);
 		}
 		
@@ -281,6 +282,13 @@
 												<option value="Published">Published</option>
 												<option value="Draft">Draft</option>
 											</select>
+										</div>
+
+										<div class="commonSection">
+										   <label class="favourite-label" style="display: inline-flex !important;align-items: center;gap: 8px;cursor: pointer;">
+										      <span>Add to Favourite List</span>
+										      <input type="checkbox" name="favourite" value="0" style="width: auto !important;margin: 0 !important;">
+										   </label>
 										</div>
 									</div>
 								</div>
@@ -1179,10 +1187,10 @@
 
 		   var editingRow = editingRowByModal[modalId];
 
-		   if (!title || !feet || !meters) {
-		   alert('Please fill all specification fields.');
-		   return;
-		   }
+		   	if (!feet) {
+		        alert('Feet is required.');
+		        return;
+		    }
 
 		   if (editingRow) {
 

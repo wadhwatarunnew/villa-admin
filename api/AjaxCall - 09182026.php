@@ -670,6 +670,17 @@
 	{
 		$FinalArray = array();
 
+		// Top Section
+		// $Result = mysqli_query($con, "SELECT * FROM about_top_section");
+		// $Row 	= mysqli_fetch_assoc($Result);
+		// $FinalArray['TopSection']['title'] 		= $Row['title'];
+		// $FinalArray['TopSection']['content'] 	= $Row['content'];
+		// $FinalArray['TopSection']['image'] = "http://app.thevillatent.com/villadashboard/".$Row['local_path'];
+	   	// if(isset($Row['image']) && $Row['image'] != '')
+	   	// {
+	   	// 	$FinalArray['TopSection']['image'] = "http://app.thevillatent.com/villadashboard/".$Row['image'];
+	   	// }
+
 	   	$Result = mysqli_query($con, "SELECT title, subtitle, description, btn_txt, btn_url, image, local_path FROM top_banner WHERE page='About Us' AND status='Published'");
 		$Row 	= mysqli_fetch_assoc($Result);
 		$FinalArray['TopSection']['title']	 		= $Row['title'];
@@ -779,6 +790,12 @@
 
 		$FinalArray['ResortInfo']['title'] 		= $ResortRow['title'];
 	   	$FinalArray['ResortInfo']['content'] 	= $ResortRow['content'];
+	   	
+	   	// $FinalArray['ResortInfo']['image'] = "http://app.thevillatent.com/villadashboard/".$ResortRow['local_path'];
+	   	// if(isset($ResortRow['image']) && $ResortRow['image'] != '')
+	   	// {
+	   	// 	$FinalArray['ResortInfo']['image'] = "http://app.thevillatent.com/villadashboard/".$ResortRow['image'];
+	   	// }
    											
 	   	// SEO Info
 	   	$SEOResult = mysqli_query($con, "SELECT * FROM resort_seo");										
@@ -789,7 +806,7 @@
 
 	   	// Tents Categories
 	   	$i=0;
-	   	$CategoryResult = mysqli_query($con, "SELECT category, COUNT(*) AS TotalCount, MAX(C.image) AS image, MAX(C.local_path) AS local_path FROM resort_types T, resort_category C WHERE T.category=C.title GROUP BY category ORDER BY C.order_no ASC");
+	   	$CategoryResult = mysqli_query($con, "SELECT category, COUNT(*) AS TotalCount, MAX(C.image) AS image, MAX(C.local_path) AS local_path FROM resort_types T, resort_category C WHERE T.category=C.title GROUP BY category ORDER BY category DESC");
 		while($CategoryRow = mysqli_fetch_assoc($CategoryResult))
 		{
 			$CategoryTitle = preg_replace('/[^a-z]/', '-', strtolower($CategoryRow['category']));
@@ -805,6 +822,67 @@
 		   	}
 		   	$i++;
 		}
+
+	   	// Resort Gallery
+	   	// $GalleryResult = mysqli_query($con, "SELECT * FROM add_gallery where title='".$ResortRow['title']."' ORDER BY dateTime DESC");
+	   	// if(mysqli_num_rows($GalleryResult))
+	   	// {
+	   	// 	while($GalleryRow = mysqli_fetch_assoc($GalleryResult))
+	   	// 	{
+		//    		$FinalArray['GalleryInfo']['title'] = $GalleryRow['title'];
+		//    		$FinalArray['GalleryInfo']['type'] 	= $GalleryRow['types'];
+
+		//    		if(isset($GalleryRow['p1']) && $GalleryRow['p1'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p1'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p2']) && $GalleryRow['p2'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p2'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p3']) && $GalleryRow['p3'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p3'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p4']) && $GalleryRow['p4'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p4'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p5']) && $GalleryRow['p5'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p5'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p6']) && $GalleryRow['p6'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p6'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p7']) && $GalleryRow['p7'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p7'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p8']) && $GalleryRow['p8'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p8'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p9']) && $GalleryRow['p9'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p9'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p10']) && $GalleryRow['p10'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p10'];
+	   	// 		}
+	   	// 	}
+	   	// }
 	   	
 		$Response['Status'] = 1; 
 		$Response['Data'] 	= $FinalArray; 
@@ -838,7 +916,7 @@
 	   	// Resort Tents
 	   	$i=0;
 	   	$TitleToSearch = $ResortRow['title'];
-	   	$Result = mysqli_query($con, "SELECT * FROM resort_types WHERE category='$TitleToSearch' AND status='Published' ORDER BY favourite DESC, order_no ASC");
+	   	$Result = mysqli_query($con, "SELECT * FROM resort_types WHERE category='$TitleToSearch' AND status='Published' ORDER BY order_no ASC");
 		while($Row = mysqli_fetch_assoc($Result))
 		{
 			$CategoryTitle = preg_replace('/[^a-z]/', '-', strtolower($Row['title']));
@@ -855,6 +933,67 @@
 		   	}
 			$i++;
 		}
+
+	   	// Resort Gallery
+	   	// $GalleryResult = mysqli_query($con, "SELECT * FROM add_gallery where title='".$ResortRow['title']."' ORDER BY dateTime DESC");
+	   	// if(mysqli_num_rows($GalleryResult))
+	   	// {
+	   	// 	while($GalleryRow = mysqli_fetch_assoc($GalleryResult))
+	   	// 	{
+		//    		$FinalArray['GalleryInfo']['title'] = $GalleryRow['title'];
+		//    		$FinalArray['GalleryInfo']['type'] 	= $GalleryRow['types'];
+
+		//    		if(isset($GalleryRow['p1']) && $GalleryRow['p1'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p1'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p2']) && $GalleryRow['p2'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p2'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p3']) && $GalleryRow['p3'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p3'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p4']) && $GalleryRow['p4'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p4'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p5']) && $GalleryRow['p5'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p5'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p6']) && $GalleryRow['p6'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p6'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p7']) && $GalleryRow['p7'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p7'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p8']) && $GalleryRow['p8'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p8'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p9']) && $GalleryRow['p9'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p9'];
+	   	// 		}
+
+	   	// 		if(isset($GalleryRow['p10']) && $GalleryRow['p10'] !== '')
+	   	// 		{
+	   	// 			$FinalArray['GalleryInfo']['content'][] = $GalleryRow['p10'];
+	   	// 		}
+	   	// 	}
+	   	// }
 
 		$Response['Status'] = 1; 
 		$Response['Data'] 	= $FinalArray; 
@@ -985,11 +1124,6 @@
 		$DetailedResult = mysqli_query($con, "SELECT * FROM tent_details WHERE tent_id='$TentID' ORDER BY category ASC");
 		while($Row = mysqli_fetch_assoc($DetailedResult))
 		{
-			if(($Row['category'] != 'Specifications' && $Row['description'] == '') || ($Row['category'] == 'Specifications' && $Row['feet'] == ''))
-			{
-				continue;
-			}
-
 			if($TempCategory != $Row['category']) $i=0;
 			$CategoryTitle = str_replace(" ", "", $Row['category']);
 			$FinalArray['TentDetails'][$CategoryTitle][$i]['category'] = $Row['category'];
@@ -1040,7 +1174,7 @@
 
 	   	// Projects Categories
 	   	$i=0;
-	   	$CategoryResult = mysqli_query($con, "SELECT category, COUNT(*) AS TotalCount, MAX(C.image) AS image, MAX(C.local_path) AS local_path FROM project_types T, project_category C WHERE T.category=C.title GROUP BY category ORDER BY C.order_no ASC");
+	   	$CategoryResult = mysqli_query($con, "SELECT category, COUNT(*) AS TotalCount, MAX(C.image) AS image, MAX(C.local_path) AS local_path FROM project_types T, project_category C WHERE T.category=C.title GROUP BY category ORDER BY category ASC");
 		while($CategoryRow = mysqli_fetch_assoc($CategoryResult))
 		{
 			$CategoryTitle = preg_replace('/[^a-z]/', '-', strtolower($CategoryRow['category']));
@@ -1096,7 +1230,7 @@
 	   	// Projects
 	   	$i=0;
 	   	$TitleToSearch = $ProjectRow['title'];
-	   	$Result = mysqli_query($con, "SELECT * FROM project_types WHERE category='$TitleToSearch' AND status='Published' ORDER BY favourite DESC, order_no ASC;");
+	   	$Result = mysqli_query($con, "SELECT * FROM project_types WHERE category='$TitleToSearch' AND status='Published' ORDER BY order_no ASC");
 		while($Row = mysqli_fetch_assoc($Result))
 		{
 			$CategoryTitle = preg_replace('/[^a-z]/', '-', strtolower($Row['title']));

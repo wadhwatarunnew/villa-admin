@@ -13,6 +13,7 @@
 		$cat = $_POST['cat'];
 		$order = $_POST['order'];
 		$status = $_POST['status'];
+		$favourite = isset($_POST['favourite']) ? 1 : 0;
 		$subtitle = mysqli_real_escape_string($con, $_POST['small_heading']);
 		$title = mysqli_real_escape_string($con, $_POST['title']);
 		$BannerDesc = mysqli_real_escape_string($con, $_POST['banner_desc']);
@@ -35,7 +36,7 @@
 		{
 			if ($myFile === '')
 			{
-				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, banner_desc, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$BannerDesc', '$editor1', '', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border', '$status')");
+				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, banner_desc, content, favourite, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$BannerDesc', '$editor1', '$favourite', '', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border', '$status')");
 				$LastInsertID = mysqli_insert_id($con);
 			}
 			elseif ($myFile != '' && (file_exists("uploads/pageimages/" . $myFile) || file_exists("uploads/pageimages/addgallery/" . $myFile) || file_exists("uploads/pageimages/addgallery/project/" . $myFile) || file_exists("uploads/pageimages/addgallery/resort/" . $myFile) || file_exists("uploads/pageimages/blogs/" . $myFile) || file_exists("uploads/pageimages/blogs/single/" . $myFile) || file_exists("uploads/pageimages/contact/" . $myFile) || file_exists("uploads/pageimages/nav/" . $myFile) || file_exists("uploads/pageimages/nav/category/" . $myFile) || file_exists("uploads/pageimages/nav/types/" . $myFile) || file_exists("uploads/pageimages/project/" . $myFile) || file_exists("uploads/pageimages/project/category/" . $myFile) || file_exists("uploads/pageimages/project/types/" . $myFile) || file_exists("uploads/pageimages/resort/" . $myFile) || file_exists("uploads/pageimages/resort/category/" . $myFile) || file_exists("uploads/pageimages/resort/types/" . $myFile) || file_exists("uploads/pageimages/slider/" . $myFile) || file_exists("uploads/pageimages/youtube/" . $myFile)))
@@ -55,13 +56,13 @@
 					$ImagePath = $path_original.$myFile;
 				}
 
-				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, banner_desc, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$BannerDesc', '$editor1', '', '$ImagePath', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border', '$status')");
+				mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, banner_desc, content, favourite, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$BannerDesc', '$editor1', '$favourite', '', '$ImagePath', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border', '$status')");
 				$LastInsertID = mysqli_insert_id($con);
 			}
 		}
 		else
 		{
-			mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, banner_desc, content, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$BannerDesc', '$editor1', '$imageUrl', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border', '$status')");
+			mysqli_query($con, "INSERT INTO project_types (metatitle, keyword, discription, category, order_no, subtitle, title, banner_desc, content, favourite, image, local_path, quote, client_name, designation, company, back_color, text_color, accent_color, border, status) VALUES ('$metaTitle', '$keyword', '$disc', '$cat', '$order', '$subtitle', '$title', '$BannerDesc', '$editor1', '$favourite', '$imageUrl', '', '$quote', '$client_name', '$designation', '$company', '$back_color', '$text_color', '$accent_color', '$border', '$status')");
 			$LastInsertID = mysqli_insert_id($con);
 		}
 
@@ -240,6 +241,13 @@
 												<option value="Published">Published</option>
 												<option value="Draft">Draft</option>
 											</select>
+										</div>
+
+										<div class="commonSection">
+										   	<label class="favourite-label" style="display: inline-flex !important;align-items: center;gap: 8px;cursor: pointer;">
+										      	<span>Add to Favourite List</span>
+										      	<input type="checkbox" name="favourite" value="0" style="width: auto !important;margin: 0 !important;">
+										   	</label>
 										</div>
 									</div>
 								</div>

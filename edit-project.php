@@ -21,6 +21,7 @@
 		$cat = $_POST['cat'];
 		$order = $_POST['order'];
 		$status = $_POST['status'];
+		$favourite = isset($_POST['favourite']) ? 1 : 0;
 		$editor1 = mysqli_real_escape_string($con, $_POST['editor1']);
 		$quote = mysqli_real_escape_string($con, $_POST['quote']);
 		$client_name = mysqli_real_escape_string($con, $_POST['client_name']);
@@ -40,7 +41,7 @@
 		{
 			if ($myFile === '')
 			{
-				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', banner_desc='$BannerDesc', content='$editor1', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border', status='$status' WHERE id=$id");
+				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', banner_desc='$BannerDesc', content='$editor1', favourite='$favourite', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border', status='$status' WHERE id=$id");
 				$Updated = true;
 			}
 			elseif ($myFile != '' && (file_exists("uploads/pageimages/" . $myFile) || file_exists("uploads/pageimages/addgallery/" . $myFile) || file_exists("uploads/pageimages/addgallery/project/" . $myFile) || file_exists("uploads/pageimages/addgallery/resort/" . $myFile) || file_exists("uploads/pageimages/blogs/" . $myFile) || file_exists("uploads/pageimages/blogs/single/" . $myFile) || file_exists("uploads/pageimages/contact/" . $myFile) || file_exists("uploads/pageimages/nav/" . $myFile) || file_exists("uploads/pageimages/nav/category/" . $myFile) || file_exists("uploads/pageimages/nav/types/" . $myFile) || file_exists("uploads/pageimages/project/" . $myFile) || file_exists("uploads/pageimages/project/category/" . $myFile) || file_exists("uploads/pageimages/project/types/" . $myFile) || file_exists("uploads/pageimages/resort/" . $myFile) || file_exists("uploads/pageimages/resort/category/" . $myFile) || file_exists("uploads/pageimages/resort/types/" . $myFile) || file_exists("uploads/pageimages/slider/" . $myFile) || file_exists("uploads/pageimages/youtube/" . $myFile)))
@@ -56,13 +57,13 @@
 				move_uploaded_file($_FILES['myFile']['tmp_name'], $path . $myFile);
 				$path = $path_original . $myFile;
 
-				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', banner_desc='$BannerDesc', content='$editor1', image='', local_path='$path', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border', status='$status' WHERE id=$id");
+				mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', banner_desc='$BannerDesc', content='$editor1', favourite='$favourite', image='', local_path='$path', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border', status='$status' WHERE id=$id");
 				$Updated = true;
 			}
 		}
 		else
 		{
-			mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', banner_desc='$BannerDesc', content='$editor1', image='$imageUrl', local_path='', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border', status='$status' WHERE id=$id");
+			mysqli_query($con, "UPDATE project_types SET subtitle='$subtitle', title='$title', banner_desc='$BannerDesc', content='$editor1', favourite='$favourite', image='$imageUrl', local_path='', metatitle='$metaTitle', keyword='$keyword', discription='$disc', category='$cat', order_no='$order', quote='$quote', client_name='$client_name', designation='$designation', company='$company', back_color='$back_color', text_color='$text_color', accent_color='$accent_color', border='$border', status='$status' WHERE id=$id");
 			$Updated = true;
 		}
 
@@ -252,6 +253,13 @@
 												<option value="Published" <?php echo ($b['status'] == "Published") ? "selected" : ''; ?>>Published</option>
 												<option value="Draft" <?php echo ($b['status'] == "Draft") ? "selected" : ''; ?>>Draft</option>
 											</select>
+										</div>
+
+										<div class="commonSection">
+										   	<label class="favourite-label" style="display: inline-flex !important;align-items: center;gap: 8px;cursor: pointer;">
+										      	<span>Add to Favourite List</span>
+										      	<input type="checkbox" name="favourite" value="<?php echo $b['favourite']; ?>" <?php echo ($b['favourite'] == 1) ? 'checked' : ''; ?> style="width: auto !important;margin: 0 !important;">
+										   	</label>
 										</div>
 									</div>
 								</div>

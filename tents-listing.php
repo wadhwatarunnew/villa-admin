@@ -135,10 +135,10 @@
                               <tr>
                                  <th>Sr.No</th>
                                  <th>Category</th>
+                                 <th>Tent Name</th>
                                  <th>Meta Title</th>
                                  <th>Meta Keyword</th>
                                  <th>Meta Descripton</th>
-                                 <th>Tent Name</th>
                                  <th>Status</th>
                                  <th>Actions</th>
                               </tr>
@@ -153,10 +153,10 @@
                                  <tr role="row">
                                     <td><?php echo $i; ?></td>
                                     <td><?php echo $b['category']; ?></td>
+                                    <td><?php echo $b['title']; ?></td>
                                     <td><?php echo $b['metatitle']; ?></td>
                                     <td><?php echo $b['keyword']; ?></td>
                                     <td><?php echo $b['discription']; ?></td>
-                                    <td><?php echo $b['title']; ?></td>
                                     <td>
                                        <span class="status-badge <?php echo $statusClass; ?>"><?php echo $b['status']; ?></span>
                                     </td>

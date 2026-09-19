@@ -20,6 +20,7 @@
 		$cat = $_POST['cat'];
 		$order = $_POST['order'];
 		$status = $_POST['status'];
+		$favourite = isset($_POST['favourite']) ? 1 : 0;
 		$editor1 = mysqli_real_escape_string($con, $_POST['editor1']);
 		$y_url = mysqli_real_escape_string($con, $_POST['y_url']);
 		$imageUrl = $_POST['image'];
@@ -55,7 +56,7 @@
 					$BannerImagePath = $path_original . $myFile;
 				}
 
-				mysqli_query($con, "UPDATE resort_types SET title='$title', banner_desc='$BannerDesc', content='$editor1', image='', local_path='$BannerImagePath', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
+				mysqli_query($con, "UPDATE resort_types SET title='$title', banner_desc='$BannerDesc', content='$editor1', favourite='$favourite', image='', local_path='$BannerImagePath', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
 				$Updated = true;
 			}
 		}
@@ -63,11 +64,11 @@
 		{
 			if($imageUrl != '')
 			{
-				mysqli_query($con, "UPDATE resort_types SET title='$title', banner_desc='$BannerDesc', content='$editor1', image='$imageUrl', local_path='', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
+				mysqli_query($con, "UPDATE resort_types SET title='$title', banner_desc='$BannerDesc', content='$editor1', favourite='$favourite', image='$imageUrl', local_path='', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
 			}
 			else
 			{
-				mysqli_query($con, "UPDATE resort_types SET title='$title', banner_desc='$BannerDesc', content='$editor1', image='', local_path='$BannerImagePath', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
+				mysqli_query($con, "UPDATE resort_types SET title='$title', banner_desc='$BannerDesc', content='$editor1', favourite='$favourite', image='', local_path='$BannerImagePath', floor_image='$FloorImagePath', metatitle='$metaTitle', keyword='$keyword', discription='$disc', y_url='$y_url', category='$cat', order_no='$order', status='$status' WHERE id=$id");
 			}
 			$Updated = true;
 		}
@@ -269,6 +270,13 @@
 												<option value="Published" <?php echo ($b['status'] == "Published") ? "selected" : ''; ?>>Published</option>
 												<option value="Draft" <?php echo ($b['status'] == "Draft") ? "selected" : ''; ?>>Draft</option>
 											</select>
+										</div>
+
+										<div class="commonSection">
+										   	<label class="favourite-label" style="display: inline-flex !important;align-items: center;gap: 8px;cursor: pointer;">
+										      	<span>Add to Favourite List</span>
+										      	<input type="checkbox" name="favourite" value="<?php echo $b['favourite']; ?>" <?php echo ($b['favourite'] == 1) ? 'checked' : ''; ?> style="width: auto !important;margin: 0 !important;">
+										   	</label>
 										</div>
 									</div>
 								</div>
@@ -1271,8 +1279,8 @@
 
 		    var editingRow = editingRowByModal[modalId];
 
-		    if (!title || !feet || !meters) {
-		        alert('Please fill all specification fields.');
+		    if (!feet) {
+		        alert('Feet is required.');
 		        return;
 		    }
 
