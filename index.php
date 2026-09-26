@@ -88,22 +88,7 @@
    }
 
    function dashboard_badge_class($category) {
-      $normalized = strtolower((string)$category);
-
-      if (strpos($normalized, 'ultra') !== false) {
-         return 'pill-blue';
-      }
-      if (strpos($normalized, 'lux') !== false) {
-         return 'pill-green';
-      }
-      if (strpos($normalized, 'indi') !== false) {
-         return 'pill-cyan';
-      }
-      if (strpos($normalized, 'camp') !== false) {
-         return 'pill-orange';
-      }
-
-      return 'pill-blue';
+      return 'pill-green';
    }
 
    $resortCounts = dashboard_fetch_category_counts($con, 'resort_types');

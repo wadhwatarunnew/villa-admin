@@ -85,30 +85,8 @@
 <body>
    <main class="login-shell">
       <section class="brand-panel">
-         <div class="brand-center">
-            <div class="brand-text">CURATED LUXURY</div>
-            <p class="brand-sub">Luxury glamping solutions for resorts, hotels, events and private villas across India and beyond.</p>
-         </div>
 
-         <div class="benefits">
-            <div class="benefit">
-               <i class="fa-regular fa-gem"></i>
-               <div class="benefit-title">Premium Quality</div>
-               <div class="benefit-text">Finest materials and craftsmanship</div>
-            </div>
 
-            <div class="benefit">
-               <i class="fa-solid fa-tents"></i>
-               <div class="benefit-title">Custom Solutions</div>
-               <div class="benefit-text">Bespoke tents for every unique requirement</div>
-            </div>
-
-            <div class="benefit">
-               <i class="fa-solid fa-globe"></i>
-               <div class="benefit-title">Global Experience</div>
-               <div class="benefit-text">Delivering luxury worldwide</div>
-            </div>
-         </div>
       </section>
 
       <section class="form-panel">

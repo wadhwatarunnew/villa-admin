@@ -38,7 +38,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     padding: clamp(26px, 3.3vh, 44px) clamp(18px, 2vw, 34px) clamp(16px, 2.2vh, 26px);
-    background-image: linear-gradient(rgba(8, 24, 40, 0.58), rgba(10, 18, 20, 0.75)), url("../images/cheap-camping-tents.jpg");
+    background-image: linear-gradient(rgba(8, 24, 40, 0.28), rgba(10, 18, 20, 0.35)), url("../images/food-tents-manufacturers.jpg");
     background-size: cover;
     background-position: center;
     overflow: hidden;

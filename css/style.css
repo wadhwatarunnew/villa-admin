@@ -439,6 +439,7 @@ select {
     border-color: var(--color-table-row-border);
     padding: 12px;
     vertical-align: middle;
+    text-transform: capitalize;
 }
 
 .listing-info-text {
