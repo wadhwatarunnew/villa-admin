@@ -12,6 +12,29 @@
       echo "<script>window.location.href='values-list-page.php';</script>";
       exit;
    }
+
+   $CheckIfExists = mysqli_query($con, "SELECT * FROM values_section");
+   $ValuesInfo = mysqli_fetch_assoc($CheckIfExists);
+   if (isset($_POST['save_info']))
+   {
+      $Subtitle      = mysqli_real_escape_string($con, $_POST['sub_heading']);
+      $Title         = mysqli_real_escape_string($con, $_POST['main_heading']);
+      $Description   = mysqli_real_escape_string($con, $_POST['short_description']);
+
+      if(mysqli_num_rows($CheckIfExists) > 0)
+      {
+         mysqli_query($con, "UPDATE values_section SET subtitle='$Subtitle', title='$Title', description='$Description'");
+      }
+      else
+      {
+         mysqli_query($con, "INSERT INTO values_section (subtitle, title, description) VALUES ('$Subtitle', '$Title', '$Description')");
+      }
+
+      $_SESSION['BannerColor'] = "background-color:#4BB543;";
+      $_SESSION['Message'] = "Updated Successfully!";
+      echo "<script>window.location.href='values-list-page.php';</script>";
+      exit;
+   }
 ?>
 
 <div class="pcoded-content">
@@ -40,6 +63,92 @@
                   unset($_SESSION['Message']);
                   unset($_SESSION['BannerColor']);
                } ?>
+
+               <form action="" method="post" id="ValuesSectionForm">
+                  <div class="card mb-4" style="background: #edf4ee; border: 1px solid #d5e3d8; border-radius: 18px; box-shadow: none;">
+                     <div class="card-body" style="padding: 22px 22px 18px;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+                           <div style="display:flex; align-items:center; gap:14px;">
+                              <div>
+                                 <h3 style="margin:0; font-size: 30px; line-height:1.2; font-weight:700; color:#2e3b34;">Section Settings</h3>
+                                 <p style="margin:4px 0 0; color:#4d5d53; font-size: 15px;">Manage the heading, subheading and description for this section.</p>
+                              </div>
+                           </div>
+                           <button type="submit" class="btn btn-success btn-sm" name="save_info" style="border-color:#0f6d59; border-radius:12px; font-weight:700; padding:12px 22px; min-width:170px;">
+                              <i class="feather icon-save"></i> Save Section
+                           </button>
+                        </div>
+
+                        <div class="row mt-4" style="margin-top:24px;">
+                           <div class="col-md-4">
+                              <div class="form-group" style="margin-bottom: 0;">
+                                 <label for="eyebrow" style="display:block; font-weight:700; margin-bottom:10px; color:#1d2b25; font-size:18px;">
+                                    Eyebrow / Small Heading <span style="color:#d92d20;">*</span>
+                                 </label>
+                                 <!-- <input type="text" name="eyebrow" id="eyebrow" class="form-control" maxlength="100" value="Meet the Founders" required style="height:52px; border:1px solid #d7dfd9; border-radius:12px; padding:12px 14px; font-size:20px; color:#23312b; box-shadow:none;" oninput="updateCounter(this, 'eyebrowCounter', 100)"> -->
+                                 <textarea name="sub_heading" id="sub_heading" class="form-control banner-form-control" rows="6" maxlength="300" placeholder="Enter sub heading..." required><?php echo $ValuesInfo['subtitle']; ?></textarea>
+                                 <script type="text/javascript">
+                                    CKEDITOR.editorConfig = function (config) {
+                                       config.language = 'es';
+                                       config.uiColor = '#F7B42C';
+                                       config.height = 300;
+                                       config.toolbarCanCollapse = true;
+                                    };
+                                    CKEDITOR.replace('sub_heading');
+                                 </script>
+                                 <div style="display:flex; justify-content:flex-end; margin-top:8px; color:#8a938d; font-size:14px;">
+                                    <span id="eyebrowCounter">17/100</span>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div class="col-md-4">
+                              <div class="form-group" style="margin-bottom: 0;">
+                                 <label for="main_heading" style="display:block; font-weight:700; margin-bottom:10px; color:#1d2b25; font-size:18px;">
+                                    Main Heading <span style="color:#d92d20;">*</span>
+                                 </label>
+                                 <!-- <input type="text" name="main_heading" id="main_heading" class="form-control" maxlength="100" value="The Vision Behind The Villa Tent" required style="height:52px; border:1px solid #d7dfd9; border-radius:12px; padding:12px 14px; font-size:20px; color:#23312b; box-shadow:none;" oninput="updateCounter(this, 'mainHeadingCounter', 100)"> -->
+                                 <textarea name="main_heading" id="main_heading" class="form-control banner-form-control" rows="6" maxlength="300" placeholder="Enter main heading..." required><?php echo $ValuesInfo['title']; ?></textarea>
+                                 <script type="text/javascript">
+                                    CKEDITOR.editorConfig = function (config) {
+                                       config.language = 'es';
+                                       config.uiColor = '#F7B42C';
+                                       config.height = 300;
+                                       config.toolbarCanCollapse = true;
+                                    };
+                                    CKEDITOR.replace('main_heading');
+                                 </script>
+                                 <div style="display:flex; justify-content:flex-end; margin-top:8px; color:#8a938d; font-size:14px;">
+                                    <span id="mainHeadingCounter">30/100</span>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div class="col-md-4">
+                              <div class="form-group" style="margin-bottom: 0;">
+                                 <label for="short_description" style="display:block; font-weight:700; margin-bottom:10px; color:#1d2b25; font-size:18px;">
+                                    Short Description (Optional)
+                                 </label>
+                                 <textarea name="short_description" id="short_description" class="form-control" maxlength="300" rows="4" style="border:1px solid #d7dfd9; border-radius:12px; padding:12px 14px; font-size:18px; color:#23312b; box-shadow:none; resize:none;" oninput="updateCounter(this, 'shortDescriptionCounter', 300)"><?php echo $ValuesInfo['description']; ?></textarea>
+                                 <script type="text/javascript">
+                                    CKEDITOR.editorConfig = function (config) {
+                                       config.language = 'es';
+                                       config.uiColor = '#F7B42C';
+                                       config.height = 300;
+                                       config.toolbarCanCollapse = true;
+                                    };
+                                    CKEDITOR.replace('short_description');
+                                 </script>
+                                 <div style="display:flex; justify-content:flex-end; margin-top:8px; color:#8a938d; font-size:14px;">
+                                    <span id="shortDescriptionCounter">143/300</span>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </form>
+
                <div class="row">
                   <div class="col-sm-12">
                      <div class="table-responsive">

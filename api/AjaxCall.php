@@ -760,6 +760,12 @@
 	   	$FinalArray['SEOInfo']['content'] 	= $SEORow['discription'];
 
 		// Founders info
+		$Result = mysqli_query($con, "SELECT title, subtitle, description FROM founders_section");
+		$FounderSection = mysqli_fetch_assoc($Result);
+		$FinalArray['FounderSectionInfo']['subtitle'] 	 = $FounderSection['subtitle'];
+		$FinalArray['FounderSectionInfo']['title'] 	 	 = $FounderSection['title'];
+		$FinalArray['FounderSectionInfo']['description'] = $FounderSection['description'];
+
 	   	$i=0;
 		$Result = mysqli_query($con, "SELECT name, designation, image, bio FROM founders WHERE status='Active' ORDER BY display_order");
 		while($Row = mysqli_fetch_assoc($Result))
@@ -785,6 +791,12 @@
 		}
 
 		// Our Values
+		$Result = mysqli_query($con, "SELECT title, subtitle, description FROM values_section");
+		$ValuesSection = mysqli_fetch_assoc($Result);
+		$FinalArray['ValueSectionInfo']['subtitle']    = $ValuesSection['subtitle'];
+		$FinalArray['ValueSectionInfo']['title'] 	   = $ValuesSection['title'];
+		$FinalArray['ValueSectionInfo']['description'] = $ValuesSection['description'];
+
 	   	$i=0;
 		$Result = mysqli_query($con, "SELECT title, description, icon FROM company_values WHERE status='Active' ORDER BY display_order ASC");
 		while($Row = mysqli_fetch_assoc($Result))
