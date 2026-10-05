@@ -201,7 +201,18 @@
                                  <div class="card-body">
                                     <div class="commonSection">
                                        <label>Title</label>
-                                       <input class="form-control" type="text" name="toptitle" id="toptitle" value="<?php echo $b['title']; ?>" placeholder="Enter Heading">
+                                       <!-- <input class="form-control" type="text" name="toptitle" id="toptitle" value="<?php echo $b['title']; ?>" placeholder="Enter Heading"> -->
+                                       <textarea name="toptitle" id="toptitle" rows="10" cols="80"><?php echo $b['title']; ?></textarea>
+                                       <script type="text/javascript">
+                                          CKEDITOR.editorConfig = function (config) {
+                                             config.language = 'es';
+                                             config.uiColor = '#F7B42C';
+                                             config.height = 300;
+                                             config.toolbarCanCollapse = true;
+
+                                          };
+                                          CKEDITOR.replace('toptitle');
+                                       </script>
                                     </div>
 
                                     <div class="commonSection">

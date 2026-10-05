@@ -12,10 +12,13 @@
 	if (isset($_POST['update']))
 	{	
 		$page = "Update";
+		$metaTitle = $_POST['metaTitle'];
+	    $keyword   = $_POST['keyword'];
+	    $disc      = $_POST['disc'];
 		$title = mysqli_real_escape_string($con, $_POST['title']);
 		$editor1 = mysqli_real_escape_string($con, $_POST['editor1']);
 		$imageUrl = $_POST['image'];
-		$myFile=$_FILES['myFile']['name'];
+		$myFile = $_FILES['myFile']['name'];
 
 		$path="uploads/pageimages/youtube/";
 		$path_original="uploads/pageimages/youtube/";
@@ -25,7 +28,7 @@
 			mysqli_query($con,"UPDATE youtube_seo_meta_data SET title='$metaTitle',keyword='$keyword',discription='$disc' ");
 		}
 
-		if(!$imageUrl)
+		if (isset($_FILES['myFile']['name']) && $_FILES['myFile']['name'] != '')
 		{
 			if($myFile != '' && (file_exists("uploads/pageimages/".$myFile) || file_exists("uploads/pageimages/addgallery/".$myFile) || file_exists("uploads/pageimages/addgallery/project/".$myFile) || file_exists("uploads/pageimages/addgallery/resort/".$myFile) || file_exists("uploads/pageimages/blogs/".$myFile) || file_exists("uploads/pageimages/blogs/single/".$myFile)  || file_exists("uploads/pageimages/contact/".$myFile) || file_exists("uploads/pageimages/nav/".$myFile) || file_exists("uploads/pageimages/nav/category/".$myFile) || file_exists("uploads/pageimages/nav/types/".$myFile) || file_exists("uploads/pageimages/project/".$myFile) || file_exists("uploads/pageimages/project/category/".$myFile) || file_exists("uploads/pageimages/project/types/".$myFile) || file_exists("uploads/pageimages/resort/".$myFile) || file_exists("uploads/pageimages/resort/category/".$myFile) || file_exists("uploads/pageimages/resort/types/".$myFile) || file_exists("uploads/pageimages/slider/".$myFile) || file_exists("uploads/pageimages/youtube/".$myFile)))
 			{
@@ -49,7 +52,7 @@
 		}
 		else
 		{
-			mysqli_query($con, "UPDATE youtube_content SET title='$title', content='$editor1', image='$imageUrl'");
+			mysqli_query($con, "UPDATE youtube_content SET title='$title', content='$editor1', image='$imageUrl', local_path=''");
 			$_SESSION['BannerColor'] = "background-color:#4BB543;";
 		   	$_SESSION['Message'] = "Updated Successfully!";
 		   	echo "<script>window.location.href='youtube-page.php';</script>";
@@ -73,11 +76,7 @@
 							</div>
 							<div class="listing-cta">
 								<a href="youtube-list-page.php" class="btn btn-primary btn-sm"><i class="feather icon-arrow-left"></i> Back</a>
-								<?php if(!$e['local_path']) { ?>
-									<input type="submit" class="btn btn-success btn-sm" id="btnn" name="update" value="Save">
-								<?php } else { ?>
-									<input type="submit" class="btn btn-success btn-sm" id="btnn1" name="update1" value="Save">
-								<?php } ?>
+								<input type="submit" class="btn btn-success btn-sm" id="btnn" name="update" value="Save">
 							</div>
 						</div>
 
@@ -90,26 +89,26 @@
 			               	unset($_SESSION['BannerColor']);
 			            } ?>
 						<div class="row">
-							<div class="col-sm-12">
+							<div class="col-lg-4 col-md-12">
 								<div class="card mb-30">
 									<div class="card-header">Seo Meta Tags</div>
 									<div class="card-body">
 										<div class="row">
-											<div class="col-sm-4">
+											<div class="col-sm-12">
 												<div class="commonSection">
 													<label>Meta Title</label>
 													<textarea name="metaTitle" id="metaTitle" class="form-control" required placeholder="Enter Meta Title"><?php echo $d['title']; ?></textarea>
 												</div>
 											</div>
 
-											<div class="col-sm-4">
+											<div class="col-sm-12">
 												<div class="commonSection">
 													<label>Meta Keyword</label>
 													<textarea name="keyword" id="metaTitle" class="form-control" required placeholder="Enter Keyword"><?php echo $d['keyword']; ?></textarea>
 												</div>
 											</div>
 
-											<div class="col-sm-4">
+											<div class="col-sm-12">
 												<div class="commonSection">
 													<label>Meta Description</label>
 													<textarea name="disc" id="metaTitle" class="form-control" required placeholder="Enter Description"><?php echo $d['discription']; ?></textarea>
@@ -119,127 +118,97 @@
 									</div>
 								</div>
 							</div>
-						</div>
 
-						<div class="row ">
-							<div class="col-sm-12">
-								<div class="card mb-30">
-									<div class="card-header">Manage Youtube Content Section
-										<p class="float-end" style="color:red">* Note for Image Type - Please select only one from options. Both empty and both full are not valid.</p>
-									</div>
+							<div class="col-lg-8 col-md-12">
+                        		<div class="row">
+                        			<div class="col-lg-6 col-md-12">
+			                           	<div class="card mb-30">
+			                              	<div class="card-header">Banner Image <span class="required">*</span></div>
+			                                 	<div class="card-body">
+			                                    	<div class="banner-image-upload">
+			                                       	<?php
+			                                          	$middlePreviewImage = "images/default-profile.png";
+			                                          	if (!empty($e['local_path'])) {
+			                                             	$middlePreviewImage = $e['local_path'];
+			                                          	} elseif (!empty($e['image'])) {
+			                                             	$middlePreviewImage = $e['image'];
+			                                          	}
+			                                       	?>
+			                                       	<img src="<?php echo $middlePreviewImage; ?>" class="banner-image-preview" id="imgPreview" alt="Banner Image" onerror="this.src='images/default-profile.png';">
+			                                       	<div class="banner-recommended-size">Recommended size: 1920x800px</div>
 
-									<div class="card-body">
-										<div class="row">
-											<?php if(!$e['local_path']) { ?>
-												<div class="col-sm-12">
-													<div class="commonSection">
-														<label>Title</label>
-														<input class="form-control" type="text" name="title" required id="title" value="<?php echo $e['title']; ?>" placeholder="Enter Heading">
-													</div>
-												</div>
+			                                       	<div class="radio-inline-group" style="margin-top: 12px;">
+			                                          	<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();" <?php echo ($e['image'] != '') ? 'checked' : ''; ?>>Image URL</label>
+			                                          	<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();" <?php echo ($e['local_path'] != '') ? 'checked' : ''; ?>>Select Image</label>
+			                                       	</div>
+			                                       	<div id="image_url" style="margin-top: 12px;">
+			                                          	<input class="form-control banner-form-control" type="text" name="image" id="image" value="<?php echo $e['image']; ?>" placeholder="Enter image URL">
+			                                       	</div>
+			                                       	<div id="select_image1" style="display: none; margin-top: 12px; display: <?php echo ($e['local_path'] != '') ? 'block' : 'none'; ?>">
+			                                          	<input type="hidden" name="banner_image" value="<?php echo $e['local_path']; ?>">
+			                                          	<input type="file" name="myFile" id="myFile" style="display: none;" accept="image/*">
+			                                          	<div class="banner-upload-actions">
+			                                             	<button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('myFile').click();">
+			                                                	<i class="feather icon-upload"></i> Change Image
+			                                             	</button>
+			                                             	<!-- <button type="button" class="btn btn-sm btn-danger" onclick="res();">Reset Image</button> -->
+			                                          	</div>
+			                                       	</div>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                        </div>
 
-												<div class="col-sm-12">
-													<div class="commonSection">
-														<label>Content</label>
-														<textarea name="editor1" id="editor1" rows="10" cols="80" required><?php echo $e['content']; ?></textarea>
-														<script type="text/javascript">
-															CKEDITOR.editorConfig = function (config) {
-																config.language = 'es';
-																config.uiColor = '#F7B42C';
-																config.height = 300;
-																config.toolbarCanCollapse = true;
-																
-															};
-															CKEDITOR.replace('editor1');
-														</script>
-													</div>
-												</div>
-											<?php  } else { ?>
-												<div class="col-sm-12">
-													<div class="commonSection">
-														<label>Title</label>
-														<input class="form-control" type="text" name="title1" id="title1" required value="<?php echo $e['title']; ?>" placeholder="Enter Heading">
-													</div>
-												</div>
-
-												<div class="col-sm-12">
-													<div class="commonSection">
-														<label>Content</label>
-														<textarea name="editor2" id="editor2" rows="10" cols="80" required><?php echo $e['content']; ?></textarea>
-													</div>
-												</div>
-											<?php } ?>
-
-											<div class="col-sm-12">
-												<div class="commonSection">
-													<label>Image Type</label>
-													<?php if(!$e['local_path']) { ?>
-														<div class="radio-inline-group" style="display: inline-block !important;">
-													    	<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();"  checked="">Image URL</label>
-													    	<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();" >Select Image</label>
-														</div>
-													<?php } else { ?>
-														<div class="radio-inline-group" style="display: inline-block !important;">
-														   <label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show3();"  >Image URL</label>
-														   <label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show4();"  checked="">Select Image</label>
-														</div>
-													<?php } ?>
+				                    <div class="col-lg-6 col-md-12">
+				                    	<div class="card mb-30">
+											<div class="card-header">
+												<div>
+													<p>Manage Youtube Content Section</p>
 												</div>
 											</div>
-											
-											<?php if(!$e['local_path']) { ?>
-												<div class="col-sm-12" id="image_url">
-													<div class="commonSection">
-														<label>Image URL</label>
-														<input class="form-control" type="text" name="image" id="image" value="<?php echo $e['image']; ?>" placeholder="Enter url">
-													</div>
-												</div>
-										
-												<div class="row" id="select_image1">
-													<div class="col-sm-6">
-														<div class="commonSection"> 
-															<label>Image</label>
-															<img src="<?php echo $e['local_path']; ?>" class="img-thumbnail" id="imgPreview" >
+
+											<div class="card-body">
+												<div class="row">
+													<div class="col-sm-12">
+														<div class="commonSection">
+															<label>Title</label>
+															<!-- <input class="form-control" type="text" name="title" required id="title" value="<?php echo $e['title']; ?>" placeholder="Enter Heading"> -->
+															<textarea name="title" id="title" rows="4" cols="20"><?php echo $e['title']; ?></textarea>
+					                                       	<script type="text/javascript">
+					                                          	CKEDITOR.editorConfig = function (config) {
+					                                             	config.language = 'es';
+					                                             	config.uiColor = '#F7B42C';
+					                                             	config.height = 100;
+					                                             	config.toolbarCanCollapse = true;
+
+					                                          	};
+					                                          	CKEDITOR.replace('title');
+					                                       	</script>
 														</div>
 													</div>
 
-													<div class="col-sm-6">
+													<div class="col-sm-12">
 														<div class="commonSection">
-															<label>Select Image</label>
-															<input type="file" name="myFile" id="myFile" class="form-control"><br>
-															<button type="button" class="btn btn-sm btn-danger" onclick="res();">Reset Image</button>
+															<label>Content</label>
+															<textarea name="editor1" id="editor1" rows="10" cols="80" required><?php echo $e['content']; ?></textarea>
+															<script type="text/javascript">
+																CKEDITOR.editorConfig = function (config) {
+																	config.language = 'es';
+																	config.uiColor = '#F7B42C';
+																	config.height = 300;
+																	config.toolbarCanCollapse = true;
+																	
+																};
+																CKEDITOR.replace('editor1');
+															</script>
 														</div>
 													</div>
 												</div>
-											<?php	} else { ?>
-												<div class="col-sm-12" id="image_url1">
-													<div class="commonSection">
-														<label>Image URL</label>
-														<input class="form-control" type="text" name="image1" id="image1" value="<?php echo $e['image']; ?>" placeholder="Enter url">
-													</div>
-												</div>
-												
-												<div class="row" id="select_image">
-													<div class="col-sm-6">
-														<div class="commonSection"> 
-															<label>Image</label>
-															<img src="<?php echo $e['local_path']; ?>" class="img-thumbnail" id="imgPreview" >
-														</div>
-													</div>
-
-													<div class="col-sm-6">
-														<div class="commonSection">
-															<label>Select Image</label>
-															<input type="file" name="myFile1" id="myFile1" class="form-control"><br>
-															<button type="button" class="btn btn-sm btn-danger" onclick="res1();">Reset Image</button>
-														</div>
-													</div>
-												</div>
-											<?php  }  ?>
+											</div>
 										</div>
-									</div>
-								</div>
-							</div>
+				                    </div>
+				                </div>
+			                </div>
 						</div>
 					</form>
 				</div>
@@ -251,178 +220,41 @@
 <?php include_once('common/footer.php'); ?>
 
 <script type="text/javascript">
-	CKEDITOR.editorConfig = function (config) {
-		config.language = 'es';
-		config.uiColor = '#F7B42C';
-		config.height = 300;
-		config.toolbarCanCollapse = true;
-		
-	};
-	CKEDITOR.replace('editor2');
+	(function() {
+	    var fileInput = document.getElementById('myFile');
+	    var filePreview = document.getElementById('imgPreview');
 
-	$(document).ready(function() {
-		var x = document.getElementById("myFile").value;
-		var x1 = document.getElementById("image").value;
+	    if (!fileInput || !filePreview) {
+	        return;
+	    }
 
-		if(x1 && x)
-		{	
-			document.getElementById("btnn").disabled = true;	
-		}
-		else if(!x1 && !x)
-		{	
-			document.getElementById("btnn").disabled = true;	
-		}
-		else
-		{
-			document.getElementById("btnn").disabled = false;
-		}
-							
-		$('#image').keyup(function() {
-			var dInput = this.value;
-			var x = document.getElementById("myFile").value;
-			
-			if(dInput && x)
-			{	
-				document.getElementById("btnn").disabled = true;	
-			}
-			else if(!dInput && !x)
-			{	
-				document.getElementById("btnn").disabled = true;	
-			}
-			else
-			{
-				document.getElementById("btnn").disabled = false;
-			}
-			
-		});
-									
-		document.getElementById('myFile').onchange = function () {
-			var pInput = this.value;
-			var y = document.getElementById("image").value;
-			
-			if(pInput && y)
-			{	
-				document.getElementById("btnn").disabled = true;	
-			}
-			else if(!pInput && !x)
-			{	
-				document.getElementById("btnn").disabled = true;	
-			}
-			else
-			{	
-				document.getElementById("btnn").disabled = false;
-			}
-		}
-	});
-		
-	$(document).ready(function() {
-		var f = document.getElementById("myFile1").value;
-		var f1 = document.getElementById("image1").value;
+	    fileInput.addEventListener('change', function() {
+	        if (this.files && this.files[0]) {
+	            var reader = new FileReader();
 
-		if(f1 && f)
-		{	
-			document.getElementById("btnn1").disabled = true;	
-		}
-		else if(!f1 && !f)
-		{	
-			document.getElementById("btnn1").disabled = false;	
-		}
-		else
-		{	
-			document.getElementById("btnn1").disabled = false;
-		}
-		
-		$('#image1').keyup(function() {
-			var dInput1 = this.value;
-			var x2 = document.getElementById("myFile1").value;
+	            reader.onload = function(e) {
+	                filePreview.src = e.target.result;
+	            };
 
-			if(dInput1 && x2)
-			{	
-				document.getElementById("btnn1").disabled = true;	
-			}
-			else if(!dInput1 && !x2)
-			{	
-				document.getElementById("btnn1").disabled = true;	
-			}
-			else
-			{	
-				document.getElementById("btnn1").disabled = false;
-			}
-			
-		});
-		
-		document.getElementById('myFile1').onchange = function () {
-			var pInput1 = this.value;
-			var y1 = document.getElementById("image1").value;
+	            reader.readAsDataURL(this.files[0]);
+	        }
+	    });
+	})();
 
-			if(pInput1 && y1)
-			{	
-				document.getElementById("btnn1").disabled = true;	
-			}
-			else if(!pInput1 && !y1)
-			{	
-				document.getElementById("btnn1").disabled = true;	
-			}
-			else
-			{	
-				document.getElementById("btnn1").disabled = false;
-			}
-		}
-	});
+   function show2()
+   {
+      document.getElementById('image_url').style.display = 'none';
+      document.getElementById('select_image1').style.display = 'block';
+   }
 
-	document.getElementById('select_image1').style.display = 'none';
-	function show1()
-	{
-		document.getElementById('select_image1').style.display = 'none';	
-		document.getElementById('image_url').style.display = 'inline-block';
-	}
+   function show1()
+   {
+      document.getElementById('select_image1').style.display = 'none';  
+      document.getElementById('image_url').style.display = 'block';
+   }
 
-	function show2()
-	{	
-		document.getElementById('image_url').style.display = 'none';
-		document.getElementById('select_image1').style.display = 'inline-block';
-	}
-
-	document.getElementById('image_url1').style.display = 'none';
-	function show3()
-	{	
-		document.getElementById('image_url1').style.display = 'inline-block';
-		document.getElementById('select_image').style.display = 'none';
-	}
-
-	function show4()
-	{
-		document.getElementById('select_image').style.display = 'inline-block';	
-		document.getElementById('image_url1').style.display = 'none';
-	}
-
-	function res()
-	{
-		document.getElementById('myFile').value= "";
-		var p = document.getElementById("image").value;
-		
-		if(p)
-		{	
-			document.getElementById("btnn").disabled = false;	
-		}
-		else
-		{	
-			document.getElementById("btnn").disabled = true;	
-		}
-	}
-
-	function res1()
-	{
-		document.getElementById('myFile1').value= "";	
-		var p1 = document.getElementById("image1").value;
-		
-		if(p1)
-		{	
-			document.getElementById("btnn1").disabled = false;	
-		}
-		else
-		{	
-			document.getElementById("btnn1").disabled = true;	
-		}
-	}
+   function res()
+   {
+      document.getElementById('myFile').value= "";
+   }
 </script>

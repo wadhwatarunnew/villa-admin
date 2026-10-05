@@ -24,7 +24,7 @@
          echo "<script>window.location.href='edit-counter.php?id=$id';</script>";
          exit;
       }
-
+// echo "UPDATE counters SET title='$Title', suffix='$Suffix', number='$Number', icon='$Icon', display_order='$Order', status='$Status' WHERE id=$id"; die;
       mysqli_query($con, "UPDATE counters SET title='$Title', suffix='$Suffix', number='$Number', icon='$Icon', display_order='$Order', status='$Status' WHERE id=$id");
           
       $_SESSION['BannerColor'] = "background-color:#4BB543;";
@@ -75,7 +75,7 @@
                                           <div class="counter-icon-preview">
                                              <span class="material-icons" id="counter_icon_preview"><?php echo $Counter['icon']; ?></span>
                                           </div>
-                                          <input type="hidden" name="counter_icon" id="counter_icon_input" required>
+                                          <input type="hidden" name="counter_icon" id="counter_icon_input" value="<?php echo $Counter['icon']; ?>" required>
                                           <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#iconPickerModal"><i class="feather icon-edit"></i> Change Icon</button>
                                           <div class="counter-icon-help" id="selected_icon_name">Selected: home</div>
                                        </div>

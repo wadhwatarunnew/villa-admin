@@ -34,8 +34,26 @@
 	            $FinalArray['ResortTents']['api'] = "Action=GetResortTentPage";
 
 	            $ResortTypes = array();
-				$Result = mysqli_query($con, "SELECT id, title FROM resort_category ORDER BY order_no ASC");
-	            $CatResult = mysqli_query($con, "SELECT id, title, category FROM resort_types ORDER BY order_no ASC");
+				$Result = mysqli_query($con, "SELECT id, title, local_path, image FROM resort_category ORDER BY order_no ASC");
+	            $CatResult = mysqli_query($con, "SELECT id, title, category, local_path, image FROM resort_types WHERE status='Published' ORDER BY category DESC, favourite DESC, id DESC");
+	            // $CatResult = mysqli_query(
+				// 						    $con,
+				// 						    "SELECT id, title, category, favourite
+				// 						     FROM (
+				// 						         SELECT 
+				// 						             id,
+				// 						             title,
+				// 						             category,
+				// 						             favourite,
+				// 						             ROW_NUMBER() OVER (
+				// 						                 PARTITION BY category
+				// 						                 ORDER BY favourite DESC, id DESC
+				// 						             ) AS rn
+				// 						         FROM resort_types
+				// 						     ) AS ranked
+				// 						     WHERE rn <= 5
+				// 						     ORDER BY category, favourite DESC, id DESC"
+				// 						);
 
 	            if (mysqli_num_rows($CatResult) > 0)
 	            {
@@ -63,6 +81,11 @@
 	                    $FinalArray['ResortTents']['children'][$i]['slug'] = $CleanURL;
 	                    $FinalArray['ResortTents']['children'][$i]['type'] = "resortCategory";
 	                    $FinalArray['ResortTents']['children'][$i]['api']  = "Action=GetResortTentByCategory&id=" . $ResortRow['id'];
+	                    $FinalArray['ResortTents']['children'][$i]['image'] = "http://app.thevillatent.com/villadashboard/".$ResortRow['local_path'];
+					   	if(isset($ResortRow['image']) && $ResortRow['image'] != '')
+					   	{
+					   		$FinalArray['ResortTents']['children'][$i]['image'] = "http://app.thevillatent.com/villadashboard/".$ResortRow['image'];
+					   	}
 
 	                    // Add types belonging to this category
 	                    $CategoryName = $ResortRow['title'];
@@ -93,6 +116,11 @@
 	                            $FinalArray['ResortTents']['children'][$i]['children'][$j]['slug'] = $CategoryTitle;
 	                            $FinalArray['ResortTents']['children'][$i]['children'][$j]['type'] = "resortTent";
 	                            $FinalArray['ResortTents']['children'][$i]['children'][$j]['api']  = "Action=GetResortTentByType&id=" . $CategoryRow['id'];
+			                    $FinalArray['ResortTents']['children'][$i]['children'][$j]['image'] = "http://app.thevillatent.com/villadashboard/".$CategoryRow['local_path'];
+							   	if(isset($CategoryRow['image']) && $CategoryRow['image'] != '')
+							   	{
+							   		$FinalArray['ResortTents']['children'][$i]['children'][$j]['image'] = "http://app.thevillatent.com/villadashboard/".$CategoryRow['image'];
+							   	}
 	                            $j++;
 	                        }
 	                    }
@@ -112,11 +140,30 @@
 	            $FinalArray['Projects']['api'] = "Action=GetProjectsPage";
 
 	            // Get all project categories
-	            $Result = mysqli_query($con, "SELECT id, title FROM project_category ORDER BY order_no ASC");
+	            $Result = mysqli_query($con, "SELECT id, title, local_path, image FROM project_category ORDER BY order_no ASC");
 
 				// Get all project types ONCE
 	            $ProjectTypes = array();
-	            $CatResult = mysqli_query($con, "SELECT id, title, category FROM project_types ORDER BY order_no ASC");
+	            $CatResult = mysqli_query($con, "SELECT id, title, category, local_path, image FROM project_types WHERE status='Published' ORDER BY category DESC, favourite DESC, id DESC");
+	            // $CatResult = mysqli_query(
+				// 						    $con,
+				// 						    "SELECT id, title, category, favourite
+				// 						     FROM (
+				// 						         SELECT 
+				// 						             id,
+				// 						             title,
+				// 						             category,
+				// 						             favourite,
+				// 						             ROW_NUMBER() OVER (
+				// 						                 PARTITION BY category
+				// 						                 ORDER BY favourite DESC, id DESC
+				// 						             ) AS rn
+				// 						         FROM project_types
+				// 						     ) AS ranked
+				// 						     WHERE rn <= 4
+				// 						     ORDER BY category DESC, favourite DESC, id DESC"
+				// 						);
+
 	            if (mysqli_num_rows($CatResult) > 0)
 	            {
 	                while ($CategoryRow = mysqli_fetch_assoc($CatResult))
@@ -142,6 +189,11 @@
 	                    $FinalArray['Projects']['children'][$i]['slug'] = $CleanURL;
 	                    $FinalArray['Projects']['children'][$i]['type'] = "projectCategory";
 	                    $FinalArray['Projects']['children'][$i]['api']  = "Action=GetProjectByCategory&id=" . $ProjectRow['id'];
+	                    $FinalArray['Projects']['children'][$i]['image'] = "http://app.thevillatent.com/villadashboard/".$ProjectRow['local_path'];
+					   	if(isset($ProjectRow['image']) && $ProjectRow['image'] != '')
+					   	{
+					   		$FinalArray['Projects']['children'][$i]['image'] = "http://app.thevillatent.com/villadashboard/".$ProjectRow['image'];
+					   	}
 
 	                    // Add project types belonging to this category
 	                    $CategoryName = $ProjectRow['title'];
@@ -173,6 +225,11 @@
 	                            $FinalArray['Projects']['children'][$i]['children'][$j]['slug'] = $CategoryTitle;
 	                            $FinalArray['Projects']['children'][$i]['children'][$j]['type'] = "project";
 	                            $FinalArray['Projects']['children'][$i]['children'][$j]['api']  = "Action=GetProjectByType&id=" . $CategoryRow['id'];
+			                    $FinalArray['Projects']['children'][$i]['children'][$j]['image'] = "http://app.thevillatent.com/villadashboard/".$CategoryRow['local_path'];
+							   	if(isset($CategoryRow['image']) && $CategoryRow['image'] != '')
+							   	{
+							   		$FinalArray['Projects']['children'][$i]['children'][$j]['image'] = "http://app.thevillatent.com/villadashboard/".$CategoryRow['image'];
+							   	}
 	                            $j++;
 	                        }
 	                    }
@@ -326,7 +383,7 @@
 						$FinalArray['ResortTents']['children'][$i]['api'] = "Action=GetResortTentByCategory&id=".$ResortRow['id'];
 
 						$CategoryName = $ResortRow['title'];
-						$CatResult = mysqli_query($con, "SELECT * FROM resort_types WHERE category='$CategoryName' ORDER BY order_no ASC");
+						$CatResult = mysqli_query($con, "SELECT * FROM resort_types WHERE category='$CategoryName' AND status='Published' ORDER BY order_no ASC");
 						if(mysqli_num_rows($CatResult) > 0)
 						{
 							$j=0;
@@ -371,7 +428,7 @@
 						$FinalArray['Projects']['children'][$i]['api'] = "Action=GetProjectByCategory&id=".$ResortRow['id'];
 
 						$CategoryName = $ResortRow['title'];
-						$CatResult = mysqli_query($con, "SELECT * FROM project_types WHERE category='$CategoryName' ORDER BY order_no ASC");
+						$CatResult = mysqli_query($con, "SELECT * FROM project_types WHERE category='$CategoryName' AND status='Published' ORDER BY order_no ASC");
 						if(mysqli_num_rows($CatResult) > 0)
 						{
 							$j=0;
@@ -600,7 +657,7 @@
 
 		// Featured Projects
 		$i = 0;
-        $Result = mysqli_query($con, "SELECT category, title, image, local_path FROM project_types ORDER BY id DESC LIMIT 4");
+        $Result = mysqli_query($con, "SELECT category, title, image, local_path FROM project_types WHERE status='Published' ORDER BY favourite DESC, id DESC LIMIT 4");
         $TotalProjectsCount = mysqli_num_rows($Result);
 		while($Row = mysqli_fetch_assoc($Result))
 		{
@@ -620,7 +677,7 @@
 		}
 
 		$i=0;
-		$Result = mysqli_query($con, "SELECT category, title, image, local_path FROM project_types ORDER BY id DESC");
+		$Result = mysqli_query($con, "SELECT category, title, image, local_path FROM project_types WHERE status='Published' ORDER BY favourite DESC, id DESC");
         $TotalProjectsCount = mysqli_num_rows($Result);
 		$FinalArray['RewardStats'][$i]['label'] 	= "Projects Completed";
 		$FinalArray['RewardStats'][$i]['target'] 	= $TotalProjectsCount;
@@ -789,7 +846,7 @@
 
 	   	// Tents Categories
 	   	$i=0;
-	   	$CategoryResult = mysqli_query($con, "SELECT category, COUNT(*) AS TotalCount, MAX(C.image) AS image, MAX(C.local_path) AS local_path FROM resort_types T, resort_category C WHERE T.category=C.title GROUP BY category ORDER BY C.order_no ASC");
+	   	$CategoryResult = mysqli_query($con, "SELECT category, COUNT(*) AS TotalCount, MAX(C.image) AS image, MAX(C.local_path) AS local_path FROM resort_types T, resort_category C WHERE T.category=C.title  AND T.status='Published'GROUP BY category ORDER BY C.order_no ASC");
 		while($CategoryRow = mysqli_fetch_assoc($CategoryResult))
 		{
 			$CategoryTitle = preg_replace('/[^a-z]/', '-', strtolower($CategoryRow['category']));
@@ -838,7 +895,7 @@
 	   	// Resort Tents
 	   	$i=0;
 	   	$TitleToSearch = $ResortRow['title'];
-	   	$Result = mysqli_query($con, "SELECT * FROM resort_types WHERE category='$TitleToSearch' AND status='Published' ORDER BY favourite DESC, order_no ASC");
+	   	$Result = mysqli_query($con, "SELECT * FROM resort_types WHERE category='$TitleToSearch' AND status='Published' ORDER BY favourite DESC, id DESC");
 		while($Row = mysqli_fetch_assoc($Result))
 		{
 			$CategoryTitle = preg_replace('/[^a-z]/', '-', strtolower($Row['title']));
@@ -1040,7 +1097,7 @@
 
 	   	// Projects Categories
 	   	$i=0;
-	   	$CategoryResult = mysqli_query($con, "SELECT category, COUNT(*) AS TotalCount, MAX(C.image) AS image, MAX(C.local_path) AS local_path FROM project_types T, project_category C WHERE T.category=C.title GROUP BY category ORDER BY C.order_no ASC");
+	   	$CategoryResult = mysqli_query($con, "SELECT category, COUNT(*) AS TotalCount, MAX(C.image) AS image, MAX(C.local_path) AS local_path FROM project_types T, project_category C WHERE T.category=C.title AND status='Published' GROUP BY category ORDER BY C.order_no ASC");
 		while($CategoryRow = mysqli_fetch_assoc($CategoryResult))
 		{
 			$CategoryTitle = preg_replace('/[^a-z]/', '-', strtolower($CategoryRow['category']));
@@ -1096,7 +1153,7 @@
 	   	// Projects
 	   	$i=0;
 	   	$TitleToSearch = $ProjectRow['title'];
-	   	$Result = mysqli_query($con, "SELECT * FROM project_types WHERE category='$TitleToSearch' AND status='Published' ORDER BY favourite DESC, order_no ASC;");
+	   	$Result = mysqli_query($con, "SELECT * FROM project_types WHERE category='$TitleToSearch' AND status='Published' ORDER BY favourite DESC, id DESC;");
 		while($Row = mysqli_fetch_assoc($Result))
 		{
 			$CategoryTitle = preg_replace('/[^a-z]/', '-', strtolower($Row['title']));
@@ -1281,6 +1338,10 @@
 	   	$Response['SEOInfo']['keyword'] = $Row['meta_keyword'];
 	   	$Response['SEOInfo']['content'] = $Row['meta_desc'];
 
+	   	$Response['GalleryInfo']['title'] 	 = $Row['title'];
+	   	$Response['GalleryInfo']['subtitle'] = $Row['subtitle'];
+	   	$Response['GalleryInfo']['content']  = $Row['content'];
+
 		$Result = mysqli_query($con, "SELECT * FROM add_gallery ORDER BY dateTime DESC");
 		if(mysqli_num_rows($Result) > 0)
 		{
@@ -1432,7 +1493,7 @@
 		{
 			$FinalArray['Brands'][$i]['name'] 	= $Row['name'];
 			$FinalArray['Brands'][$i]['link'] 	= $Row['link'];
-			$FinalArray['Brands'][$i]['logo'] 	= $Row['logo'];
+			$FinalArray['Brands'][$i]['logo'] 	= "http://app.thevillatent.com/villadashboard/".$Row['logo'];
 			$i++;
 		}
 
@@ -1506,7 +1567,7 @@
 		{
 			$FinalArray['Brands'][$i]['name'] 	= $Row['name'];
 			$FinalArray['Brands'][$i]['link'] 	= $Row['link'];
-			$FinalArray['Brands'][$i]['logo'] 	= $Row['logo'];
+			$FinalArray['Brands'][$i]['logo'] 	= "http://app.thevillatent.com/villadashboard/".$Row['logo'];
 			$i++;
 		}
 
@@ -1678,10 +1739,8 @@
         if ($con->query($sql) === TRUE)
         {   
             // Contact Information to Client
-            // sendEmail('info@thevillatent.com', "Contact Information", userInformationHtml($_POST));
-            // $message = customerEmailData($_POST['name']);
-           
-            // sendEmail($_POST['email'], 'Thank you for Contact the villa tent', $message);
+            sendEmail('info@thevillatent.com', "Contact Information", ContactUsEmailData($_POST, 'owner'));
+            sendEmail($_POST['email'], 'Thank you for Contact the villa tent', ContactUsEmailData($_POST, 'customer'));
             
             $Response = array('Status' => 'success', 'Message' => '<p>Thank you for appreciate our resort tents and sent request to get information about our luxury resort tents.The villa tent team will be contact you very soon.</p> 
                 <p>Best Regard</p>
@@ -1784,7 +1843,7 @@
 
 	   	// Tents Categories
 	   	$i=0;
-	   	$CategoryResult = mysqli_query($con, "SELECT category, COUNT(*) AS TotalCount, C.image, C.local_path FROM resort_types T, resort_category C WHERE T.category=C.title GROUP BY category ORDER BY category ASC");
+	   	$CategoryResult = mysqli_query($con, "SELECT category, COUNT(*) AS TotalCount, C.image, C.local_path FROM resort_types T, resort_category C WHERE T.category=C.title AND T.status='Published' GROUP BY category ORDER BY category ASC");
 		while($CategoryRow = mysqli_fetch_assoc($CategoryResult))
 		{
 			$FinalArray['TentCategories'][$i]['name'] 	= $CategoryRow['category'];
@@ -1802,11 +1861,8 @@
 
         if ($con->query($sql) === TRUE)
         {   
-            // Contact Information to Client
-            // sendEmail('info@thevillatent.com', "Contact Information", userInformationHtml($_POST));
-            // $message = customerEmailData($_POST['name']);
-           
-            // sendEmail($_POST['email'], 'Thank you for Contact the villa tent', $message);
+            sendEmail('info@thevillatent.com', "Contact Information", QuoteEmailData($_POST, 'owner'));
+            sendEmail($_POST['email'], 'Thank you for Contact the villa tent', QuoteEmailData($_POST, 'customer'));
             
             $Response = array('Status' => 'success', 'Message' => '<p>Thank you for appreciate our resort tents and sent request to get information about our luxury resort tents.The villa tent team will be contact you very soon.</p> 
                 <p>Best Regard</p>
@@ -1822,9 +1878,20 @@
 	}
 	else if(isset($_GET['Action']) && $_GET['Action'] == "GetYoutubePage")
 	{
-		require_once('core/pagination.class.php');
-		$perPage = new PerPage();
 		$FinalArray = array();
+
+		$Result = mysqli_query($con, "SELECT title, subtitle, description, btn_txt, btn_url, image, local_path FROM top_banner WHERE page='Youtube' AND status='Published'");
+		$Row 	= mysqli_fetch_assoc($Result);
+		$FinalArray['TopSection']['title']	 		= $Row['title'];
+		$FinalArray['TopSection']['subtitle'] 		= $Row['subtitle'];
+		$FinalArray['TopSection']['content'] 		= $Row['description'];
+		$FinalArray['TopSection']['btn_txt'] 		= $Row['btn_txt'];
+		$FinalArray['TopSection']['btn_url'] 		= $Row['btn_url'];
+       	$FinalArray['TopSection']['image'] = "http://app.thevillatent.com/villadashboard/".$Row['image'];
+		if(isset($Row['local_path']) && $Row['local_path'] !== '')
+       	{
+       		$FinalArray['TopSection']['image'] = "http://app.thevillatent.com/villadashboard/".$Row['local_path'];
+       	}
 
 		// Page Content
 		$Result = mysqli_query($con, "SELECT * FROM youtube_content");
@@ -1846,33 +1913,8 @@
 	   	$FinalArray['SEOInfo']['content'] 	= $SEORow['discription'];
 
 	   	// Youtube videos
-		$sql = "SELECT * FROM youtube_video ORDER BY id DESC";
-		$PaginationLink = "youtube-videos.php?page=";    
-		$PaginationSetting = "all-links";
-		                
-		$page = 1;
-		if(!empty($_GET["page"]))
-		{
-		    $page = $_GET["page"];
-		}
-
-		$start = ($page-1)*$perPage->perpage;
-		if($start < 0) $start = 0;
-
-		$query =  $sql . " limit " . $start . "," . $perPage->perpage;
-		$totalCount = mysqli_query($con,$sql);
-		$YoutubeResult = mysqli_query($con,$query);
-
-		if(empty($_GET["rowcount"]))
-		{
-		    $_GET["rowcount"] = mysqli_num_rows($totalCount);
-		}
-
-		$perpageresult = $perPage->getAllPageLinks($_GET["rowcount"], $PaginationLink,$PaginationSetting);
-		$pageName = basename($_SERVER['PHP_SELF']);
-		$pageName = str_replace(".php","",$pageName);
-		
 		$i=0;   					 
+		$YoutubeResult = mysqli_query($con, "SELECT * FROM youtube_video ORDER BY id DESC");
 		while($VideoRow = mysqli_fetch_assoc($YoutubeResult))
 		{
 	   		$FinalArray['Videos'][$i]['title'] 	= $VideoRow['title'];
@@ -1886,10 +1928,17 @@
 		   	$i++;
 		}
 
-		if(!empty($perpageresult))
+		// Brands Info
+		$i = 0;
+        $Result = mysqli_query($con, "SELECT name, link, logo FROM brands WHERE status='Active' ORDER BY display_order ASC");
+        $TotalProjectsCount = mysqli_num_rows($Result);
+		while($Row = mysqli_fetch_assoc($Result))
 		{
-            $FinalArray['Videos']['pagination_links'] = $perpageresult;
-        }
+			$FinalArray['Brands'][$i]['name'] 	= $Row['name'];
+			$FinalArray['Brands'][$i]['link'] 	= $Row['link'];
+			$FinalArray['Brands'][$i]['logo'] 	= "http://app.thevillatent.com/villadashboard/".$Row['logo'];
+			$i++;
+		}
 
 		$Response['Status'] = 1; 
 		$Response['Data'] 	= $FinalArray; 
@@ -1964,109 +2013,961 @@
 	    return $email_content;
 	}
 
-	function customerEmailData($Name)
-	{
-	    $email_content = '<html>
-							<head>
-								<title>HTML email</title>
-							</head>
-							<body>
-								<table cellpadding="0" cellspacing="0" align="center" border="0" style="max-width:610px;width:100%;margin:auto;padding:0;background-color:#ffffff;color:#222222;overflow:hidden;border-left:1px solid #eee;border-right:1px solid #eee">
-							    <tbody>
-							        <tr>
-							            <td>
-							                <table align="center" valign="middle" cellpadding="0" cellspacing="0" border="0" style="max-width:610px;width:100%;overflow:hidden;margin:0;padding:0;background-color:#49535c;text-align:center">
-							                    <tbody>
-							                        <tr>
-							                            <td>
-							                                <img style="width:100%" src="https://www.thevillatent.com/emailimages/headerbg.jpg" alt="image" class="CToWUd a6T" tabindex="0"><div class="a6S" dir="ltr" style="opacity: 0.01; left: 846px; top: 119px;"><div id=":18l" class="T-I J-J5-Ji aQv T-I-ax7 L3 a5q" role="button" tabindex="0" aria-label="Download attachment " data-tooltip-class="a1V" data-tooltip="Download"><div class="aSK J-J5-Ji aYr"></div></div></div>
-							                            </td>
-							                        </tr>
-							                    </tbody>
-							                </table>
-							            </td>
-							        </tr>
+	function ContactUsEmailData($CustomerInfo, $EmailType='customer')
+    {
+        $CurrentDateTime = date('d M Y, h:i A');
+        $CustomerName   = $CustomerInfo['name'] ?? '';
+        $Email          = $CustomerInfo['email'] ?? '';
+        $Phone          = $CustomerInfo['phonenumber'] ?? '';
+        $Location       = $CustomerInfo['location'] ?? '';
+        $Referredby     = $CustomerInfo['referredby'] ?? '';
+        $Message        = $CustomerInfo['message'] ?? '';
+        $adminUrl       = 'https://app.thevillatent.com/admin/enquiries/123';
 
-							        <tr style="max-width:610px;width:100%;box-sizing:border-box">
-							            <td>
+        if($EmailType == 'owner')
+        {
+            $email_content = "<!DOCTYPE html>
+                                <html lang='en'>
+                                    <head>
+                                        <meta charset='UTF-8'>
+                                        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                                        <meta name='x-apple-disable-message-reformatting'>
+                                        <title>New Contact Us Enquiry - The Villa Tent</title>
+                                        <style>
+                                            @media only screen and (max-width: 620px) {
+                                                .email-wrapper { padding: 15px 8px !important; }
+                                                .email-container { width: 100% !important; max-width: 100% !important; }
+                                                .header { padding: 20px 15px !important; }
+                                                .content { padding: 25px 18px !important; }
+                                                .main-title { font-size: 26px !important; line-height: 33px !important; }
+                                                .detail-label { width: 32% !important; }
+                                                .detail-cell { padding: 9px 10px !important; font-size: 13px !important; }
+                                                .footer { padding: 20px 15px !important; }
+                                            }
+                                        </style>
+                                    </head>
+                                    <body style='margin:0;padding:0;background:#f4f1ea;font-family:Arial,Helvetica,sans-serif;'>
+                                        <table width='100%' cellpadding='0' cellspacing='0' border='0' style='background:#f4f1ea;padding:30px 10px;'>
+                                            <tr>
+                                                <td align='center'>
+                                                    <table width='600' cellpadding='0' cellspacing='0' border='0' style='width:100%;max-width:600px;background:#ffffff;margin:0 auto;border-radius:8px;overflow:hidden;'>
+                                                        <!-- HEADER -->
+                                                        <tr>
+                                                            <td style='background:#ffffff;padding:12px 24px;'>
+                                                                <table width='100%' cellpadding='0' cellspacing='0' border='0'>
+                                                                    <tr>
+                                                                        <td align='left'>
+                                                                            <img src='http://app.thevillatent.com/villadashboard/uploads/logo/1836logo.png' alt='The Villa Tent' width='70' style='display:block;height:auto;border:0;'>
+                                                                        </td>
 
-							                <table align="center" valign="middle" cellpadding="0" cellspacing="0" border="0" style="overflow:hidden;max-width:610px;width:100%;box-sizing:border-box;margin:0;padding:30px 15px 10px">
-							                    <tbody>
-							                        <tr>
-							                            <td style="text-align:left">
-							                                <p style="color:#575f62;font-family:"Lato",sans-serif;font-size:15px;line-height:20px;margin-top:0;margin-bottom:20px;padding:0;text-align:left">
-							                                    Hello <span style="text-transform:capitalize">'.$Name.'</span>,
-							                                </p>
+                                                                        <td align='right'
+                                                                            style='color:#007735;font-family:Georgia,serif;font-size:12px;line-height:18px;font-style:italic;'>
+                                                                            WE ARE OUR COMPETITORS
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
 
-							                                <p style="color:#575f62;font-family:"Lato",sans-serif;font-size:15px;line-height:19px;margin-top:0;margin-bottom:20px;padding:0;font-weight:normal">
-							                                  Thank you for appreciate our resort tents and sent request to get information about our luxury resort tents.The villa tent team will be contact you very soon.
-							                                </p>
-							                                <p style="color:#005027;font-family:"Lato",sans-serif;font-size:15px;line-height:19px;margin-top:0;margin-bottom:20px;padding:0">
-							                                    Best Regards <br>  <a href="https://www.thevillatent.com/" style="color:#005027;text-decoration:none;font-weight:bold" target="_blank">The Villatent Team</a>
-							                                </p>
+                                                        <!-- GREEN LINE -->
+                                                        <tr>
+                                                            <td style='height:5px;background:#007735;font-size:0;'>&nbsp;</td>
+                                                        </tr>
+
+                                                        <!-- CONTENT -->
+                                                        <tr>
+                                                            <td style='padding:32px 40px 30px 40px;'>
+                                                                <h1 style='margin:0 0 12px 0;color:#007735;font-family:Georgia,serif;font-size:30px;line-height:38px;'>
+                                                                    New Contact Us<br>
+                                                                    <span style='color:#63380E;'>Enquiry</span>
+                                                                </h1>
+
+                                                                <div style='width:45px;height:2px;background:#63380E;margin-bottom:20px;'></div>
+
+                                                                <p style='margin:0 0 20px 0;color:#444444;font-size:14px;line-height:23px;'>
+                                                                    A new enquiry has been submitted through the
+                                                                    <strong style='color:#007735;'>The Villa Tent</strong> website.
+                                                                    Please review the details below and follow up with the customer.
+                                                                </p>
+
+                                                                <!-- CUSTOMER DETAILS -->
+                                                                <table width='100%' cellpadding='0' cellspacing='0' border='0'
+                                                                       style='border:1px solid #e6dfd0;border-radius:7px;overflow:hidden;margin-bottom:18px;'>
+                                                                    <tr>
+                                                                        <td colspan='2'
+                                                                            style='background:#F2E6C9;padding:14px 16px;color:#63380E;font-family:Georgia,serif;font-size:17px;font-weight:bold;'>
+                                                                            Customer Details
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='width:32%;padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Name
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $CustomerName
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Email
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;word-break:break-word;'>
+                                                                            $Email
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Phone
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $Phone
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Location
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $Location
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Referred by
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $Referredby
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+
+                                                                <!-- MESSAGE -->
+                                                                <table width='100%' cellpadding='0' cellspacing='0' border='0' style='border:1px solid #e6dfd0;border-radius:7px;overflow:hidden;margin-bottom:18px;'>
+                                                                    <tr>
+                                                                        <td style='background:#F2E6C9;padding:14px 16px;color:#63380E;font-family:Georgia,serif;font-size:17px;font-weight:bold;'>
+                                                                            Customer Message
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='background:#fafafa;padding:17px 16px;color:#444444;font-size:14px;line-height:23px;'>
+                                                                            $Message
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+
+                                                                <!-- SUBMISSION DETAILS -->
+                                                                <table width='100%' cellpadding='0' cellspacing='0' border='0' style='border:1px solid #e6dfd0;border-radius:7px;overflow:hidden;margin-bottom:25px;'>
+                                                                    <tr>
+                                                                        <td colspan='2'
+                                                                            style='background:#F2E6C9;padding:14px 16px;color:#63380E;font-family:Georgia,serif;font-size:17px;font-weight:bold;'>
+                                                                            Submission Details
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='width:32%;padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Date &amp; Time
+                                                                        </td>
+
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $CurrentDateTime
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;'>
+                                                                            Source
+                                                                        </td>
+
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;'>
+                                                                            Website - Contact Us
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+
+                                                                <!-- CTA -->
+                                                                <table width='100%' cellpadding='0' cellspacing='0' border='0'>
+                                                                    <tr>
+                                                                        <td align='center'>
+                                                                        <a href='$adminUrl'
+                                                                           style='display:inline-block;background:#007735;color:#ffffff;text-decoration:none;font-size:14px;font-weight:bold;padding:14px 30px;border-radius:5px;'>
+                                                                            View Enquiry &nbsp; →
+                                                                        </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- FOOTER -->
+                                                        <tr>
+                                                            <td style='background:#007735;padding:22px 30px;text-align:center;'>
+                                                                <a href='https://www.thevillatent.com'
+                                                                   style='color:#F2E6C9;text-decoration:none;font-size:12px;'>
+                                                                    www.thevillatent.com
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td align='center'
+                                                                style='background:#63380E;padding:10px 15px;color:#ffffff;font-size:11px;line-height:18px;'>
+                                                                The Vedanta International &nbsp; | &nbsp; The Villa Tent &nbsp; | &nbsp; www.thevillatent.com
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </body>
+                                </html>";
+        }
+        else
+        {
+            $email_content = "<!DOCTYPE html>
+                                <html lang='en'>
+                                    <head>
+                                        <meta charset='UTF-8'>
+                                        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                                        <meta name='x-apple-disable-message-reformatting'>
+                                        <title>Thank You - The Villa Tent</title>
+                                        <style>
+                                            @media only screen and (max-width:620px) {
+                                                .email-wrapper {
+                                                    padding:15px 8px !important;
+                                                }
+
+                                                .email-container {
+                                                    width:100% !important;
+                                                    max-width:100% !important;
+                                                }
+
+                                                .header {
+                                                    padding:20px 15px !important;
+                                                }
+
+                                                .tagline {
+                                                    font-size:11px !important;
+                                                    line-height:16px !important;
+                                                }
+
+                                                .content {
+                                                    padding:25px 18px !important;
+                                                }
+
+                                                .main-title {
+                                                    font-size:25px !important;
+                                                    line-height:32px !important;
+                                                }
+
+                                                .detail-label {
+                                                    width:34% !important;
+                                                }
+
+                                                .detail-cell {
+                                                    padding:9px 10px !important;
+                                                    font-size:13px !important;
+                                                }
+
+                                                .footer {
+                                                    padding:20px 15px !important;
+                                                }
+
+                                                .bottom-bar {
+                                                    font-size:11px !important;
+                                                    line-height:18px !important;
+                                                }
+                                            }
+                                        </style>
+                                    </head>
+
+                                    <body style='margin:0;padding:0;background-color:#f4f1ea;font-family:Arial,Helvetica,sans-serif;'>
+                                        <table width='100%' cellpadding='0' cellspacing='0' border='0' class='email-wrapper' style='background-color:#f4f1ea;margin:0;padding:30px 10px;'>
+                                            <tr>
+                                                <td align='center'>
+                                                    <table width='600' cellpadding='0' cellspacing='0' border='0' class='email-container' style='width:100%;max-width:600px;background:#ffffff;margin:0 auto;border-radius:8px;overflow:hidden;'>
+                                                        <!-- HEADER -->
+                                                        <tr>
+                                                            <td class='header' style='background:#ffffff;padding:12px 24px;'>
+                                                                <table width='100%' cellpadding='0' cellspacing='0' border='0'>
+                                                                    <tr>
+                                                                        <td align='left'>
+                                                                        <img
+                                                                        src='http://app.thevillatent.com/villadashboard/uploads/logo/1836logo.png'
+                                                                        alt='The Villa Tent'
+                                                                        width='70'
+                                                                        style='display:block;height:auto;border:0;'
+                                                                        >
+                                                                        </td>
+
+                                                                        <td align='right'
+                                                                            class='tagline'
+                                                                            style='color:#007735;font-family:Georgia,serif;font-size:12px;line-height:18px;font-style:italic;'>
+                                                                            WE ARE OUR COMPETITORS
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- GREEN LINE -->
+                                                        <tr>
+                                                            <td style='height:5px;background:#007735;font-size:0;'>
+                                                            &nbsp;
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- CONTENT -->
+                                                        <tr>
+                                                            <td class='content' style='padding:35px 40px 30px 40px;'>
+                                                                <h1 class='main-title' style='margin:0 0 15px 0;color:#007735;font-family:Georgia,serif;font-size:30px;line-height:38px;'
+                                                                >
+                                                                    Thank You for<br>
+                                                                    <span style='color:#63380E;'>Contacting Us</span>
+                                                                </h1>
+
+                                                                <div style='width:45px;height:2px;background:#63380E;margin-bottom:20px;'></div>
+                                                                <p style='margin:0 0 15px 0;color:#333333;font-size:15px;line-height:24px;'>
+                                                                    Dear <strong style='color:#63380E;'>$CustomerName</strong>,
+                                                                </p>
+
+                                                                <p style='margin:0 0 20px 0;color:#444444;font-size:14px;line-height:23px;'>
+                                                                Thank you for getting in touch with
+                                                                    <strong style='color:#007735;'>The Villa Tent</strong>.
+                                                                    We have received your enquiry and our team will get in touch with you shortly to understand your requirements and assist you further.
+                                                                </p>
+
+                                                                <!-- DETAILS BOX -->
+                                                                <table width='100%' cellpadding='0' cellspacing='0' border='0' style='border:1px solid #e6dfd0;border-radius:7px;overflow:hidden;'>
+                                                                    <tr>
+                                                                        <td colspan='2'
+                                                                            style='background:#F2E6C9;padding:14px 16px;color:#63380E;font-family:Georgia,serif;font-size:17px;font-weight:bold;'>
+                                                                            Your Enquiry Details
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='width:32%;padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Name
+                                                                        </td>
+
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $CustomerName
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Email
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;word-break:break-word;'>
+                                                                            $Email
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Phone
+                                                                        </td>
+
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $Phone
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Location
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $Location
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Referred By
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $Referredby
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;vertical-align:top;'>
+                                                                            Message
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;line-height:21px;vertical-align:top;'>
+                                                                            $Message
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+
+                                                                <!-- MESSAGE -->
+
+                                                                <p style='margin:25px 0 20px 0;color:#444444;font-size:14px;line-height:23px;'>
+                                                                    We appreciate your interest in
+                                                                    <strong style='color:#007735;'>The Villa Tent</strong>
+                                                                    and look forward to helping you create a comfortable and memorable space.
+                                                                </p>
+
+                                                                <p style='margin:0;color:#555555;font-size:14px;line-height:22px;'>
+                                                                    Warm regards,
+                                                                </p>
+
+                                                                <p style='margin:3px 0 0 0;color:#007735;font-size:17px;font-weight:bold;'>
+                                                                    The Villa Tent Team
+                                                                </p>
+
+                                                                <p style='margin:3px 0 0 0;color:#777777;font-size:12px;'>
+                                                                    The Vedanta International
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- FOOTER -->
+                                                        <tr>
+                                                            <td class='footer' style='background:#007735;padding:22px 30px;text-align:center;'>
+                                                                <a href='https://www.thevillatent.com' style='color:#F2E6C9;text-decoration:none;font-size:12px;'>
+                                                                    www.thevillatent.com
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- BOTTOM CONTACT BAR -->
+                                                        <tr>
+                                                            <td style='background:#63380E;padding:10px 15px;color:#ffffff;font-size:11px;line-height:18px;text-align:center;'>
+                                                                The Vedanta International
+                                                                &nbsp; | &nbsp;
+                                                                The Villa Tent
+                                                                &nbsp; | &nbsp;
+                                                                www.thevillatent.com
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </body>
+                                </html>";
+        }
+
+        return $email_content;
+    }
 
 
-							                            </td>
-							                        </tr>
+	function QuoteEmailData($CustomerInfo, $EmailType='customer')
+    {
+        $CurrentDateTime = date('d M Y, h:i A');
+        $CustomerName   = $CustomerInfo['name'] ?? '';
+        $PhoneNumber    = $CustomerInfo['phone'] ?? '';
+        $Email          = $CustomerInfo['email'] ?? '';
+        $Country       	= $CustomerInfo['country'] ?? '';
+        $Category       = $CustomerInfo['category'] ?? '';
+        $Location     	= $CustomerInfo['location'] ?? '';
+        $Timeline 		= !empty($CustomerInfo['timeline']) ? date('d M Y', strtotime($CustomerInfo['timeline'])) : '';
+        $Quantity     	= $CustomerInfo['quantity'] ?? '';
+        $Message        = $CustomerInfo['message'] ?? '';
 
-							                    </tbody>
-							                </table>
+        if($EmailType == 'owner')
+        {
+            $email_content = "<!DOCTYPE html>
+                                <html lang='en'>
+                                    <head>
+                                        <meta charset='UTF-8'>
+                                        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                                        <meta name='x-apple-disable-message-reformatting'>
+                                        <title>New Quote Request - The Villa Tent</title>
+                                        <style>
+                                            @media only screen and (max-width: 620px) {
+                                                .email-wrapper { padding: 15px 8px !important; }
+                                                .email-container { width: 100% !important; max-width: 100% !important; }
+                                                .header { padding: 20px 15px !important; }
+                                                .content { padding: 25px 18px !important; }
+                                                .main-title { font-size: 26px !important; line-height: 33px !important; }
+                                                .detail-label { width: 32% !important; }
+                                                .detail-cell { padding: 9px 10px !important; font-size: 13px !important; }
+                                                .footer { padding: 20px 15px !important; }
+                                            }
+                                        </style>
+                                    </head>
+                                    <body style='margin:0;padding:0;background:#f4f1ea;font-family:Arial,Helvetica,sans-serif;'>
+                                        <table width='100%' cellpadding='0' cellspacing='0' border='0' style='background:#f4f1ea;padding:30px 10px;'>
+                                            <tr>
+                                                <td align='center'>
+                                                    <table width='600' cellpadding='0' cellspacing='0' border='0' style='width:100%;max-width:600px;background:#ffffff;margin:0 auto;border-radius:8px;overflow:hidden;'>
+                                                        <!-- HEADER -->
+                                                        <tr>
+                                                            <td style='background:#ffffff;padding:12px 24px;'>
+                                                                <table width='100%' cellpadding='0' cellspacing='0' border='0'>
+                                                                    <tr>
+                                                                        <td align='left'>
+                                                                            <img src='http://app.thevillatent.com/villadashboard/uploads/logo/1836logo.png' alt='The Villa Tent' width='70' style='display:block;height:auto;border:0;'>
+                                                                        </td>
 
-							            </td>
-							        </tr>
-							        <tr style="box-sizing:border-box;background-color:#fff;height:22px">
-							            <td style="text-align:center;border-left:1px solid #eee;border-right:1px solid #eee">&nbsp;</td>
-							        </tr>
-							        <tr>
-							            <td>
-							                <table align="center" valign="center" cellpadding="0" cellspacing="0" border="0" style="max-width:610px;width:100%;overflow:hidden;background-color:#005027;padding:30px 20px 0px;box-sizing:border-box;color:#fff;text-align:center;">
+                                                                        <td align='right'
+                                                                            style='color:#007735;font-family:Georgia,serif;font-size:12px;line-height:18px;font-style:italic;'>
+                                                                            WE ARE OUR COMPETITORS
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
 
-							                    <tbody>
-							                        <tr>
-							                            <td>
-							                                   <p style="text-align:center;height:30px;overflow:hidden;margin:0">
-							                                    <a href="https://www.facebook.com/thevillatents/" style="text-decoration:none;padding:0;display:inline-block;margin:0 5px" target="_blank"><img alt="image" border="0" src="https://www.thevillatent.com/emailimages/Facebook.png" height="auto" width="28" style="outline:none;color:#ffffff;display:block;text-decoration:none;border-color:#ececec" class="CToWUd"></a>
-							                                    <a href="https://twitter.com/thevillatent/" style="text-decoration:none;padding:0;display:inline-block;margin:0 5px" target="_blank"><img alt="image" border="0" src="https://www.thevillatent.com/emailimages/Twitter.png" height="auto" width="28" style="outline:none;color:#ffffff;display:block;text-decoration:none;border-color:#ececec" class="CToWUd"></a>
-							                                    <a href="https://www.youtube.com/channel/UCKg87eksAdTZkMu7OB7FrSQ" style="text-decoration:none;padding:0;display:inline-block;margin:0 5px" target="_blank"><img alt="image" border="0" src="https://www.thevillatent.com/emailimages/Youtube.png" height="auto" width="28" style="outline:none;color:#ffffff;display:block;text-decoration:none;border-color:#ececec" class="CToWUd"></a>
-							                                    <a href="https://www.pinterest.com/thevillatent/" style="text-decoration:none;padding:0;display:inline-block;margin:0 5px" target="_blank"><img alt="image" border="0" src="https://www.thevillatent.com/emailimages/Pinterest.png" height="auto" width="28" style="outline:none;color:#ffffff;display:block;text-decoration:none;border-color:#ececec" class="CToWUd"></a>
-							                                </p>
-							                                <p style="color:#fff;font-family:"Lato",sans-serif;font-size:15px;line-height:15px;margin-top:10px;margin-bottom:0px;padding:0;font-weight:normal;text-align:center">
-							                                    <a href="https://www.thevillatent.com/" style="color:#fff;text-decoration:none;font-family:"Lato",sans-serif" target="_blank" data-saferedirecturl="">https://www.thevillatent.com/</a>
-							                                </p>
-							                                <p style="color:#fff;font-size:15px;line-height:15px;margin:10px 0 0 0;padding:0;font-weight:normal;text-align:center;font-family:"Lato",sans-serif">Copyright © 2015. All rights reserved.</p>
-							                            </td>
-							                        </tr>
+                                                        <!-- GREEN LINE -->
+                                                        <tr>
+                                                            <td style='height:5px;background:#007735;font-size:0;'>&nbsp;</td>
+                                                        </tr>
 
-							                    </tbody>
-							                </table>
+                                                        <!-- CONTENT -->
+                                                        <tr>
+                                                            <td style='padding:32px 40px 30px 40px;'>
+                                                                <h1 style='margin:0 0 12px 0;color:#007735;font-family:Georgia,serif;font-size:30px;line-height:38px;'>
+                                                                    New Quote<br>
+                                                                    <span style='color:#63380E;'>Request</span>
+                                                                </h1>
 
-							            </td>
-							        </tr>
-							        <tr>
-							            <td>
-							                <table align="center" valign="center" cellpadding="0" cellspacing="0" border="0" style="max-width:610px;width:100%;overflow:hidden;background-color:#005027;padding:0px;box-sizing:border-box;color:#fff;text-align:center;margin: -17px 0 0 0;">
-							                    <tbody>
-							                        <tr>
-							                            <td>
-							                                <p style="color:#fff;font-size:13px;line-height:15px;margin:0;padding:0;font-weight:normal;text-align:center;font-family:"Lato",sans-serif">The Vedanta International Dhulkot,Behind Kingfisher,Vedanta Street, <br> Ambala City -134003. Haryana, India.</p>
-							                            </td>
-							                        </tr>
-							                    </tbody>
-							                </table>
-							            </td>
-							        </tr>
-							    </tbody>
-								</table>
-							</body>
-						</html>';
-	    return $email_content;
-	}
+                                                                <div style='width:45px;height:2px;background:#63380E;margin-bottom:20px;'></div>
+
+                                                                <p style='margin:0 0 20px 0;color:#444444;font-size:14px;line-height:23px;'>
+                                                                    A new quote request has been submitted through the
+                                                                    <strong style='color:#007735;'>The Villa Tent</strong> website.
+                                                                    Please review the details below and follow up with the customer.
+                                                                </p>
+
+                                                                <!-- CUSTOMER DETAILS -->
+                                                                <table width='100%' cellpadding='0' cellspacing='0' border='0'
+                                                                       style='border:1px solid #e6dfd0;border-radius:7px;overflow:hidden;margin-bottom:18px;'>
+                                                                    <tr>
+                                                                        <td colspan='2'
+                                                                            style='background:#F2E6C9;padding:14px 16px;color:#63380E;font-family:Georgia,serif;font-size:17px;font-weight:bold;'>
+                                                                            Customer Details
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='width:32%;padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Full Name
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $CustomerName
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Phone Number
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $PhoneNumber
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Email Address
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;word-break:break-word;'>
+                                                                            $Email
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Country
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;word-break:break-word;'>
+                                                                            $Country
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Tent Category
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;word-break:break-word;'>
+                                                                            $Category
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Project Location
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;word-break:break-word;'>
+                                                                            $Location
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Estimated Quantity
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;word-break:break-word;'>
+                                                                            $Quantity
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Project Timeline
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;word-break:break-word;'>
+                                                                            $Timeline
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Project Details / Message
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;word-break:break-word;'>
+                                                                            $Message
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+
+                                                                <!-- SUBMISSION DETAILS -->
+                                                                <table width='100%' cellpadding='0' cellspacing='0' border='0' style='border:1px solid #e6dfd0;border-radius:7px;overflow:hidden;margin-bottom:25px;'>
+                                                                    <tr>
+                                                                        <td colspan='2'
+                                                                            style='background:#F2E6C9;padding:14px 16px;color:#63380E;font-family:Georgia,serif;font-size:17px;font-weight:bold;'>
+                                                                            Submission Details
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='width:32%;padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Date &amp; Time
+                                                                        </td>
+
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $CurrentDateTime
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;'>
+                                                                            Source
+                                                                        </td>
+
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;'>
+                                                                            Website - Quote Request
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+
+                                                                <!-- CTA -->
+                                                                <table width='100%' cellpadding='0' cellspacing='0' border='0'>
+                                                                    <tr>
+                                                                        <td align='center'>
+                                                                        <a href='' style='display:inline-block; background:#007735; color:#ffffff; text-decoration:none; font-size:14px; font-weight:bold; padding:14px 30px; border-radius:5px;'>
+								                                            View Quote Request &nbsp; →
+								                                        </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- FOOTER -->
+                                                        <tr>
+                                                            <td style='background:#007735;padding:22px 30px;text-align:center;'>
+                                                                <a href='https://www.thevillatent.com'
+                                                                   style='color:#F2E6C9;text-decoration:none;font-size:12px;'>
+                                                                    www.thevillatent.com
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td align='center'
+                                                                style='background:#63380E;padding:10px 15px;color:#ffffff;font-size:11px;line-height:18px;'>
+                                                                The Vedanta International &nbsp; | &nbsp; The Villa Tent &nbsp; | &nbsp; www.thevillatent.com
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </body>
+                                </html>";
+        }
+        else
+        {
+            $email_content = "<!DOCTYPE html>
+                                <html lang='en'>
+                                    <head>
+                                        <meta charset='UTF-8'>
+                                        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                                        <meta name='x-apple-disable-message-reformatting'>
+                                        <title>Quote Request Confirmation - The Villa Tent</title>
+                                        <style>
+                                            @media only screen and (max-width:620px) {
+                                                .email-wrapper {
+                                                    padding:15px 8px !important;
+                                                }
+
+                                                .email-container {
+                                                    width:100% !important;
+                                                    max-width:100% !important;
+                                                }
+
+                                                .header {
+                                                    padding:20px 15px !important;
+                                                }
+
+                                                .tagline {
+                                                    font-size:11px !important;
+                                                    line-height:16px !important;
+                                                }
+
+                                                .content {
+                                                    padding:25px 18px !important;
+                                                }
+
+                                                .main-title {
+                                                    font-size:25px !important;
+                                                    line-height:32px !important;
+                                                }
+
+                                                .detail-label {
+                                                    width:34% !important;
+                                                }
+
+                                                .detail-cell {
+                                                    padding:9px 10px !important;
+                                                    font-size:13px !important;
+                                                }
+
+                                                .footer {
+                                                    padding:20px 15px !important;
+                                                }
+
+                                                .bottom-bar {
+                                                    font-size:11px !important;
+                                                    line-height:18px !important;
+                                                }
+                                            }
+                                        </style>
+                                    </head>
+
+                                    <body style='margin:0;padding:0;background-color:#f4f1ea;font-family:Arial,Helvetica,sans-serif;'>
+                                        <table width='100%' cellpadding='0' cellspacing='0' border='0' class='email-wrapper' style='background-color:#f4f1ea;margin:0;padding:30px 10px;'>
+                                            <tr>
+                                                <td align='center'>
+                                                    <table width='600' cellpadding='0' cellspacing='0' border='0' class='email-container' style='width:100%;max-width:600px;background:#ffffff;margin:0 auto;border-radius:8px;overflow:hidden;'>
+                                                        <!-- HEADER -->
+                                                        <tr>
+                                                            <td class='header' style='background:#ffffff;padding:12px 24px;'>
+                                                                <table width='100%' cellpadding='0' cellspacing='0' border='0'>
+                                                                    <tr>
+                                                                        <td align='left'>
+                                                                        <img
+                                                                        src='http://app.thevillatent.com/villadashboard/uploads/logo/1836logo.png'
+                                                                        alt='The Villa Tent'
+                                                                        width='70'
+                                                                        style='display:block;height:auto;border:0;'
+                                                                        >
+                                                                        </td>
+
+                                                                        <td align='right'
+                                                                            class='tagline'
+                                                                            style='color:#007735;font-family:Georgia,serif;font-size:12px;line-height:18px;font-style:italic;'>
+                                                                            WE ARE OUR COMPETITORS
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- GREEN LINE -->
+                                                        <tr>
+                                                            <td style='height:5px;background:#007735;font-size:0;'>
+                                                            &nbsp;
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- CONTENT -->
+                                                        <tr>
+                                                            <td class='content' style='padding:35px 40px 30px 40px;'>
+                                                                <h1 class='main-title' style='margin:0 0 15px 0;color:#007735;font-family:Georgia,serif;font-size:30px;line-height:38px;'
+                                                                >
+                                                                    Thank You for<br>
+                                                                    <span style='color:#63380E;'>Your Quote Request</span>
+                                                                </h1>
+
+                                                                <div style='width:45px;height:2px;background:#63380E;margin-bottom:20px;'></div>
+                                                                <p style='margin:0 0 15px 0;color:#333333;font-size:15px;line-height:24px;'>
+                                                                    Dear <strong style='color:#63380E;'>$CustomerName</strong>,
+                                                                </p>
+
+                                                                <p style='margin:0 0 20px 0;color:#444444;font-size:14px;line-height:23px;'>
+                                                                Thank you for contacting
+                                                                    <strong style='color:#007735;'>The Villa Tent</strong>.
+                                                                    We have received your quote request and our team will review your details shortly. One of our specialists will get back to you with the best possible solution for your project.
+                                                                </p>
+
+                                                                <!-- DETAILS BOX -->
+                                                                <table width='100%' cellpadding='0' cellspacing='0' border='0' style='border:1px solid #e6dfd0;border-radius:7px;overflow:hidden;'>
+                                                                    <tr>
+                                                                        <td colspan='2'
+                                                                            style='background:#F2E6C9;padding:14px 16px;color:#63380E;font-family:Georgia,serif;font-size:17px;font-weight:bold;'>
+                                                                            Your Quote Request Details
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='width:32%;padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Full Name
+                                                                        </td>
+
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $CustomerName
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Phone Number
+                                                                        </td>
+
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $PhoneNumber
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Email Address
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;word-break:break-word;'>
+                                                                            $Email
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Country
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $Country
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Tent Category
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $Category
+                                                                        </td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Project Location
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $Location
+                                                                        </td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Estimated Quantity
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $Quantity
+                                                                        </td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;border-bottom:1px solid #eee;'>
+                                                                            Project Timeline
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;border-bottom:1px solid #eee;'>
+                                                                            $Timeline
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style='padding:10px 15px;color:#63380E;font-size:13px;font-weight:bold;vertical-align:top;'>
+                                                                            Project Details / Message
+                                                                        </td>
+                                                                        <td style='padding:10px 15px;color:#444;font-size:13px;line-height:21px;vertical-align:top;'>
+                                                                            $Message
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+
+                                                                <!-- MESSAGE -->
+
+                                                                <p style='margin:25px 0 20px 0;color:#444444;font-size:14px;line-height:23px;'>
+                                                                    We appreciate your interest in
+                                                                    <strong style='color:#007735;'>The Villa Tent</strong>
+                                                                    and will be in touch with you soon to discuss your requirements and provide the best quote.
+                                                                </p>
+
+                                                                <p style='margin:0;color:#555555;font-size:14px;line-height:22px;'>
+                                                                    Warm regards,
+                                                                </p>
+
+                                                                <p style='margin:3px 0 0 0;color:#007735;font-size:17px;font-weight:bold;'>
+                                                                    The Villa Tent Team
+                                                                </p>
+
+                                                                <p style='margin:3px 0 0 0;color:#777777;font-size:12px;'>
+                                                                    The Vedanta International
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- FOOTER -->
+                                                        <tr>
+                                                            <td class='footer' style='background:#007735;padding:22px 30px;text-align:center;'>
+                                                                <a href='https://www.thevillatent.com' style='color:#F2E6C9;text-decoration:none;font-size:12px;'>
+                                                                    www.thevillatent.com
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- BOTTOM CONTACT BAR -->
+                                                        <tr>
+                                                            <td style='background:#63380E;padding:10px 15px;color:#ffffff;font-size:11px;line-height:18px;text-align:center;'>
+                                                                The Vedanta International
+                                                                &nbsp; | &nbsp;
+                                                                The Villa Tent
+                                                                &nbsp; | &nbsp;
+                                                                www.thevillatent.com
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </body>
+                                </html>";
+        }
+
+        return $email_content;
+    }
 
 	function sendEmail($to_email, $subject, $message)
 	{
 	    try
 	    {
 	        $from_email = 	'info@thevillatent.com';
+	        // $from_email = 	'rohit84086@gmail.com';
 	        $mailheader = 	'';
 	        $mailheader .= 	'From: ' . $from_email . "\r\n";
 	        $mailheader .= 	'Reply-To:' . $from_email . "\r\n"; 
@@ -2077,7 +2978,7 @@
 	    }
 	    catch(Exception $ex)
 	    {
-	        echo '<pre>';print_r($ex);die;
+	        echo '<pre>';print_r($ex); die;
 	    }
 	}
 ?>

@@ -96,6 +96,7 @@
                                                 <option value="Resort Tent" <?php echo ($b["page"] == 'Resort Tent') ? 'selected' : ''; ?>>Resort Tent</option>
                                                 <option value="Projects" <?php echo ($b["page"] == 'Projects') ? 'selected' : ''; ?>>Projects</option>
                                                 <option value="Gallery" <?php echo ($b["page"] == 'Gallery') ? 'selected' : ''; ?>>Gallery</option>
+                                                <option value="Youtube" <?php echo ($b["page"] == 'Youtube') ? 'selected' : ''; ?>>Youtube</option>
                                                 <option value="Blogs" <?php echo ($b["page"] == 'Blogs') ? 'selected' : ''; ?>>Blogs</option>
                                                 <option value="Contact Us" <?php echo ($b["page"] == 'Contact Us') ? 'selected' : ''; ?>>Contact Us</option>    
                                                 <option value="Brochure" <?php echo ($b["page"] == 'Brochure') ? 'selected' : ''; ?>>Brochure</option>
