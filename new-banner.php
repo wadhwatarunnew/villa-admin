@@ -111,6 +111,7 @@
                                     <option value="Resort Tent">Resort Tent</option>
                                     <option value="Projects">Projects</option>
                                     <option value="Gallery">Gallery</option>
+                                    <option value="Youtube">Youtube</option>
                                     <option value="Blogs">Blogs</option>
                                     <option value="Contact Us">Contact Us</option>
                                     <option value="Brochure">Brochure</option>

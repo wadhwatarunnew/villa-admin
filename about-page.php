@@ -299,7 +299,18 @@
 											<?php if(!$e['local_path']){ ?>
 												<div class="commonSection">
 													<label>Title</label>
-													<input class="form-control" type="text" name="title" required id="title" value="<?php echo $e['title']; ?>" placeholder="Enter Heading">
+													<!-- <input class="form-control" type="text" name="title" required id="title" value="<?php echo $e['title']; ?>" placeholder="Enter Heading"> -->
+													<textarea name="title" id="title" rows="10" cols="80"><?php echo $e['title']; ?></textarea>
+                                       <script type="text/javascript">
+                                          CKEDITOR.editorConfig = function (config) {
+                                             config.language = 'es';
+                                             config.uiColor = '#F7B42C';
+                                             config.height = 300;
+                                             config.toolbarCanCollapse = true;
+
+                                          };
+                                          CKEDITOR.replace('title');
+                                       </script>
 												</div>
 
 												<div class="commonSection">
