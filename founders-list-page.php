@@ -80,7 +80,7 @@
                         </div>
 
                         <div class="row mt-4" style="margin-top:24px;">
-                           <div class="col-md-4">
+                           <div class="col-md-6">
                               <div class="form-group" style="margin-bottom: 0;">
                                  <label for="eyebrow" style="display:block; font-weight:700; margin-bottom:10px; color:#1d2b25; font-size:18px;">
                                     Eyebrow / Small Heading <span style="color:#d92d20;">*</span>
@@ -102,7 +102,7 @@
                               </div>
                            </div>
 
-                           <div class="col-md-4">
+                           <div class="col-md-6">
                               <div class="form-group" style="margin-bottom: 0;">
                                  <label for="main_heading" style="display:block; font-weight:700; margin-bottom:10px; color:#1d2b25; font-size:18px;">
                                     Main Heading <span style="color:#d92d20;">*</span>
@@ -124,7 +124,7 @@
                               </div>
                            </div>
 
-                           <div class="col-md-4">
+                           <!-- <div class="col-md-4">
                               <div class="form-group" style="margin-bottom: 0;">
                                  <label for="short_description" style="display:block; font-weight:700; margin-bottom:10px; color:#1d2b25; font-size:18px;">
                                     Short Description (Optional)
@@ -143,7 +143,7 @@
                                     <span id="shortDescriptionCounter">143/300</span>
                                  </div>
                               </div>
-                           </div>
+                           </div> -->
                         </div>
                      </div>
                   </div>
