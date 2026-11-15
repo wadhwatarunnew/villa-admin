@@ -22,6 +22,7 @@
 
       $path = "uploads/pageimages/";
       $path_original = "uploads/pageimages/";
+      $ImagePath = $_POST['banner_image'];
 
    	if($metaTitle != '' && $keyword != '' && $disc != '')
       {
@@ -77,7 +78,14 @@
       }
       else
       {
-         mysqli_query($con, "UPDATE home_top_section SET title='$toptitle', content='$editor1', image='$imageUrl', local_path=''");
+         if($imageUrl != '')
+         {
+            mysqli_query($con, "UPDATE home_top_section SET title='$toptitle', content='$editor1', image='$imageUrl', local_path=''");
+         }
+         else
+         {
+            mysqli_query($con, "UPDATE home_top_section SET title='$toptitle', content='$editor1', image='', local_path='$ImagePath'");
+         }
          $Updated = true;
       }
 

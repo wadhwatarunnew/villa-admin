@@ -1,5 +1,8 @@
 <?php
+	header("Access-Control-Allow-Origin: https://thevillatent.com");
+	header("Access-Control-Allow-Origin: https://www.thevillatent.com");
 	header("Access-Control-Allow-Origin: https://app.thevillatent.com");
+	header("Access-Control-Allow-Origin: http://localhost:4000");
 	header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 	header("Access-Control-Allow-Headers: Content-Type, Authorization");
 	header("Content-Type: application/json");
@@ -81,10 +84,10 @@
 	                    $FinalArray['ResortTents']['children'][$i]['slug'] = $CleanURL;
 	                    $FinalArray['ResortTents']['children'][$i]['type'] = "resortCategory";
 	                    $FinalArray['ResortTents']['children'][$i]['api']  = "Action=GetResortTentByCategory&id=" . $ResortRow['id'];
-	                    $FinalArray['ResortTents']['children'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$ResortRow['local_path'];
+	                    $FinalArray['ResortTents']['children'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$ResortRow['local_path'];
 					   	if(isset($ResortRow['image']) && $ResortRow['image'] != '')
 					   	{
-					   		$FinalArray['ResortTents']['children'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$ResortRow['image'];
+					   		$FinalArray['ResortTents']['children'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$ResortRow['image'];
 					   	}
 
 	                    // Add types belonging to this category
@@ -116,10 +119,10 @@
 	                            $FinalArray['ResortTents']['children'][$i]['children'][$j]['slug'] = $CategoryTitle;
 	                            $FinalArray['ResortTents']['children'][$i]['children'][$j]['type'] = "resortTent";
 	                            $FinalArray['ResortTents']['children'][$i]['children'][$j]['api']  = "Action=GetResortTentByType&id=" . $CategoryRow['id'];
-			                    $FinalArray['ResortTents']['children'][$i]['children'][$j]['image'] = "https://app.thevillatent.com/villadashboard/".$CategoryRow['local_path'];
+			                    $FinalArray['ResortTents']['children'][$i]['children'][$j]['image'] = "https://www.thevillatent.com/villadashboard/".$CategoryRow['local_path'];
 							   	if(isset($CategoryRow['image']) && $CategoryRow['image'] != '')
 							   	{
-							   		$FinalArray['ResortTents']['children'][$i]['children'][$j]['image'] = "https://app.thevillatent.com/villadashboard/".$CategoryRow['image'];
+							   		$FinalArray['ResortTents']['children'][$i]['children'][$j]['image'] = "https://www.thevillatent.com/villadashboard/".$CategoryRow['image'];
 							   	}
 	                            $j++;
 	                        }
@@ -189,10 +192,10 @@
 	                    $FinalArray['Projects']['children'][$i]['slug'] = $CleanURL;
 	                    $FinalArray['Projects']['children'][$i]['type'] = "projectCategory";
 	                    $FinalArray['Projects']['children'][$i]['api']  = "Action=GetProjectByCategory&id=" . $ProjectRow['id'];
-	                    $FinalArray['Projects']['children'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$ProjectRow['local_path'];
+	                    $FinalArray['Projects']['children'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$ProjectRow['local_path'];
 					   	if(isset($ProjectRow['image']) && $ProjectRow['image'] != '')
 					   	{
-					   		$FinalArray['Projects']['children'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$ProjectRow['image'];
+					   		$FinalArray['Projects']['children'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$ProjectRow['image'];
 					   	}
 
 	                    // Add project types belonging to this category
@@ -225,10 +228,10 @@
 	                            $FinalArray['Projects']['children'][$i]['children'][$j]['slug'] = $CategoryTitle;
 	                            $FinalArray['Projects']['children'][$i]['children'][$j]['type'] = "project";
 	                            $FinalArray['Projects']['children'][$i]['children'][$j]['api']  = "Action=GetProjectByType&id=" . $CategoryRow['id'];
-			                    $FinalArray['Projects']['children'][$i]['children'][$j]['image'] = "https://app.thevillatent.com/villadashboard/".$CategoryRow['local_path'];
+			                    $FinalArray['Projects']['children'][$i]['children'][$j]['image'] = "https://www.thevillatent.com/villadashboard/".$CategoryRow['local_path'];
 							   	if(isset($CategoryRow['image']) && $CategoryRow['image'] != '')
 							   	{
-							   		$FinalArray['Projects']['children'][$i]['children'][$j]['image'] = "https://app.thevillatent.com/villadashboard/".$CategoryRow['image'];
+							   		$FinalArray['Projects']['children'][$i]['children'][$j]['image'] = "https://www.thevillatent.com/villadashboard/".$CategoryRow['image'];
 							   	}
 	                            $j++;
 	                        }
@@ -335,8 +338,8 @@
 	    $FinalArray['HeaderInfo']['title'] 			= $LogoRow['title'];
 	    $FinalArray['HeaderInfo']['description'] 	= $LogoRow['description'];
 	    $FinalArray['HeaderInfo']['brochureStatus'] = ($LogoRow['bro_status'] == 1) ? 1 : 0;
-	    $FinalArray['HeaderInfo']['favicon']    	= "https://app.thevillatent.com/villadashboard/" . $LogoRow['favicon'];
-	    $FinalArray['HeaderInfo']['logo'] 			= "https://app.thevillatent.com/villadashboard/" . $LogoRow['path'];
+	    $FinalArray['HeaderInfo']['favicon']    	= "https://www.thevillatent.com/villadashboard/" . $LogoRow['favicon'];
+	    $FinalArray['HeaderInfo']['logo'] 			= "https://www.thevillatent.com/villadashboard/" . $LogoRow['path'];
 
 	    $Response['success'] = true;
 	    $Response['data'] = $FinalArray;
@@ -531,8 +534,8 @@
 		$FinalArray['HeaderInfo']['title'] 			= $LogoRow['title'];
 		$FinalArray['HeaderInfo']['description'] 	= $LogoRow['description'];
 		$FinalArray['HeaderInfo']['brochureStatus'] = ($LogoRow['bro_status'] == 1) ? 1 : 0;
-		$FinalArray['HeaderInfo']['favicon'] 		= "https://app.thevillatent.com/villadashboard/".$LogoRow['favicon'];
-		$FinalArray['HeaderInfo']['logo'] 			= "https://app.thevillatent.com/villadashboard/".$LogoRow['path'];
+		$FinalArray['HeaderInfo']['favicon'] 		= "https://www.thevillatent.com/villadashboard/".$LogoRow['favicon'];
+		$FinalArray['HeaderInfo']['logo'] 			= "https://www.thevillatent.com/villadashboard/".$LogoRow['path'];
 
 		$Response['success'] = true; 
 		$Response['data'] 	= $FinalArray; 
@@ -556,7 +559,7 @@
 		// Top Section
 		// $Result = mysqli_query($con, "SELECT * FROM home_top_section");
 		// $Row 	= mysqli_fetch_assoc($Result);
-		// $FinalArray['TopSection']['logo'] 		= "https://app.thevillatent.com/villadashboard/".$LogoRow['path'];
+		// $FinalArray['TopSection']['logo'] 		= "https://www.thevillatent.com/villadashboard/".$LogoRow['path'];
 		// $FinalArray['TopSection']['title'] 		= $Row['title'];
 		// $FinalArray['TopSection']['content'] 	= $Row['content'];
 
@@ -567,10 +570,10 @@
 		$FinalArray['TopSection']['description'] 	= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 		= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 		= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
        	}
 
 		// About Section
@@ -581,10 +584,10 @@
 		$FinalArray['AboutSection']['btn_txt'] 	= $FinalArray['TopSection']['btn_txt'];
 		$FinalArray['AboutSection']['btn_url'] 	= $FinalArray['TopSection']['btn_url'];
 
-		$FinalArray['AboutSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+		$FinalArray['AboutSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['AboutSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+       		$FinalArray['AboutSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
        	}
 
 		// Bottom Section
@@ -608,11 +611,11 @@
           	$FinalArray['LatestPosts'][$i]['content'] 	= implode(" ", array_splice($Pieces, 0, 12));
            	if(isset($PostRow['local_path']) && $PostRow['local_path'] !== '')
            	{
-           		$FinalArray['LatestPosts'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$PostRow['local_path'];
+           		$FinalArray['LatestPosts'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$PostRow['local_path'];
            	}
            	else
            	{
-           		$FinalArray['LatestPosts'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$PostRow['image'];
+           		$FinalArray['LatestPosts'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$PostRow['image'];
            	}
 
 
@@ -647,10 +650,10 @@
 		   	$CategoryTitle = str_replace('--', '-', strtolower($CategoryTitle));
 	      	$FinalArray['TentsCollection'][$i]['slug'] = trim($CategoryTitle, '-');
 
-			$FinalArray['TentsCollection'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+			$FinalArray['TentsCollection'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
 		   	if(isset($Row['image']) && $Row['image'] != '')
 		   	{
-		   		$FinalArray['TentsCollection'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+		   		$FinalArray['TentsCollection'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		   	}
 			$i++;
 		}
@@ -668,10 +671,10 @@
 		   	$CategoryTitle = str_replace('--', '-', strtolower($CategoryTitle));
 	      	$FinalArray['FeaturedProjects'][$i]['slug'] = trim($CategoryTitle, '-');
 
-			$FinalArray['FeaturedProjects'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+			$FinalArray['FeaturedProjects'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
 		   	if(isset($Row['image']) && $Row['image'] != '')
 		   	{
-		   		$FinalArray['FeaturedProjects'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+		   		$FinalArray['FeaturedProjects'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		   	}
 			$i++;
 		}
@@ -705,7 +708,7 @@
 		{
 			$FinalArray['Brands'][$i]['name'] 	= $Row['name'];
 			$FinalArray['Brands'][$i]['link'] 	= $Row['link'];
-			$FinalArray['Brands'][$i]['logo'] 	= "https://app.thevillatent.com/villadashboard/".$Row['logo'];
+			$FinalArray['Brands'][$i]['logo'] 	= "https://www.thevillatent.com/villadashboard/".$Row['logo'];
 			$i++;
 		}
 
@@ -734,10 +737,10 @@
 		$FinalArray['TopSection']['content'] 		= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 		= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 		= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
        	}
 
 		// Page Content
@@ -746,10 +749,10 @@
 	   	$FinalArray['AboutInfo']['title'] 	= $AboutRow['title'];
 	   	$FinalArray['AboutInfo']['content'] = $AboutRow['content'];
 	   	
-	   	$FinalArray['AboutInfo']['image'] = "https://app.thevillatent.com/villadashboard/".$AboutRow['local_path'];
+	   	$FinalArray['AboutInfo']['image'] = "https://www.thevillatent.com/villadashboard/".$AboutRow['local_path'];
 	   	if(isset($AboutRow['image']) && $AboutRow['image'] != '')
 	   	{
-	   		$FinalArray['AboutInfo']['image'] = "https://app.thevillatent.com/villadashboard/".$AboutRow['image'];
+	   		$FinalArray['AboutInfo']['image'] = "https://www.thevillatent.com/villadashboard/".$AboutRow['image'];
 	   	}
 
 	   	// SEO Info
@@ -772,7 +775,7 @@
 		{
 			$FinalArray['Founders'][$i]['name'] 	 	= $Row['name'];
 			$FinalArray['Founders'][$i]['designation'] 	= $Row['designation'];
-			$FinalArray['Founders'][$i]['image'] 	 	= "https://app.thevillatent.com/villadashboard/".$Row['image'];
+			$FinalArray['Founders'][$i]['image'] 	 	= "https://www.thevillatent.com/villadashboard/".$Row['image'];
 			$FinalArray['Founders'][$i]['bio'] 	 		= $Row['bio'];
 			$i++;
 		}
@@ -816,7 +819,7 @@
 			$FinalArray['MissionVision']['vision_title'] = $Row['vision_title'];
 			$FinalArray['MissionVision']['vision_heading'] = $Row['vision_heading'];
 			$FinalArray['MissionVision']['vision_desc'] = $Row['vision_desc'];
-			$FinalArray['MissionVision']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+			$FinalArray['MissionVision']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		}
 
 	   	$Response['Status'] = 1; 
@@ -836,10 +839,10 @@
 		$FinalArray['TopSection']['content'] 	= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 	= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 	= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] 	= "https://app.thevillatent.com/villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] 	= "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
        	}
 
 		// Resort Tent Content
@@ -867,10 +870,10 @@
 			$FinalArray['Categories'][$i]['name'] 	= $CategoryRow['category'];
 		   	$FinalArray['Categories'][$i]['slug'] 	= $CategoryTitle;
 		   	$FinalArray['Categories'][$i]['total'] 	= $CategoryRow['TotalCount'];
-		   	$FinalArray['Categories'][$i]['image'] 	= "https://app.thevillatent.com/villadashboard/".$CategoryRow['local_path'];
+		   	$FinalArray['Categories'][$i]['image'] 	= "https://www.thevillatent.com/villadashboard/".$CategoryRow['local_path'];
 		   	if(isset($CategoryRow['image']) && $CategoryRow['image'] != '')
 		   	{
-		   		$FinalArray['Categories'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$CategoryRow['image'];
+		   		$FinalArray['Categories'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$CategoryRow['image'];
 		   	}
 		   	$i++;
 		}
@@ -894,10 +897,10 @@
 	   	$FinalArray['Data']['content'] 		= $ResortRow['content'];
 	   	$FinalArray['Data']['order_no'] 	= $ResortRow['order_no'];
 	   	
-	   	$FinalArray['Data']['image'] = "https://app.thevillatent.com/villadashboard/".$ResortRow['local_path'];
+	   	$FinalArray['Data']['image'] = "https://www.thevillatent.com/villadashboard/".$ResortRow['local_path'];
 	   	if(isset($ResortRow['image']) && $ResortRow['image'] != '')
 	   	{
-	   		$FinalArray['Data']['image'] = "https://app.thevillatent.com/villadashboard/".$ResortRow['image'];
+	   		$FinalArray['Data']['image'] = "https://www.thevillatent.com/villadashboard/".$ResortRow['image'];
 	   	}
 
 	   	$FinalArray['SEOInfo']['title'] 	= $ResortRow['metatitle'];
@@ -917,10 +920,10 @@
 			$FinalArray['Tents'][$i]['slug'] 		= $CategoryTitle;
 			$FinalArray['Tents'][$i]['content'] 	= $Row['content'];
 			$FinalArray['Tents'][$i]['category'] 	= $Row['category'];
-			$FinalArray['Tents'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+			$FinalArray['Tents'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
 		   	if(isset($Row['image']) && $Row['image'] != '')
 		   	{
-		   		$FinalArray['Tents'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+		   		$FinalArray['Tents'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		   	}
 			$i++;
 		}
@@ -949,17 +952,17 @@
 	   	$FinalArray['Data']['floor_image'] = "";
 	   	if($ResortRow['floor_image'] != '')
 	   	{
-	   		$FinalArray['Data']['floor_image'] 	= "https://app.thevillatent.com/villadashboard/".$ResortRow['floor_image'];
+	   		$FinalArray['Data']['floor_image'] 	= "https://www.thevillatent.com/villadashboard/".$ResortRow['floor_image'];
 	   	}
 
 	   	$LogoResult = mysqli_query($con, "SELECT bro_status FROM logo");
 		$LogoRow 	= mysqli_fetch_assoc($LogoResult);
 		$FinalArray['Data']['brochureStatus'] = ($LogoRow['bro_status'] == 1) ? 1 : 0;
 	   	
-	   	$FinalArray['Data']['image'] = "https://app.thevillatent.com/villadashboard/".$ResortRow['local_path'];
+	   	$FinalArray['Data']['image'] = "https://www.thevillatent.com/villadashboard/".$ResortRow['local_path'];
 	   	if(isset($ResortRow['image']) && $ResortRow['image'] != '')
 	   	{
-	   		$FinalArray['Data']['image'] = "https://app.thevillatent.com/villadashboard/".$ResortRow['image'];
+	   		$FinalArray['Data']['image'] = "https://www.thevillatent.com/villadashboard/".$ResortRow['image'];
 	   	}
 
 	   	$FinalArray['SEOInfo']['title'] 	= $ResortRow['metatitle'];
@@ -978,52 +981,52 @@
 
 		   		if(isset($GalleryRow['p1']) && $GalleryRow['p1'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p1'];
+	   				$FinalArray['GalleryInfo']['images'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p1'];
 	   			}
 
 	   			if(isset($GalleryRow['p2']) && $GalleryRow['p2'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p2'];
+	   				$FinalArray['GalleryInfo']['images'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p2'];
 	   			}
 
 	   			if(isset($GalleryRow['p3']) && $GalleryRow['p3'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p3'];
+	   				$FinalArray['GalleryInfo']['images'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p3'];
 	   			}
 
 	   			if(isset($GalleryRow['p4']) && $GalleryRow['p4'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p4'];
+	   				$FinalArray['GalleryInfo']['images'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p4'];
 	   			}
 
 	   			if(isset($GalleryRow['p5']) && $GalleryRow['p5'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p5'];
+	   				$FinalArray['GalleryInfo']['images'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p5'];
 	   			}
 
 	   			if(isset($GalleryRow['p6']) && $GalleryRow['p6'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p6'];
+	   				$FinalArray['GalleryInfo']['images'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p6'];
 	   			}
 
 	   			if(isset($GalleryRow['p7']) && $GalleryRow['p7'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p7'];
+	   				$FinalArray['GalleryInfo']['images'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p7'];
 	   			}
 
 	   			if(isset($GalleryRow['p8']) && $GalleryRow['p8'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p8'];
+	   				$FinalArray['GalleryInfo']['images'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p8'];
 	   			}
 
 	   			if(isset($GalleryRow['p9']) && $GalleryRow['p9'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p9'];
+	   				$FinalArray['GalleryInfo']['images'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p9'];
 	   			}
 
 	   			if(isset($GalleryRow['p10']) && $GalleryRow['p10'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['images'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p10'];
+	   				$FinalArray['GalleryInfo']['images'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p10'];
 	   			}
 	   		}
 	   	}
@@ -1040,10 +1043,10 @@
 			$FinalArray['OtherTents'][$i]['slug'] 		= $CategoryTitle;
 		   	$FinalArray['OtherTents'][$i]['category'] 	= $ResortRow['category'];
 		   	
-		   	$FinalArray['OtherTents'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$ResortRow['local_path'];
+		   	$FinalArray['OtherTents'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$ResortRow['local_path'];
 		   	if(isset($ResortRow['image']) && $ResortRow['image'] != '')
 		   	{
-		   		$FinalArray['OtherTents'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$ResortRow['image'];
+		   		$FinalArray['OtherTents'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$ResortRow['image'];
 		   	}
 		   	$i++;
 		}
@@ -1088,10 +1091,10 @@
 		$FinalArray['TopSection']['content'] 	= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 	= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 	= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] 	= "https://app.thevillatent.com/villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] 	= "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
        	}
 
 		// Projects Content
@@ -1101,10 +1104,10 @@
 		$FinalArray['ProjectInfo']['title'] 	= $ProjectRow['title'];
 	   	$FinalArray['ProjectInfo']['content'] 	= $ProjectRow['content'];
 	   	
-	   	$FinalArray['ProjectInfo']['image'] = "https://app.thevillatent.com/villadashboard/".$ProjectRow['local_path'];
+	   	$FinalArray['ProjectInfo']['image'] = "https://www.thevillatent.com/villadashboard/".$ProjectRow['local_path'];
 	   	if(isset($ProjectRow['image']) && $ProjectRow['image'] != '')
 	   	{
-	   		$FinalArray['ProjectInfo']['image'] = "https://app.thevillatent.com/villadashboard/".$ProjectRow['image'];
+	   		$FinalArray['ProjectInfo']['image'] = "https://www.thevillatent.com/villadashboard/".$ProjectRow['image'];
 	   	}
 
 	   	// Projects Categories
@@ -1118,10 +1121,10 @@
 			$FinalArray['Categories'][$i]['name'] 	= $CategoryRow['category'];
 		   	$FinalArray['Categories'][$i]['slug'] 	= $CategoryTitle;
 		   	$FinalArray['Categories'][$i]['total'] 	= $CategoryRow['TotalCount'];
-		   	$FinalArray['Categories'][$i]['image'] 	= "https://app.thevillatent.com/villadashboard/".$CategoryRow['local_path'];
+		   	$FinalArray['Categories'][$i]['image'] 	= "https://www.thevillatent.com/villadashboard/".$CategoryRow['local_path'];
 		   	if(isset($CategoryRow['image']) && $CategoryRow['image'] != '')
 		   	{
-		   		$FinalArray['Categories'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$CategoryRow['image'];
+		   		$FinalArray['Categories'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$CategoryRow['image'];
 		   	}
 		   	$i++;
 		}
@@ -1152,10 +1155,10 @@
 	   	$FinalArray['Data']['content'] 		= $ProjectRow['content'];
 	   	$FinalArray['Data']['order_no'] 	= $ProjectRow['order_no'];
 	   	
-	   	$FinalArray['Data']['image'] = "https://app.thevillatent.com/villadashboard/".$ProjectRow['local_path'];
+	   	$FinalArray['Data']['image'] = "https://www.thevillatent.com/villadashboard/".$ProjectRow['local_path'];
 	   	if(isset($ProjectRow['image']) && $ProjectRow['image'] != '')
 	   	{
-	   		$FinalArray['Data']['image'] = "https://app.thevillatent.com/villadashboard/".$ProjectRow['image'];
+	   		$FinalArray['Data']['image'] = "https://www.thevillatent.com/villadashboard/".$ProjectRow['image'];
 	   	}
 
 	   	$FinalArray['SEOInfo']['title'] 	= $ProjectRow['metatitle'];
@@ -1175,10 +1178,10 @@
 			$FinalArray['Projects'][$i]['slug'] 	= $CategoryTitle;
 			$FinalArray['Projects'][$i]['content'] 	= $Row['content'];
 			$FinalArray['Projects'][$i]['category'] = $Row['category'];
-			$FinalArray['Projects'][$i]['image'] 	= "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+			$FinalArray['Projects'][$i]['image'] 	= "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
 		   	if(isset($Row['image']) && $Row['image'] != '')
 		   	{
-		   		$FinalArray['Projects'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+		   		$FinalArray['Projects'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		   	}
 			$i++;
 		}
@@ -1212,10 +1215,10 @@
 	   	$FinalArray['Data']['accent_color'] = $ProjectRow['accent_color'];
 	   	$FinalArray['Data']['border'] 		= $ProjectRow['border'];
 	   	
-	   	$FinalArray['Data']['image'] = "https://app.thevillatent.com/villadashboard/".$ProjectRow['local_path'];
+	   	$FinalArray['Data']['image'] = "https://www.thevillatent.com/villadashboard/".$ProjectRow['local_path'];
 	   	if(isset($ProjectRow['image']) && $ProjectRow['image'] != '')
 	   	{
-	   		$FinalArray['Data']['image'] = "https://app.thevillatent.com/villadashboard/".$ProjectRow['image'];
+	   		$FinalArray['Data']['image'] = "https://www.thevillatent.com/villadashboard/".$ProjectRow['image'];
 	   	}
 
 	   	$FinalArray['SEOInfo']['title'] 	= $ProjectRow['metatitle'];
@@ -1250,52 +1253,52 @@
 
 		   		if(isset($GalleryRow['p1']) && $GalleryRow['p1'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p1'];
+	   				$FinalArray['GalleryInfo']['content'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p1'];
 	   			}
 
 	   			if(isset($GalleryRow['p2']) && $GalleryRow['p2'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p2'];
+	   				$FinalArray['GalleryInfo']['content'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p2'];
 	   			}
 
 	   			if(isset($GalleryRow['p3']) && $GalleryRow['p3'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p3'];
+	   				$FinalArray['GalleryInfo']['content'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p3'];
 	   			}
 
 	   			if(isset($GalleryRow['p4']) && $GalleryRow['p4'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p4'];
+	   				$FinalArray['GalleryInfo']['content'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p4'];
 	   			}
 
 	   			if(isset($GalleryRow['p5']) && $GalleryRow['p5'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p5'];
+	   				$FinalArray['GalleryInfo']['content'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p5'];
 	   			}
 
 	   			if(isset($GalleryRow['p6']) && $GalleryRow['p6'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p6'];
+	   				$FinalArray['GalleryInfo']['content'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p6'];
 	   			}
 
 	   			if(isset($GalleryRow['p7']) && $GalleryRow['p7'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p7'];
+	   				$FinalArray['GalleryInfo']['content'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p7'];
 	   			}
 
 	   			if(isset($GalleryRow['p8']) && $GalleryRow['p8'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p8'];
+	   				$FinalArray['GalleryInfo']['content'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p8'];
 	   			}
 
 	   			if(isset($GalleryRow['p9']) && $GalleryRow['p9'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p9'];
+	   				$FinalArray['GalleryInfo']['content'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p9'];
 	   			}
 
 	   			if(isset($GalleryRow['p10']) && $GalleryRow['p10'] !== '')
 	   			{
-	   				$FinalArray['GalleryInfo']['content'][] = "https://app.thevillatent.com/villadashboard/".$GalleryRow['p10'];
+	   				$FinalArray['GalleryInfo']['content'][] = "https://www.thevillatent.com/villadashboard/".$GalleryRow['p10'];
 	   			}
 	   		}
 	   	}
@@ -1312,10 +1315,10 @@
 			$FinalArray['OtherProjects'][$i]['slug'] 		= $CategoryTitle;
 		   	$FinalArray['OtherProjects'][$i]['category'] 	= $ProjectRow['category'];
 		   	
-		   	$FinalArray['OtherProjects'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$ProjectRow['local_path'];
+		   	$FinalArray['OtherProjects'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$ProjectRow['local_path'];
 		   	if(isset($ProjectRow['image']) && $ProjectRow['image'] != '')
 		   	{
-		   		$FinalArray['OtherProjects'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$ProjectRow['image'];
+		   		$FinalArray['OtherProjects'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$ProjectRow['image'];
 		   	}
 		   	$i++;
 		}
@@ -1337,10 +1340,10 @@
 		$Response['TopSection']['content'] 	= $Row['description'];
 		$Response['TopSection']['btn_txt'] 	= $Row['btn_txt'];
 		$Response['TopSection']['btn_url'] 	= $Row['btn_url'];
-       	$Response['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+       	$Response['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$Response['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+       		$Response['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
        	}
 
 	   	// SEO Info
@@ -1365,7 +1368,7 @@
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
 		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "https://app.thevillatent.com/villadashboard/".$Row['p1'];
+		   			$FinalArray[$i]['image']	= "https://www.thevillatent.com/villadashboard/".$Row['p1'];
 		   			$i++;
 	   			}
 
@@ -1374,7 +1377,7 @@
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
 		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "https://app.thevillatent.com/villadashboard/".$Row['p2'];
+		   			$FinalArray[$i]['image']	= "https://www.thevillatent.com/villadashboard/".$Row['p2'];
 		   			$i++;
 	   			}
 
@@ -1383,7 +1386,7 @@
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
 		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "https://app.thevillatent.com/villadashboard/".$Row['p3'];
+		   			$FinalArray[$i]['image']	= "https://www.thevillatent.com/villadashboard/".$Row['p3'];
 		   			$i++;
 	   			}
 
@@ -1392,7 +1395,7 @@
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
 		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "https://app.thevillatent.com/villadashboard/".$Row['p4'];
+		   			$FinalArray[$i]['image']	= "https://www.thevillatent.com/villadashboard/".$Row['p4'];
 		   			$i++;
 	   			}
 
@@ -1401,7 +1404,7 @@
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
 		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "https://app.thevillatent.com/villadashboard/".$Row['p5'];
+		   			$FinalArray[$i]['image']	= "https://www.thevillatent.com/villadashboard/".$Row['p5'];
 		   			$i++;
 	   			}
 
@@ -1410,7 +1413,7 @@
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
 		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "https://app.thevillatent.com/villadashboard/".$Row['p6'];
+		   			$FinalArray[$i]['image']	= "https://www.thevillatent.com/villadashboard/".$Row['p6'];
 		   			$i++;
 	   			}
 
@@ -1419,7 +1422,7 @@
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
 		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "https://app.thevillatent.com/villadashboard/".$Row['p7'];
+		   			$FinalArray[$i]['image']	= "https://www.thevillatent.com/villadashboard/".$Row['p7'];
 		   			$i++;
 	   			}
 
@@ -1428,7 +1431,7 @@
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
 		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "https://app.thevillatent.com/villadashboard/".$Row['p8'];
+		   			$FinalArray[$i]['image']	= "https://www.thevillatent.com/villadashboard/".$Row['p8'];
 		   			$i++;
 	   			}
 
@@ -1437,7 +1440,7 @@
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
 		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "https://app.thevillatent.com/villadashboard/".$Row['p9'];
+		   			$FinalArray[$i]['image']	= "https://www.thevillatent.com/villadashboard/".$Row['p9'];
 		   			$i++;
 	   			}
 
@@ -1446,7 +1449,7 @@
 	   				$FinalArray[$i]['title'] 	= $Row['title'];
 		   			$FinalArray[$i]['location']	= "";
 		   			$FinalArray[$i]['category']	= str_replace(" ", "-", strtolower($Row['types']));;
-		   			$FinalArray[$i]['image']	= "https://app.thevillatent.com/villadashboard/".$Row['p10'];
+		   			$FinalArray[$i]['image']	= "https://www.thevillatent.com/villadashboard/".$Row['p10'];
 		   			$i++;
 	   			}
 	   		}
@@ -1484,10 +1487,10 @@
 		$FinalArray['Info']['content'] 	= $Row['description'];
 		$FinalArray['Info']['btn_txt'] 	= $Row['btn_txt'];
 		$FinalArray['Info']['btn_url'] 	= $Row['btn_url'];
-       	$FinalArray['Info']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+       	$FinalArray['Info']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['Info']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+       		$FinalArray['Info']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
        	}
 
 	   	// SEO Info
@@ -1505,7 +1508,7 @@
 		{
 			$FinalArray['Brands'][$i]['name'] 	= $Row['name'];
 			$FinalArray['Brands'][$i]['link'] 	= $Row['link'];
-			$FinalArray['Brands'][$i]['logo'] 	= "https://app.thevillatent.com/villadashboard/".$Row['logo'];
+			$FinalArray['Brands'][$i]['logo'] 	= "https://www.thevillatent.com/villadashboard/".$Row['logo'];
 			$i++;
 		}
 
@@ -1532,10 +1535,10 @@
             $BlogDate = date_create($BlogRow['date']);
             $FinalArray['Blogs'][$i]['date'] =  date_format($BlogDate,"l, jS F Y");
 
-			$FinalArray['Blogs'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$BlogRow['local_path'];
+			$FinalArray['Blogs'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$BlogRow['local_path'];
 		   	if(isset($BlogRow['image']) && $BlogRow['image'] != '')
 		   	{
-		   		$FinalArray['Blogs'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$BlogRow['image'];
+		   		$FinalArray['Blogs'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$BlogRow['image'];
 		   	}
 		   	$i++;
 		}
@@ -1560,10 +1563,10 @@
         $FinalArray['BlogInfo']['date'] 	=  date_format($BlogDate,"l, jS F Y");
         $FinalArray['BlogInfo']['readTime'] = "";
 	   	
-	   	$FinalArray['BlogInfo']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+	   	$FinalArray['BlogInfo']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
 	   	if(isset($Row['image']) && $Row['image'] != '')
 	   	{
-	   		$FinalArray['BlogInfo']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+	   		$FinalArray['BlogInfo']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 	   	}
 
 	   	// SEO Info
@@ -1579,7 +1582,7 @@
 		{
 			$FinalArray['Brands'][$i]['name'] 	= $Row['name'];
 			$FinalArray['Brands'][$i]['link'] 	= $Row['link'];
-			$FinalArray['Brands'][$i]['logo'] 	= "https://app.thevillatent.com/villadashboard/".$Row['logo'];
+			$FinalArray['Brands'][$i]['logo'] 	= "https://www.thevillatent.com/villadashboard/".$Row['logo'];
 			$i++;
 		}
 
@@ -1602,10 +1605,10 @@
 			    $BlogURL = str_replace('--', '-', strtolower($BlogURL));
 			    $FinalArray['RecentPosts'][$i]['slug'] = trim($BlogURL, '-');
 			   	
-			   	$FinalArray['RecentPosts'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+			   	$FinalArray['RecentPosts'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
 			   	if(isset($Row['image']) && $Row['image'] != '')
 			   	{
-			   		$FinalArray['RecentPosts'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+			   		$FinalArray['RecentPosts'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 			   	}
 			   	$i++;
 	   		}
@@ -1639,10 +1642,10 @@
 			    $BlogURL = str_replace('--', '-', strtolower($BlogURL));
 			    $FinalArray['RecentPosts'][$i]['slug'] = trim($BlogURL, '-');
 			   	
-			   	$FinalArray['RecentPosts'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+			   	$FinalArray['RecentPosts'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
 			   	if(isset($Row['image']) && $Row['image'] != '')
 			   	{
-			   		$FinalArray['RecentPosts'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+			   		$FinalArray['RecentPosts'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 			   	}
 	   		}
 	   	}
@@ -1664,10 +1667,10 @@
 		$FinalArray['TopSection']['content'] 	= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 	= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 	= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] 	= "https://app.thevillatent.com/villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] 	= "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
        	}
 
 		// Page Content
@@ -1675,10 +1678,10 @@
 	   	$ContactRow = mysqli_fetch_assoc($ContactResult);
 	   	$FinalArray['ContactInfo']['title'] 	= $ContactRow['title'];
 	   	$FinalArray['ContactInfo']['content'] 	= $ContactRow['content'];
-	   	$FinalArray['ContactInfo']['image'] 	= "https://app.thevillatent.com/villadashboard/".$ContactRow['local_path'];
+	   	$FinalArray['ContactInfo']['image'] 	= "https://www.thevillatent.com/villadashboard/".$ContactRow['local_path'];
 	   	if(isset($ContactRow['image']) && $ContactRow['image'] != '')
 	   	{
-	   		$FinalArray['ContactInfo']['image'] = "https://app.thevillatent.com/villadashboard/".$ContactRow['image'];
+	   		$FinalArray['ContactInfo']['image'] = "https://www.thevillatent.com/villadashboard/".$ContactRow['image'];
 	   	}
 	   
 	    // SEO Info
@@ -1777,10 +1780,10 @@
 		$FinalArray['TopSection']['description'] 	= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 		= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 		= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
        	}
 
        	// SEO Info
@@ -1807,10 +1810,10 @@
 		$FinalArray['TopSection']['description'] 	= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 		= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 		= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
        	}
 
        	// Other Page Info
@@ -1844,7 +1847,7 @@
 		$FinalArray['Data']['hours_text'] 		= $Row['hours_text'];
 		$FinalArray['Data']['location_title'] 	= $Row['location_title'];
 		$FinalArray['Data']['location_text'] 	= $Row['location_text'];
-		$FinalArray['Data']['logo_url'] 		= "https://app.thevillatent.com/villadashboard/".$Row['logo_url'];
+		$FinalArray['Data']['logo_url'] 		= "https://www.thevillatent.com/villadashboard/".$Row['logo_url'];
 
 	   	// SEO Info
 	   	$Result = mysqli_query($con, "SELECT * FROM get_quote_seo ORDER BY id ASC LIMIT 1");					
@@ -1899,10 +1902,10 @@
 		$FinalArray['TopSection']['content'] 		= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 		= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 		= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
        	}
 
 		// Page Content
@@ -1911,10 +1914,10 @@
 		$FinalArray['Info']['title'] 	= $Row['title'];
 	   	$FinalArray['Info']['content'] 	= $Row['content'];
 	   	
-	   	$FinalArray['Info']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+	   	$FinalArray['Info']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
 	   	if(isset($Row['image']) && $Row['image'] != '')
 	   	{
-	   		$FinalArray['Info']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+	   		$FinalArray['Info']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 	   	}
 
 	   	// SEO Info
@@ -1932,10 +1935,10 @@
 	   		$FinalArray['Videos'][$i]['title'] 	= $VideoRow['title'];
 			$FinalArray['Videos'][$i]['url'] 	= $VideoRow['youtube_url'];
 
-			$FinalArray['Videos'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$VideoRow['local_path'];
+			$FinalArray['Videos'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$VideoRow['local_path'];
 		   	if(isset($VideoRow['image']) && $VideoRow['image'] != '')
 		   	{
-		   		$FinalArray['Videos'][$i]['image'] = "https://app.thevillatent.com/villadashboard/".$VideoRow['image'];
+		   		$FinalArray['Videos'][$i]['image'] = "https://www.thevillatent.com/villadashboard/".$VideoRow['image'];
 		   	}
 		   	$i++;
 		}
@@ -1948,7 +1951,7 @@
 		{
 			$FinalArray['Brands'][$i]['name'] 	= $Row['name'];
 			$FinalArray['Brands'][$i]['link'] 	= $Row['link'];
-			$FinalArray['Brands'][$i]['logo'] 	= "https://app.thevillatent.com/villadashboard/".$Row['logo'];
+			$FinalArray['Brands'][$i]['logo'] 	= "https://www.thevillatent.com/villadashboard/".$Row['logo'];
 			$i++;
 		}
 
@@ -1968,10 +1971,10 @@
 		$FinalArray['TopSection']['description'] 	= $Row['description'];
 		$FinalArray['TopSection']['btn_txt'] 		= $Row['btn_txt'];
 		$FinalArray['TopSection']['btn_url'] 		= $Row['btn_url'];
-       	$FinalArray['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+       	$FinalArray['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['TopSection']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+       		$FinalArray['TopSection']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
        	}
 
        	// Page Info
@@ -1988,10 +1991,10 @@
 	   	$FinalArray['Data']['position'] = $Row['position'];
 	   	$FinalArray['Data']['title'] 	= $Row['title'];
 	   	$FinalArray['Data']['content'] 	= $Row['content'];
-	   	$FinalArray['Data']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['image'];
+	   	$FinalArray['Data']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['image'];
 		if(isset($Row['local_path']) && $Row['local_path'] !== '')
        	{
-       		$FinalArray['Data']['image'] = "https://app.thevillatent.com/villadashboard/".$Row['local_path'];
+       		$FinalArray['Data']['image'] = "https://www.thevillatent.com/villadashboard/".$Row['local_path'];
        	}
 
        	$Response['Status'] = 1; 
@@ -2034,7 +2037,7 @@
         $Location       = $CustomerInfo['location'] ?? '';
         $Referredby     = $CustomerInfo['referredby'] ?? '';
         $Message        = $CustomerInfo['message'] ?? '';
-        $adminUrl       = 'https://app.thevillatent.com/admin/enquiries/123';
+        $adminUrl       = 'https://www.thevillatent.com/admin/enquiries/123';
 
         if($EmailType == 'owner')
         {
@@ -2069,7 +2072,7 @@
                                                                 <table width='100%' cellpadding='0' cellspacing='0' border='0'>
                                                                     <tr>
                                                                         <td align='left'>
-                                                                            <img src='https://app.thevillatent.com/villadashboard/uploads/logo/1836logo.png' alt='The Villa Tent' width='70' style='display:block;height:auto;border:0;'>
+                                                                            <img src='/villadashboard/uploads/logo/1836logo.png' alt='The Villa Tent' width='70' style='display:block;height:auto;border:0;'>
                                                                         </td>
 
                                                                         <td align='right'
@@ -2311,7 +2314,7 @@
                                                                     <tr>
                                                                         <td align='left'>
                                                                         <img
-                                                                        src='https://app.thevillatent.com/villadashboard/uploads/logo/1836logo.png'
+                                                                        src='/villadashboard/uploads/logo/1836logo.png'
                                                                         alt='The Villa Tent'
                                                                         width='70'
                                                                         style='display:block;height:auto;border:0;'
@@ -2520,7 +2523,7 @@
                                                                 <table width='100%' cellpadding='0' cellspacing='0' border='0'>
                                                                     <tr>
                                                                         <td align='left'>
-                                                                            <img src='https://app.thevillatent.com/villadashboard/uploads/logo/1836logo.png' alt='The Villa Tent' width='70' style='display:block;height:auto;border:0;'>
+                                                                            <img src='/villadashboard/uploads/logo/1836logo.png' alt='The Villa Tent' width='70' style='display:block;height:auto;border:0;'>
                                                                         </td>
 
                                                                         <td align='right'
@@ -2782,7 +2785,7 @@
                                                                     <tr>
                                                                         <td align='left'>
                                                                         <img
-                                                                        src='https://app.thevillatent.com/villadashboard/uploads/logo/1836logo.png'
+                                                                        src='/villadashboard/uploads/logo/1836logo.png'
                                                                         alt='The Villa Tent'
                                                                         width='70'
                                                                         style='display:block;height:auto;border:0;'

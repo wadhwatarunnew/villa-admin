@@ -69,6 +69,12 @@
 
 		if($Updated)
 		{
+			if($b['title'] != $title)
+			{
+				$OldTitle = $b['title'];
+				mysqli_query($con, "UPDATE add_gallery SET title='$title' WHERE title='$OldTitle'");
+			}
+
 			$CurrentDateTime = Date("Y-m-d H:i:s");
 			mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Project Info'");
 			mysqli_query($con, "DELETE FROM project_details WHERE project_id=$id AND category='Challenges'");
