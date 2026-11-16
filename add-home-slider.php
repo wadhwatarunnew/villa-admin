@@ -143,34 +143,50 @@
 
 							<div class="col-lg-4 col-md-6 mb-20">
 								<div class="card">
-									<div class="card-body">
-										<div class="form-group">
-											<label class="banner-form-label">Banner Image <span class="required">*</span></label>
-											<div class="banner-image-upload">
-												<img src="uploads/pageimages/slider/Ultra-Luxury-Ganesha-Resort-Tent.jpg" class="banner-image-preview" id="banner_image_preview" alt="Banner Image">
+								    <div class="card-body">
+								        <div class="form-group">
+								            <label class="banner-form-label">
+								                Banner Image <span class="required">*</span>
+								            </label>
 
-												<div class="banner-recommended-size">Recommended size: 1920x800px</div>
-												<div class="radio-inline-group">
-													<label for="id_radio1"><input id="id_radio1" type="radio" name="img" onclick="show1();" checked="">Image URL</label>
-													<label for="id_radio2"><input id="id_radio2" type="radio" name="img" onclick="show2();">Select Image</label>
-												</div>
+								            <div class="banner-image-upload">
+								                <img src="uploads/pageimages/slider/Ultra-Luxury-Ganesha-Resort-Tent.jpg" class="banner-image-preview" id="banner_image_preview" alt="Banner Image">
+								                <div class="banner-recommended-size">Recommended size: 1920x800px</div>
+								                <div class="radio-inline-group">
+								                    <label for="id_radio1">
+								                        <input id="id_radio1" type="radio" name="img" value="url" onclick="show1();" checked>
+								                        Image URL
+								                    </label>
 
-												<div id="image_url" style="margin-top: 12px;">
-													<input class="form-control banner-form-control" type="text" name="image" id="image" placeholder="Enter image URL">
-												</div>
+								                    <label for="id_radio2">
+								                        <input id="id_radio2" type="radio" name="img" value="upload" onclick="show2();">
+								                        Select Image
+								                    </label>
+								                </div>
 
-												<div id="select_image" style="display: none; margin-top: 12px;">
-													<input type="file" name="myFile" id="myFile" style="display: none;" accept="image/*">
-													<div class="banner-upload-actions">
-														<button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('myFile').click();">
-															<i class="feather icon-upload"></i> Change Image
-														</button>
-														<button type="button" class="btn btn-sm btn-danger" onclick="reset();">Reset Image</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
+								                <!-- Image URL -->
+								                <div id="image_url" style="margin-top:12px;">
+								                    <input class="form-control banner-form-control" type="url" name="image" id="image" placeholder="Enter image URL">
+								                </div>
+
+								                <!-- Image Upload -->
+								                <div id="select_image" style="display:none; margin-top:12px;">
+								                    <input type="file" name="myFile" id="myFile" style="display:none;" accept="image/jpeg,image/png,image/webp,image/gif">
+								                    <div class="banner-upload-actions">
+								                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('myFile').click();">
+								                            <i class="feather icon-upload"></i>
+								                            Change Image
+								                        </button>
+
+								                        <button type="button" class="btn btn-sm btn-danger" onclick="resetImage();">
+								                            Reset Image
+								                        </button>
+								                    </div>
+								                    <div id="selected_image_name" style="margin-top:10px;"></div>
+								                </div>
+								            </div>
+								        </div>
+								    </div>
 								</div>
 							</div>
 
@@ -218,71 +234,102 @@
 <?php include_once('common/footer.php'); ?>
 
 <script>
- 	// document.getElementById("btnn").disabled = true;
- 	// $(document).ready(function() {
- 	// 	$('#image').keyup(function() {
- 	// 		var dInput = this.value;
+	function show1() {
+	    document.getElementById('select_image').style.display = 'none';
+	    document.getElementById('image_url').style.display = 'block';
+	    document.getElementById('myFile').value = "";
+	    document.getElementById('selected_image_name').innerHTML = "";
+	    const url = document.getElementById('image').value;
+	    if (url) {
+	        updateBannerImage(url);
+	    }
+	}
 
- 	// 		var x = document.getElementById("myFile").value;
- 	// 		if(dInput && x)
- 	// 		{
- 	// 			document.getElementById("btnn").disabled = true;
- 	// 		}
- 	// 		else if(!dInput && !x)
- 	// 		{
- 	// 			document.getElementById("btnn").disabled = true;
+	function show2() {
+	    document.getElementById('select_image').style.display = 'block';
+	    document.getElementById('image_url').style.display = 'none';
+	}
 
- 	// 		}
- 	// 		else
- 	// 		{
- 	// 			document.getElementById("btnn").disabled = false;
- 	// 		}
- 	// 	});
+	const imageInput = document.getElementById('myFile');
+	imageInput.addEventListener('change', function () {
+	    const file = this.files[0];
+
+	    if (!file) {
+	        return;
+	    }
+
+	    if (!file.type.startsWith('image/')) {
+	        alert('Please select a valid image.');
+
+	        this.value = "";
+	        return;
+	    }
+
+	    const reader = new FileReader();
+	    reader.onload = function (e) {
+
+	        updateBannerImage(e.target.result);
+
+	        document.getElementById('selected_image_name').innerHTML =
+	            '<span style="color:green;">Selected: ' +
+	            file.name +
+	            '</span>';
+	    };
+
+	    reader.readAsDataURL(file);
+
+	});
+
+	// Image URL live preview
+	document.getElementById('image').addEventListener('input', function () {
+	    if (document.getElementById('id_radio1').checked) {
+	        if (this.value.trim() !== "") {
+	            updateBannerImage(this.value.trim());
+	        }
+	    }
+	});
+
+	// Update both image previews
+	function updateBannerImage(imageSrc) {
+	    document.getElementById('banner_image_preview').src = imageSrc;
+	    document.getElementById('preview_bg_image').src = imageSrc;
+	}
+
+	// Reset image
+	function resetImage() {
+	    document.getElementById('myFile').value = "";
+	    document.getElementById('selected_image_name').innerHTML = "";
+	    document.getElementById('banner_image_preview').src =
+	        "uploads/pageimages/slider/Ultra-Luxury-Ganesha-Resort-Tent.jpg";
+	    document.getElementById('preview_bg_image').src =
+	        "uploads/pageimages/slider/Ultra-Luxury-Ganesha-Resort-Tent.jpg";
+	}
 
 
- 	// 	document.getElementById('myFile').onchange = function () {
- 	// 		var pInput = this.value;
- 	// 		var y = document.getElementById("image").value;
+	// Live banner content preview
+	document.getElementById('title').addEventListener('input', function () {
+	    document.getElementById('preview_sub_title').innerText =
+	        this.value || 'Banner Sub Title';
+	});
 
- 	// 		if(pInput && y)
- 	// 		{
- 	// 			document.getElementById("btnn").disabled = true;
+	document.getElementById('banner_title').addEventListener('input', function () {
+	    document.getElementById('preview_title').innerText =
+	        this.value || 'Banner Title';
+	});
 
- 	// 		}
- 	// 		else if(!pInput && !x)
- 	// 		{
- 	// 			document.getElementById("btnn").disabled = true;
- 	// 		}
- 	// 		else
- 	// 		{
- 	// 			document.getElementById("btnn").disabled = false;
- 	// 		}
- 	// 	};
- 	// });
+	document.getElementById('banner_description').addEventListener('input', function () {
+	    document.getElementById('preview_description').innerText =
+	        this.value || 'Description goes here';
+	});
 
- 	// function reset()
-	// {
-	// 	document.getElementById('myFile').value = "";
-	// 	var p = document.getElementById("image").value;
-	// 	if(p)
-	// 	{
-	// 		document.getElementById("btnn").disabled = false;
-	// 	}
-	// 	else
-	// 	{
-	// 		document.getElementById("btnn").disabled = true;
-	// 	}
-	// }
+	document.getElementById('button_text').addEventListener('input', function () {
+	    document.getElementById('preview_button').innerText =
+	        this.value || 'Button Text';
+	});
 
-	function show1()
- 	{
- 		document.getElementById('select_image').style.display = 'none';
- 		document.getElementById('image_url').style.display = 'block';
- 	}
+	document.getElementById('button_url').addEventListener('input', function () {
+	    const button = document.getElementById('preview_button');
+	    button.href = this.value || 'javascript:void(0);';
+	});
 
- 	function show2()
- 	{
- 		document.getElementById('select_image').style.display = 'block';
- 		document.getElementById('image_url').style.display = 'none';
- 	}
 </script>
